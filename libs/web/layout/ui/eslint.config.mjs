@@ -1,7 +1,5 @@
 import nx from '@nx/eslint-plugin';
-import baseConfig, {
-  migratedLibOverrides,
-} from '../../../../eslint.config.mjs';
+import baseConfig from '../../../../eslint.config.mjs';
 
 export default [
   ...nx.configs['flat/angular'],
@@ -33,5 +31,4 @@ export default [
     // Override or add rules here
     rules: {},
   },
-  ...migratedLibOverrides,
 ];

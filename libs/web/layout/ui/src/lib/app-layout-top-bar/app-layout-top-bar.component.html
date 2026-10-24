@@ -1,0 +1,55 @@
+<a
+  class="logo"
+  [routerLink]="config.homePath"
+  [attr.aria-label]="config.appName"
+>
+  <img
+    alt=""
+    priority
+    [ngSrc]="config.logoSmall.src"
+    [width]="config.logoSmall.width"
+    [height]="config.logoSmall.height"
+  />
+</a>
+<h1 class="title">{{ pageTitle() }}</h1>
+@if (search(); as search) {
+  <mat-form-field class="search" appearance="outline" subscriptSizing="dynamic">
+    <mat-icon matPrefix aria-hidden="true">search</mat-icon>
+    <input
+      #searchInput
+      matInput
+      type="search"
+      [placeholder]="search.placeholder"
+      [attr.aria-label]="search.placeholder"
+      [value]="searchQuery()"
+      (input)="setSearchQuery($event)"
+      (keydown.escape)="collapseSearch()"
+    />
+    <button
+      class="search__close"
+      matSuffix
+      matIconButton
+      type="button"
+      aria-label="Close search"
+      (click)="collapseSearch()"
+    >
+      <mat-icon>close</mat-icon>
+    </button>
+  </mat-form-field>
+  <button
+    #searchToggle
+    class="search-toggle"
+    matIconButton
+    type="button"
+    [attr.aria-label]="search.placeholder"
+    [attr.aria-expanded]="isSearchExpanded()"
+    (click)="expandSearch()"
+  >
+    <mat-icon>search</mat-icon>
+  </button>
+}
+@if (actions(); as actions) {
+  <div class="actions">
+    <ng-container [ngTemplateOutlet]="actions"></ng-container>
+  </div>
+}

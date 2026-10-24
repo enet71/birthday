@@ -4,7 +4,7 @@
   grid-template-columns: minmax(0, 1fr) 20rem;
   align-items: stretch;
   gap: 1.5rem;
-  padding: 0 2rem 2rem;
+  padding-bottom: 2rem;
 }
 
 .card {
@@ -47,7 +47,7 @@
 @media (max-width: 64rem) {
   :host {
     grid-template-columns: minmax(0, 1fr);
-    padding: 0 1rem 6rem;
+    padding-bottom: 6rem;
   }
 
   .fab {
@@ -58,7 +58,7 @@
 @media (max-width: 48rem) {
   :host {
     gap: 1rem;
-    padding: 1rem 1rem 6rem;
+    padding-top: 1rem;
   }
 
   .calendar {

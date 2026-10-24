@@ -1,52 +1,21 @@
-import {
-  computed,
-  inject,
-  Injectable,
-  Signal,
-  signal,
-  WritableSignal,
-} from '@angular/core';
-import { Event as RouterEvent, NavigationEnd, Router } from '@angular/router';
-import { filter } from 'rxjs';
-import { toSignal } from '@angular/core/rxjs-interop';
-import { AppLayoutMenuItem, Breadcrumb } from '@birthday/web-layout-util';
+import { Injectable, signal, TemplateRef, WritableSignal } from '@angular/core';
+import { AppLayoutSearch } from '@birthday/web-layout-util';
+import { State } from '@birthday/web-shared-data-access';
 
 @Injectable({ providedIn: 'root' })
-export class AppLayoutState {
-  public readonly openedMenuItem: WritableSignal<AppLayoutMenuItem | null> =
+export class AppLayoutState extends State {
+  public readonly isSidenavExpanded: WritableSignal<boolean> = signal(true);
+  public readonly pageTitle: WritableSignal<string> = signal('');
+  public readonly search: WritableSignal<AppLayoutSearch | null> = signal(null);
+  public readonly searchQuery: WritableSignal<string> = signal('');
+  public readonly actions: WritableSignal<TemplateRef<unknown> | null> =
     signal(null);
-  public readonly isLeftMenuOpened: WritableSignal<boolean> = signal(true);
-  public readonly breadcrumbs: WritableSignal<Breadcrumb[]> = signal([]);
 
-  private readonly router: Router = inject(Router);
-  private readonly navigationEndEvent: Signal<NavigationEnd | undefined> =
-    toSignal(
-      this.router.events.pipe(
-        filter(
-          (event: RouterEvent): event is NavigationEnd =>
-            event instanceof NavigationEnd,
-        ),
-      ),
-    );
-
-  public isItemSelected(item: AppLayoutMenuItem): Signal<boolean> {
-    return computed(() => {
-      this.navigationEndEvent();
-
-      if (item.children) {
-        return item.children.some((child: AppLayoutMenuItem) =>
-          this.isItemSelected(child)(),
-        );
-      } else if (item.path) {
-        return this.router.isActive(item.path, {
-          matrixParams: 'ignored',
-          queryParams: 'ignored',
-          paths: 'subset',
-          fragment: 'ignored',
-        });
-      }
-
-      return false;
-    });
+  public override resetState(): void {
+    this.isSidenavExpanded.set(true);
+    this.pageTitle.set('');
+    this.search.set(null);
+    this.searchQuery.set('');
+    this.actions.set(null);
   }
 }

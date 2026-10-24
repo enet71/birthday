@@ -2,21 +2,12 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 @Component({
   selector: 'app-settings',
-  template: `
-    <h1 class="title">Settings</h1>
-    <p class="description">This page is coming soon.</p>
-  `,
+  template: `<p class="description">This page is coming soon.</p>`,
   styles: `
     :host {
       display: flex;
       flex-direction: column;
-      gap: 0.5rem;
-      padding: 0 2rem 2rem;
-    }
-
-    .title {
-      font-size: 1.375rem;
-      font-weight: 700;
+      padding-bottom: 2rem;
     }
 
     .description {

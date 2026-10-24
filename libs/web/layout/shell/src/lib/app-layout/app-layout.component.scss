@@ -1,0 +1,72 @@
+:host {
+  display: grid;
+  grid-template:
+    'sidenav header' auto
+    'sidenav main' minmax(0, 1fr)
+    / auto minmax(0, 1fr);
+  height: 100%;
+  overflow: hidden;
+}
+
+.sidenav {
+  grid-area: sidenav;
+}
+
+.header {
+  grid-area: header;
+  min-width: 0;
+}
+
+.main {
+  grid-area: main;
+  min-height: 0;
+  // Makes the main area the containing block of `position: fixed` page elements
+  // (for example a FAB), so they never overlap the top bar or the bottom navigation.
+  contain: layout;
+
+  &__scroll {
+    height: 100%;
+    overflow: auto;
+  }
+
+  &__content {
+    display: flex;
+    flex-direction: column;
+    min-height: 100%;
+  }
+}
+
+// Shared by the top bar and the page content so both stay aligned and pages need no side padding.
+.content-width {
+  width: 100%;
+  max-width: 100rem;
+  margin-inline: auto;
+  padding-inline: 2rem;
+}
+
+.bottom-nav {
+  display: none;
+  grid-area: bottom-nav;
+}
+
+@media (max-width: 48rem) {
+  :host {
+    grid-template:
+      'header' auto
+      'main' minmax(0, 1fr)
+      'bottom-nav' auto
+      / minmax(0, 1fr);
+  }
+
+  .sidenav {
+    display: none;
+  }
+
+  .content-width {
+    padding-inline: 1rem;
+  }
+
+  .bottom-nav {
+    display: block;
+  }
+}
