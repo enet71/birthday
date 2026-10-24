@@ -25,7 +25,8 @@ Apply these principles in proportion to the change. Repository architecture and 
 ## Code Style
 
 - Add comments only to genuinely non-obvious, complex, or tricky code. Do not comment code that is clear from its names and structure.
-- Prefer `async/await` over `.then()` chains for Promise-based code. Keep RxJS for streams and cancellation.
+- Use RxJS `Observable`s for asynchronous application code (HTTP, data services, State/Controller workflows, resolvers). Do not convert Observables to Promises with `firstValueFrom`, `lastValueFrom`, or `toPromise`, and do not wrap them in `async/await`. Return the Observable from controller methods, handle errors with `catchError`, update state in `tap`, and subscribe at the boundary that starts the workflow (with `takeUntilDestroyed` when the subscriber can be destroyed first). Resolvers and guards return the Observable directly.
+- Use Promises only where a framework API requires one (for example the Signal Forms `submit()` action): keep the `async` wrapper there thin and subscribe to the Observable inside it rather than awaiting a converted Observable. For genuinely Promise-based APIs, prefer `async/await` over `.then()` chains.
 
 ## Platform Layout
 

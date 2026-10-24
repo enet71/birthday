@@ -35,6 +35,9 @@
       ],
       "@birthday/web-birthdays-feature-calendar": [
         "./libs/web/birthdays/feature-calendar/src/index.ts"
+      ],
+      "@birthday/web-auth-data-access": [
+        "./libs/web/auth/data-access/src/index.ts"
       ]
     }
   },

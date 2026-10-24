@@ -1,8 +1,9 @@
 import { inject, Injectable } from '@angular/core';
-import { addMonths, startOfMonth } from 'date-fns';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { addMonths, addYears, startOfMonth } from 'date-fns';
 import { StateController } from '@birthday/web-shared-data-access';
 import { BirthdaysController } from '@birthday/web-birthdays-data-access';
-import { AddBirthdayFormModel } from '../types';
+import { AddBirthdayFormModel, CalendarView } from '../types';
 import { CalendarState } from './calendar.state';
 
 @Injectable()
@@ -11,12 +12,16 @@ export class CalendarController extends StateController {
   private readonly birthdaysController: BirthdaysController =
     inject(BirthdaysController);
 
-  public showPreviousMonth(): void {
-    this.calendarState.viewMonth.update((month: Date) => addMonths(month, -1));
+  public setView(view: CalendarView): void {
+    this.calendarState.view.set(view);
   }
 
-  public showNextMonth(): void {
-    this.calendarState.viewMonth.update((month: Date) => addMonths(month, 1));
+  public showPrevious(): void {
+    this.shiftViewMonth(-1);
+  }
+
+  public showNext(): void {
+    this.shiftViewMonth(1);
   }
 
   public showToday(): void {
@@ -32,7 +37,16 @@ export class CalendarController extends StateController {
   }
 
   public saveBirthday({ name, date }: AddBirthdayFormModel): void {
-    this.birthdaysController.addBirthday(name, date);
-    this.closeAddBirthdayDialog();
+    this.birthdaysController
+      .addBirthday(name, date)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe(() => this.closeAddBirthdayDialog());
+  }
+
+  private shiftViewMonth(step: number): void {
+    const shift: (date: Date, amount: number) => Date =
+      this.calendarState.view() === 'year' ? addYears : addMonths;
+
+    this.calendarState.viewMonth.update((month: Date) => shift(month, step));
   }
 }

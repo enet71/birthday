@@ -1,9 +1,6 @@
-export interface Birthday {
-  id: string;
-  name: string;
-  // Birth date in the `yyyy-MM-dd` format.
-  birthDate: string;
-}
+import { BirthdayDto } from '@birthday/shared-models';
+
+export type Birthday = BirthdayDto;
 
 export interface UpcomingBirthday {
   birthday: Birthday;

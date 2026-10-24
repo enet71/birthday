@@ -7,9 +7,8 @@ import {
 } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { MatIcon } from '@angular/material/icon';
-import { format } from 'date-fns';
 import { injectState, ReadonlyState } from '@birthday/web-shared-data-access';
-import { Birthday } from '@birthday/web-birthdays-util';
+import { getCalendarDayLabel } from '../../helpers';
 import { CalendarController, CalendarState } from '../../state';
 import { CalendarDay } from '../../types';
 import { BirthdayChipComponent } from '../birthday-chip';
@@ -40,17 +39,7 @@ export class CalendarMonthComponent {
   }
 
   protected getDayLabel(day: CalendarDay): string {
-    const date: string = format(day.date, 'MMMM d, y');
-
-    if (!day.birthdays.length) {
-      return `${date}. Add birthday`;
-    }
-
-    const names: string = day.birthdays
-      .map((birthday: Birthday) => birthday.name)
-      .join(', ');
-
-    return `${date}, birthdays: ${names}. Add birthday`;
+    return getCalendarDayLabel(day);
   }
 
   protected openAddBirthdayDialog(date: Date): void {
