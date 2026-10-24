@@ -1,12 +1,8 @@
-import { Injector } from '@angular/core';
-
 export interface AppLayoutMenuItem {
-  name: string;
-  path?: string;
+  label: string;
+  path: string;
   // Material Symbols icon name.
   icon: string;
-  description?: string;
-  children?: AppLayoutMenuItem[];
 }
 
 export interface AppLayoutLogo {
@@ -16,14 +12,13 @@ export interface AppLayoutLogo {
 }
 
 export interface AppLayoutConfig {
+  appName: string;
   homePath: string;
   logo: AppLayoutLogo;
   logoSmall: AppLayoutLogo;
   menu: AppLayoutMenuItem[];
 }
 
-export interface Breadcrumb {
-  id: string;
-  title: string;
-  navigate?: (injector: Injector) => void;
+export interface AppLayoutSearch {
+  placeholder: string;
 }

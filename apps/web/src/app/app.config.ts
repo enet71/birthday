@@ -5,7 +5,7 @@ import {
 } from '@angular/core';
 import { provideHttpClient, withFetch } from '@angular/common/http';
 import { MAT_ICON_DEFAULT_OPTIONS } from '@angular/material/icon';
-import { provideRouter } from '@angular/router';
+import { provideRouter, TitleStrategy } from '@angular/router';
 import {
   provideClientHydration,
   withEventReplay,
@@ -14,12 +14,14 @@ import { APP_LAYOUT_CONFIG } from '@birthday/web-layout-util';
 import { ENVIRONMENT_TOKEN } from '@birthday/web-shared-util';
 import { appRoutes } from './app.routes';
 import { APP_LAYOUT } from './app.constants';
+import { AppTitleStrategy } from './app-title.strategy';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideClientHydration(withEventReplay()),
     provideBrowserGlobalErrorListeners(),
     provideRouter(appRoutes),
+    { provide: TitleStrategy, useClass: AppTitleStrategy },
     provideHttpClient(withFetch()),
     {
       provide: MAT_ICON_DEFAULT_OPTIONS,

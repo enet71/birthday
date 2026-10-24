@@ -39,28 +39,8 @@
 }
 
 html {
-  font-size: 16px;
-}
-
-// Desktop small
-@media only screen and (1024px < width <= 1600px) {
-  html {
-    font-size: 14px;
-  }
-}
-
-// Tablet
-@media only screen and (768px < width <= 1024px) {
-  html {
-    font-size: 14px;
-  }
-}
-
-// Mobile
-@media only screen and (width <= 768px) {
-  html {
-    font-size: 16px;
-  }
+  // Percentage keeps the user's browser font size setting.
+  font-size: 100%;
 }
 
 html,

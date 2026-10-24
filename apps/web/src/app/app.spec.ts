@@ -22,7 +22,7 @@ describe('App', () => {
 
     expect(compiled.querySelector('ui-app-layout')).toBeTruthy();
     expect(
-      compiled.querySelectorAll('ui-app-layout-menu-left-item'),
+      compiled.querySelectorAll('ui-app-layout-sidenav a[mat-list-item]'),
     ).toHaveLength(APP_LAYOUT.menu.length);
   });
 });
