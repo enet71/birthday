@@ -1,0 +1,11 @@
+{
+  "name": "web-birthdays-util",
+  "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/web/birthdays/util/src",
+  "prefix": "ui",
+  "projectType": "library",
+  "tags": ["platform:web", "type:util"],
+  "targets": {
+    "typecheck": {}
+  }
+}

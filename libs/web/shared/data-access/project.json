@@ -1,0 +1,11 @@
+{
+  "name": "web-shared-data-access",
+  "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/web/shared/data-access/src",
+  "prefix": "app",
+  "projectType": "library",
+  "tags": ["platform:web", "type:data-access"],
+  "targets": {
+    "typecheck": {}
+  }
+}

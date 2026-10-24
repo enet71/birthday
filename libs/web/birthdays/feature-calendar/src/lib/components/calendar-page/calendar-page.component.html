@@ -1,0 +1,17 @@
+<section class="card calendar" aria-label="Calendar">
+  <ui-calendar-toolbar></ui-calendar-toolbar>
+  <ui-calendar-month class="calendar__month"></ui-calendar-month>
+</section>
+<aside class="card next-birthdays">
+  <ui-next-birthdays></ui-next-birthdays>
+</aside>
+<div class="fab">
+  <button
+    matFab
+    type="button"
+    aria-label="Add birthday"
+    (click)="openAddBirthdayDialog()"
+  >
+    <mat-icon>add</mat-icon>
+  </button>
+</div>

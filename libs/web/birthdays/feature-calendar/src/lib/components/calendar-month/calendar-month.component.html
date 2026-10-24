@@ -1,0 +1,32 @@
+<div class="weekdays" aria-hidden="true">
+  @for (weekday of weekdays(); track $index) {
+    <div class="weekday">
+      <span class="weekday__full">{{ weekday | date: 'EEE' }}</span>
+      <span class="weekday__short">{{ weekday | date: 'EEEEE' }}</span>
+    </div>
+  }
+</div>
+<div class="days">
+  @for (day of days(); track day.date.getTime()) {
+    <button
+      class="day"
+      type="button"
+      [class.day_outside]="!day.isCurrentMonth"
+      [class.day_today]="day.isToday"
+      [attr.aria-label]="getDayLabel(day)"
+      [attr.aria-current]="day.isToday ? 'date' : null"
+      (click)="openAddBirthdayDialog(day.date)"
+    >
+      <span class="day__number">{{ day.date | date: 'd' }}</span>
+      @if (day.birthdays.length) {
+        <span class="day__birthdays">
+          @for (birthday of day.birthdays; track birthday.id) {
+            <ui-birthday-chip [name]="birthday.name"></ui-birthday-chip>
+          }
+        </span>
+        <span class="day__dot"></span>
+      }
+      <mat-icon class="day__add" aria-hidden="true">add</mat-icon>
+    </button>
+  }
+</div>

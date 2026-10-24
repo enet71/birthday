@@ -1,0 +1,22 @@
+[mcp_servers.nx-mcp]
+command = "npx"
+args = [ "nx", "mcp" ]
+
+[features]
+multi_agent = true
+
+[agents]
+enabled = true
+max_concurrent_threads_per_session = 3
+
+[agents.ci-monitor-subagent]
+description = "CI helper for /monitor-ci. Fetches CI status, retrieves fix details, or updates self-healing fixes. Executes one MCP tool call and returns the result."
+config_file = "agents/ci-monitor-subagent.toml"
+
+[agents.code-reviewer]
+description = "Read-only reviewer of the current change set, a branch, or a PR in this repository. Finds defects, regressions, accessibility issues, and missing test coverage, and reports evidence-backed findings with severity and file:line. Use after implementing a change or when asked for a code review. Never edits files."
+config_file = "agents/code-reviewer.toml"
+
+[agents.unit-test-writer]
+description = "Writes, updates, and runs Vitest unit tests for Angular and NestJS code in this repository. Use after a feature or bug fix when the developer agreed to tests, or when asked to add, fix, or run unit specs for specific files or projects. Give it the files or behavior to cover. Not for e2e tests."
+config_file = "agents/unit-test-writer.toml"

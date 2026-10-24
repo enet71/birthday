@@ -1,0 +1,17 @@
+<div class="body">
+  <div class="title">
+    <ng-content select="[list-item=title]"></ng-content>
+  </div>
+  <div class="content">
+    <ng-content select="[list-item=content]"></ng-content>
+  </div>
+  <div class="actions">
+    <ng-content select="[list-item=actions]"></ng-content>
+  </div>
+  <div class="menu">
+    <ng-content select="[list-item=menu]"></ng-content>
+  </div>
+</div>
+<div class="buttons">
+  <ng-content select="[list-item=buttons]"></ng-content>
+</div>

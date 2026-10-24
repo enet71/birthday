@@ -1,0 +1,11 @@
+{
+  "name": "web-layout-ui",
+  "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/web/layout/ui/src",
+  "prefix": "ui",
+  "projectType": "library",
+  "tags": ["platform:web", "type:ui"],
+  "targets": {
+    "typecheck": {}
+  }
+}

@@ -47,3 +47,11 @@ Thumbs.db
 .angular
 
 __screenshots__/
+vitest.config.*.timestamp*
+.vitest
+
+# Agent skill links (npm run agents:link)
+.claude/skills
+
+# Temporary agent task files (task-execution skill)
+.ai/tasks/

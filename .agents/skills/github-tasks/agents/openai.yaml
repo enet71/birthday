@@ -1,0 +1,4 @@
+interface:
+  display_name: 'GitHub Tasks'
+  short_description: 'Create and manage GitHub issues through the agent'
+  default_prompt: 'Use $github-tasks to create, validate, list, inspect, or close repository tasks in GitHub Issues.'

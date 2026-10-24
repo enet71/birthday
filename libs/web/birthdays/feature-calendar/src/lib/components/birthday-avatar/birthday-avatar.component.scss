@@ -1,0 +1,14 @@
+:host {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  background: var(--birthday-on-tone);
+  color: var(--birthday-tone);
+  font-size: 0.875rem;
+  font-weight: 700;
+  line-height: 1;
+}

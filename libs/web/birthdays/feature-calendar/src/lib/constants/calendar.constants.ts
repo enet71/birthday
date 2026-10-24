@@ -1,0 +1,13 @@
+import { MatDateFormats } from '@angular/material/core';
+
+export const NEXT_BIRTHDAYS_LIMIT = 4;
+
+export const BIRTHDAY_DATE_FORMATS: MatDateFormats = {
+  parse: { dateInput: null },
+  display: {
+    dateInput: { year: 'numeric', month: 'long', day: 'numeric' },
+    monthYearLabel: { year: 'numeric', month: 'short' },
+    dateA11yLabel: { year: 'numeric', month: 'long', day: 'numeric' },
+    monthYearA11yLabel: { year: 'numeric', month: 'long' },
+  },
+};

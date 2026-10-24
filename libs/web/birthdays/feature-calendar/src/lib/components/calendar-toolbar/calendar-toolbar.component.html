@@ -1,0 +1,33 @@
+<div class="navigation">
+  <button
+    matIconButton
+    type="button"
+    aria-label="Previous month"
+    (click)="showPreviousMonth()"
+  >
+    <mat-icon>chevron_left</mat-icon>
+  </button>
+  <h1 class="title" aria-live="polite">{{ viewMonth() | date: 'MMMM y' }}</h1>
+  <button
+    matIconButton
+    type="button"
+    aria-label="Next month"
+    (click)="showNextMonth()"
+  >
+    <mat-icon>chevron_right</mat-icon>
+  </button>
+  <button class="today" matButton="outlined" type="button" (click)="showToday()">
+    Today
+  </button>
+</div>
+<div class="views">
+  <mat-button-toggle-group
+    value="month"
+    aria-label="Calendar view"
+    hideSingleSelectionIndicator
+  >
+    <mat-button-toggle value="month">Month</mat-button-toggle>
+    <mat-button-toggle value="week" disabled>Week</mat-button-toggle>
+    <mat-button-toggle value="day" disabled>Day</mat-button-toggle>
+  </mat-button-toggle-group>
+</div>

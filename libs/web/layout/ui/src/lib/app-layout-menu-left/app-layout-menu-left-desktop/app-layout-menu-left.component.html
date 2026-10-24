@@ -1,0 +1,38 @@
+<button
+  class="toggle"
+  type="button"
+  [attr.aria-label]="isOpened() ? 'Collapse menu' : 'Expand menu'"
+  (click)="toggleOpen()"
+>
+  <mat-icon class="toggle__icon">{{
+    isOpened() ? 'chevron_left' : 'chevron_right'
+  }}</mat-icon>
+</button>
+<div class="header">
+  @if (isOpened()) {
+    <img
+      priority
+      class="header__logo"
+      [height]="config.logo.height"
+      [width]="config.logo.width"
+      [ngSrc]="config.logo.src"
+    />
+  } @else {
+    <img
+      priority
+      class="header__logo"
+      [height]="config.logoSmall.height"
+      [width]="config.logoSmall.width"
+      [ngSrc]="config.logoSmall.src"
+    />
+  }
+</div>
+<div class="menu">
+  <div class="items">
+    @for (item of config.menu; track $index) {
+      <ui-app-layout-menu-left-item
+        [item]="item"
+      ></ui-app-layout-menu-left-item>
+    }
+  </div>
+</div>

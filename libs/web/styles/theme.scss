@@ -1,0 +1,25 @@
+@use '@angular/material' as mat;
+
+html {
+  color-scheme: light;
+
+  @include mat.theme(
+    (
+      color: (
+        primary: mat.$azure-palette,
+        tertiary: mat.$violet-palette,
+      ),
+      typography: 'Nunito Sans',
+      density: 0,
+    )
+  );
+}
+
+.notification_error {
+  @include mat.snack-bar-overrides(
+    (
+      container-color: var(--mat-sys-error),
+      supporting-text-color: var(--mat-sys-on-error),
+    )
+  );
+}

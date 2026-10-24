@@ -4,7 +4,7 @@
   "projectType": "application",
   "prefix": "app",
   "sourceRoot": "apps/web/src",
-  "tags": [],
+  "tags": ["platform:web", "type:app"],
   "targets": {
     "build": {
       "executor": "@angular/build:application",
@@ -19,6 +19,11 @@
           {
             "glob": "**/*",
             "input": "apps/web/public"
+          },
+          {
+            "glob": "**/*",
+            "input": "libs/web/assets",
+            "output": "assets"
           }
         ],
         "styles": ["apps/web/src/styles.scss"],
@@ -29,6 +34,9 @@
         "outputMode": "server",
         "security": {
           "allowedHosts": []
+        },
+        "stylePreprocessorOptions": {
+          "includePaths": ["."]
         }
       },
       "configurations": {
@@ -41,8 +49,8 @@
             },
             {
               "type": "anyComponentStyle",
-              "maximumWarning": "4kb",
-              "maximumError": "8kb"
+              "maximumWarning": "50kb",
+              "maximumError": "100kb"
             }
           ],
           "outputHashing": "all"
@@ -52,7 +60,13 @@
           "extractLicenses": false,
           "sourceMap": true
         }
-      }
+      },
+      "inputs": [
+        "production",
+        "^production",
+        "{workspaceRoot}/libs/web/assets/**/*",
+        "{workspaceRoot}/libs/web/styles/**/*"
+      ]
     },
     "serve": {
       "continuous": true,
@@ -68,6 +82,10 @@
         "development": {
           "buildTarget": "web:build:development"
         }
+      },
+      "dependsOn": ["api:serve"],
+      "options": {
+        "proxyConfig": "apps/web/proxy.conf.json"
       }
     },
     "test": {

@@ -1,0 +1,26 @@
+<div class="header">
+  <h2 class="header__title">Next Birthdays</h2>
+  <a class="header__link" routerLink="/people">View all</a>
+</div>
+@if (nextBirthdays().length) {
+  <ul class="list">
+    @for (item of nextBirthdays(); track item.birthday.id) {
+      <li class="item">
+        <ui-birthday-avatar
+          class="item__avatar"
+          [name]="item.birthday.name"
+        ></ui-birthday-avatar>
+        <div class="item__body">
+          <span class="item__name">{{ item.birthday.name }}</span>
+          <span class="item__date">
+            {{ item.date | date: 'MMM d' }} ·
+            {{ getDaysUntilLabel(item.daysUntil) }}
+          </span>
+        </div>
+      </li>
+    }
+  </ul>
+} @else {
+  <p class="empty">No birthdays yet</p>
+}
+<mat-icon class="decoration" aria-hidden="true">celebration</mat-icon>
