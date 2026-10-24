@@ -1,0 +1,90 @@
+:host {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  min-height: 100%;
+  overflow: hidden;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+
+  &__title {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--mat-sys-on-surface);
+  }
+
+  &__link {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--mat-sys-primary);
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 0;
+  list-style: none;
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+
+  &__avatar {
+    width: 2.5rem;
+    height: 2.5rem;
+    font-size: 1rem;
+  }
+
+  &__body {
+    display: flex;
+    flex-direction: column;
+    gap: 0.125rem;
+    min-width: 0;
+  }
+
+  &__name {
+    font-size: 0.875rem;
+    font-weight: 700;
+    color: var(--mat-sys-on-surface);
+  }
+
+  &__date {
+    font-size: 0.75rem;
+    color: var(--mat-sys-on-surface-variant);
+  }
+}
+
+.empty {
+  font-size: 0.875rem;
+  color: var(--mat-sys-on-surface-variant);
+}
+
+.decoration {
+  align-self: flex-end;
+  margin-top: auto;
+  width: 8rem;
+  height: 8rem;
+  font-size: 8rem;
+  color: color-mix(in srgb, var(--mat-sys-tertiary) 35%, transparent);
+}
+
+@media (max-width: 64rem) {
+  .decoration {
+    display: none;
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "name": "web-shared-ui",
+  "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/web/shared/ui/src",
+  "prefix": "ui",
+  "projectType": "library",
+  "tags": ["platform:web", "type:ui"],
+  "targets": {
+    "typecheck": {}
+  }
+}

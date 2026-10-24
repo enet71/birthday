@@ -1,0 +1,44 @@
+:host {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.navigation {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.title {
+  min-width: 10rem;
+  text-align: center;
+  font-size: 1.375rem;
+  font-weight: 700;
+  color: var(--mat-sys-on-surface);
+}
+
+.today {
+  margin-left: 0.5rem;
+}
+
+@media (max-width: 48rem) {
+  :host {
+    justify-content: center;
+  }
+
+  .title {
+    min-width: auto;
+    font-size: 1.125rem;
+  }
+
+  .today {
+    margin-left: 0;
+  }
+
+  .views {
+    display: none;
+  }
+}

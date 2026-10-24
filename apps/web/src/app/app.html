@@ -1,2 +1,9 @@
-<app-nx-welcome></app-nx-welcome>
-<router-outlet></router-outlet>
+@if (isMobile) {
+<ui-app-layout-mobile>
+  <router-outlet></router-outlet>
+</ui-app-layout-mobile>
+} @else {
+<ui-app-layout>
+  <router-outlet></router-outlet>
+</ui-app-layout>
+}

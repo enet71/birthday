@@ -1,0 +1,14 @@
+@for (breadcrumb of breadcrumbs(); track $index; let last = $last) {
+  @if (last) {
+    <div class="item" [class.item_last]="last">{{ breadcrumb.title }}</div>
+  } @else {
+    <div
+      class="item"
+      [class.item_link]="breadcrumb.navigate"
+      (click)="navigate(breadcrumb)"
+    >
+      {{ breadcrumb.title }}
+    </div>
+    <mat-icon class="arrow">arrow_forward_ios</mat-icon>
+  }
+}

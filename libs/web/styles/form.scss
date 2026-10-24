@@ -1,0 +1,87 @@
+.button-toggle-group {
+  &_vertical {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  &_horizontal {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+
+  &_width-100 {
+    width: 100%;
+
+    mat-button-toggle {
+      flex: 1;
+    }
+  }
+}
+
+.ui-form {
+  width: 100%;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+
+  &__header {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+  }
+
+  &__row {
+    display: flex;
+    gap: 2rem;
+    margin-bottom: 2rem;
+  }
+
+  &__col {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    flex: 1;
+  }
+
+  &__group {
+    width: 100%;
+    padding: 1rem 1rem 2rem 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  &__separator {
+    width: 100%;
+    height: 1px;
+    background: var(--mat-sys-outline-variant);
+    margin-bottom: 2rem;
+  }
+
+  &__title {
+    font-size: 1.125rem;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 155%;
+  }
+
+  &__description {
+    color: var(--mat-sys-primary);
+    font-size: 0.875rem;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 140%;
+  }
+
+  &__label {
+    color: var(--mat-sys-primary);
+    font-size: 0.875rem;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 140%;
+  }
+}

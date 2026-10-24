@@ -1,0 +1,36 @@
+:host {
+  display: flex;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  flex-direction: column;
+
+  .header {
+    display: flex;
+    align-items: center;
+    height: 3.75rem;
+    background: color-mix(
+      in srgb,
+      var(--mat-sys-surface-container-lowest) 72%,
+      transparent
+    );
+    backdrop-filter: blur(1rem);
+    flex-shrink: 0;
+    padding: 0 1rem;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 1;
+
+    &__logo {
+      height: 2.25rem;
+    }
+  }
+
+  .body {
+    position: relative;
+    height: 100%;
+    width: 100%;
+    overflow: auto;
+  }
+}

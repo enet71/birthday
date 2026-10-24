@@ -1,0 +1,44 @@
+:host {
+  display: block;
+  overflow: hidden;
+}
+
+.expandable-text {
+  position: relative;
+  display: flex;
+  align-items: baseline;
+
+  &_expanded {
+    display: block;
+  }
+
+  &__content {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
+    &_expanded {
+      white-space: normal;
+    }
+  }
+
+  &__toggle {
+    flex: 0 0 auto;
+    margin-left: 0.25rem;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: var(--mat-sys-primary);
+    font: inherit;
+    font-weight: 700;
+    cursor: pointer;
+  }
+
+  &__measure {
+    position: absolute;
+    width: 100%;
+    visibility: hidden;
+    white-space: nowrap;
+  }
+}

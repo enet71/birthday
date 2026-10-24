@@ -1,0 +1,21 @@
+:host {
+  display: flex;
+  align-items: center;
+  background: var(--mat-sys-surface);
+  border-top-left-radius: 0.3125rem;
+  border-top-right-radius: 0.3125rem;
+  padding: 1rem 2rem;
+  border-bottom: 0.0625rem solid var(--mat-sys-outline-variant);
+}
+
+.header {
+  &__title {
+    flex: 1;
+    font-size: 1.375rem;
+    font-weight: 700;
+  }
+
+  &__buttons {
+    display: flex;
+  }
+}

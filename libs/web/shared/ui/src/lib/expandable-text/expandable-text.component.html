@@ -1,0 +1,21 @@
+<span class="expandable-text" [class.expandable-text_expanded]="isExpanded()">
+  <span
+    class="expandable-text__content"
+    [class.expandable-text__content_expanded]="isExpanded()"
+  >
+    {{ text() }}
+  </span>
+  @if (showToggle()) {
+    <button
+      class="expandable-text__toggle"
+      type="button"
+      [attr.aria-expanded]="isExpanded()"
+      (click)="toggle()"
+    >
+      {{ isExpanded() ? 'Show less' : 'Show more' }}
+    </button>
+  }
+  <span #textMeasure class="expandable-text__measure" aria-hidden="true">{{
+    text()
+  }}</span>
+</span>
