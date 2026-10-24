@@ -88,8 +88,9 @@ export class AddBirthdayDialogComponent {
 
   protected save(event: Event): void {
     event.preventDefault();
-    submit(this.birthdayForm, async () => {
-      this.calendarController.saveBirthday(this.model());
-    });
+    // `submit` requires a Promise-returning action; saving itself stays an Observable.
+    submit(this.birthdayForm, async () =>
+      this.calendarController.saveBirthday(this.model()),
+    );
   }
 }

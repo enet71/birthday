@@ -1,7 +1,12 @@
 import { TestBed } from '@angular/core/testing';
-import { UpcomingBirthday } from '@birthday/web-birthdays-util';
-import { BIRTHDAYS_MOCK } from '../constants';
+import { Birthday, UpcomingBirthday } from '@birthday/web-birthdays-util';
 import { BirthdaysState } from './birthdays.state';
+
+const BIRTHDAYS: Birthday[] = [
+  { id: 'emma', name: 'Emma', birthDate: '1994-10-06' },
+  { id: 'sarah', name: 'Sarah', birthDate: '1990-10-26' },
+  { id: 'alex', name: 'Alex', birthDate: '1992-11-05' },
+];
 
 describe('BirthdaysState', () => {
   let state: BirthdaysState;
@@ -23,20 +28,22 @@ describe('BirthdaysState', () => {
     expect(state.today).toEqual(new Date(2026, 9, 23));
   });
 
+  it('starts without birthdays', () => {
+    expect(state.birthdays()).toEqual([]);
+    expect(state.upcomingBirthdays()).toEqual([]);
+  });
+
   it('derives upcoming birthdays from the birthdays and today', () => {
+    state.birthdays.set(BIRTHDAYS);
+
     const upcoming: [string, number][] = state
       .upcomingBirthdays()
       .map((item: UpcomingBirthday) => [item.birthday.id, item.daysUntil]);
 
     expect(upcoming).toEqual([
       ['sarah', 3],
-      ['sophie', 6],
-      ['mom', 7],
       ['alex', 13],
-      ['max', 26],
       ['emma', 348],
-      ['dad', 354],
-      ['olivia', 359],
     ]);
   });
 
@@ -54,12 +61,12 @@ describe('BirthdaysState', () => {
     ]);
   });
 
-  it('restores the mock birthdays on reset', () => {
-    state.birthdays.set([]);
+  it('clears the birthdays on reset', () => {
+    state.birthdays.set(BIRTHDAYS);
 
     state.resetState();
 
-    expect(state.birthdays()).toEqual(BIRTHDAYS_MOCK);
-    expect(state.upcomingBirthdays()).toHaveLength(BIRTHDAYS_MOCK.length);
+    expect(state.birthdays()).toEqual([]);
+    expect(state.upcomingBirthdays()).toEqual([]);
   });
 });

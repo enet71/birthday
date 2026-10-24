@@ -1,6 +1,10 @@
 import { TestBed } from '@angular/core/testing';
+import { NotificationsService } from '@birthday/web-shared-util';
 import { Birthday, UpcomingBirthday } from '@birthday/web-birthdays-util';
-import { BIRTHDAYS_MOCK } from '../constants';
+import {
+  BirthdaysDataService,
+  BirthdaysLocalStorageService,
+} from '../services';
 import { BirthdaysController } from './birthdays.controller';
 import { BirthdaysState } from './birthdays.state';
 
@@ -12,9 +16,21 @@ describe('BirthdaysController', () => {
     vi.useFakeTimers({ toFake: ['Date'] });
     // State computes `today` at construction, so the time is set before injecting it.
     vi.setSystemTime(new Date(2026, 9, 23, 14, 30));
+    localStorage.clear();
 
     TestBed.configureTestingModule({
-      providers: [BirthdaysState, BirthdaysController],
+      providers: [
+        BirthdaysState,
+        BirthdaysController,
+        {
+          provide: BirthdaysDataService,
+          useExisting: BirthdaysLocalStorageService,
+        },
+        {
+          provide: NotificationsService,
+          useValue: { createErrorNotification: vi.fn() },
+        },
+      ],
     });
     controller = TestBed.inject(BirthdaysController);
     state = TestBed.inject(BirthdaysState);
@@ -22,27 +38,23 @@ describe('BirthdaysController', () => {
 
   afterEach(() => {
     vi.useRealTimers();
+    localStorage.clear();
   });
 
   describe('addBirthday', () => {
     it('appends a birthday with a trimmed name and a yyyy-MM-dd birth date', () => {
-      controller.addBirthday('  Liam  ', new Date(1999, 9, 25, 18, 45));
+      controller
+        .addBirthday('  Liam  ', new Date(1999, 9, 25, 18, 45))
+        .subscribe();
 
-      const birthdays: Birthday[] = state.birthdays();
-      const added: Birthday = birthdays[birthdays.length - 1];
-
-      expect(birthdays).toHaveLength(BIRTHDAYS_MOCK.length + 1);
-      expect(birthdays.slice(0, -1)).toEqual(BIRTHDAYS_MOCK);
-      expect(added).toEqual({
-        id: expect.any(String),
-        name: 'Liam',
-        birthDate: '1999-10-25',
-      });
+      expect(state.birthdays()).toEqual([
+        { id: expect.any(String), name: 'Liam', birthDate: '1999-10-25' },
+      ]);
     });
 
     it('gives every added birthday a unique id', () => {
-      controller.addBirthday('Liam', new Date(1999, 9, 25));
-      controller.addBirthday('Liam', new Date(1999, 9, 25));
+      controller.addBirthday('Liam', new Date(1999, 9, 25)).subscribe();
+      controller.addBirthday('Liam', new Date(1999, 9, 25)).subscribe();
 
       const ids: string[] = state
         .birthdays()
@@ -52,7 +64,7 @@ describe('BirthdaysController', () => {
     });
 
     it('updates upcoming birthdays with the added birthday', () => {
-      controller.addBirthday('Liam', new Date(1999, 9, 25));
+      controller.addBirthday('Liam', new Date(1999, 9, 25)).subscribe();
 
       const first: UpcomingBirthday = state.upcomingBirthdays()[0];
 
@@ -60,30 +72,13 @@ describe('BirthdaysController', () => {
       expect(first.date).toEqual(new Date(2026, 9, 25));
       expect(first.daysUntil).toBe(2);
     });
-
-    it('does not change the mock birthdays', () => {
-      const mockIds: string[] = BIRTHDAYS_MOCK.map(
-        (birthday: Birthday) => birthday.id,
-      );
-
-      controller.addBirthday('Liam', new Date(1999, 9, 25));
-
-      expect(BIRTHDAYS_MOCK.map((birthday: Birthday) => birthday.id)).toEqual(
-        mockIds,
-      );
-    });
   });
 
-  it('restores the mock birthdays when the state is reset after adding', () => {
-    controller.addBirthday('Liam', new Date(1999, 9, 25));
+  it('clears the birthdays when the state is reset after adding', () => {
+    controller.addBirthday('Liam', new Date(1999, 9, 25)).subscribe();
 
     state.resetState();
 
-    expect(state.birthdays()).toEqual(BIRTHDAYS_MOCK);
-    expect(
-      state
-        .upcomingBirthdays()
-        .some((item: UpcomingBirthday) => item.birthday.name === 'Liam'),
-    ).toBe(false);
+    expect(state.birthdays()).toEqual([]);
   });
 });

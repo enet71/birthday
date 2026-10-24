@@ -1,0 +1,30 @@
+@for (month of months(); track month.date.getTime()) {
+  <section class="month" [attr.aria-label]="month.date | date: 'MMMM y'">
+    <h3 class="month__title">{{ month.date | date: 'MMMM' }}</h3>
+    <div class="month__grid">
+      @for (weekday of weekdays(); track $index) {
+        <span class="weekday" aria-hidden="true">
+          {{ weekday | date: 'EEEEEE' }}
+        </span>
+      }
+      @for (day of month.days; track day.date.getTime()) {
+        @if (day.isCurrentMonth) {
+          <button
+            class="day"
+            type="button"
+            [class.day_birthday]="day.birthdays.length"
+            [class.day_today]="day.isToday"
+            [matTooltip]="getBirthdayNames(day)"
+            [attr.aria-label]="getDayLabel(day)"
+            [attr.aria-current]="day.isToday ? 'date' : null"
+            (click)="openAddBirthdayDialog(day.date)"
+          >
+            {{ day.date | date: 'd' }}
+          </button>
+        } @else {
+          <span aria-hidden="true"></span>
+        }
+      }
+    </div>
+  </section>
+}
