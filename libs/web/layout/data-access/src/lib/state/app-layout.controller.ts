@@ -1,60 +1,40 @@
-import {
-  afterNextRender,
-  inject,
-  Injectable,
-  TemplateRef,
-} from '@angular/core';
+import { effect, inject, Injectable, TemplateRef } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import {
-  ActivatedRouteSnapshot,
-  Event as RouterEvent,
-  NavigationEnd,
-  Router,
-} from '@angular/router';
+import { ActivatedRouteSnapshot, Event as RouterEvent, NavigationEnd, Router } from '@angular/router';
 import { filter } from 'rxjs';
-import {
-  APP_LAYOUT_SEARCH_DATA_KEY,
-  AppLayoutSearch,
-} from '@birthday/web-layout-util';
+import { APP_LAYOUT_SEARCH_DATA_KEY, AppLayoutSearch } from '@birthday/web-layout-util';
 import { StateController } from '@birthday/web-shared-data-access';
-import {
-  BrowserStorageService,
-  LocalStorageKey,
-} from '@birthday/web-shared-util';
+import { BrowserStorageService, LocalStorageKey, PlatformService } from '@birthday/web-shared-util';
 import { AppLayoutState } from './app-layout.state';
 
 @Injectable({ providedIn: 'root' })
 export class AppLayoutController extends StateController {
   private readonly appLayoutState: AppLayoutState = inject(AppLayoutState);
   private readonly router: Router = inject(Router);
-  private readonly browserStorage: BrowserStorageService = inject(
-    BrowserStorageService,
-  );
+  private readonly platform: PlatformService = inject(PlatformService);
+  private readonly browserStorage: BrowserStorageService = inject(BrowserStorageService);
 
   constructor() {
     super();
 
     this.router.events
       .pipe(
-        filter(
-          (event: RouterEvent): event is NavigationEnd =>
-            event instanceof NavigationEnd,
-        ),
+        filter((event: RouterEvent): event is NavigationEnd => event instanceof NavigationEnd),
         takeUntilDestroyed(this.destroyRef),
       )
       .subscribe(() => this.applyRoute());
 
-    // The server has no stored preference, so it is applied only after hydration
-    // to keep the client's first render identical to the server HTML.
-    afterNextRender(() => this.restoreSidenav());
+    effect(() => {
+      const isExpanded: boolean = this.appLayoutState.isSidenavExpanded();
+
+      if (this.platform.isRendered()) {
+        this.saveSidenav(isExpanded);
+      }
+    });
   }
 
   public toggleSidenav(): void {
     this.appLayoutState.isSidenavExpanded.update((value: boolean) => !value);
-    this.browserStorage.setLocalItem(
-      LocalStorageKey.LAYOUT_MENU_OPENED,
-      String(this.appLayoutState.isSidenavExpanded()),
-    );
   }
 
   public setSearchQuery(query: string): void {
@@ -75,8 +55,7 @@ export class AppLayoutController extends StateController {
   private applyRoute(): void {
     let title = '';
     let search: AppLayoutSearch | null = null;
-    let snapshot: ActivatedRouteSnapshot | null =
-      this.router.routerState.snapshot.root;
+    let snapshot: ActivatedRouteSnapshot | null = this.router.routerState.snapshot.root;
 
     while (snapshot) {
       title = snapshot.title ?? title;
@@ -89,10 +68,7 @@ export class AppLayoutController extends StateController {
     this.appLayoutState.searchQuery.set('');
   }
 
-  private restoreSidenav(): void {
-    this.appLayoutState.isSidenavExpanded.set(
-      this.browserStorage.getLocalItem(LocalStorageKey.LAYOUT_MENU_OPENED) !==
-        'false',
-    );
+  private saveSidenav(isExpanded: boolean): void {
+    this.browserStorage.setLocalItem(LocalStorageKey.LAYOUT_MENU_OPENED, String(isExpanded));
   }
 }

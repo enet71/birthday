@@ -72,6 +72,7 @@ For both, add `// eslint-disable-next-line local/no-direct-state-inject -- <reas
 - Write mutation results into the State read resource with `set()`, followed by `reload()` if a load was in flight (based on the State's derived signal) or refresh it with `reload()`, and report load errors from a constructor `effect` on the resource's `error()`. See `code-best-practices` → Server Communication.
 - Keep long-lived subscriptions bounded with the controller lifecycle, for example `takeUntilDestroyed(this.destroyRef)`.
 - Keep route-default navigation and reactive workflow effects in the relevant route-scoped Controller constructor. The component remains a rendering surface.
+- Persist a State signal (to `localStorage`, a cookie, a URL) from a Controller `effect` on that signal, not by writing to storage inside each command after `set()`/`update()`. Commands only change the signal, so every write path is persisted. Declare the effect in the Controller constructor. Restore a browser-only stored value in State as a `linkedSignal` that depends on the app-wide `PlatformService.isRendered()` signal from `@birthday/web-shared-util`: it returns the default before the first client render (and on the server, keeping hydration consistent) and the stored value after it. Guard the saving effect with the same `isRendered()`, so its first run does not overwrite the stored value with the default. Do not restore through `afterNextRender` calls and do not add a local "rendered" flag to a Controller or State.
 - Guard missing route or state values before using them. Prefer an early return to a non-null assertion when the value is optional.
 - Keep helper implementation private; expose only actions that components, guards, resolvers, or other owning workflows need.
 
@@ -91,6 +92,7 @@ Use a resolver only for data that must be loaded before the route activates; loa
 - Does state scope match its data lifetime: shared domain, feature route, or nested page?
 - Is each side effect owned by Controller or route/shell code rather than State or a passive component?
 - Are derived values expressed with `computed` or `linkedSignal` instead of synchronization effects?
+- Is a persisted State signal saved from a Controller `effect` rather than written to storage inside the commands that change it?
 - Are server reads a State `rxResource` with derived signals, mutations Controller Observable workflows that write into that resource, and is `HttpClient` used only inside an `*ApiService`?
 - Are route providers, resolvers, dialog wiring, and cleanup colocated with the feature route that owns the screens?
 - Are public exports kept at the nearest library boundary?
