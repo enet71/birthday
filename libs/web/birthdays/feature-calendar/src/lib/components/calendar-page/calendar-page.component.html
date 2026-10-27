@@ -1,4 +1,7 @@
-<section class="card calendar" aria-label="Calendar">
+<section class="card calendar" aria-label="Calendar" [attr.aria-busy]="isLoading()">
+  @if (isLoading()) {
+    <mat-progress-bar class="calendar__progress" mode="indeterminate" aria-label="Loading birthdays"></mat-progress-bar>
+  }
   <ui-calendar-toolbar></ui-calendar-toolbar>
   @if (view() === 'year') {
     <ui-calendar-year></ui-calendar-year>
@@ -10,12 +13,7 @@
   <ui-next-birthdays></ui-next-birthdays>
 </aside>
 <div class="fab">
-  <button
-    matFab
-    type="button"
-    aria-label="Add birthday"
-    (click)="openAddBirthdayDialog()"
-  >
+  <button matFab type="button" aria-label="Add birthday" (click)="openAddBirthdayDialog()">
     <mat-icon>add</mat-icon>
   </button>
 </div>

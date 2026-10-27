@@ -1,5 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { Birthday, UpcomingBirthday } from '@birthday/web-birthdays-util';
+import { BirthdaysDataService, BirthdaysLocalStorageService } from '../services';
 import { BirthdaysState } from './birthdays.state';
 
 const BIRTHDAYS: Birthday[] = [
@@ -16,7 +17,15 @@ describe('BirthdaysState', () => {
     // State computes `today` at construction, so the time is set before injecting it.
     vi.setSystemTime(new Date(2026, 9, 23, 14, 30));
 
-    TestBed.configureTestingModule({ providers: [BirthdaysState] });
+    TestBed.configureTestingModule({
+      providers: [
+        BirthdaysState,
+        {
+          provide: BirthdaysDataService,
+          useExisting: BirthdaysLocalStorageService,
+        },
+      ],
+    });
     state = TestBed.inject(BirthdaysState);
   });
 
@@ -34,11 +43,9 @@ describe('BirthdaysState', () => {
   });
 
   it('derives upcoming birthdays from the birthdays and today', () => {
-    state.birthdays.set(BIRTHDAYS);
+    state.birthdaysResource.set(BIRTHDAYS);
 
-    const upcoming: [string, number][] = state
-      .upcomingBirthdays()
-      .map((item: UpcomingBirthday) => [item.birthday.id, item.daysUntil]);
+    const upcoming: [string, number][] = state.upcomingBirthdays().map((item: UpcomingBirthday) => [item.birthday.id, item.daysUntil]);
 
     expect(upcoming).toEqual([
       ['sarah', 3],
@@ -48,9 +55,7 @@ describe('BirthdaysState', () => {
   });
 
   it('recomputes upcoming birthdays when the birthdays change', () => {
-    state.birthdays.set([
-      { id: 'today', name: 'Today', birthDate: '2000-10-23' },
-    ]);
+    state.birthdaysResource.set([{ id: 'today', name: 'Today', birthDate: '2000-10-23' }]);
 
     expect(state.upcomingBirthdays()).toEqual([
       {
@@ -62,7 +67,7 @@ describe('BirthdaysState', () => {
   });
 
   it('clears the birthdays on reset', () => {
-    state.birthdays.set(BIRTHDAYS);
+    state.birthdaysResource.set(BIRTHDAYS);
 
     state.resetState();
 

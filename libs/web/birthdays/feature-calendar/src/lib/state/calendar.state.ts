@@ -1,50 +1,22 @@
-import {
-  computed,
-  Injectable,
-  Signal,
-  signal,
-  WritableSignal,
-} from '@angular/core';
-import {
-  eachMonthOfInterval,
-  endOfYear,
-  isSameDay,
-  isSameMonth,
-  startOfMonth,
-  startOfYear,
-} from 'date-fns';
+import { computed, Injectable, Signal, signal, WritableSignal } from '@angular/core';
+import { eachMonthOfInterval, endOfYear, isSameDay, isSameMonth, startOfMonth, startOfYear } from 'date-fns';
 import { injectState, ReadonlyState, State } from '@birthday/web-shared-data-access';
 import { BirthdaysState } from '@birthday/web-birthdays-data-access';
-import {
-  Birthday,
-  getMonthGridDays,
-  isBirthdayOn,
-  UpcomingBirthday,
-} from '@birthday/web-birthdays-util';
+import { Birthday, getMonthGridDays, isBirthdayOn, UpcomingBirthday } from '@birthday/web-birthdays-util';
 import { NEXT_BIRTHDAYS_LIMIT } from '../constants';
-import {
-  AddBirthdayDialogData,
-  CalendarDay,
-  CalendarMonth,
-  CalendarView,
-} from '../types';
+import { AddBirthdayDialogData, CalendarDay, CalendarMonth, CalendarView } from '../types';
 
 @Injectable()
 export class CalendarState extends State {
-  private readonly birthdaysState: ReadonlyState<BirthdaysState> =
-    injectState(BirthdaysState);
+  private readonly birthdaysState: ReadonlyState<BirthdaysState> = injectState(BirthdaysState);
 
   public readonly today: Date = this.birthdaysState.today;
+  public readonly isLoading: Signal<boolean> = this.birthdaysState.isLoading;
   public readonly view: WritableSignal<CalendarView> = signal('month');
-  public readonly viewMonth: WritableSignal<Date> = signal(
-    startOfMonth(this.today),
-  );
-  public readonly addBirthdayDialog: WritableSignal<AddBirthdayDialogData | null> =
-    signal(null);
+  public readonly viewMonth: WritableSignal<Date> = signal(startOfMonth(this.today));
+  public readonly addBirthdayDialog: WritableSignal<AddBirthdayDialogData | null> = signal(null);
 
-  public readonly days: Signal<CalendarDay[]> = computed(() =>
-    this.getMonthDays(this.viewMonth(), this.birthdaysState.birthdays()),
-  );
+  public readonly days: Signal<CalendarDay[]> = computed(() => this.getMonthDays(this.viewMonth(), this.birthdaysState.birthdays()));
   public readonly yearMonths: Signal<CalendarMonth[]> = computed(() => {
     const month: Date = this.viewMonth();
     const birthdays: Birthday[] = this.birthdaysState.birthdays();
@@ -59,9 +31,7 @@ export class CalendarState extends State {
       }),
     );
   });
-  public readonly nextBirthdays: Signal<UpcomingBirthday[]> = computed(() =>
-    this.birthdaysState.upcomingBirthdays().slice(0, NEXT_BIRTHDAYS_LIMIT),
-  );
+  public readonly nextBirthdays: Signal<UpcomingBirthday[]> = computed(() => this.birthdaysState.upcomingBirthdays().slice(0, NEXT_BIRTHDAYS_LIMIT));
 
   public override resetState(): void {
     this.view.set('month');
@@ -75,9 +45,7 @@ export class CalendarState extends State {
         date,
         isCurrentMonth: isSameMonth(date, month),
         isToday: isSameDay(date, this.today),
-        birthdays: birthdays.filter((birthday: Birthday) =>
-          isBirthdayOn(birthday.birthDate, date),
-        ),
+        birthdays: birthdays.filter((birthday: Birthday) => isBirthdayOn(birthday.birthDate, date)),
       }),
     );
   }

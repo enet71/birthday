@@ -28,6 +28,23 @@ Apply these principles in proportion to the change. Repository architecture and 
 - Use RxJS `Observable`s for asynchronous application code (HTTP, data services, State/Controller workflows, resolvers). Do not convert Observables to Promises with `firstValueFrom`, `lastValueFrom`, or `toPromise`, and do not wrap them in `async/await`. Return the Observable from controller methods, handle errors with `catchError`, update state in `tap`, and subscribe at the boundary that starts the workflow (with `takeUntilDestroyed` when the subscriber can be destroyed first). Resolvers and guards return the Observable directly.
 - Use Promises only where a framework API requires one (for example the Signal Forms `submit()` action): keep the `async` wrapper there thin and subscribe to the Observable inside it rather than awaiting a converted Observable. For genuinely Promise-based APIs, prefer `async/await` over `.then()` chains.
 
+## Server Communication
+
+Server work has one approach per layer: Observables at the transport, signals toward the UI. Do not mix approaches inside a layer.
+
+| Layer                                       | Approach                                                                                                       |
+| ------------------------------------------- | -------------------------------------------------------------------------------------------------------------- |
+| Domain `*ApiService` extending `ApiService` | The only place that uses `HttpClient`. Every method returns an RxJS `Observable`.                              |
+| State                                       | Declares server reads as `rxResource` and derives signals from them. No imperative API calls or subscriptions. |
+| Controller                                  | Owns mutations as Observable workflows and writes their results into the State resource.                       |
+| Component, template                         | Reads State signals only. Never injects `HttpClient` or an `*ApiService` and never subscribes to server calls. |
+
+- **Reads:** declare an `rxResource` in the owning State. Take `params` from State signals (including the ones that pick the data source, such as sign-in) and call the domain data service (`*ApiService`, or a service that delegates to it) in `stream`. Expose derived signals such as the data with an empty fallback and `isLoading` for components; the `ResourceRef` stays public only so the paired Controller can write to it. Data that must be loaded before a route activates stays a resolver calling a Controller method (see [State Architecture](references/state-architecture.md)).
+- **Refresh and retry:** a root-provided read loads once per params value. When the screen must refresh on entry (which also retries a failed load), the screen's Controller calls a named `reload` command from its constructor; `reload()` is a no-op while the first load is in flight.
+- **Load errors:** the Controller reports them from a constructor `effect` on the resource's `error()`; State never calls notifications.
+- **Mutations (POST/PUT/PATCH/DELETE):** a Controller method calls the data service and subscribes, following the Observable rules in Code Style. Write the result with the resource's `set()`, or refresh with `reload()`. Base `set()` on the State's derived signal rather than `resource.value()`, because `value()` throws while the resource is in an error state. `set()` also aborts an in-flight load, so when a mutation finishes while the resource is loading, call `reload()` after `set()`. Never perform a mutation through a resource: resources abort in-flight loads when their params change or their owner is destroyed.
+- Do not use `httpResource`, `resource` with `fetch`, or `HttpClient` outside an `*ApiService`. They bypass the transport layer and add a second way to talk to the server.
+
 ## Platform Layout
 
 The workspace splits libraries by the platform they run on. Every project has exactly one `platform:*` tag, and `@nx/enforce-module-boundaries` in the root `eslint.config.mjs` enforces the dependency direction.

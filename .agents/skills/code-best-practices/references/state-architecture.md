@@ -22,12 +22,12 @@ A reusable capability embedded as a single component (for example `<app-capabili
 
 Use `State` and `StateController` from `@birthday/web-shared-data-access`.
 
-| Layer       | Responsibility                                                                                                                                   |
-| ----------- | ------------------------------------------------------------------------------------------------------------------------------------------------ |
-| Component   | Renders state and delegates user actions to controllers. It may keep purely local presentation state.                                            |
-| State       | Holds feature data, UI state, form models, dialog signal data, and derived signals.                                                              |
-| Controller  | Owns user commands and imperative workflows. It updates State after API, router, dialog, notification, analytics, media, or subscription events. |
-| Route/shell | Owns providers, resolvers, guards, dialog-effect registration, and feature lifecycle.                                                            |
+| Layer       | Responsibility                                                                                                                                        |
+| ----------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Component   | Renders state, including signals derived from read resources, and delegates user actions to controllers. It may keep purely local presentation state. |
+| State       | Holds feature data, UI state, form models, dialog signal data, and derived signals.                                                                   |
+| Controller  | Owns user commands and imperative workflows. It updates State after API, router, dialog, notification, analytics, media, or subscription events.      |
+| Route/shell | Owns providers, resolvers, guards, dialog-effect registration, and feature lifecycle.                                                                 |
 
 Components, resolvers, guards, and directives read State through `injectState()` and invoke Controller for meaningful commands. Do not make passive shell components create behavior that belongs to the route-scoped controller.
 
@@ -42,6 +42,8 @@ private readonly state: ReadonlyState<FeatureState> = injectState(FeatureState);
 ```
 
 `ReadonlyState<T>` narrows every `WritableSignal` field to `Signal`, so `.set()`/`.update()` fail to compile outside the owning controller. This is a compile-time narrowing of the same instance, not a runtime lock — it exists to catch accidental writes from the wrong layer, not to defend against a deliberate bypass.
+
+`ReadonlyState<T>` does not narrow a read resource (`ResourceRef`): outside its paired Controller, code must only read the State's derived signals and never call the resource's `set()` or `reload()`. This is enforced by review, not by types.
 
 When the `local/no-direct-state-inject` ESLint rule is configured, it enforces this: it flags `inject(XxxState)` in any file except `*.controller.ts`, `*.state.ts`, `*.listeners.ts`, and `*.spec.ts`. When a resolver, guard, or component needs to change State, add a narrowly named method to the owning Controller (for example `setFilter`, `markItemDone`) and call that instead of writing to the signal directly. Do not reach for a generic `setXxx` that mirrors a field 1:1 with no validation; prefer a method that represents the whole operation (fetch-and-store, mark-complete) so misuse elsewhere stays harmless by construction.
 
@@ -59,7 +61,7 @@ For both, add `// eslint-disable-next-line local/no-direct-state-inject -- <reas
 - Expose writable signals when coordinated feature code must update them; rely on `injectState()` (see [Read Boundary](#read-boundary)) to keep outside code from writing to them. Reach for a private writable signal plus a public readonly accessor (getter/setter pair) only for a specific field that needs its own invariant enforced on every write, not as the default way to protect a whole State class.
 - State may depend on parent or shared State for route context and derive its own feature view model from it.
 - Implement `resetState()` for root-provided or otherwise reusable State. Reset transient data, loading flags, dialog data, selections, timers, media resources, and other values that must not leak into a new route or user session.
-- Keep State free of API calls, router navigation, dialog service calls, notifications, analytics, and workflow subscriptions. Those belong to Controller or route lifecycle code.
+- Declare server reads in State as `rxResource` (see `code-best-practices` → Server Communication). Otherwise keep State free of imperative API calls, router navigation, dialog service calls, notifications, analytics, and workflow subscriptions. Those belong to Controller or route lifecycle code.
 - Do not import page or dialog components into State or Controller. Keep component registration at the route or shell boundary.
 - Do not use `effect()` in State to copy one signal into another; prefer `computed`, `linkedSignal`, or an explicit controller command. Reserve State `effect()` for narrow cases such as browser media-device updates, and document why.
 
@@ -67,6 +69,7 @@ For both, add `// eslint-disable-next-line local/no-direct-state-inject -- <reas
 
 - Extend `StateController`, inject the State and the services required for the workflow, and expose named user-intent methods such as `sendMessage`, `nextStep`, or `openDetailsDialog`.
 - Keep API calls, navigation, dialogs, analytics, media/WebSocket work, and subscriptions in Controller. Update State from their results.
+- Write mutation results into the State read resource with `set()`, followed by `reload()` if a load was in flight (based on the State's derived signal) or refresh it with `reload()`, and report load errors from a constructor `effect` on the resource's `error()`. See `code-best-practices` → Server Communication.
 - Keep long-lived subscriptions bounded with the controller lifecycle, for example `takeUntilDestroyed(this.destroyRef)`.
 - Keep route-default navigation and reactive workflow effects in the relevant route-scoped Controller constructor. The component remains a rendering surface.
 - Guard missing route or state values before using them. Prefer an early return to a non-null assertion when the value is optional.
@@ -81,13 +84,14 @@ For dialogs, follow [Dialog Architecture](dialog-architecture.md). Signal-driven
 3. the dialog effect registered through `provideEnvironmentInitializer` on the owning route or shell;
 4. a dialog component exported through the appropriate UI barrel.
 
-Resolvers load data at the route boundary and pass the result to a named Controller method that updates State; a resolver must not write to a State signal directly (see [Read Boundary](#read-boundary)). Guards read the scoped State through `injectState()` or delegate policy checks and any state changes to Controllers where user-flow behavior is involved.
+Use a resolver only for data that must be loaded before the route activates; load other server data through a State `rxResource`. Resolvers load data at the route boundary and pass the result to a named Controller method that updates State; a resolver must not write to a State signal directly (see [Read Boundary](#read-boundary)). Guards read the scoped State through `injectState()` or delegate policy checks and any state changes to Controllers where user-flow behavior is involved.
 
 ## Review Checklist
 
 - Does state scope match its data lifetime: shared domain, feature route, or nested page?
 - Is each side effect owned by Controller or route/shell code rather than State or a passive component?
 - Are derived values expressed with `computed` or `linkedSignal` instead of synchronization effects?
+- Are server reads a State `rxResource` with derived signals, mutations Controller Observable workflows that write into that resource, and is `HttpClient` used only inside an `*ApiService`?
 - Are route providers, resolvers, dialog wiring, and cleanup colocated with the feature route that owns the screens?
 - Are public exports kept at the nearest library boundary?
 - If a `feature-*` library without its own route is consumed by other `feature-*` libraries, does it stay free of imports back from any of its consumers?
