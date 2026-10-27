@@ -158,7 +158,7 @@ npx nx affected -t lint typecheck build
 npx nx affected -t test
 ```
 
-In Claude Code, project hooks format each edited file with Prettier and run ESLint with `--fix` on the edited files when a turn ends. They do not replace these checks: they skip type checking, tests, and Nx module-boundary effects on files you did not edit.
+In Claude Code, project hooks format with Prettier each file edited through Write/Edit or changed by a Bash/PowerShell command, and run ESLint with `--fix` on those files when a turn ends. A Git pre-commit hook (`husky` + `lint-staged`) also formats staged files with Prettier for every contributor. They do not replace these checks: they skip type checking, tests, and Nx module-boundary effects on files you did not edit.
 
 Run `test` when specs were added or changed, or when existing specs cover the changed code. Fix failures caused by the change. Report the results faithfully, including failures you could not resolve and checks you did not run.
 

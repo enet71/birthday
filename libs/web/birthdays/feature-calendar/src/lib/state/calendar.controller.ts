@@ -9,8 +9,12 @@ import { CalendarState } from './calendar.state';
 @Injectable()
 export class CalendarController extends StateController {
   private readonly calendarState: CalendarState = inject(CalendarState);
-  private readonly birthdaysController: BirthdaysController =
-    inject(BirthdaysController);
+  private readonly birthdaysController: BirthdaysController = inject(BirthdaysController);
+
+  constructor() {
+    super();
+    this.birthdaysController.reloadBirthdays();
+  }
 
   public setView(view: CalendarView): void {
     this.calendarState.view.set(view);
@@ -44,8 +48,7 @@ export class CalendarController extends StateController {
   }
 
   private shiftViewMonth(step: number): void {
-    const shift: (date: Date, amount: number) => Date =
-      this.calendarState.view() === 'year' ? addYears : addMonths;
+    const shift: (date: Date, amount: number) => Date = this.calendarState.view() === 'year' ? addYears : addMonths;
 
     this.calendarState.viewMonth.update((month: Date) => shift(month, step));
   }

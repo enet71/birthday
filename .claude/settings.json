@@ -11,7 +11,30 @@
     "nx@nx-claude-plugins": true
   },
   "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash|PowerShell",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"$CLAUDE_PROJECT_DIR/scripts/claude-hooks/snapshot-shell-changes.mjs\"",
+            "timeout": 30
+          }
+        ]
+      }
+    ],
     "PostToolUse": [
+      {
+        "matcher": "Bash|PowerShell",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"$CLAUDE_PROJECT_DIR/scripts/claude-hooks/format-shell-changes.mjs\"",
+            "timeout": 60,
+            "statusMessage": "Formatting shell changes with Prettier"
+          }
+        ]
+      },
       {
         "matcher": "Write|Edit",
         "hooks": [
