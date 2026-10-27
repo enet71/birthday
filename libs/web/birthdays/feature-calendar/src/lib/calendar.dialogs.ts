@@ -1,31 +1,22 @@
-import {
-  effect,
-  EnvironmentProviders,
-  inject,
-  Injector,
-  provideEnvironmentInitializer,
-  untracked,
-} from '@angular/core';
+import { effect, EnvironmentProviders, inject, Injector, provideEnvironmentInitializer, untracked } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { injectState, ReadonlyState } from '@birthday/web-shared-data-access';
-import { AddBirthdayDialogComponent } from './dialogs';
+import { BirthdayDialogComponent } from './dialogs';
 import { CalendarController, CalendarState } from './state';
-import { AddBirthdayDialogData } from './types';
+import { BirthdayDialogData } from './types';
 
-// Opens and closes the Add Birthday dialog from `CalendarState.addBirthdayDialog`.
-export function provideAddBirthdayDialog(): EnvironmentProviders {
+// Opens and closes the Birthday dialog from `CalendarState.birthdayDialog`.
+export function provideBirthdayDialog(): EnvironmentProviders {
   return provideEnvironmentInitializer(() => {
-    const calendarState: ReadonlyState<CalendarState> =
-      injectState(CalendarState);
+    const calendarState: ReadonlyState<CalendarState> = injectState(CalendarState);
     const calendarController: CalendarController = inject(CalendarController);
     const dialog: MatDialog = inject(MatDialog);
     // The dialog injects the route-scoped CalendarController.
     const injector: Injector = inject(Injector);
-    let dialogRef: MatDialogRef<AddBirthdayDialogComponent> | null = null;
+    let dialogRef: MatDialogRef<BirthdayDialogComponent> | null = null;
 
     effect(() => {
-      const data: AddBirthdayDialogData | null =
-        calendarState.addBirthdayDialog();
+      const data: BirthdayDialogData | null = calendarState.birthdayDialog();
 
       untracked(() => {
         if (!data) {
@@ -37,7 +28,7 @@ export function provideAddBirthdayDialog(): EnvironmentProviders {
           return;
         }
 
-        dialogRef = dialog.open(AddBirthdayDialogComponent, {
+        dialogRef = dialog.open(BirthdayDialogComponent, {
           data,
           injector,
           autoFocus: 'input',
@@ -46,7 +37,7 @@ export function provideAddBirthdayDialog(): EnvironmentProviders {
         });
         dialogRef.afterClosed().subscribe(() => {
           dialogRef = null;
-          calendarController.closeAddBirthdayDialog();
+          calendarController.closeBirthdayDialog();
         });
       });
     });

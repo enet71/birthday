@@ -41,14 +41,9 @@ $grid-line: color-mix(in srgb, var(--mat-sys-outline-variant) 55%, transparent);
   gap: 0.375rem;
   min-width: 0;
   padding: 0.5rem;
-  border: none;
   border-right: 0.0625rem solid $grid-line;
   border-bottom: 0.0625rem solid $grid-line;
-  background: none;
   color: var(--mat-sys-on-surface);
-  font: inherit;
-  text-align: left;
-  cursor: pointer;
   transition: background-color 150ms ease;
 
   &:nth-child(7n) {
@@ -60,7 +55,7 @@ $grid-line: color-mix(in srgb, var(--mat-sys-outline-variant) 55%, transparent);
   }
 
   &:hover,
-  &:focus-visible {
+  &:has(.day__select:focus-visible) {
     background: color-mix(in srgb, var(--mat-sys-primary) 6%, transparent);
 
     .day__add {
@@ -68,21 +63,65 @@ $grid-line: color-mix(in srgb, var(--mat-sys-outline-variant) 55%, transparent);
     }
   }
 
-  &:focus-visible {
-    outline: 0.125rem solid var(--mat-sys-primary);
-    outline-offset: -0.125rem;
+  &:has(.day__birthday:hover) .day__add {
+    opacity: 0;
+  }
+
+  &__select {
+    position: absolute;
+    inset: 0;
+    padding: 0;
+    border: none;
+    background: none;
+    cursor: pointer;
+
+    &:focus-visible {
+      outline: 0.125rem solid var(--mat-sys-primary);
+      outline-offset: -0.125rem;
+    }
   }
 
   &__number {
+    position: relative;
     font-size: 0.8125rem;
     font-weight: 600;
+    pointer-events: none;
   }
 
+  // Lets clicks between the chips reach the day button underneath.
   &__birthdays {
+    position: relative;
     display: flex;
     flex-direction: column;
     gap: 0.25rem;
     min-width: 0;
+    pointer-events: none;
+  }
+
+  &__birthday {
+    display: flex;
+    min-width: 0;
+    padding: 0;
+    border: none;
+    border-radius: 0.625rem;
+    background: none;
+    font: inherit;
+    cursor: pointer;
+    pointer-events: auto;
+    transition: box-shadow 150ms ease;
+
+    ui-birthday-chip {
+      flex: 1;
+    }
+
+    &:hover {
+      box-shadow: var(--mat-sys-level1);
+    }
+
+    &:focus-visible {
+      outline: 0.125rem solid var(--mat-sys-primary);
+      outline-offset: 0.0625rem;
+    }
   }
 
   &__dot {

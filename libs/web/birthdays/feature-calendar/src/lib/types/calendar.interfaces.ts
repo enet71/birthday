@@ -12,11 +12,13 @@ export interface CalendarMonth {
   days: CalendarDay[];
 }
 
-export interface AddBirthdayDialogData {
+// Opens the dialog in edit mode when `birthday` is set.
+export interface BirthdayDialogData {
   date: Date;
+  birthday?: Birthday;
 }
 
-export interface AddBirthdayFormModel {
+export interface BirthdayFormModel {
   name: string;
   date: Date;
 }

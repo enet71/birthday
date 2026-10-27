@@ -1,1 +1,1 @@
-export * from './add-birthday-dialog';
+export * from './birthday-dialog';

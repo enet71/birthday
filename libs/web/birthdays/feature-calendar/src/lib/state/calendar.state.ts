@@ -4,7 +4,7 @@ import { injectState, ReadonlyState, State } from '@birthday/web-shared-data-acc
 import { BirthdaysState } from '@birthday/web-birthdays-data-access';
 import { Birthday, getMonthGridDays, isBirthdayOn, UpcomingBirthday } from '@birthday/web-birthdays-util';
 import { NEXT_BIRTHDAYS_LIMIT } from '../constants';
-import { AddBirthdayDialogData, CalendarDay, CalendarMonth, CalendarView } from '../types';
+import { BirthdayDialogData, CalendarDay, CalendarMonth, CalendarView } from '../types';
 
 @Injectable()
 export class CalendarState extends State {
@@ -14,7 +14,7 @@ export class CalendarState extends State {
   public readonly isLoading: Signal<boolean> = this.birthdaysState.isLoading;
   public readonly view: WritableSignal<CalendarView> = signal('month');
   public readonly viewMonth: WritableSignal<Date> = signal(startOfMonth(this.today));
-  public readonly addBirthdayDialog: WritableSignal<AddBirthdayDialogData | null> = signal(null);
+  public readonly birthdayDialog: WritableSignal<BirthdayDialogData | null> = signal(null);
 
   public readonly days: Signal<CalendarDay[]> = computed(() => this.getMonthDays(this.viewMonth(), this.birthdaysState.birthdays()));
   public readonly yearMonths: Signal<CalendarMonth[]> = computed(() => {
@@ -36,7 +36,7 @@ export class CalendarState extends State {
   public override resetState(): void {
     this.view.set('month');
     this.viewMonth.set(startOfMonth(this.today));
-    this.addBirthdayDialog.set(null);
+    this.birthdayDialog.set(null);
   }
 
   private getMonthDays(month: Date, birthdays: Birthday[]): CalendarDay[] {
