@@ -1,0 +1,73 @@
+<svg width="240" height="200" viewBox="0 0 240 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <radialGradient id="glow" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(130 178) rotate(90) scale(34 110)">
+      <stop stop-color="#C4B5FD" stop-opacity="0.55"/>
+      <stop offset="1" stop-color="#C4B5FD" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="balloonViolet" x1="150" y1="20" x2="200" y2="90" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#E9D5FF"/>
+      <stop offset="1" stop-color="#A78BFA"/>
+    </linearGradient>
+    <linearGradient id="balloonPink" x1="190" y1="60" x2="224" y2="112" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FBCFE8"/>
+      <stop offset="1" stop-color="#F472B6"/>
+    </linearGradient>
+    <linearGradient id="boxFront" x1="96" y1="110" x2="160" y2="186" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#93C5FD"/>
+      <stop offset="0.5" stop-color="#C4B5FD"/>
+      <stop offset="1" stop-color="#F9A8D4"/>
+    </linearGradient>
+    <linearGradient id="boxSide" x1="160" y1="110" x2="186" y2="180" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#818CF8"/>
+      <stop offset="1" stop-color="#C084FC"/>
+    </linearGradient>
+    <linearGradient id="lid" x1="90" y1="96" x2="192" y2="118" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#BFDBFE"/>
+      <stop offset="1" stop-color="#DDD6FE"/>
+    </linearGradient>
+    <linearGradient id="ribbon" x1="120" y1="80" x2="140" y2="186" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#F0ABFC"/>
+      <stop offset="1" stop-color="#E879F9"/>
+    </linearGradient>
+    <linearGradient id="smallBox" x1="44" y1="140" x2="84" y2="184" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FDBA74"/>
+      <stop offset="1" stop-color="#F472B6"/>
+    </linearGradient>
+  </defs>
+
+  <ellipse cx="130" cy="178" rx="110" ry="34" fill="url(#glow)"/>
+
+  <!-- Balloons -->
+  <path d="M176 92c-4 18 6 30-2 52" stroke="#C4B5FD" stroke-width="1.5" stroke-linecap="round"/>
+  <path d="M206 116c-2 14-12 22-14 40" stroke="#F9A8D4" stroke-width="1.5" stroke-linecap="round"/>
+  <ellipse cx="176" cy="56" rx="26" ry="32" fill="url(#balloonViolet)"/>
+  <path d="M172 87l4 6 4-6z" fill="#A78BFA"/>
+  <ellipse cx="166" cy="42" rx="7" ry="11" fill="#FFFFFF" opacity="0.55" transform="rotate(-20 166 42)"/>
+  <ellipse cx="207" cy="90" rx="17" ry="21" fill="url(#balloonPink)"/>
+  <path d="M204 110l3 5 3-5z" fill="#F472B6"/>
+  <ellipse cx="201" cy="81" rx="4.5" ry="7" fill="#FFFFFF" opacity="0.55" transform="rotate(-20 201 81)"/>
+
+  <!-- Main gift -->
+  <path d="M160 116l26-8v64l-26 12z" fill="url(#boxSide)"/>
+  <rect x="96" y="116" width="64" height="68" rx="4" fill="url(#boxFront)"/>
+  <path d="M90 104h70l32-8v14l-32 10H90z" fill="url(#lid)"/>
+  <rect x="90" y="104" width="70" height="16" rx="3" fill="url(#lid)"/>
+  <rect x="120" y="104" width="16" height="80" fill="url(#ribbon)"/>
+  <path d="M168 101l8-2v16l-8 3z" fill="#F0ABFC" opacity="0.85"/>
+  <path d="M128 104c-10-20-34-22-32-8 1 8 18 10 32 8z" fill="#F0ABFC"/>
+  <path d="M128 104c10-22 36-22 34-8-1 8-20 10-34 8z" fill="#E879F9"/>
+  <circle cx="128" cy="103" r="6" fill="#D946EF"/>
+
+  <!-- Small gift -->
+  <rect x="44" y="148" width="40" height="34" rx="4" fill="url(#smallBox)"/>
+  <rect x="40" y="140" width="48" height="10" rx="3" fill="#FED7AA"/>
+  <rect x="60" y="140" width="8" height="42" fill="#FDE68A"/>
+
+  <!-- Confetti -->
+  <rect x="70" y="92" width="8" height="8" rx="1.5" fill="#FDBA74" transform="rotate(25 74 96)"/>
+  <rect x="208" y="140" width="7" height="7" rx="1.5" fill="#A78BFA" transform="rotate(-20 211 143)"/>
+  <circle cx="56" cy="118" r="4" fill="#F9A8D4"/>
+  <circle cx="104" cy="74" r="3" fill="#93C5FD"/>
+  <circle cx="222" cy="168" r="3.5" fill="#FDBA74"/>
+  <path d="M30 168l4-8 4 8-4 8z" fill="#C4B5FD"/>
+</svg>

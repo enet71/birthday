@@ -13,6 +13,31 @@ html {
       density: 0,
     )
   );
+
+  // Softer rounded-rectangle shapes instead of the default M3 pills.
+  @include mat.button-overrides(
+    (
+      filled-container-shape: 0.75rem,
+      outlined-container-shape: 0.75rem,
+      tonal-container-shape: 0.75rem,
+      outlined-outline-color: var(--mat-sys-outline-variant),
+    )
+  );
+  @include mat.button-toggle-overrides(
+    (
+      shape: 0.75rem,
+    )
+  );
+  @include mat.form-field-overrides(
+    (
+      outlined-container-shape: 0.75rem,
+    )
+  );
+  @include mat.dialog-overrides(
+    (
+      container-shape: 1.25rem,
+    )
+  );
 }
 
 .notification_error {

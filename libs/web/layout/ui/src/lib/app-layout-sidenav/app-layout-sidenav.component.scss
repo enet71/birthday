@@ -1,9 +1,26 @@
+@use '@angular/material' as mat;
+
 @mixin rail {
   width: 4.5rem;
+  padding-inline: 0.75rem;
+
+  // Material's icon spacing plus trailing padding is wider than the rail item, which pushes
+  // the icon off-center; the start space centers the 1.5rem icon in the item instead.
+  .item {
+    @include mat.list-overrides(
+      (
+        list-item-leading-icon-start-space: calc(50% - 0.75rem),
+        list-item-leading-icon-end-space: 0,
+      )
+    );
+
+    padding-inline: 0;
+  }
 
   .header {
     flex-direction: column;
     justify-content: center;
+    padding-inline: 0;
   }
 
   .logo__full {
@@ -25,21 +42,20 @@
   }
 }
 
+// A floating glass card that matches the page cards.
 :host {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
-  width: 17.5rem;
-  height: 100%;
-  padding: 1rem 0.75rem;
+  gap: 1.5rem;
+  width: 16rem;
+  margin: 1rem 0 1rem 1rem;
+  padding: 1.25rem 0.75rem;
   overflow-y: auto;
-  background: color-mix(
-    in srgb,
-    var(--mat-sys-surface-container-lowest) 60%,
-    transparent
-  );
-  border-right: 0.0625rem solid
-    color-mix(in srgb, var(--mat-sys-surface-container-lowest) 80%, transparent);
+  border: 0.0625rem solid color-mix(in srgb, var(--mat-sys-surface-container-lowest) 80%, transparent);
+  border-radius: 1.5rem;
+  background: color-mix(in srgb, var(--mat-sys-surface-container-lowest) 65%, transparent);
+  box-shadow: 0 0.5rem 2rem color-mix(in srgb, var(--mat-sys-primary) 8%, transparent);
+  backdrop-filter: blur(1.5rem);
 }
 
 :host(.animated) {
@@ -67,6 +83,7 @@
   justify-content: space-between;
   gap: 0.5rem;
   min-height: 2.5rem;
+  padding-inline: 0.5rem;
 }
 
 .logo {
@@ -88,8 +105,46 @@
 }
 
 .items {
+  @include mat.list-overrides(
+    (
+      active-indicator-shape: 0.75rem,
+      active-indicator-color: var(--mat-sys-primary-container),
+      list-item-label-text-size: 0.9375rem,
+      list-item-label-text-weight: 600,
+      list-item-label-text-color: var(--mat-sys-on-surface-variant),
+      list-item-hover-label-text-color: var(--mat-sys-on-surface),
+    )
+  );
+
   display: flex;
   flex-direction: column;
   gap: 0.25rem;
   padding: 0;
+}
+
+// Each item gets its own tone, cycling for longer menus, to echo the colorful birthday chips.
+@mixin item-tone($tone) {
+  @include mat.list-overrides(
+    (
+      list-item-leading-icon-color: $tone,
+      list-item-hover-leading-icon-color: $tone,
+    )
+  );
+}
+
+.item {
+  @include item-tone(var(--mat-sys-primary));
+
+  &:nth-child(3n + 2) {
+    @include item-tone(var(--mat-sys-tertiary));
+  }
+
+  &:nth-child(3n) {
+    @include item-tone(var(--mat-sys-error));
+  }
+
+  &[aria-current='page'] .item-label {
+    color: var(--mat-sys-on-primary-container);
+    font-weight: 700;
+  }
 }

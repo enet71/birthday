@@ -1,3 +1,5 @@
+@use '@angular/material' as mat;
+
 :host {
   display: flex;
   align-items: center;
@@ -12,6 +14,18 @@
   gap: 0.5rem;
 }
 
+.nav-button {
+  @include mat.icon-button-overrides(
+    (
+      container-shape: 0.75rem,
+    )
+  );
+
+  // An inset shadow draws the edge without shrinking the icon's content box.
+  box-shadow: inset 0 0 0 0.0625rem var(--mat-sys-outline-variant);
+  background: var(--mat-sys-surface-container-lowest);
+}
+
 .title {
   min-width: 10rem;
   text-align: center;
@@ -21,7 +35,40 @@
 }
 
 .today {
+  @include mat.button-overrides(
+    (
+      outlined-label-text-color: var(--mat-sys-on-surface),
+    )
+  );
+
   margin-left: 0.5rem;
+  background: var(--mat-sys-surface-container-lowest);
+}
+
+.views {
+  @include mat.button-toggle-overrides(
+    (
+      height: 2rem,
+      shape: 0.5rem,
+      divider-color: transparent,
+      background-color: transparent,
+      text-color: var(--mat-sys-on-surface-variant),
+      selected-state-background-color: var(--mat-sys-primary-container),
+      selected-state-text-color: var(--mat-sys-on-primary-container),
+    )
+  );
+
+  padding: 0.25rem;
+  border: none;
+  border-radius: 0.75rem;
+  background: var(--mat-sys-surface-container);
+}
+
+.view {
+  min-width: 5rem;
+  // Inside a group Material rounds only the group, so each segment gets its own corners.
+  border-radius: 0.5rem;
+  font-weight: 600;
 }
 
 @media (max-width: 48rem) {
