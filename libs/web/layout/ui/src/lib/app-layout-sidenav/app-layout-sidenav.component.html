@@ -1,24 +1,7 @@
 <div class="header">
-  <a
-    class="logo"
-    [routerLink]="config.homePath"
-    [attr.aria-label]="config.appName"
-  >
-    <img
-      class="logo__full"
-      alt=""
-      priority
-      [ngSrc]="config.logo.src"
-      [width]="config.logo.width"
-      [height]="config.logo.height"
-    />
-    <img
-      class="logo__small"
-      alt=""
-      [ngSrc]="config.logoSmall.src"
-      [width]="config.logoSmall.width"
-      [height]="config.logoSmall.height"
-    />
+  <a class="logo" [routerLink]="config.homePath" [attr.aria-label]="config.appName">
+    <img class="logo__full" alt="" priority [ngSrc]="config.logo.src" [width]="config.logo.width" [height]="config.logo.height" />
+    <img class="logo__small" alt="" [ngSrc]="config.logoSmall.src" [width]="config.logoSmall.width" [height]="config.logoSmall.height" />
   </a>
   <button
     class="toggle"
@@ -28,14 +11,13 @@
     [attr.aria-expanded]="isExpanded()"
     (click)="toggle()"
   >
-    <mat-icon>{{
-      isExpanded() ? 'left_panel_close' : 'left_panel_open'
-    }}</mat-icon>
+    <mat-icon>{{ isExpanded() ? 'left_panel_close' : 'left_panel_open' }}</mat-icon>
   </button>
 </div>
 <mat-nav-list class="items" aria-label="Main navigation">
   @for (item of config.menu; track item.path) {
     <a
+      class="item"
       mat-list-item
       routerLinkActive
       #link="routerLinkActive"

@@ -6,10 +6,7 @@
   <ul class="list">
     @for (item of nextBirthdays(); track item.birthday.id) {
       <li class="item">
-        <ui-birthday-avatar
-          class="item__avatar"
-          [name]="item.birthday.name"
-        ></ui-birthday-avatar>
+        <ui-birthday-avatar class="item__avatar" [name]="item.birthday.name"></ui-birthday-avatar>
         <div class="item__body">
           <span class="item__name">{{ item.birthday.name }}</span>
           <span class="item__date">
@@ -23,4 +20,4 @@
 } @else {
   <p class="empty">No birthdays yet</p>
 }
-<mat-icon class="decoration" aria-hidden="true">celebration</mat-icon>
+<img class="decoration" src="/assets/images/birthday-gift.svg" alt="" width="240" height="200" />

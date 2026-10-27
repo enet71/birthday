@@ -11,7 +11,7 @@
 }
 
 .weekday {
-  padding: 0.5rem;
+  padding: 0 0.5rem 0.75rem;
   text-align: center;
   font-size: 0.75rem;
   font-weight: 600;
@@ -22,11 +22,15 @@
   }
 }
 
+$grid-line: color-mix(in srgb, var(--mat-sys-outline-variant) 55%, transparent);
+
 .days {
   flex: 1;
   grid-auto-rows: minmax(6rem, 1fr);
-  border-top: 0.0625rem solid var(--mat-sys-outline-variant);
-  border-left: 0.0625rem solid var(--mat-sys-outline-variant);
+  overflow: hidden;
+  border: 0.0625rem solid $grid-line;
+  border-radius: 1rem;
+  background: color-mix(in srgb, var(--mat-sys-surface-container-lowest) 55%, transparent);
 }
 
 .day {
@@ -38,14 +42,22 @@
   min-width: 0;
   padding: 0.5rem;
   border: none;
-  border-right: 0.0625rem solid var(--mat-sys-outline-variant);
-  border-bottom: 0.0625rem solid var(--mat-sys-outline-variant);
+  border-right: 0.0625rem solid $grid-line;
+  border-bottom: 0.0625rem solid $grid-line;
   background: none;
   color: var(--mat-sys-on-surface);
   font: inherit;
   text-align: left;
   cursor: pointer;
   transition: background-color 150ms ease;
+
+  &:nth-child(7n) {
+    border-right: none;
+  }
+
+  &:nth-last-child(-n + 7) {
+    border-bottom: none;
+  }
 
   &:hover,
   &:focus-visible {
@@ -62,7 +74,7 @@
   }
 
   &__number {
-    font-size: 0.75rem;
+    font-size: 0.8125rem;
     font-weight: 600;
   }
 
@@ -105,7 +117,7 @@
   }
 
   &_today {
-    background: color-mix(in srgb, var(--mat-sys-primary) 8%, transparent);
+    background: color-mix(in srgb, var(--mat-sys-primary-container) 55%, transparent);
 
     .day__number {
       color: var(--mat-sys-primary);
@@ -128,6 +140,8 @@
   .days {
     grid-auto-rows: 2.75rem;
     border: none;
+    border-radius: 0;
+    background: none;
   }
 
   .day {
