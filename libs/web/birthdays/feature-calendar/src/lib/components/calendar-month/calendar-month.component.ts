@@ -1,13 +1,8 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  computed,
-  inject,
-  Signal,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, Signal } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { MatIcon } from '@angular/material/icon';
 import { injectState, ReadonlyState } from '@birthday/web-shared-data-access';
+import { Birthday } from '@birthday/web-birthdays-util';
 import { getCalendarDayLabel } from '../../helpers';
 import { CalendarController, CalendarState } from '../../state';
 import { CalendarDay } from '../../types';
@@ -23,10 +18,8 @@ const DAYS_IN_WEEK = 7;
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CalendarMonthComponent {
-  private readonly calendarState: ReadonlyState<CalendarState> =
-    injectState(CalendarState);
-  private readonly calendarController: CalendarController =
-    inject(CalendarController);
+  private readonly calendarState: ReadonlyState<CalendarState> = injectState(CalendarState);
+  private readonly calendarController: CalendarController = inject(CalendarController);
 
   protected readonly weekdays: Signal<Date[]> = computed(() =>
     this.days()
@@ -44,5 +37,9 @@ export class CalendarMonthComponent {
 
   protected openAddBirthdayDialog(date: Date): void {
     this.calendarController.openAddBirthdayDialog(date);
+  }
+
+  protected openEditBirthdayDialog(birthday: Birthday): void {
+    this.calendarController.openEditBirthdayDialog(birthday);
   }
 }

@@ -1,13 +1,7 @@
 <form novalidate (submit)="save($event)">
   <ui-dialog-header>
-    <h2 class="title" mat-dialog-title dialog-header="title">Add Birthday</h2>
-    <button
-      matIconButton
-      type="button"
-      aria-label="Close"
-      dialog-header="buttons"
-      mat-dialog-close
-    >
+    <h2 class="title" mat-dialog-title dialog-header="title">{{ isEdit ? 'Edit Birthday' : 'Add Birthday' }}</h2>
+    <button matIconButton type="button" aria-label="Close" dialog-header="buttons" mat-dialog-close>
       <mat-icon>close</mat-icon>
     </button>
   </ui-dialog-header>
@@ -23,11 +17,7 @@
     <mat-form-field appearance="outline">
       <mat-label>Date</mat-label>
       <mat-icon matPrefix>event</mat-icon>
-      <input
-        matInput
-        [matDatepicker]="picker"
-        [formField]="birthdayForm.date"
-      />
+      <input matInput [matDatepicker]="picker" [formField]="birthdayForm.date" />
       <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
       <mat-datepicker #picker></mat-datepicker>
       @for (error of birthdayForm.date().errors(); track error.kind) {
@@ -35,7 +25,13 @@
       }
     </mat-form-field>
   </mat-dialog-content>
-  <mat-dialog-actions class="actions">
+  <mat-dialog-actions class="actions" [class.actions_edit]="isEdit">
+    @if (isEdit) {
+      <button class="actions__delete" matButton type="button" (click)="delete()">
+        <mat-icon>delete</mat-icon>
+        Delete
+      </button>
+    }
     <button matButton="outlined" type="button" mat-dialog-close>Cancel</button>
     <button matButton="filled" type="submit">Save</button>
   </mat-dialog-actions>

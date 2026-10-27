@@ -8,25 +8,33 @@
 </div>
 <div class="days">
   @for (day of days(); track day.date.getTime()) {
-    <button
-      class="day"
-      type="button"
-      [class.day_outside]="!day.isCurrentMonth"
-      [class.day_today]="day.isToday"
-      [attr.aria-label]="getDayLabel(day)"
-      [attr.aria-current]="day.isToday ? 'date' : null"
-      (click)="openAddBirthdayDialog(day.date)"
-    >
-      <span class="day__number">{{ day.date | date: 'd' }}</span>
+    <div class="day" [class.day_outside]="!day.isCurrentMonth" [class.day_today]="day.isToday">
+      <!-- Covers the whole cell; birthday buttons sit on top of it, because buttons cannot be nested. -->
+      <button
+        class="day__select"
+        type="button"
+        [attr.aria-label]="getDayLabel(day)"
+        [attr.aria-current]="day.isToday ? 'date' : null"
+        (click)="openAddBirthdayDialog(day.date)"
+      >
+        <mat-icon class="day__add" aria-hidden="true">add</mat-icon>
+      </button>
+      <span class="day__number" aria-hidden="true">{{ day.date | date: 'd' }}</span>
       @if (day.birthdays.length) {
         <span class="day__birthdays">
           @for (birthday of day.birthdays; track birthday.id) {
-            <ui-birthday-chip [name]="birthday.name"></ui-birthday-chip>
+            <button
+              class="day__birthday"
+              type="button"
+              [attr.aria-label]="'Edit birthday of ' + birthday.name"
+              (click)="openEditBirthdayDialog(birthday)"
+            >
+              <ui-birthday-chip [name]="birthday.name"></ui-birthday-chip>
+            </button>
           }
         </span>
         <span class="day__dot"></span>
       }
-      <mat-icon class="day__add" aria-hidden="true">add</mat-icon>
-    </button>
+    </div>
   }
 </div>
