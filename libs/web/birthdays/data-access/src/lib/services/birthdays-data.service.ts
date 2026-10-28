@@ -1,30 +1,21 @@
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import {
-  BirthdayDto,
-  CreateBirthdayRequest,
-  UpdateBirthdayRequest,
-} from '@birthday/shared-models';
+import { BirthdayDto, CreateBirthdayRequest, UpdateBirthdayRequest } from '@birthday/shared-models';
 import { AuthState } from '@birthday/web-auth-data-access';
 import { injectState, ReadonlyState } from '@birthday/web-shared-data-access';
-import { BirthdaysApiService } from './birthdays-api.service';
 import { BirthdaysLocalStorageService } from './birthdays-local-storage.service';
+import { BirthdaysRemoteStorage } from './birthdays-remote.storage';
 import { BirthdaysStorage } from './birthdays.storage';
 
-// Sends each call to the API for a signed-in user and to local storage otherwise.
+// Sends each call to the account storage for a signed-in user and to local storage otherwise.
 @Injectable({ providedIn: 'root' })
 export class BirthdaysDataService implements BirthdaysStorage {
   private readonly authState: ReadonlyState<AuthState> = injectState(AuthState);
-  private readonly apiStorage: BirthdaysApiService =
-    inject(BirthdaysApiService);
-  private readonly localStorage: BirthdaysLocalStorageService = inject(
-    BirthdaysLocalStorageService,
-  );
+  private readonly remoteStorage: BirthdaysRemoteStorage = inject(BirthdaysRemoteStorage);
+  private readonly localStorage: BirthdaysLocalStorageService = inject(BirthdaysLocalStorageService);
 
   private get storage(): BirthdaysStorage {
-    return this.authState.isAuthenticated()
-      ? this.apiStorage
-      : this.localStorage;
+    return this.authState.isAuthenticated() ? this.remoteStorage : this.localStorage;
   }
 
   public getAll(): Observable<BirthdayDto[]> {
@@ -35,10 +26,7 @@ export class BirthdaysDataService implements BirthdaysStorage {
     return this.storage.create(request);
   }
 
-  public update(
-    id: string,
-    request: UpdateBirthdayRequest,
-  ): Observable<BirthdayDto> {
+  public update(id: string, request: UpdateBirthdayRequest): Observable<BirthdayDto> {
     return this.storage.update(id, request);
   }
 
