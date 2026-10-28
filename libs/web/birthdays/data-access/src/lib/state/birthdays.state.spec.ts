@@ -1,4 +1,6 @@
 import { TestBed } from '@angular/core/testing';
+import { of } from 'rxjs';
+import { AuthClient } from '@birthday/web-auth-data-access';
 import { Birthday, UpcomingBirthday } from '@birthday/web-birthdays-util';
 import { BirthdaysDataService, BirthdaysLocalStorageService } from '../services';
 import { BirthdaysState } from './birthdays.state';
@@ -19,6 +21,7 @@ describe('BirthdaysState', () => {
 
     TestBed.configureTestingModule({
       providers: [
+        { provide: AuthClient, useValue: { userChanges: () => of(null) } },
         BirthdaysState,
         {
           provide: BirthdaysDataService,

@@ -1,0 +1,11 @@
+{
+  "name": "web-auth-feature-account",
+  "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/web/auth/feature-account/src",
+  "prefix": "ui",
+  "projectType": "library",
+  "tags": ["platform:web", "type:feature"],
+  "targets": {
+    "typecheck": {}
+  }
+}

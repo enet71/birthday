@@ -1,0 +1,29 @@
+<mat-card appearance="outlined">
+  <mat-card-header>
+    <h2 mat-card-title>Account</h2>
+  </mat-card-header>
+  <mat-card-content>
+    <div class="content">
+      @if (view() === 'loading') {
+        <mat-progress-spinner class="spinner" mode="indeterminate" diameter="32" aria-label="Loading account" />
+      } @else {
+        <p class="description" aria-live="polite">
+          @if (view() === 'signedIn') {
+            Signed in as <strong class="email">{{ email() }}</strong>
+          } @else {
+            Sign in to keep your birthdays in your account and use them on any device.
+          }
+        </p>
+        <!-- One button for both views keeps keyboard focus in place when signing in or out switches the view. -->
+        <button matButton="outlined" type="button" disabledInteractive [disabled]="isPending()" (click)="runAccountAction()">
+          @if (view() === 'signedIn') {
+            Sign out
+          } @else {
+            <img class="google-logo" src="/assets/images/google-logo.svg" alt="" width="18" height="18" />
+            Sign in with Google
+          }
+        </button>
+      }
+    </div>
+  </mat-card-content>
+</mat-card>

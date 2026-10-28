@@ -1,10 +1,9 @@
 import { TestBed } from '@angular/core/testing';
+import { of } from 'rxjs';
+import { AuthClient } from '@birthday/web-auth-data-access';
 import { NotificationsService } from '@birthday/web-shared-util';
 import { Birthday, UpcomingBirthday } from '@birthday/web-birthdays-util';
-import {
-  BirthdaysDataService,
-  BirthdaysLocalStorageService,
-} from '../services';
+import { BirthdaysDataService, BirthdaysLocalStorageService } from '../services';
 import { BirthdaysController } from './birthdays.controller';
 import { BirthdaysState } from './birthdays.state';
 
@@ -20,6 +19,7 @@ describe('BirthdaysController', () => {
 
     TestBed.configureTestingModule({
       providers: [
+        { provide: AuthClient, useValue: { userChanges: () => of(null) } },
         BirthdaysState,
         BirthdaysController,
         {
@@ -43,22 +43,16 @@ describe('BirthdaysController', () => {
 
   describe('addBirthday', () => {
     it('appends a birthday with a trimmed name and a yyyy-MM-dd birth date', () => {
-      controller
-        .addBirthday('  Liam  ', new Date(1999, 9, 25, 18, 45))
-        .subscribe();
+      controller.addBirthday('  Liam  ', new Date(1999, 9, 25, 18, 45)).subscribe();
 
-      expect(state.birthdays()).toEqual([
-        { id: expect.any(String), name: 'Liam', birthDate: '1999-10-25' },
-      ]);
+      expect(state.birthdays()).toEqual([{ id: expect.any(String), name: 'Liam', birthDate: '1999-10-25' }]);
     });
 
     it('gives every added birthday a unique id', () => {
       controller.addBirthday('Liam', new Date(1999, 9, 25)).subscribe();
       controller.addBirthday('Liam', new Date(1999, 9, 25)).subscribe();
 
-      const ids: string[] = state
-        .birthdays()
-        .map((birthday: Birthday) => birthday.id);
+      const ids: string[] = state.birthdays().map((birthday: Birthday) => birthday.id);
 
       expect(new Set(ids).size).toBe(ids.length);
     });
