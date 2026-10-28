@@ -3,7 +3,7 @@ import { of } from 'rxjs';
 import { AuthClient } from '@birthday/web-auth-data-access';
 import { NotificationsService } from '@birthday/web-shared-util';
 import { Birthday, UpcomingBirthday } from '@birthday/web-birthdays-util';
-import { BirthdaysDataService, BirthdaysLocalStorageService } from '../services';
+import { BirthdaysDataService, BirthdaysLocalStorageService, BirthdaysRemoteStorage } from '../services';
 import { BirthdaysController } from './birthdays.controller';
 import { BirthdaysState } from './birthdays.state';
 
@@ -20,6 +20,8 @@ describe('BirthdaysController', () => {
     TestBed.configureTestingModule({
       providers: [
         { provide: AuthClient, useValue: { userChanges: () => of(null) } },
+        // Signed out, so the account storage is never called.
+        { provide: BirthdaysRemoteStorage, useValue: {} },
         BirthdaysState,
         BirthdaysController,
         {
