@@ -27,7 +27,8 @@
       "@birthday/web-birthdays-data-access": ["./libs/web/birthdays/data-access/src/index.ts"],
       "@birthday/web-birthdays-feature-calendar": ["./libs/web/birthdays/feature-calendar/src/index.ts"],
       "@birthday/web-auth-data-access": ["./libs/web/auth/data-access/src/index.ts"],
-      "@birthday/web-supabase": ["./libs/web/supabase/src/index.ts"]
+      "@birthday/web-supabase": ["./libs/web/supabase/src/index.ts"],
+      "@birthday/web-auth-feature-account": ["./libs/web/auth/feature-account/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

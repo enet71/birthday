@@ -1,8 +1,10 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { AccountSectionComponent } from '@birthday/web-auth-feature-account';
 
 @Component({
   selector: 'app-settings',
-  template: `<p class="description">This page is coming soon.</p>`,
+  imports: [AccountSectionComponent],
+  template: `<ui-account-section class="account" />`,
   styles: `
     :host {
       display: flex;
@@ -10,8 +12,8 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
       padding-bottom: 2rem;
     }
 
-    .description {
-      color: var(--mat-sys-on-surface-variant);
+    .account {
+      max-width: 40rem;
     }
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,

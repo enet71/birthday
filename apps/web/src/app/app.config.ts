@@ -3,9 +3,10 @@ import { provideHttpClient, withFetch } from '@angular/common/http';
 import { MAT_ICON_DEFAULT_OPTIONS } from '@angular/material/icon';
 import { provideRouter, TitleStrategy } from '@angular/router';
 import { provideClientHydration, withEventReplay } from '@angular/platform-browser';
+import { AuthClient } from '@birthday/web-auth-data-access';
 import { APP_LAYOUT_CONFIG } from '@birthday/web-layout-util';
 import { ENVIRONMENT_TOKEN } from '@birthday/web-shared-util';
-import { provideSupabase } from '@birthday/web-supabase';
+import { provideSupabase, SupabaseAuthClient } from '@birthday/web-supabase';
 import { appRoutes } from './app.routes';
 import { APP_LAYOUT } from './app.constants';
 import { AppTitleStrategy } from './app-title.strategy';
@@ -18,6 +19,8 @@ export const appConfig: ApplicationConfig = {
     { provide: TitleStrategy, useClass: AppTitleStrategy },
     provideHttpClient(withFetch()),
     provideSupabase(),
+    // Swap the implementation here to move auth to another backend.
+    { provide: AuthClient, useExisting: SupabaseAuthClient },
     {
       provide: MAT_ICON_DEFAULT_OPTIONS,
       useValue: { fontSet: 'material-symbols-outlined' },
