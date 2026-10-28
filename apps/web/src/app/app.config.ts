@@ -1,17 +1,11 @@
-import {
-  ApplicationConfig,
-  isDevMode,
-  provideBrowserGlobalErrorListeners,
-} from '@angular/core';
+import { ApplicationConfig, isDevMode, provideBrowserGlobalErrorListeners } from '@angular/core';
 import { provideHttpClient, withFetch } from '@angular/common/http';
 import { MAT_ICON_DEFAULT_OPTIONS } from '@angular/material/icon';
 import { provideRouter, TitleStrategy } from '@angular/router';
-import {
-  provideClientHydration,
-  withEventReplay,
-} from '@angular/platform-browser';
+import { provideClientHydration, withEventReplay } from '@angular/platform-browser';
 import { APP_LAYOUT_CONFIG } from '@birthday/web-layout-util';
 import { ENVIRONMENT_TOKEN } from '@birthday/web-shared-util';
+import { provideSupabase } from '@birthday/web-supabase';
 import { appRoutes } from './app.routes';
 import { APP_LAYOUT } from './app.constants';
 import { AppTitleStrategy } from './app-title.strategy';
@@ -23,6 +17,7 @@ export const appConfig: ApplicationConfig = {
     provideRouter(appRoutes),
     { provide: TitleStrategy, useClass: AppTitleStrategy },
     provideHttpClient(withFetch()),
+    provideSupabase(),
     {
       provide: MAT_ICON_DEFAULT_OPTIONS,
       useValue: { fontSet: 'material-symbols-outlined' },
@@ -34,6 +29,9 @@ export const appConfig: ApplicationConfig = {
         environmentName: isDevMode() ? 'local' : 'production',
         version: '0.0.0',
         baseUrl: '',
+        supabaseUrl: 'https://wpnrneoqvxddhbltmysx.supabase.co',
+        // Publishable keys are meant for the browser; data access is enforced by RLS.
+        supabasePublishableKey: 'sb_publishable_4F1HdGrn9YerAJwVArdDvA_RXDVJvWB',
         notificationErrorTime: 5000,
         notificationSuccessTime: 3000,
       },

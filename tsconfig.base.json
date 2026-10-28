@@ -16,29 +16,18 @@
     "strict": false,
     "paths": {
       "@birthday/shared-models": ["./libs/shared/models/src/index.ts"],
-      "@birthday/web-layout-data-access": [
-        "./libs/web/layout/data-access/src/index.ts"
-      ],
+      "@birthday/web-layout-data-access": ["./libs/web/layout/data-access/src/index.ts"],
       "@birthday/web-layout-shell": ["./libs/web/layout/shell/src/index.ts"],
       "@birthday/web-layout-ui": ["./libs/web/layout/ui/src/index.ts"],
       "@birthday/web-layout-util": ["./libs/web/layout/util/src/index.ts"],
-      "@birthday/web-shared-data-access": [
-        "./libs/web/shared/data-access/src/index.ts"
-      ],
+      "@birthday/web-shared-data-access": ["./libs/web/shared/data-access/src/index.ts"],
       "@birthday/web-shared-ui": ["./libs/web/shared/ui/src/index.ts"],
       "@birthday/web-shared-util": ["./libs/web/shared/util/src/index.ts"],
-      "@birthday/web-birthdays-util": [
-        "./libs/web/birthdays/util/src/index.ts"
-      ],
-      "@birthday/web-birthdays-data-access": [
-        "./libs/web/birthdays/data-access/src/index.ts"
-      ],
-      "@birthday/web-birthdays-feature-calendar": [
-        "./libs/web/birthdays/feature-calendar/src/index.ts"
-      ],
-      "@birthday/web-auth-data-access": [
-        "./libs/web/auth/data-access/src/index.ts"
-      ]
+      "@birthday/web-birthdays-util": ["./libs/web/birthdays/util/src/index.ts"],
+      "@birthday/web-birthdays-data-access": ["./libs/web/birthdays/data-access/src/index.ts"],
+      "@birthday/web-birthdays-feature-calendar": ["./libs/web/birthdays/feature-calendar/src/index.ts"],
+      "@birthday/web-auth-data-access": ["./libs/web/auth/data-access/src/index.ts"],
+      "@birthday/web-supabase": ["./libs/web/supabase/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

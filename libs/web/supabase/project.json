@@ -1,0 +1,11 @@
+{
+  "name": "web-supabase",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/web/supabase/src",
+  "prefix": "ui",
+  "projectType": "library",
+  "tags": ["platform:web", "type:data-access"],
+  "targets": {
+    "typecheck": {}
+  }
+}
