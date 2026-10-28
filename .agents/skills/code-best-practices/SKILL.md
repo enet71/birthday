@@ -44,6 +44,7 @@ Server work has one approach per layer: Observables at the transport, signals to
 - **Load errors:** the Controller reports them from a constructor `effect` on the resource's `error()`; State never calls notifications.
 - **Mutations (POST/PUT/PATCH/DELETE):** a Controller method calls the data service and subscribes, following the Observable rules in Code Style. Write the result with the resource's `set()`, or refresh with `reload()`. Base `set()` on the State's derived signal rather than `resource.value()`, because `value()` throws while the resource is in an error state. `set()` also aborts an in-flight load, so when a mutation finishes while the resource is loading, call `reload()` after `set()`. Never perform a mutation through a resource: resources abort in-flight loads when their params change or their owner is destroyed.
 - Do not use `httpResource`, `resource` with `fetch`, or `HttpClient` outside an `*ApiService`. They bypass the transport layer and add a second way to talk to the server.
+- Keep backend connection settings (base URLs, Supabase URL and publishable key) in the shared `Environment` (`ENVIRONMENT_TOKEN` from `@birthday/web-shared-util`). Backend providers such as `provideSupabase()` read them from there; do not pass them as provider arguments or add a separate config token.
 
 ## Platform Layout
 

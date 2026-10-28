@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, inject, signal, WritableSignal } from '@angular/core';
-import { FieldTree, form, FormField, pattern, required, submit } from '@angular/forms/signals';
+import { FieldTree, form, FormField, maxLength, pattern, required, submit } from '@angular/forms/signals';
 import { MatButton, MatIconButton } from '@angular/material/button';
 import { provideNativeDateAdapter } from '@angular/material/core';
 import { MatDatepicker, MatDatepickerInput, MatDatepickerToggle } from '@angular/material/datepicker';
@@ -51,6 +51,8 @@ export class BirthdayDialogComponent {
   protected readonly birthdayForm: FieldTree<BirthdayFormModel> = form(this.model, (path) => {
     required(path.name, { message: 'Enter a name' });
     pattern(path.name, /\S/, { message: 'Enter a name' });
+    // Matches the database limit for account birthdays.
+    maxLength(path.name, 200, { message: 'Name is too long' });
     required(path.date, { message: 'Choose a valid date' });
   });
 
