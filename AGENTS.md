@@ -67,3 +67,5 @@ Local repository skills live under `.agents/skills`. Each skill must contain a `
 - `nx-plugins`: Find and add Nx plugins. Use when the user wants to discover available plugins, install a new plugin, or add framework and tooling support to the workspace.
 - `nx-run-tasks`: Run tasks in an Nx workspace. Use when the user wants to execute build, test, lint, serve, e2e, or any other configured target.
 - `nx-workspace`: Explore and understand the Nx workspace. Use when answering questions about projects, targets, dependencies, task availability, or when debugging Nx task configuration and failures.
+- `supabase`: Work with Supabase products (Database, Auth, Edge Functions, Realtime, Storage), `supabase-js`, the Supabase CLI and MCP server, migrations, RLS, and security checks. Use for any Supabase task, including debugging errors and reading project logs.
+- `supabase-postgres-best-practices`: Postgres best practices maintained by Supabase. Use before writing or changing anything in the database (tables, columns, migrations, RLS policies, indexes, functions, triggers, scheduled jobs) and when diagnosing slow queries, locking, or rows visible to the wrong user.

@@ -162,6 +162,8 @@ In Claude Code, project hooks format with Prettier each file edited through Writ
 
 Run `test` when specs were added or changed, or when existing specs cover the changed code. Fix failures caused by the change. Report the results faithfully, including failures you could not resolve and checks you did not run.
 
+Check the change in the running app when it has UI or runtime behavior. For flows that need the developer's sign-in or session (signed-in data, account actions), use Claude in Chrome: it works in the developer's own Chrome with their existing sign-ins. Do not report such a flow as impossible to verify or hand it to the developer before trying it there. Isolated chrome-devtools contexts have no session, so use them only for signed-out flows. Never enter credentials or complete a third-party sign-in yourself; if the session is missing, ask the developer to sign in. Name test data clearly (for example a `Test` prefix) and remove it afterwards.
+
 ## 8. Definition of Done
 
 Before reporting, confirm each applicable item:
