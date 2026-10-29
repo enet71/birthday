@@ -1,0 +1,35 @@
+# DigitalOcean App Platform spec.
+# Create the app: doctl apps create --spec .do/app.yaml
+# Apply changes:  doctl apps update <app-id> --spec .do/app.yaml
+name: birthday
+region: fra
+
+domains:
+  - domain: birthdly.com
+    type: PRIMARY
+  - domain: www.birthdly.com
+    type: ALIAS
+
+services:
+  - name: web
+    github:
+      repo: enet71/birthday
+      branch: main
+      deploy_on_push: true
+    environment_slug: node-js
+    build_command: npx nx build web --configuration=production
+    run_command: node dist/apps/web/server/server.mjs
+    http_port: 8080
+    instance_count: 1
+    instance_size_slug: apps-s-1vcpu-0.5gb
+    envs:
+      - key: NX_DAEMON
+        value: 'false'
+        scope: BUILD_TIME
+      - key: NODE_ENV
+        value: production
+        scope: RUN_TIME
+      # The App Platform router sets these headers; Angular SSR drops untrusted proxy headers.
+      - key: NG_TRUST_PROXY_HEADERS
+        value: x-forwarded-for,x-forwarded-host,x-forwarded-proto
+        scope: RUN_TIME
