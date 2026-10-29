@@ -33,7 +33,7 @@
         },
         "outputMode": "server",
         "security": {
-          "allowedHosts": []
+          "allowedHosts": ["birthdly.com", "www.birthdly.com"]
         },
         "stylePreprocessorOptions": {
           "includePaths": ["."]
@@ -61,12 +61,7 @@
           "sourceMap": true
         }
       },
-      "inputs": [
-        "production",
-        "^production",
-        "{workspaceRoot}/libs/web/assets/**/*",
-        "{workspaceRoot}/libs/web/styles/**/*"
-      ]
+      "inputs": ["production", "^production", "{workspaceRoot}/libs/web/assets/**/*", "{workspaceRoot}/libs/web/styles/**/*"]
     },
     "serve": {
       "continuous": true,
