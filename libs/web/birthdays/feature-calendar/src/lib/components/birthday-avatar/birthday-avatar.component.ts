@@ -1,11 +1,4 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  computed,
-  input,
-  InputSignal,
-  Signal,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, input, InputSignal, Signal } from '@angular/core';
 import { getBirthdayTone } from '../../helpers';
 import { BirthdayTone } from '../../types';
 
@@ -16,17 +9,20 @@ import { BirthdayTone } from '../../types';
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
     'aria-hidden': 'true',
-    '[style.--birthday-tone]': "'var(--mat-sys-' + tone() + '-container)'",
-    '[style.--birthday-on-tone]': "'var(--mat-sys-on-' + tone() + '-container)'",
+    '[style.--birthday-tone]': "'var(--app-tone-' + tone() + '-ink)'",
+    '[style.--birthday-tone-container]': "'var(--app-tone-' + tone() + ')'",
   },
 })
 export class BirthdayAvatarComponent {
   public readonly name: InputSignal<string> = input.required();
 
-  protected readonly initial: Signal<string> = computed(() =>
-    this.name().trim().charAt(0).toUpperCase(),
+  protected readonly initials: Signal<string> = computed(() =>
+    this.name()
+      .trim()
+      .split(/\s+/)
+      .slice(0, 2)
+      .map((word: string) => word.charAt(0).toUpperCase())
+      .join(''),
   );
-  protected readonly tone: Signal<BirthdayTone> = computed(() =>
-    getBirthdayTone(this.name()),
-  );
+  protected readonly tone: Signal<BirthdayTone> = computed(() => getBirthdayTone(this.name()));
 }

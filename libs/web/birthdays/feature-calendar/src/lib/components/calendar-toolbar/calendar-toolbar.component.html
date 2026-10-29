@@ -1,4 +1,10 @@
-<div class="navigation">
+<h2 class="title" aria-live="polite">
+  @if (!isYearView()) {
+    <span class="title__month">{{ viewMonth() | date: 'MMMM' }}</span>
+  }
+  <span class="title__year">{{ viewMonth() | date: 'y' }}</span>
+</h2>
+<div class="controls">
   <button
     class="nav-button"
     matIconButton
@@ -8,15 +14,12 @@
   >
     <mat-icon>chevron_left</mat-icon>
   </button>
-  <h2 class="title" aria-live="polite">
-    {{ viewMonth() | date: (isYearView() ? 'y' : 'MMMM y') }}
-  </h2>
   <button class="nav-button" matIconButton type="button" [attr.aria-label]="isYearView() ? 'Next year' : 'Next month'" (click)="showNext()">
     <mat-icon>chevron_right</mat-icon>
   </button>
-  <button class="today" matButton="outlined" type="button" (click)="showToday()">Today</button>
+  <button class="today" matButton type="button" (click)="showToday()">Today</button>
+  <mat-button-toggle-group class="views" aria-label="Calendar view" hideSingleSelectionIndicator [value]="view()" (change)="setView($event)">
+    <mat-button-toggle class="view" value="month">Month</mat-button-toggle>
+    <mat-button-toggle class="view" value="year">Year</mat-button-toggle>
+  </mat-button-toggle-group>
 </div>
-<mat-button-toggle-group class="views" aria-label="Calendar view" hideSingleSelectionIndicator [value]="view()" (change)="setView($event)">
-  <mat-button-toggle class="view" value="month">Month</mat-button-toggle>
-  <mat-button-toggle class="view" value="year">Year</mat-button-toggle>
-</mat-button-toggle-group>

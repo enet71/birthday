@@ -1,2 +1,5 @@
-<ui-birthday-avatar class="avatar" [name]="name()"></ui-birthday-avatar>
+<span class="dot"></span>
 <span class="name">{{ name() }}</span>
+@if (visibleAge(); as age) {
+  <span class="age">{{ age }}</span>
+}

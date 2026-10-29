@@ -28,11 +28,11 @@
 .weekday {
   margin-bottom: 0.25rem;
   padding: 0.25rem 0;
-  border-bottom: 0.0625rem solid var(--mat-sys-outline-variant);
+  border-bottom: 0.0625rem solid color-mix(in srgb, var(--mat-sys-outline-variant) 60%, transparent);
   text-align: center;
-  font-size: 0.75rem;
-  font-weight: 700;
-  color: var(--mat-sys-primary);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  color: var(--mat-sys-outline);
 }
 
 .day {
@@ -68,18 +68,14 @@
     font-weight: 700;
 
     &:hover {
-      background: color-mix(
-        in srgb,
-        var(--mat-sys-on-tertiary-container) 12%,
-        var(--mat-sys-tertiary-container)
-      );
+      background: color-mix(in srgb, var(--mat-sys-on-tertiary-container) 12%, var(--mat-sys-tertiary-container));
     }
   }
 
   &_today {
     background: var(--mat-sys-primary);
     color: var(--mat-sys-on-primary);
-    font-weight: 800;
+    font-weight: 700;
 
     &:hover {
       background: var(--mat-sys-primary);

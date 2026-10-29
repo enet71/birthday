@@ -1,4 +1,4 @@
-import { Birthday } from '@birthday/web-birthdays-util';
+import { Birthday, UpcomingBirthday } from '@birthday/web-birthdays-util';
 
 export interface CalendarDay {
   date: Date;
@@ -25,4 +25,8 @@ export interface BirthdayFormModel {
 
 export type CalendarView = 'month' | 'year';
 
-export type BirthdayTone = 'primary' | 'secondary' | 'tertiary' | 'error';
+export type BirthdayTone = 'violet' | 'rose' | 'sky' | 'peach' | 'mint';
+
+export interface UpcomingCelebration extends UpcomingBirthday {
+  age: number;
+}

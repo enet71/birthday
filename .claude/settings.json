@@ -1,15 +1,4 @@
 {
-  "extraKnownMarketplaces": {
-    "nx-claude-plugins": {
-      "source": {
-        "source": "github",
-        "repo": "nrwl/nx-ai-agents-config"
-      }
-    }
-  },
-  "enabledPlugins": {
-    "nx@nx-claude-plugins": true
-  },
   "hooks": {
     "PreToolUse": [
       {
@@ -59,5 +48,17 @@
         ]
       }
     ]
+  },
+  "enabledPlugins": {
+    "nx@nx-claude-plugins": true,
+    "frontend-design@claude-plugins-official": true
+  },
+  "extraKnownMarketplaces": {
+    "nx-claude-plugins": {
+      "source": {
+        "source": "github",
+        "repo": "nrwl/nx-ai-agents-config"
+      }
+    }
   }
 }
