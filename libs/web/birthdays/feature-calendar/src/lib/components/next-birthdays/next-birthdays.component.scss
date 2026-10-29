@@ -1,10 +1,9 @@
+@use '@angular/material' as mat;
+
 :host {
-  position: relative;
   display: flex;
   flex-direction: column;
   gap: 1rem;
-  min-height: 100%;
-  overflow: hidden;
 }
 
 .header {
@@ -12,11 +11,25 @@
   align-items: center;
   justify-content: space-between;
   gap: 1rem;
+  padding-inline: 0.25rem;
 
   &__title {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin: 0;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: var(--mat-sys-on-surface-variant);
+  }
+
+  &__icon {
+    width: 1rem;
+    height: 1rem;
     font-size: 1rem;
-    font-weight: 700;
-    color: var(--mat-sys-on-surface);
+    color: var(--mat-sys-primary);
   }
 
   &__link {
@@ -25,16 +38,43 @@
     color: var(--mat-sys-primary);
     text-decoration: none;
 
-    &:hover {
+    &:hover,
+    &:focus-visible {
       text-decoration: underline;
     }
+  }
+}
+
+.search {
+  @include mat.form-field-overrides(
+    (
+      container-height: 2.75rem,
+      container-vertical-padding: 0.625rem,
+      // Half the height: a huge radius also widens the notched outline's side pieces.
+      outlined-container-shape: 1.375rem,
+      outlined-outline-color: color-mix(in srgb, var(--mat-sys-outline-variant) 50%, transparent),
+      outlined-hover-outline-color: var(--mat-sys-outline-variant),
+      leading-icon-color: var(--mat-sys-outline),
+      trailing-icon-color: var(--mat-sys-outline),
+    )
+  );
+
+  width: 100%;
+  border-radius: 999rem;
+  background: var(--mat-sys-surface-container-lowest);
+  box-shadow: 0 0.25rem 1rem color-mix(in srgb, var(--mat-sys-primary) 6%, transparent);
+
+  // The native clear button duplicates the custom one.
+  input::-webkit-search-cancel-button {
+    display: none;
   }
 }
 
 .list {
   display: flex;
   flex-direction: column;
-  gap: 1.25rem;
+  gap: 0.75rem;
+  margin: 0;
   padding: 0;
   list-style: none;
 }
@@ -42,48 +82,62 @@
 .item {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
+  gap: 1rem;
+  padding: 1rem 1.125rem;
+  border: 0.0625rem solid color-mix(in srgb, var(--mat-sys-outline-variant) 50%, transparent);
+  border-radius: 1.5rem;
+  background: var(--mat-sys-surface-container-lowest);
+  box-shadow: 0 0.375rem 1.25rem color-mix(in srgb, var(--mat-sys-primary) 6%, transparent);
 
   &__avatar {
     width: 2.75rem;
     height: 2.75rem;
-    font-size: 1.125rem;
+    font-size: 0.875rem;
   }
 
   &__body {
     display: flex;
+    flex: 1;
     flex-direction: column;
     gap: 0.125rem;
     min-width: 0;
   }
 
   &__name {
-    font-size: 0.875rem;
-    font-weight: 700;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 1rem;
+    font-weight: 500;
     color: var(--mat-sys-on-surface);
   }
 
-  &__date {
-    font-size: 0.75rem;
+  &__date,
+  &__until {
+    font-size: 0.8125rem;
     color: var(--mat-sys-on-surface-variant);
+  }
+
+  &_soon &__until {
+    font-weight: 600;
+    color: var(--mat-sys-primary);
   }
 }
 
 .empty {
+  margin: 0;
+  padding: 1.5rem;
+  border: 0.0625rem dashed var(--mat-sys-outline-variant);
+  border-radius: 1.5rem;
   font-size: 0.875rem;
+  text-align: center;
   color: var(--mat-sys-on-surface-variant);
 }
 
-.decoration {
-  align-self: center;
-  margin-top: auto;
-  width: 100%;
-  max-width: 15rem;
-  height: auto;
-}
-
+// Below the desktop breakpoint the list sits under the calendar, so use the width.
 @media (max-width: 64rem) {
-  .decoration {
-    display: none;
+  .list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
   }
 }

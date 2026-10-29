@@ -11,9 +11,10 @@
     [attr.aria-expanded]="isExpanded()"
     (click)="toggle()"
   >
-    <mat-icon>{{ isExpanded() ? 'left_panel_close' : 'left_panel_open' }}</mat-icon>
+    <mat-icon>{{ isExpanded() ? 'chevron_left' : 'chevron_right' }}</mat-icon>
   </button>
 </div>
+<span class="section-label" aria-hidden="true">Menu</span>
 <mat-nav-list class="items" aria-label="Main navigation">
   @for (item of config.menu; track item.path) {
     <a

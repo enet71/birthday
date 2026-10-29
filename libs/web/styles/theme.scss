@@ -1,4 +1,5 @@
 @use '@angular/material' as mat;
+@use 'theme-colors';
 
 html {
   color-scheme: light;
@@ -6,20 +7,36 @@ html {
   @include mat.theme(
     (
       color: (
-        primary: mat.$azure-palette,
-        tertiary: mat.$violet-palette,
+        primary: theme-colors.$primary-palette,
+        tertiary: theme-colors.$tertiary-palette,
       ),
-      typography: 'Nunito Sans',
+      typography: 'Manrope',
       density: 0,
     )
   );
 
-  // Softer rounded-rectangle shapes instead of the default M3 pills.
+  // Serif display face for large headlines; body text stays in Manrope.
+  --app-font-display: 'DM Serif Display', Georgia, serif;
+
+  // Pastel tones that tell people apart in chips and avatars: a soft fill and a readable ink.
+  --app-tone-violet: #ebe7fb;
+  --app-tone-violet-ink: #5a50a0;
+  --app-tone-rose: #fbe4ec;
+  --app-tone-rose-ink: #9a4c68;
+  --app-tone-sky: #e0ecfa;
+  --app-tone-sky-ink: #3e6896;
+  --app-tone-peach: #fce8d9;
+  --app-tone-peach-ink: #96592f;
+  --app-tone-mint: #ddf2e5;
+  --app-tone-mint-ink: #3b7657;
+
+  // Pill-shaped buttons to match the rounded cards and chips.
   @include mat.button-overrides(
     (
-      filled-container-shape: 0.75rem,
-      outlined-container-shape: 0.75rem,
-      tonal-container-shape: 0.75rem,
+      filled-container-shape: 999rem,
+      outlined-container-shape: 999rem,
+      tonal-container-shape: 999rem,
+      text-container-shape: 999rem,
       outlined-outline-color: var(--mat-sys-outline-variant),
     )
   );

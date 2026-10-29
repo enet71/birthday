@@ -5,11 +5,6 @@ export const appRoutes: Route[] = [
   {
     path: 'calendar',
     title: 'Calendar',
-    data: {
-      [APP_LAYOUT_SEARCH_DATA_KEY]: {
-        placeholder: 'Search people…',
-      } satisfies AppLayoutSearch,
-    },
     loadChildren: () => import('@birthday/web-birthdays-feature-calendar').then((m) => m.CALENDAR_ROUTES),
   },
   {

@@ -3,33 +3,37 @@
 :host {
   flex: 1;
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 20rem;
-  align-items: stretch;
+  grid-template:
+    'calendar next-birthdays' 1fr
+    / minmax(0, 1fr) 20rem;
+  align-items: start;
   gap: 1.5rem;
-  padding-bottom: 2rem;
+  padding-block: 1rem 2rem;
 }
 
 .card {
   border: 0.0625rem solid color-mix(in srgb, var(--mat-sys-surface-container-lowest) 80%, transparent);
-  border-radius: 1.5rem;
-  background: color-mix(in srgb, var(--mat-sys-surface-container-lowest) 65%, transparent);
+  border-radius: 2rem;
+  background: color-mix(in srgb, var(--mat-sys-surface-container-lowest) 70%, transparent);
   box-shadow: 0 0.5rem 2rem color-mix(in srgb, var(--mat-sys-primary) 8%, transparent);
   backdrop-filter: blur(1.5rem);
 }
 
 .calendar {
+  grid-area: calendar;
   position: relative;
   display: flex;
   flex-direction: column;
   gap: 1.25rem;
+  align-self: stretch;
   min-width: 0;
   padding: 1.5rem;
 
   &__progress {
     position: absolute;
     top: 0;
-    right: 1.5rem;
-    left: 1.5rem;
+    right: 2rem;
+    left: 2rem;
   }
 
   &__month {
@@ -38,7 +42,10 @@
 }
 
 .next-birthdays {
-  padding: 1.5rem;
+  grid-area: next-birthdays;
+  position: sticky;
+  top: 1rem;
+  min-width: 0;
 }
 
 .fab {
@@ -59,8 +66,15 @@
 
 @media (max-width: 64rem) {
   :host {
-    grid-template-columns: minmax(0, 1fr);
+    grid-template:
+      'calendar' auto
+      'next-birthdays' auto
+      / minmax(0, 1fr);
     padding-bottom: 6rem;
+  }
+
+  .next-birthdays {
+    position: static;
   }
 
   .fab {
@@ -74,11 +88,11 @@
     padding-top: 1rem;
   }
 
-  .calendar {
-    padding: 1rem 0.5rem;
+  .card {
+    border-radius: 1.5rem;
   }
 
-  .next-birthdays {
-    padding: 1.25rem;
+  .calendar {
+    padding: 1rem 0.5rem;
   }
 }

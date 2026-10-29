@@ -1,12 +1,4 @@
-import {
-  differenceInCalendarDays,
-  format,
-  getDaysInMonth,
-  isBefore,
-  isSameDay,
-  parseISO,
-  startOfDay,
-} from 'date-fns';
+import { differenceInCalendarDays, format, getDaysInMonth, isBefore, isSameDay, parseISO, startOfDay } from 'date-fns';
 import { Birthday, UpcomingBirthday } from '../types';
 
 export function toBirthDate(date: Date): string {
@@ -17,12 +9,14 @@ export function getBirthdayInYear(birthDate: string, year: number): Date {
   const date: Date = parseISO(birthDate);
   const month: number = date.getMonth();
   // A Feb 29 birthday is celebrated on Feb 28 in non-leap years.
-  const day: number = Math.min(
-    date.getDate(),
-    getDaysInMonth(new Date(year, month)),
-  );
+  const day: number = Math.min(date.getDate(), getDaysInMonth(new Date(year, month)));
 
   return new Date(year, month, day);
+}
+
+// The age a person turns on their birthday in the year of `date`.
+export function getAgeOnDate(birthDate: string, date: Date): number {
+  return date.getFullYear() - parseISO(birthDate).getFullYear();
 }
 
 export function isBirthdayOn(birthDate: string, day: Date): boolean {
@@ -33,15 +27,10 @@ export function getNextBirthday(birthDate: string, from: Date): Date {
   const today: Date = startOfDay(from);
   const birthday: Date = getBirthdayInYear(birthDate, today.getFullYear());
 
-  return isBefore(birthday, today)
-    ? getBirthdayInYear(birthDate, today.getFullYear() + 1)
-    : birthday;
+  return isBefore(birthday, today) ? getBirthdayInYear(birthDate, today.getFullYear() + 1) : birthday;
 }
 
-export function getUpcomingBirthdays(
-  birthdays: Birthday[],
-  from: Date,
-): UpcomingBirthday[] {
+export function getUpcomingBirthdays(birthdays: Birthday[], from: Date): UpcomingBirthday[] {
   return birthdays
     .map((birthday: Birthday): UpcomingBirthday => {
       const date: Date = getNextBirthday(birthday.birthDate, from);
@@ -52,9 +41,5 @@ export function getUpcomingBirthdays(
         daysUntil: differenceInCalendarDays(date, from),
       };
     })
-    .sort(
-      (a: UpcomingBirthday, b: UpcomingBirthday) =>
-        a.daysUntil - b.daysUntil ||
-        a.birthday.name.localeCompare(b.birthday.name),
-    );
+    .sort((a: UpcomingBirthday, b: UpcomingBirthday) => a.daysUntil - b.daysUntil || a.birthday.name.localeCompare(b.birthday.name));
 }

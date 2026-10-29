@@ -25,7 +25,10 @@
   text-overflow: ellipsis;
   white-space: nowrap;
   color: var(--mat-sys-on-surface);
-  font: var(--mat-sys-title-large);
+  font-family: var(--app-font-display);
+  font-size: 1.75rem;
+  font-weight: 400;
+  line-height: 1.2;
 }
 
 .search {
@@ -33,11 +36,17 @@
     (
       container-height: 2.5rem,
       container-vertical-padding: 0.5rem,
-      outlined-container-shape: 0.75rem,
+      outlined-container-shape: 999rem,
+      outlined-outline-color: transparent,
+      outlined-hover-outline-color: var(--mat-sys-outline-variant),
+      leading-icon-color: var(--mat-sys-on-surface-variant),
     )
   );
 
   width: 20rem;
+  border-radius: 999rem;
+  background: color-mix(in srgb, var(--mat-sys-surface-container-lowest) 75%, transparent);
+  box-shadow: 0 0.25rem 1rem color-mix(in srgb, var(--mat-sys-primary) 8%, transparent);
 
   &__close {
     display: none;
@@ -65,7 +74,7 @@
   }
 
   .title {
-    font: var(--mat-sys-title-medium);
+    font-size: 1.375rem;
   }
 
   .search {

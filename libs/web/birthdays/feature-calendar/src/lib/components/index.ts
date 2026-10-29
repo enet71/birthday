@@ -5,3 +5,4 @@ export * from './calendar-page';
 export * from './calendar-toolbar';
 export * from './calendar-year';
 export * from './next-birthdays';
+export * from './next-celebration';

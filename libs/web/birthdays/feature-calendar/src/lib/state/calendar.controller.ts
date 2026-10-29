@@ -34,6 +34,10 @@ export class CalendarController extends StateController {
     this.calendarState.viewMonth.set(startOfMonth(this.calendarState.today));
   }
 
+  public setSearchQuery(query: string): void {
+    this.calendarState.searchQuery.set(query);
+  }
+
   public openAddBirthdayDialog(date: Date = this.calendarState.today): void {
     this.calendarState.birthdayDialog.set({ date });
   }

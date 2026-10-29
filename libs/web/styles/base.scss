@@ -1,16 +1,8 @@
 @font-face {
-  font-family: 'Nunito Sans';
-  src: url('/assets/fonts/nunito-sans/NunitoSans-VariableFont_YTLC,opsz,wdth,wght.ttf') format('truetype');
-  font-weight: 300 900;
+  font-family: 'Manrope';
+  src: url('/assets/fonts/manrope/Manrope-VariableFont_wght.ttf') format('truetype');
+  font-weight: 200 800;
   font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Nunito Sans';
-  src: url('/assets/fonts/nunito-sans/NunitoSans-Italic-VariableFont_YTLC,opsz,wdth,wght.ttf') format('truetype');
-  font-weight: 300 900;
-  font-style: italic;
   font-display: swap;
 }
 
@@ -48,14 +40,17 @@ body {
 
 body {
   margin: 0;
-  font-family: 'Nunito Sans', sans-serif;
+  font-family: 'Manrope', sans-serif;
   color: var(--mat-sys-on-surface);
+  // Pale lavender drifts into pale sky blue across the page: the hue shifts, the lightness stays low-key.
   background:
-    radial-gradient(circle at 0% 100%, color-mix(in srgb, var(--mat-sys-error-container) 55%, transparent), transparent 35%),
-    radial-gradient(circle at 15% 15%, color-mix(in srgb, var(--mat-sys-tertiary-container) 70%, transparent), transparent 40%),
-    radial-gradient(circle at 100% 0%, color-mix(in srgb, var(--mat-sys-primary-container) 85%, transparent), transparent 50%),
-    radial-gradient(circle at 85% 100%, color-mix(in srgb, var(--mat-sys-tertiary-container) 80%, transparent), transparent 45%),
-    color-mix(in srgb, var(--mat-sys-primary-container) 30%, var(--mat-sys-surface-container-low));
+    radial-gradient(70rem 50rem at 0% 0%, color-mix(in srgb, var(--mat-sys-primary-container) 75%, transparent), transparent 75%),
+    radial-gradient(70rem 50rem at 100% 100%, color-mix(in srgb, var(--app-tone-sky) 80%, transparent), transparent 75%),
+    linear-gradient(
+      135deg,
+      color-mix(in srgb, var(--mat-sys-primary-container) 45%, var(--mat-sys-surface)),
+      color-mix(in srgb, var(--app-tone-sky) 50%, var(--mat-sys-surface))
+    );
   background-attachment: fixed;
 }
 

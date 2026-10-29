@@ -6,9 +6,10 @@
   width: 2rem;
   height: 2rem;
   border-radius: 50%;
-  background: var(--birthday-tone);
-  color: var(--birthday-on-tone);
-  font-size: 0.875rem;
+  background: var(--birthday-tone-container);
+  color: var(--birthday-tone);
+  font-size: 0.75rem;
   font-weight: 700;
+  letter-spacing: 0.02em;
   line-height: 1;
 }

@@ -18,7 +18,6 @@
   }
 
   .header {
-    flex-direction: column;
     justify-content: center;
     padding-inline: 0;
   }
@@ -29,6 +28,10 @@
 
   .logo__small {
     display: block;
+  }
+
+  .section-label {
+    visibility: hidden;
   }
 
   // Visually hidden: the label stays the link's accessible name.
@@ -42,19 +45,17 @@
   }
 }
 
-// A floating glass card that matches the page cards.
+// A light panel that blends into the page instead of a heavy card.
 :host {
+  position: relative;
+  z-index: 1;
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
-  width: 16rem;
-  margin: 1rem 0 1rem 1rem;
-  padding: 1.25rem 0.75rem;
-  overflow-y: auto;
-  border: 0.0625rem solid color-mix(in srgb, var(--mat-sys-surface-container-lowest) 80%, transparent);
-  border-radius: 1.5rem;
-  background: color-mix(in srgb, var(--mat-sys-surface-container-lowest) 65%, transparent);
-  box-shadow: 0 0.5rem 2rem color-mix(in srgb, var(--mat-sys-primary) 8%, transparent);
+  gap: 0.5rem;
+  width: 15rem;
+  padding: 0 1rem 1.5rem;
+  border-right: 0.0625rem solid color-mix(in srgb, var(--mat-sys-outline-variant) 45%, transparent);
+  background: color-mix(in srgb, var(--mat-sys-surface-container-lowest) 45%, transparent);
   backdrop-filter: blur(1.5rem);
 }
 
@@ -77,21 +78,24 @@
   }
 }
 
+// Same height as the top bar, so the logo lines up with the page title.
 .header {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 0.5rem;
-  min-height: 2.5rem;
+  flex-shrink: 0;
+  height: 4.5rem;
+  margin-bottom: 1rem;
   padding-inline: 0.5rem;
 }
 
 .logo {
   display: flex;
+  min-width: 0;
   border-radius: 0.5rem;
 
   img {
     width: auto;
+    max-width: 100%;
     height: 2rem;
   }
 
@@ -100,51 +104,104 @@
   }
 }
 
+// A small round tab that sits on the panel's right edge, level with the logo.
 .toggle {
-  color: var(--mat-sys-on-surface-variant);
+  @include mat.icon-button-overrides(
+    (
+      state-layer-size: 1.75rem,
+      icon-size: 1.125rem,
+      icon-color: var(--mat-sys-on-surface-variant),
+    )
+  );
+
+  position: absolute;
+  top: 2.25rem;
+  right: -0.875rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: 0.0625rem solid color-mix(in srgb, var(--mat-sys-outline-variant) 60%, transparent);
+  background: var(--mat-sys-surface-container-lowest);
+  box-shadow: 0 0.125rem 0.5rem color-mix(in srgb, var(--mat-sys-primary) 12%, transparent);
+  transform: translateY(-50%);
+  transition:
+    color 150ms ease,
+    box-shadow 150ms ease;
+
+  mat-icon {
+    width: 1.125rem;
+    height: 1.125rem;
+    font-size: 1.125rem;
+  }
+
+  &:hover {
+    color: var(--mat-sys-primary);
+    box-shadow: 0 0.25rem 0.75rem color-mix(in srgb, var(--mat-sys-primary) 20%, transparent);
+  }
+}
+
+.section-label {
+  padding: 0 0.75rem 0.25rem;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: var(--mat-sys-outline);
 }
 
 .items {
   @include mat.list-overrides(
     (
-      active-indicator-shape: 0.75rem,
-      active-indicator-color: var(--mat-sys-primary-container),
+      active-indicator-shape: 0.875rem,
+      active-indicator-color: var(--mat-sys-surface-container-lowest),
+      list-item-one-line-container-height: 2.75rem,
       list-item-label-text-size: 0.9375rem,
-      list-item-label-text-weight: 600,
+      list-item-label-text-weight: 500,
       list-item-label-text-color: var(--mat-sys-on-surface-variant),
       list-item-hover-label-text-color: var(--mat-sys-on-surface),
+      list-item-leading-icon-color: var(--mat-sys-outline),
+      list-item-hover-leading-icon-color: var(--mat-sys-on-surface-variant),
+      list-item-hover-state-layer-color: var(--mat-sys-primary),
+      list-item-hover-state-layer-opacity: 0.05,
     )
   );
 
   display: flex;
   flex-direction: column;
   gap: 0.25rem;
+  min-height: 0;
   padding: 0;
-}
-
-// Each item gets its own tone, cycling for longer menus, to echo the colorful birthday chips.
-@mixin item-tone($tone) {
-  @include mat.list-overrides(
-    (
-      list-item-leading-icon-color: $tone,
-      list-item-hover-leading-icon-color: $tone,
-    )
-  );
+  overflow-x: hidden;
+  overflow-y: auto;
 }
 
 .item {
-  @include item-tone(var(--mat-sys-primary));
+  border-radius: 0.875rem;
+  transition: box-shadow 150ms ease;
 
-  &:nth-child(3n + 2) {
-    @include item-tone(var(--mat-sys-tertiary));
+  mat-icon {
+    transition: font-variation-settings 150ms ease;
   }
 
-  &:nth-child(3n) {
-    @include item-tone(var(--mat-sys-error));
-  }
+  &[aria-current='page'] {
+    @include mat.list-overrides(
+      (
+        list-item-leading-icon-color: var(--mat-sys-primary),
+        list-item-hover-leading-icon-color: var(--mat-sys-primary),
+      )
+    );
 
-  &[aria-current='page'] .item-label {
-    color: var(--mat-sys-on-primary-container);
-    font-weight: 700;
+    box-shadow: 0 0.25rem 1rem color-mix(in srgb, var(--mat-sys-primary) 10%, transparent);
+
+    mat-icon {
+      font-variation-settings: 'FILL' 1;
+    }
+
+    .item-label {
+      color: var(--mat-sys-on-surface);
+      font-weight: 600;
+    }
   }
 }

@@ -1,23 +1,47 @@
 <div class="header">
-  <h2 class="header__title">Next Birthdays</h2>
+  <h2 class="header__title">
+    <mat-icon class="header__icon" aria-hidden="true">redeem</mat-icon>
+    Upcoming
+  </h2>
   <a class="header__link" routerLink="/people">View all</a>
 </div>
+<mat-form-field class="search" appearance="outline" subscriptSizing="dynamic">
+  <mat-icon matPrefix aria-hidden="true">search</mat-icon>
+  <input
+    matInput
+    type="search"
+    placeholder="Search people…"
+    aria-label="Search people"
+    [value]="searchQuery()"
+    (input)="setSearchQuery($event)"
+    (keydown.escape)="clearSearch()"
+  />
+  @if (searchQuery()) {
+    <button matSuffix matIconButton type="button" aria-label="Clear search" (click)="clearSearch()">
+      <mat-icon>close</mat-icon>
+    </button>
+  }
+</mat-form-field>
 @if (nextBirthdays().length) {
   <ul class="list">
     @for (item of nextBirthdays(); track item.birthday.id) {
-      <li class="item">
+      <li class="item" [class.item_soon]="item.daysUntil <= soonDays">
         <ui-birthday-avatar class="item__avatar" [name]="item.birthday.name"></ui-birthday-avatar>
         <div class="item__body">
           <span class="item__name">{{ item.birthday.name }}</span>
           <span class="item__date">
-            {{ item.date | date: 'MMM d' }} ·
-            {{ getDaysUntilLabel(item.daysUntil) }}
+            {{ item.date | date: 'MMM d' }}
+            @if (item.age > 0) {
+              · {{ item.age }}
+            }
           </span>
+          <span class="item__until">{{ getDaysUntilLabel(item.daysUntil) }}</span>
         </div>
       </li>
     }
   </ul>
-} @else {
+} @else if (searchQuery()) {
+  <p class="empty">No one matches “{{ searchQuery() }}”</p>
+} @else if (!isLoading()) {
   <p class="empty">No birthdays yet</p>
 }
-<img class="decoration" src="/assets/images/birthday-gift.svg" alt="" width="240" height="200" />

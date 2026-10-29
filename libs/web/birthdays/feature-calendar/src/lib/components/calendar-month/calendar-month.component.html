@@ -8,7 +8,7 @@
 </div>
 <div class="days">
   @for (day of days(); track day.date.getTime()) {
-    <div class="day" [class.day_outside]="!day.isCurrentMonth" [class.day_today]="day.isToday">
+    <div class="day" [class.day_outside]="!day.isCurrentMonth" [class.day_today]="day.isToday" [class.day_birthday]="day.birthdays.length">
       <!-- Covers the whole cell; birthday buttons sit on top of it, because buttons cannot be nested. -->
       <button
         class="day__select"
@@ -29,7 +29,7 @@
               [attr.aria-label]="'Edit birthday of ' + birthday.name"
               (click)="openEditBirthdayDialog(birthday)"
             >
-              <ui-birthday-chip [name]="birthday.name"></ui-birthday-chip>
+              <ui-birthday-chip [name]="birthday.name" [age]="getAge(birthday, day.date)"></ui-birthday-chip>
             </button>
           }
         </span>

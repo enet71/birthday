@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, computed, inject, Signal } from '@a
 import { DatePipe } from '@angular/common';
 import { MatIcon } from '@angular/material/icon';
 import { injectState, ReadonlyState } from '@birthday/web-shared-data-access';
-import { Birthday } from '@birthday/web-birthdays-util';
+import { Birthday, getAgeOnDate } from '@birthday/web-birthdays-util';
 import { getCalendarDayLabel } from '../../helpers';
 import { CalendarController, CalendarState } from '../../state';
 import { CalendarDay } from '../../types';
@@ -33,6 +33,10 @@ export class CalendarMonthComponent {
 
   protected getDayLabel(day: CalendarDay): string {
     return getCalendarDayLabel(day);
+  }
+
+  protected getAge(birthday: Birthday, date: Date): number {
+    return getAgeOnDate(birthday.birthDate, date);
   }
 
   protected openAddBirthdayDialog(date: Date): void {
