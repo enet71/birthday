@@ -4,7 +4,8 @@ import { APP_NOINDEX_DATA_KEY } from './app.constants';
 
 export const appRoutes: Route[] = [
   {
-    path: 'calendar',
+    path: '',
+    pathMatch: 'full',
     title: 'Calendar',
     loadChildren: () => import('@birthday/web-birthdays-feature-calendar').then((m) => m.CALENDAR_ROUTES),
   },
@@ -25,5 +26,11 @@ export const appRoutes: Route[] = [
     data: { [APP_NOINDEX_DATA_KEY]: true },
     loadComponent: () => import('./pages/settings/settings.component').then((m) => m.SettingsComponent),
   },
-  { path: '**', redirectTo: 'calendar' },
+  {
+    path: 'about',
+    title: 'About',
+    loadComponent: () => import('./pages/about/about.component').then((m) => m.AboutComponent),
+  },
+  { path: 'calendar', redirectTo: '' },
+  { path: '**', redirectTo: '' },
 ];
