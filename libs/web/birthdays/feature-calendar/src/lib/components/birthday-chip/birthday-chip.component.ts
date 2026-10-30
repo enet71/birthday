@@ -14,13 +14,13 @@ import { BirthdayTone } from '../../types';
 })
 export class BirthdayChipComponent {
   public readonly name: InputSignal<string> = input.required();
-  public readonly age: InputSignal<number | undefined> = input<number>();
+  public readonly age: InputSignal<number | null | undefined> = input<number | null>();
 
   protected readonly tone: Signal<BirthdayTone> = computed(() => getBirthdayTone(this.name()));
   // A birthday shown in a year before the birth year has no meaningful age.
   protected readonly visibleAge: Signal<number | null> = computed(() => {
-    const age: number | undefined = this.age();
+    const age: number | null | undefined = this.age();
 
-    return age !== undefined && age > 0 ? age : null;
+    return age != null && age > 0 ? age : null;
   });
 }

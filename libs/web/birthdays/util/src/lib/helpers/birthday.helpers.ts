@@ -1,8 +1,13 @@
-import { differenceInCalendarDays, format, getDaysInMonth, isBefore, isSameDay, parseISO, startOfDay } from 'date-fns';
+import { differenceInCalendarDays, format, getDaysInMonth, isBefore, isSameDay, parseISO, setYear, startOfDay } from 'date-fns';
+import { UNKNOWN_BIRTH_YEAR } from '../constants';
 import { Birthday, UpcomingBirthday } from '../types';
 
-export function toBirthDate(date: Date): string {
-  return format(date, 'yyyy-MM-dd');
+export function toBirthDate(date: Date, isYearKnown: boolean): string {
+  return format(isYearKnown ? date : setYear(date, UNKNOWN_BIRTH_YEAR), 'yyyy-MM-dd');
+}
+
+export function hasBirthYear(birthDate: string): boolean {
+  return parseISO(birthDate).getFullYear() !== UNKNOWN_BIRTH_YEAR;
 }
 
 export function getBirthdayInYear(birthDate: string, year: number): Date {
@@ -14,9 +19,9 @@ export function getBirthdayInYear(birthDate: string, year: number): Date {
   return new Date(year, month, day);
 }
 
-// The age a person turns on their birthday in the year of `date`.
-export function getAgeOnDate(birthDate: string, date: Date): number {
-  return date.getFullYear() - parseISO(birthDate).getFullYear();
+// The age a person turns on their birthday in the year of `date`, or `null` when the birth year is unknown.
+export function getAgeOnDate(birthDate: string, date: Date): number | null {
+  return hasBirthYear(birthDate) ? date.getFullYear() - parseISO(birthDate).getFullYear() : null;
 }
 
 export function isBirthdayOn(birthDate: string, day: Date): boolean {

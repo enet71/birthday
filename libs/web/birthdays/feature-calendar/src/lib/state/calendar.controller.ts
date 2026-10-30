@@ -50,11 +50,14 @@ export class CalendarController extends StateController {
     this.calendarState.birthdayDialog.set(null);
   }
 
-  public saveBirthday({ name, date }: BirthdayFormModel): void {
+  public saveBirthday({ name, month, day, year }: BirthdayFormModel): void {
     const dialog: BirthdayDialogData | null = this.calendarState.birthdayDialog();
+    const isYearKnown: boolean = year !== '';
+    // Without a year, a leap year keeps Feb 29; the year is then replaced by the unknown-year marker.
+    const date: Date = new Date(isYearKnown ? Number(year) : 2000, month - 1, day);
     const save$: Observable<Birthday> = dialog?.birthday
-      ? this.birthdaysController.updateBirthday(dialog.birthday.id, name, date)
-      : this.birthdaysController.addBirthday(name, date);
+      ? this.birthdaysController.updateBirthday(dialog.birthday.id, name, date, isYearKnown)
+      : this.birthdaysController.addBirthday(name, date, isYearKnown);
 
     save$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(() => this.closeBirthdayDialogIfCurrent(dialog));
   }

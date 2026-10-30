@@ -14,16 +14,35 @@
         <mat-error>{{ error.message }}</mat-error>
       }
     </mat-form-field>
-    <mat-form-field appearance="outline">
-      <mat-label>Date</mat-label>
-      <mat-icon matPrefix>event</mat-icon>
-      <input matInput [matDatepicker]="picker" [formField]="birthdayForm.date" />
-      <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-      <mat-datepicker #picker></mat-datepicker>
-      @for (error of birthdayForm.date().errors(); track error.kind) {
-        <mat-error>{{ error.message }}</mat-error>
-      }
-    </mat-form-field>
+    <div class="date">
+      <mat-form-field class="date__month" appearance="outline">
+        <mat-label>Month</mat-label>
+        <mat-select [formField]="birthdayForm.month">
+          @for (month of months; track $index) {
+            <mat-option [value]="$index + 1">{{ month | date: 'MMMM' }}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Day</mat-label>
+        <mat-select [formField]="birthdayForm.day">
+          @for (day of days(); track day) {
+            <mat-option [value]="day">{{ day }}</mat-option>
+          }
+        </mat-select>
+        @for (error of birthdayForm.day().errors(); track error.kind) {
+          <mat-error>{{ error.message }}</mat-error>
+        }
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Year</mat-label>
+        <input matInput inputmode="numeric" autocomplete="off" [formField]="birthdayForm.year" />
+        <mat-hint>Optional</mat-hint>
+        @for (error of birthdayForm.year().errors(); track error.kind) {
+          <mat-error>{{ error.message }}</mat-error>
+        }
+      </mat-form-field>
+    </div>
   </mat-dialog-content>
   <mat-dialog-actions class="actions" [class.actions_edit]="isEdit">
     @if (isEdit) {

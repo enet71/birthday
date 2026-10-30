@@ -31,7 +31,7 @@
           <span class="item__name">{{ item.birthday.name }}</span>
           <span class="item__date">
             {{ item.date | date: 'MMM d' }}
-            @if (item.age > 0) {
+            @if ((item.age ?? 0) > 0) {
               · {{ item.age }}
             }
           </span>

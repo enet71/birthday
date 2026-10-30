@@ -39,8 +39,8 @@ export class BirthdaysController extends StateController {
   }
 
   // The methods below complete without emitting when the change could not be saved.
-  public addBirthday(name: string, date: Date): Observable<Birthday> {
-    return this.birthdaysData.create({ name: name.trim(), birthDate: toBirthDate(date) }).pipe(
+  public addBirthday(name: string, date: Date, isYearKnown: boolean): Observable<Birthday> {
+    return this.birthdaysData.create({ name: name.trim(), birthDate: toBirthDate(date, isYearKnown) }).pipe(
       tap((birthday: Birthday) => this.updateBirthdays((birthdays: Birthday[]) => [...birthdays, birthday])),
       catchError(() => {
         this.notifications.createErrorNotification("Couldn't save the birthday");
@@ -49,8 +49,8 @@ export class BirthdaysController extends StateController {
     );
   }
 
-  public updateBirthday(id: string, name: string, date: Date): Observable<Birthday> {
-    return this.birthdaysData.update(id, { name: name.trim(), birthDate: toBirthDate(date) }).pipe(
+  public updateBirthday(id: string, name: string, date: Date, isYearKnown: boolean): Observable<Birthday> {
+    return this.birthdaysData.update(id, { name: name.trim(), birthDate: toBirthDate(date, isYearKnown) }).pipe(
       tap((updated: Birthday) =>
         this.updateBirthdays((birthdays: Birthday[]) => birthdays.map((birthday: Birthday) => (birthday.id === id ? updated : birthday))),
       ),

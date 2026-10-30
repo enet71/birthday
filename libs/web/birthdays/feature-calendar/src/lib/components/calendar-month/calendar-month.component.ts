@@ -35,7 +35,7 @@ export class CalendarMonthComponent {
     return getCalendarDayLabel(day);
   }
 
-  protected getAge(birthday: Birthday, date: Date): number {
+  protected getAge(birthday: Birthday, date: Date): number | null {
     return getAgeOnDate(birthday.birthDate, date);
   }
 
