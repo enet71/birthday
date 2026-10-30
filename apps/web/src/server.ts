@@ -1,9 +1,4 @@
-import {
-  AngularNodeAppEngine,
-  createNodeRequestHandler,
-  isMainModule,
-  writeResponseToNodeResponse,
-} from '@angular/ssr/node';
+import { AngularNodeAppEngine, createNodeRequestHandler, isMainModule, writeResponseToNodeResponse } from '@angular/ssr/node';
 import express from 'express';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -34,6 +29,12 @@ app.use(
     maxAge: '1y',
     index: false,
     redirect: false,
+    setHeaders: (res, filePath) => {
+      // Root public files (robots.txt, sitemap.xml, manifest, icons) keep fixed names, so caches must revalidate them.
+      if (dirname(filePath) === browserDistFolder && !/\.(js|css)$/.test(filePath)) {
+        res.setHeader('Cache-Control', 'no-cache');
+      }
+    },
   }),
 );
 
@@ -43,9 +44,7 @@ app.use(
 app.use('/**', (req, res, next) => {
   angularApp
     .handle(req)
-    .then((response) =>
-      response ? writeResponseToNodeResponse(response, res) : next(),
-    )
+    .then((response) => (response ? writeResponseToNodeResponse(response, res) : next()))
     .catch(next);
 });
 
@@ -65,9 +64,7 @@ if (isMainModule(import.meta.url) || process.env['pm_id']) {
     if (process.env['NX_READY_SIGNAL_SOCKET']) {
       try {
         // Function keeps TypeScript and bundlers from rewriting or bundling the import
-        const load = new Function('s', 'return import(s)') as (
-          s: string,
-        ) => Promise<{ emitReadySignal(server: unknown): boolean }>;
+        const load = new Function('s', 'return import(s)') as (s: string) => Promise<{ emitReadySignal(server: unknown): boolean }>;
         (await load('@nx/js/ready-signal')).emitReadySignal(server);
       } catch {
         // @nx/js isn't installed
