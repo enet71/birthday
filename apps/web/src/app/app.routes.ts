@@ -1,12 +1,13 @@
 import { Route } from '@angular/router';
 import { APP_LAYOUT_SEARCH_DATA_KEY, AppLayoutSearch } from '@birthday/web-layout-util';
-import { APP_NOINDEX_DATA_KEY } from './app.constants';
+import { APP_DOCUMENT_TITLE_DATA_KEY, APP_NOINDEX_DATA_KEY } from './app.constants';
 
 export const appRoutes: Route[] = [
   {
     path: '',
     pathMatch: 'full',
     title: 'Calendar',
+    data: { [APP_DOCUMENT_TITLE_DATA_KEY]: 'Birthdly — birthday calendar' },
     loadChildren: () => import('@birthday/web-birthdays-feature-calendar').then((m) => m.CALENDAR_ROUTES),
   },
   {

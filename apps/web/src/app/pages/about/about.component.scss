@@ -1,0 +1,48 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
+  max-width: 48rem;
+  padding-bottom: 2rem;
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1rem;
+
+  &__title {
+    margin: 0;
+    font-family: var(--app-font-display);
+    font-size: 1.75rem;
+    font-weight: 400;
+    color: var(--mat-sys-on-surface);
+  }
+
+  &__text {
+    margin: 0;
+    line-height: 1.6;
+    color: var(--mat-sys-on-surface-variant);
+  }
+}
+
+.features {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin: 0;
+  padding-left: 1.25rem;
+  line-height: 1.5;
+  color: var(--mat-sys-on-surface-variant);
+}
+
+.faq {
+  width: 100%;
+
+  p {
+    margin: 0;
+    line-height: 1.6;
+    color: var(--mat-sys-on-surface-variant);
+  }
+}
