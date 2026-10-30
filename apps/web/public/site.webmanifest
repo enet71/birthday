@@ -2,7 +2,7 @@
   "name": "Birthdly",
   "short_name": "Birthdly",
   "description": "Birthday calendar and reminders.",
-  "start_url": "/calendar",
+  "start_url": "/",
   "display": "standalone",
   "background_color": "#fdf8ff",
   "theme_color": "#fdf8ff",

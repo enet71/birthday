@@ -7,13 +7,13 @@ export const APP_NOINDEX_DATA_KEY = 'noindex';
 
 export const APP_LAYOUT: AppLayoutConfig = {
   appName: 'Birthdly',
-  homePath: '/calendar',
+  homePath: '/',
   logo: { src: '/logo.svg', width: 112, height: 32 },
   logoSmall: { src: '/logo-small.svg', width: 32, height: 32 },
   menu: [
     {
       label: 'Calendar',
-      path: '/calendar',
+      path: '/',
       icon: 'calendar_month',
     },
     {

@@ -3,6 +3,7 @@
     <a
       class="item"
       routerLinkActive="item_active"
+      [routerLinkActiveOptions]="{ exact: item.path === config.homePath }"
       ariaCurrentWhenActive="page"
       [routerLink]="item.path"
     >

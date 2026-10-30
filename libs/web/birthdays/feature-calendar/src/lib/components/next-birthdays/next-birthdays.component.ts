@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, inject, Signal } from '@angular/core';
 import { DatePipe } from '@angular/common';
-import { MatIconButton } from '@angular/material/button';
+import { MatButton, MatIconButton } from '@angular/material/button';
 import { MatFormField, MatPrefix, MatSuffix } from '@angular/material/form-field';
 import { MatIcon } from '@angular/material/icon';
 import { MatInput } from '@angular/material/input';
@@ -13,7 +13,7 @@ import { BirthdayAvatarComponent } from '../birthday-avatar';
 
 @Component({
   selector: 'ui-next-birthdays',
-  imports: [DatePipe, MatFormField, MatIcon, MatIconButton, MatInput, MatPrefix, MatSuffix, RouterLink, BirthdayAvatarComponent],
+  imports: [DatePipe, MatButton, MatFormField, MatIcon, MatIconButton, MatInput, MatPrefix, MatSuffix, RouterLink, BirthdayAvatarComponent],
   templateUrl: './next-birthdays.component.html',
   styleUrl: './next-birthdays.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -42,6 +42,10 @@ export class NextBirthdaysComponent {
 
   protected clearSearch(): void {
     this.calendarController.setSearchQuery('');
+  }
+
+  protected openAddBirthdayDialog(): void {
+    this.calendarController.openAddBirthdayDialog();
   }
 
   protected getDaysUntilLabel(daysUntil: number): string {

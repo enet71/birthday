@@ -21,6 +21,7 @@
       class="item"
       mat-list-item
       routerLinkActive
+      [routerLinkActiveOptions]="{ exact: item.path === config.homePath }"
       #link="routerLinkActive"
       ariaCurrentWhenActive="page"
       [routerLink]="item.path"

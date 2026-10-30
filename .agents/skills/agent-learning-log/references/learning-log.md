@@ -49,6 +49,16 @@ Add new entries under the category that best matches their purpose, keeping newe
 
 ### Workflow and Tooling
 
+## 2026-10-30 - Reply in the user's language
+
+- Type: error
+- Context: The user wrote in Russian, and the agent wrote its replies, questions, and reports in English.
+- Incorrect behavior: Answering, asking clarifying questions, and reporting in English when the user writes in another language.
+- Preferred behavior: Write every reply, clarifying question, plan, and report in the language of the user's latest message. Code, identifiers, commit messages, branch names, and GitHub Issues keep their own repository rules (English).
+- Generalized rule: Match the conversation language to the user's language; repository artifacts follow their own language rules.
+- Trigger cues: user writes in Russian, reply language, report language, clarifying questions, AskUserQuestion, plan, final report
+- Status: active
+
 ## 2026-09-24 - Ask clarifying questions before acting
 
 - Type: preference
