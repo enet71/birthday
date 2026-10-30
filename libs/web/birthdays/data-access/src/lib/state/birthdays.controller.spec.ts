@@ -45,14 +45,14 @@ describe('BirthdaysController', () => {
 
   describe('addBirthday', () => {
     it('appends a birthday with a trimmed name and a yyyy-MM-dd birth date', () => {
-      controller.addBirthday('  Liam  ', new Date(1999, 9, 25, 18, 45)).subscribe();
+      controller.addBirthday('  Liam  ', new Date(1999, 9, 25, 18, 45), true).subscribe();
 
       expect(state.birthdays()).toEqual([{ id: expect.any(String), name: 'Liam', birthDate: '1999-10-25' }]);
     });
 
     it('gives every added birthday a unique id', () => {
-      controller.addBirthday('Liam', new Date(1999, 9, 25)).subscribe();
-      controller.addBirthday('Liam', new Date(1999, 9, 25)).subscribe();
+      controller.addBirthday('Liam', new Date(1999, 9, 25), true).subscribe();
+      controller.addBirthday('Liam', new Date(1999, 9, 25), true).subscribe();
 
       const ids: string[] = state.birthdays().map((birthday: Birthday) => birthday.id);
 
@@ -60,7 +60,7 @@ describe('BirthdaysController', () => {
     });
 
     it('updates upcoming birthdays with the added birthday', () => {
-      controller.addBirthday('Liam', new Date(1999, 9, 25)).subscribe();
+      controller.addBirthday('Liam', new Date(1999, 9, 25), true).subscribe();
 
       const first: UpcomingBirthday = state.upcomingBirthdays()[0];
 
@@ -71,7 +71,7 @@ describe('BirthdaysController', () => {
   });
 
   it('clears the birthdays when the state is reset after adding', () => {
-    controller.addBirthday('Liam', new Date(1999, 9, 25)).subscribe();
+    controller.addBirthday('Liam', new Date(1999, 9, 25), true).subscribe();
 
     state.resetState();
 

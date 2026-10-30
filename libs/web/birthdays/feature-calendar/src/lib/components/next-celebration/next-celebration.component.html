@@ -3,7 +3,7 @@
     <p class="label">Next celebration</p>
     <h2 class="name">{{ next.birthday.name }}</h2>
     <p class="details">
-      @if (next.age > 0) {
+      @if ((next.age ?? 0) > 0) {
         Turns {{ next.age }} ·
       }
       {{ next.date | date: 'EEEE, MMMM d' }}

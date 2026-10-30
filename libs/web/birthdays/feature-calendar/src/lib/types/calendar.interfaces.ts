@@ -20,7 +20,11 @@ export interface BirthdayDialogData {
 
 export interface BirthdayFormModel {
   name: string;
-  date: Date;
+  // 1–12.
+  month: number;
+  day: number;
+  // Empty when the birth year is unknown.
+  year: string;
 }
 
 export type CalendarView = 'month' | 'year';
@@ -28,5 +32,5 @@ export type CalendarView = 'month' | 'year';
 export type BirthdayTone = 'violet' | 'rose' | 'sky' | 'peach' | 'mint';
 
 export interface UpcomingCelebration extends UpcomingBirthday {
-  age: number;
+  age: number | null;
 }
