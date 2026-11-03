@@ -38,6 +38,18 @@ export class BirthdaysController extends StateController {
     this.birthdaysState.birthdaysResource.reload();
   }
 
+  // For changes made outside this app, for example an import from Google. `reload()` is ignored while a load is in
+  // flight, and that load may have read the list before the change, so this waits for it to finish first.
+  public reloadBirthdaysWhenIdle(): void {
+    this.isListLoading$
+      .pipe(
+        filter((isLoading: boolean) => !isLoading),
+        take(1),
+        takeUntilDestroyed(this.destroyRef),
+      )
+      .subscribe(() => this.birthdaysState.birthdaysResource.reload());
+  }
+
   // The methods below complete without emitting when the change could not be saved.
   public addBirthday(name: string, date: Date, isYearKnown: boolean): Observable<Birthday> {
     return this.birthdaysData.create({ name: name.trim(), birthDate: toBirthDate(date, isYearKnown) }).pipe(

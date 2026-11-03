@@ -5,9 +5,10 @@ import { provideRouter, TitleStrategy } from '@angular/router';
 import { provideClientHydration, withEventReplay } from '@angular/platform-browser';
 import { AuthClient } from '@birthday/web-auth-data-access';
 import { BirthdaysRemoteStorage } from '@birthday/web-birthdays-data-access';
+import { GoogleCalendarClient } from '@birthday/web-google-calendar-data-access';
 import { APP_LAYOUT_CONFIG } from '@birthday/web-layout-util';
 import { ENVIRONMENT_TOKEN } from '@birthday/web-shared-util';
-import { BirthdaysSupabaseService, provideSupabase, SupabaseAuthClient } from '@birthday/web-supabase';
+import { BirthdaysSupabaseService, GoogleCalendarSupabaseClient, provideSupabase, SupabaseAuthClient } from '@birthday/web-supabase';
 import { appRoutes } from './app.routes';
 import { APP_LAYOUT } from './app.constants';
 import { AppPageMetaStrategy } from './app-page-meta.strategy';
@@ -23,6 +24,7 @@ export const appConfig: ApplicationConfig = {
     // Swap these implementations to move auth and account data to another backend, for example the NestJS API.
     { provide: AuthClient, useExisting: SupabaseAuthClient },
     { provide: BirthdaysRemoteStorage, useExisting: BirthdaysSupabaseService },
+    { provide: GoogleCalendarClient, useExisting: GoogleCalendarSupabaseClient },
     {
       provide: MAT_ICON_DEFAULT_OPTIONS,
       useValue: { fontSet: 'material-symbols-outlined' },
