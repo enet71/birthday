@@ -1,8 +1,9 @@
-import { inject, Injectable } from '@angular/core';
+import { effect, inject, Injectable, untracked } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { Observable } from 'rxjs';
+import { filter, Observable } from 'rxjs';
 import { addMonths, addYears, parseISO, startOfMonth } from 'date-fns';
-import { StateController } from '@birthday/web-shared-data-access';
+import { GoogleCalendarController, GoogleCalendarState } from '@birthday/web-google-calendar-data-access';
+import { injectState, ReadonlyState, StateController } from '@birthday/web-shared-data-access';
 import { BirthdaysController } from '@birthday/web-birthdays-data-access';
 import { Birthday } from '@birthday/web-birthdays-util';
 import { BirthdayDialogData, BirthdayFormModel, CalendarView } from '../types';
@@ -12,10 +13,18 @@ import { CalendarState } from './calendar.state';
 export class CalendarController extends StateController {
   private readonly calendarState: CalendarState = inject(CalendarState);
   private readonly birthdaysController: BirthdaysController = inject(BirthdaysController);
+  private readonly googleCalendarState: ReadonlyState<GoogleCalendarState> = injectState(GoogleCalendarState);
+  private readonly googleCalendarController: GoogleCalendarController = inject(GoogleCalendarController);
 
   constructor() {
     super();
     this.birthdaysController.reloadBirthdays();
+    // Brings changes from Google once the connection is known; the server limits it to once an hour.
+    effect(() => {
+      if (this.googleCalendarState.isConnected()) {
+        untracked(() => this.importFromGoogle());
+      }
+    });
   }
 
   public setView(view: CalendarView): void {
@@ -81,6 +90,13 @@ export class CalendarController extends StateController {
     if (this.calendarState.birthdayDialog() === dialog) {
       this.closeBirthdayDialog();
     }
+  }
+
+  private importFromGoogle(): void {
+    this.googleCalendarController
+      .syncAutomatically()
+      .pipe(filter(Boolean), takeUntilDestroyed(this.destroyRef))
+      .subscribe(() => this.birthdaysController.reloadBirthdaysWhenIdle());
   }
 
   private shiftViewMonth(step: number): void {

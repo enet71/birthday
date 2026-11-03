@@ -1,0 +1,60 @@
+<mat-card appearance="outlined">
+  <mat-card-header>
+    <h2 mat-card-title>Google Calendar</h2>
+  </mat-card-header>
+  <mat-card-content>
+    <div class="content" aria-live="polite">
+      @switch (view()) {
+        @case ('loading') {
+          <mat-progress-spinner class="spinner" mode="indeterminate" diameter="32" aria-label="Loading Google Calendar status" />
+        }
+        @case ('signedOut') {
+          <p class="description">Sign in with Google to sync your birthdays with Google Calendar.</p>
+          <button matButton="outlined" type="button" disabledInteractive [disabled]="isPending()" (click)="signInWithGoogle()">
+            <img class="google-logo" src="/assets/images/google-logo.svg" alt="" width="18" height="18" />
+            Sign in with Google
+          </button>
+        }
+        @case ('error') {
+          <p class="description">Couldn't load the Google Calendar status.</p>
+          <button matButton="outlined" type="button" (click)="reloadConnection()">Try again</button>
+        }
+        @case ('disconnected') {
+          <p class="description">
+            Show your birthdays among the birthdays in Google Calendar, and bring birthdays from your Google contacts and calendar into Birthdly.
+          </p>
+          <button matButton="filled" type="button" disabledInteractive [disabled]="isPending()" (click)="connect()">Connect Google Calendar</button>
+        }
+        @case ('connected') {
+          <p class="status">
+            <mat-icon class="status__icon" aria-hidden="true">check_circle</mat-icon>
+            Connected
+          </p>
+          <p class="description">
+            @if (lastSyncedAt(); as lastSyncedAt) {
+              Last synced {{ lastSyncedAt | date: 'medium' }}
+            } @else {
+              Not synced yet
+            }
+          </p>
+          <p class="description">Disconnecting removes the birthdays Birthdly added to Google Calendar. They stay in Birthdly.</p>
+          <div class="actions">
+            <button matButton="filled" type="button" disabledInteractive [disabled]="isPending()" (click)="syncNow()">
+              <mat-icon>sync</mat-icon>
+              Sync now
+            </button>
+            <button matButton="outlined" type="button" disabledInteractive [disabled]="isPending()" (click)="disconnect()">Disconnect</button>
+          </div>
+        }
+        @case ('revoked') {
+          <p class="status status_error">
+            <mat-icon class="status__icon" aria-hidden="true">error</mat-icon>
+            Access lost
+          </p>
+          <p class="description">Google no longer lets Birthdly use your calendar. Connect again to resume syncing.</p>
+          <button matButton="filled" type="button" disabledInteractive [disabled]="isPending()" (click)="connect()">Reconnect</button>
+        }
+      }
+    </div>
+  </mat-card-content>
+</mat-card>

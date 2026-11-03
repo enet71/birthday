@@ -28,7 +28,9 @@
       "@birthday/web-birthdays-feature-calendar": ["./libs/web/birthdays/feature-calendar/src/index.ts"],
       "@birthday/web-auth-data-access": ["./libs/web/auth/data-access/src/index.ts"],
       "@birthday/web-supabase": ["./libs/web/supabase/src/index.ts"],
-      "@birthday/web-auth-feature-account": ["./libs/web/auth/feature-account/src/index.ts"]
+      "@birthday/web-auth-feature-account": ["./libs/web/auth/feature-account/src/index.ts"],
+      "@birthday/web-google-calendar-data-access": ["./libs/web/google-calendar/data-access/src/index.ts"],
+      "@birthday/web-google-calendar-feature-sync": ["./libs/web/google-calendar/feature-sync/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

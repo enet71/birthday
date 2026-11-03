@@ -6,28 +6,95 @@ export type Database = {
   __InternalSupabase: {
     PostgrestVersion: '14.18';
   };
+  graphql_public: {
+    Tables: {
+      [_ in never]: never;
+    };
+    Views: {
+      [_ in never]: never;
+    };
+    Functions: {
+      graphql: {
+        Args: {
+          extensions?: Json;
+          operationName?: string;
+          query?: string;
+          variables?: Json;
+        };
+        Returns: Json;
+      };
+    };
+    Enums: {
+      [_ in never]: never;
+    };
+    CompositeTypes: {
+      [_ in never]: never;
+    };
+  };
   public: {
     Tables: {
       birthdays: {
         Row: {
           birth_date: string;
           created_at: string;
+          google_contact_id: string | null;
+          google_contact_snapshot: string | null;
+          google_event_id: string | null;
           id: string;
           name: string;
+          updated_at: string;
           user_id: string;
         };
         Insert: {
           birth_date: string;
           created_at?: string;
+          google_contact_id?: string | null;
+          google_contact_snapshot?: string | null;
+          google_event_id?: string | null;
           id?: string;
           name: string;
+          updated_at?: string;
           user_id?: string;
         };
         Update: {
           birth_date?: string;
           created_at?: string;
+          google_contact_id?: string | null;
+          google_contact_snapshot?: string | null;
+          google_event_id?: string | null;
           id?: string;
           name?: string;
+          updated_at?: string;
+          user_id?: string;
+        };
+        Relationships: [];
+      };
+      google_calendar_connections: {
+        Row: {
+          connected_at: string;
+          deletions_checked_at: string;
+          last_pulled_at: string;
+          last_synced_at: string | null;
+          status: string;
+          sync_running_until: string;
+          user_id: string;
+        };
+        Insert: {
+          connected_at?: string;
+          deletions_checked_at?: string;
+          last_pulled_at?: string;
+          last_synced_at?: string | null;
+          status: string;
+          sync_running_until?: string;
+          user_id: string;
+        };
+        Update: {
+          connected_at?: string;
+          deletions_checked_at?: string;
+          last_pulled_at?: string;
+          last_synced_at?: string | null;
+          status?: string;
+          sync_running_until?: string;
           user_id?: string;
         };
         Relationships: [];
@@ -37,7 +104,18 @@ export type Database = {
       [_ in never]: never;
     };
     Functions: {
-      [_ in never]: never;
+      delete_google_calendar_refresh_token: {
+        Args: { target_user_id: string };
+        Returns: undefined;
+      };
+      get_google_calendar_refresh_token: {
+        Args: { target_user_id: string };
+        Returns: string;
+      };
+      set_google_calendar_refresh_token: {
+        Args: { refresh_token: string; target_user_id: string };
+        Returns: undefined;
+      };
     };
     Enums: {
       [_ in never]: never;
@@ -154,6 +232,9 @@ export type CompositeTypes<
     : never;
 
 export const Constants = {
+  graphql_public: {
+    Enums: {},
+  },
   public: {
     Enums: {},
   },
