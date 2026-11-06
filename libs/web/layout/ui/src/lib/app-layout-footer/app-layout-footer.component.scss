@@ -1,0 +1,31 @@
+// Place it with the host element, so the parent can lay it out as a row or a column.
+:host {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.5rem;
+  font-size: 0.75rem;
+  line-height: 1rem;
+  color: var(--mat-sys-on-surface-variant);
+}
+
+.brand {
+  margin: 0;
+}
+
+.links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 0.75rem;
+}
+
+.link {
+  border-radius: 0.25rem;
+  color: inherit;
+  text-decoration: none;
+
+  &:hover,
+  &:focus-visible {
+    color: var(--mat-sys-primary);
+    text-decoration: underline;
+  }
+}

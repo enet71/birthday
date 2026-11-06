@@ -20,6 +20,17 @@ export interface AppLayoutPrimaryAction {
   queryParams?: Record<string, string>;
 }
 
+export interface AppLayoutLink {
+  label: string;
+  path: string;
+}
+
+// Small print with the app name, a tagline, and secondary links such as the legal pages.
+export interface AppLayoutFooter {
+  tagline: string;
+  links: AppLayoutLink[];
+}
+
 export interface AppLayoutConfig {
   appName: string;
   homePath: string;
@@ -27,6 +38,7 @@ export interface AppLayoutConfig {
   logoSmall: AppLayoutLogo;
   menu: AppLayoutMenuItem[];
   primaryAction?: AppLayoutPrimaryAction;
+  footer?: AppLayoutFooter;
 }
 
 export interface AppLayoutSearch {

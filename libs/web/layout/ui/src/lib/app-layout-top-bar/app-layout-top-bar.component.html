@@ -1,5 +1,5 @@
-<a class="logo" [routerLink]="config.homePath" [attr.aria-label]="config.appName">
-  <img alt="" priority [ngSrc]="config.logoSmall.src" [width]="config.logoSmall.width" [height]="config.logoSmall.height" />
+<a class="logo" [routerLink]="config.homePath">
+  <img [alt]="config.appName" priority [ngSrc]="config.logoSmall.src" [width]="config.logoSmall.width" [height]="config.logoSmall.height" />
 </a>
 <h1 class="title">{{ pageTitle() }}</h1>
 @if (search(); as search) {

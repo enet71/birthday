@@ -1,0 +1,10 @@
+@if (config.footer; as footer) {
+  <p class="brand">
+    <strong>{{ config.appName }}</strong> · {{ footer.tagline }}
+  </p>
+  <nav class="links" aria-label="Site links">
+    @for (link of footer.links; track link.path) {
+      <a class="link" [routerLink]="link.path">{{ link.label }}</a>
+    }
+  </nav>
+}

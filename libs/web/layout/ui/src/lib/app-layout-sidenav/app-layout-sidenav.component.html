@@ -1,7 +1,13 @@
 <div class="header">
-  <a class="logo" [routerLink]="config.homePath" [attr.aria-label]="config.appName">
-    <img class="logo__full" alt="" priority [ngSrc]="config.logo.src" [width]="config.logo.width" [height]="config.logo.height" />
-    <img class="logo__small" alt="" [ngSrc]="config.logoSmall.src" [width]="config.logoSmall.width" [height]="config.logoSmall.height" />
+  <a class="logo" [routerLink]="config.homePath">
+    <img class="logo__full" [alt]="config.appName" priority [ngSrc]="config.logo.src" [width]="config.logo.width" [height]="config.logo.height" />
+    <img
+      class="logo__small"
+      [alt]="config.appName"
+      [ngSrc]="config.logoSmall.src"
+      [width]="config.logoSmall.width"
+      [height]="config.logoSmall.height"
+    />
   </a>
   <button
     class="toggle"
