@@ -35,6 +35,8 @@
 // A frosted glass panel, the mirror of the sidenav.
 .next-birthdays {
   grid-area: next-birthdays;
+  display: flex;
+  flex-direction: column;
   min-width: 0;
   border-left: 0.0625rem solid color-mix(in srgb, var(--mat-sys-surface-container-lowest) 55%, transparent);
   background: color-mix(in srgb, var(--mat-sys-surface-container-lowest) 42%, transparent);
@@ -46,6 +48,15 @@
   &__content {
     position: sticky;
     top: 0;
+  }
+
+  // Pinned to the bottom of the panel, also while a long page scrolls.
+  &__footer {
+    position: sticky;
+    bottom: 0;
+    margin-top: auto;
+    padding: 1rem;
+    border-top: 0.0625rem solid color-mix(in srgb, var(--mat-sys-outline-variant) 20%, transparent);
   }
 }
 
@@ -87,7 +98,8 @@
     border: 0.0625rem solid color-mix(in srgb, var(--mat-sys-surface-container-lowest) 55%, transparent);
     border-radius: 1.5rem;
 
-    &__content {
+    &__content,
+    &__footer {
       position: static;
     }
   }

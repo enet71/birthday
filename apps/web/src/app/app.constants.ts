@@ -37,4 +37,13 @@ export const APP_LAYOUT: AppLayoutConfig = {
     path: '/',
     queryParams: { [CALENDAR_ADD_BIRTHDAY_QUERY_PARAM]: '1' },
   },
+  // Google OAuth branding requires the app name and the legal links on the home page.
+  footer: {
+    tagline: 'free birthday calendar',
+    links: [
+      { label: 'About', path: '/about' },
+      { label: 'Privacy Policy', path: '/privacy' },
+      { label: 'Terms of Service', path: '/terms' },
+    ],
+  },
 };

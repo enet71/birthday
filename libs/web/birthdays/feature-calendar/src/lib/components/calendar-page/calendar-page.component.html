@@ -11,6 +11,10 @@
 </section>
 <aside class="next-birthdays" aria-label="Upcoming birthdays">
   <ui-next-birthdays class="next-birthdays__content"></ui-next-birthdays>
+  <!-- Google OAuth branding requires the app name and the legal links on the home page. -->
+  <footer class="next-birthdays__footer">
+    <ui-app-layout-footer></ui-app-layout-footer>
+  </footer>
 </aside>
 <div class="fab">
   <button matFab type="button" aria-label="Add birthday" (click)="openAddBirthdayDialog()">
