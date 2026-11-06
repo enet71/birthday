@@ -39,6 +39,16 @@ export const appRoutes: Route[] = [
     title: 'About',
     loadComponent: () => import('./pages/about/about.component').then((m) => m.AboutComponent),
   },
+  {
+    path: 'privacy',
+    title: 'Privacy Policy',
+    loadComponent: () => import('./pages/legal/privacy/privacy.component').then((m) => m.PrivacyComponent),
+  },
+  {
+    path: 'terms',
+    title: 'Terms of Service',
+    loadComponent: () => import('./pages/legal/terms/terms.component').then((m) => m.TermsComponent),
+  },
   { path: 'calendar', redirectTo: '' },
   { path: '**', redirectTo: '' },
 ];
