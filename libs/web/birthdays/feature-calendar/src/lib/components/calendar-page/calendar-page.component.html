@@ -1,4 +1,4 @@
-<section class="card calendar" aria-label="Calendar" [attr.aria-busy]="isLoading()">
+<section class="calendar" aria-label="Calendar" [attr.aria-busy]="isLoading()">
   @if (isLoading()) {
     <mat-progress-bar class="calendar__progress" mode="indeterminate" aria-label="Loading birthdays"></mat-progress-bar>
   }
@@ -10,7 +10,7 @@
   }
 </section>
 <aside class="next-birthdays" aria-label="Upcoming birthdays">
-  <ui-next-birthdays></ui-next-birthdays>
+  <ui-next-birthdays class="next-birthdays__content"></ui-next-birthdays>
 </aside>
 <div class="fab">
   <button matFab type="button" aria-label="Add birthday" (click)="openAddBirthdayDialog()">

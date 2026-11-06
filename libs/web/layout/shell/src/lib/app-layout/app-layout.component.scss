@@ -15,6 +15,7 @@
 .header {
   grid-area: header;
   min-width: 0;
+  border-bottom: 0.0625rem solid color-mix(in srgb, var(--mat-sys-outline-variant) 20%, transparent);
 }
 
 .main {

@@ -6,25 +6,34 @@
   justify-content: space-between;
   gap: 1rem;
   flex-wrap: wrap;
+  padding-block: 1rem;
 }
 
 .title {
   display: flex;
   align-items: baseline;
   gap: 0.5rem;
-  font-family: var(--app-font-display);
-  font-size: 2.25rem;
-  font-weight: 400;
-  line-height: 1.1;
-  color: var(--mat-sys-on-surface);
+  font-size: 2.625rem;
+  font-weight: 800;
+  line-height: 3rem;
+  letter-spacing: -0.025em;
+  color: var(--mat-sys-on-surface-variant);
 
   &__year {
+    font-size: 1.5rem;
+    font-weight: 400;
+    line-height: 2rem;
+    letter-spacing: -0.015em;
     color: var(--mat-sys-outline);
   }
 
-  // In the year view the year is the only heading, so it keeps the full ink color.
+  // In the year view the year is the only heading, so it keeps the full title style.
   &__year:only-child {
-    color: var(--mat-sys-on-surface);
+    font-size: inherit;
+    font-weight: inherit;
+    line-height: inherit;
+    letter-spacing: inherit;
+    color: var(--mat-sys-on-surface-variant);
   }
 }
 
@@ -34,66 +43,92 @@
   gap: 0.5rem;
 }
 
-.nav-button {
-  @include mat.icon-button-overrides(
-    (
-      container-shape: 50%,
-    )
-  );
+// A tinted tray that groups related controls.
+.segment {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.375rem;
+  border: 0.0625rem solid color-mix(in srgb, var(--mat-sys-outline-variant) 20%, transparent);
+  border-radius: 0.75rem;
+  background: color-mix(in srgb, var(--mat-sys-surface-container) 70%, transparent);
+  backdrop-filter: blur(0.75rem);
 
-  // An inset shadow draws the edge without shrinking the icon's content box.
-  box-shadow: inset 0 0 0 0.0625rem var(--mat-sys-outline-variant);
-  background: var(--mat-sys-surface-container-lowest);
-}
+  &__icon {
+    @include mat.icon-button-overrides(
+      (
+        state-layer-size: 2.25rem,
+        container-shape: 0.5rem,
+        icon-size: 1.25rem,
+        icon-color: var(--mat-sys-on-surface-variant),
+      )
+    );
 
-.today {
-  @include mat.button-overrides(
-    (
-      text-label-text-color: var(--mat-sys-on-surface),
-      text-label-text-weight: 700,
-    )
-  );
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+
+    mat-icon {
+      width: 1.25rem;
+      height: 1.25rem;
+      font-size: 1.25rem;
+    }
+  }
+
+  &__today {
+    @include mat.button-overrides(
+      (
+        text-container-height: 2.25rem,
+        text-container-shape: 0.5rem,
+        text-horizontal-padding: 1rem,
+        text-label-text-color: var(--mat-sys-primary),
+        text-label-text-size: 0.75rem,
+        text-label-text-weight: 700,
+      )
+    );
+
+    min-width: 0;
+  }
 }
 
 .views {
   @include mat.button-toggle-overrides(
     (
-      height: 2rem,
-      shape: 999rem,
+      height: 2.25rem,
+      shape: 0.5rem,
       divider-color: transparent,
       background-color: transparent,
-      text-color: var(--mat-sys-on-surface-variant),
-      selected-state-background-color: var(--mat-sys-surface-container-lowest),
-      selected-state-text-color: var(--mat-sys-on-surface),
+      text-color: var(--mat-sys-outline),
+      selected-state-background-color: var(--mat-sys-primary),
+      selected-state-text-color: var(--mat-sys-on-primary),
+      label-text-size: 0.75rem,
+      label-text-weight: 700,
     )
   );
-
-  padding: 0.25rem;
-  border: none;
-  border-radius: 999rem;
-  background: color-mix(in srgb, var(--mat-sys-surface-container-high) 70%, transparent);
 }
 
 .view {
-  min-width: 4.5rem;
+  min-width: 4rem;
   // Inside a group Material rounds only the group, so each segment gets its own corners.
-  border-radius: 999rem;
-  font-weight: 600;
+  border-radius: 0.5rem;
 
   &.mat-button-toggle-checked {
-    box-shadow: 0 0.125rem 0.375rem color-mix(in srgb, var(--mat-sys-on-surface) 10%, transparent);
+    box-shadow: 0 0.125rem 0.5rem color-mix(in srgb, var(--mat-sys-primary) 35%, transparent);
   }
 }
 
 @media (max-width: 48rem) {
   :host {
     justify-content: center;
+    padding-block: 0;
   }
 
   .title {
     justify-content: center;
     width: 100%;
     font-size: 1.75rem;
+    line-height: 2.25rem;
   }
 
   .controls {

@@ -1,3 +1,4 @@
+import { CALENDAR_ADD_BIRTHDAY_QUERY_PARAM } from '@birthday/web-birthdays-util';
 import { AppLayoutConfig } from '@birthday/web-layout-util';
 
 export const APP_SITE_URL = 'https://birthdly.com';
@@ -30,4 +31,10 @@ export const APP_LAYOUT: AppLayoutConfig = {
       icon: 'settings',
     },
   ],
+  primaryAction: {
+    label: 'Add birthday',
+    icon: 'add',
+    path: '/',
+    queryParams: { [CALENDAR_ADD_BIRTHDAY_QUERY_PARAM]: '1' },
+  },
 };

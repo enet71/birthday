@@ -15,7 +15,6 @@ export class CalendarState extends State {
   public readonly view: WritableSignal<CalendarView> = signal('month');
   public readonly viewMonth: WritableSignal<Date> = signal(startOfMonth(this.today));
   public readonly birthdayDialog: WritableSignal<BirthdayDialogData | null> = signal(null);
-  public readonly searchQuery: WritableSignal<string> = signal('');
 
   public readonly days: Signal<CalendarDay[]> = computed(() => this.getMonthDays(this.viewMonth(), this.birthdaysState.birthdays()));
   public readonly yearMonths: Signal<CalendarMonth[]> = computed(() => {
@@ -33,11 +32,8 @@ export class CalendarState extends State {
     );
   });
   public readonly nextBirthdays: Signal<UpcomingCelebration[]> = computed(() => {
-    const query: string = this.searchQuery().trim().toLowerCase();
-
     return this.birthdaysState
       .upcomingBirthdays()
-      .filter((upcoming: UpcomingBirthday) => upcoming.birthday.name.toLowerCase().includes(query))
       .slice(0, NEXT_BIRTHDAYS_LIMIT)
       .map(
         (upcoming: UpcomingBirthday): UpcomingCelebration => ({
@@ -52,7 +48,6 @@ export class CalendarState extends State {
     this.view.set('month');
     this.viewMonth.set(startOfMonth(this.today));
     this.birthdayDialog.set(null);
-    this.searchQuery.set('');
   }
 
   private getMonthDays(month: Date, birthdays: Birthday[]): CalendarDay[] {
