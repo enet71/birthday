@@ -1,5 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
+import { of } from 'rxjs';
+import { AuthClient } from '@birthday/web-auth-data-access';
 import { APP_LAYOUT_CONFIG } from '@birthday/web-layout-util';
 import { App } from './app';
 import { APP_LAYOUT } from './app.constants';
@@ -11,6 +13,8 @@ describe('App', () => {
       providers: [
         provideRouter([]),
         { provide: APP_LAYOUT_CONFIG, useValue: APP_LAYOUT },
+        // The account button in the top bar reads the signed-in user.
+        { provide: AuthClient, useValue: { userChanges: () => of(null) } },
       ],
     }).compileComponents();
   });
@@ -21,8 +25,6 @@ describe('App', () => {
     const compiled = fixture.nativeElement as HTMLElement;
 
     expect(compiled.querySelector('ui-app-layout')).toBeTruthy();
-    expect(
-      compiled.querySelectorAll('ui-app-layout-sidenav a[mat-list-item]'),
-    ).toHaveLength(APP_LAYOUT.menu.length);
+    expect(compiled.querySelectorAll('ui-app-layout-sidenav a[mat-list-item]')).toHaveLength(APP_LAYOUT.menu.length);
   });
 });

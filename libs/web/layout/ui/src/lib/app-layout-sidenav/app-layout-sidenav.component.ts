@@ -1,25 +1,10 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  inject,
-  Signal,
-  signal,
-  WritableSignal,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, Signal, signal, WritableSignal } from '@angular/core';
 import { NgOptimizedImage } from '@angular/common';
 import { RouterLink, RouterLinkActive } from '@angular/router';
-import { MatIconButton } from '@angular/material/button';
+import { MatButton, MatIconButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
-import {
-  MatListItem,
-  MatListItemIcon,
-  MatListItemTitle,
-  MatNavList,
-} from '@angular/material/list';
-import {
-  AppLayoutController,
-  AppLayoutState,
-} from '@birthday/web-layout-data-access';
+import { MatListItem, MatListItemIcon, MatListItemTitle, MatNavList } from '@angular/material/list';
+import { AppLayoutController, AppLayoutState } from '@birthday/web-layout-data-access';
 import { APP_LAYOUT_CONFIG, AppLayoutConfig } from '@birthday/web-layout-util';
 import { ReadonlyState, injectState } from '@birthday/web-shared-data-access';
 
@@ -29,6 +14,7 @@ import { ReadonlyState, injectState } from '@birthday/web-shared-data-access';
     NgOptimizedImage,
     RouterLink,
     RouterLinkActive,
+    MatButton,
     MatIconButton,
     MatIcon,
     MatNavList,
@@ -49,10 +35,8 @@ export class AppLayoutSidenavComponent {
   // Width is animated only for user toggles, so restoring the saved state on load is instant.
   protected readonly isAnimated: WritableSignal<boolean> = signal(false);
 
-  private readonly appLayoutState: ReadonlyState<AppLayoutState> =
-    injectState(AppLayoutState);
-  private readonly appLayoutController: AppLayoutController =
-    inject(AppLayoutController);
+  private readonly appLayoutState: ReadonlyState<AppLayoutState> = injectState(AppLayoutState);
+  private readonly appLayoutController: AppLayoutController = inject(AppLayoutController);
 
   protected get isExpanded(): Signal<boolean> {
     return this.appLayoutState.isSidenavExpanded;

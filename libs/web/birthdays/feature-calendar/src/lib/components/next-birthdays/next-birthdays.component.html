@@ -1,57 +1,39 @@
 <div class="header">
-  <h2 class="header__title">
-    <mat-icon class="header__icon" aria-hidden="true">redeem</mat-icon>
-    Upcoming
-  </h2>
+  <h2 class="header__title">Upcoming</h2>
   <a class="header__link" routerLink="/people">View all</a>
 </div>
-<mat-form-field class="search" appearance="outline" subscriptSizing="dynamic">
-  <mat-icon matPrefix aria-hidden="true">search</mat-icon>
-  <input
-    matInput
-    type="search"
-    placeholder="Search people…"
-    aria-label="Search people"
-    [value]="searchQuery()"
-    (input)="setSearchQuery($event)"
-    (keydown.escape)="clearSearch()"
-  />
-  @if (searchQuery()) {
-    <button matSuffix matIconButton type="button" aria-label="Clear search" (click)="clearSearch()">
-      <mat-icon>close</mat-icon>
-    </button>
+<div class="body">
+  @if (nextBirthdays().length) {
+    <ul class="list">
+      @for (item of nextBirthdays(); track item.birthday.id) {
+        <li [style]="getToneStyles(item.birthday.name)">
+          <button class="item" type="button" [class.item_soon]="item.daysUntil <= soonDays" (click)="openEditBirthdayDialog(item)">
+            <ui-birthday-avatar class="item__avatar" [name]="item.birthday.name"></ui-birthday-avatar>
+            <span class="item__body">
+              <span class="item__title">
+                <span class="item__name">{{ item.birthday.name }}</span>
+                @if ((item.age ?? 0) > 0) {
+                  <span class="item__age">Turns {{ item.age }}</span>
+                }
+              </span>
+              <span class="item__date">{{ item.date | date: 'MMM d' }} · {{ getDaysUntilLabel(item.daysUntil) }}</span>
+            </span>
+            <mat-icon class="item__chevron" aria-hidden="true">chevron_right</mat-icon>
+          </button>
+        </li>
+      }
+    </ul>
+  } @else if (!isLoading()) {
+    <div class="welcome">
+      <h3 class="welcome__title">Never miss a birthday</h3>
+      <p class="welcome__text">
+        Keep every birthday in one calendar. Add friends and family to see who celebrates next, browse by month or year, and sign in with Google to
+        sync across devices.
+      </p>
+      <button matButton="filled" type="button" (click)="openAddBirthdayDialog()">
+        <mat-icon>add</mat-icon>
+        Add birthday
+      </button>
+    </div>
   }
-</mat-form-field>
-@if (nextBirthdays().length) {
-  <ul class="list">
-    @for (item of nextBirthdays(); track item.birthday.id) {
-      <li class="item" [class.item_soon]="item.daysUntil <= soonDays">
-        <ui-birthday-avatar class="item__avatar" [name]="item.birthday.name"></ui-birthday-avatar>
-        <div class="item__body">
-          <span class="item__name">{{ item.birthday.name }}</span>
-          <span class="item__date">
-            {{ item.date | date: 'MMM d' }}
-            @if ((item.age ?? 0) > 0) {
-              · {{ item.age }}
-            }
-          </span>
-          <span class="item__until">{{ getDaysUntilLabel(item.daysUntil) }}</span>
-        </div>
-      </li>
-    }
-  </ul>
-} @else if (searchQuery()) {
-  <p class="empty">No one matches “{{ searchQuery() }}”</p>
-} @else if (!isLoading()) {
-  <div class="welcome">
-    <h3 class="welcome__title">Never miss a birthday</h3>
-    <p class="welcome__text">
-      Keep every birthday in one calendar. Add friends and family to see who celebrates next, browse by month or year, and sign in with Google to sync
-      across devices.
-    </p>
-    <button matButton="filled" type="button" (click)="openAddBirthdayDialog()">
-      <mat-icon>add</mat-icon>
-      Add birthday
-    </button>
-  </div>
-}
+</div>

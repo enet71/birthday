@@ -73,6 +73,7 @@ The workspace splits libraries by the platform they run on. Every project has ex
 ## Angular
 
 - Prefer Signal Forms for new forms when the existing APIs support them.
+- Never use inline `template` or `styles` in components, even for small ones. Put the template in `<name>.component.html` and the styles in `<name>.component.scss` next to the class, and reference them with `templateUrl` and `styleUrl`.
 - Prefer `host` metadata to `@HostBinding` and `@HostListener`.
 - Initialize signals that depend on injected services in the constructor. Keep imperative initialization side effects in constructors rather than introducing unused `void` fields.
 - Avoid controller methods that only forward a single analytics event. Put the event at the owner of the workflow.

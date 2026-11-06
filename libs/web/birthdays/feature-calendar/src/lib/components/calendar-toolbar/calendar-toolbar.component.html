@@ -5,21 +5,25 @@
   <span class="title__year">{{ viewMonth() | date: 'y' }}</span>
 </h2>
 <div class="controls">
-  <button
-    class="nav-button"
-    matIconButton
-    type="button"
-    [attr.aria-label]="isYearView() ? 'Previous year' : 'Previous month'"
-    (click)="showPrevious()"
-  >
-    <mat-icon>chevron_left</mat-icon>
-  </button>
-  <button class="nav-button" matIconButton type="button" [attr.aria-label]="isYearView() ? 'Next year' : 'Next month'" (click)="showNext()">
-    <mat-icon>chevron_right</mat-icon>
-  </button>
-  <button class="today" matButton type="button" (click)="showToday()">Today</button>
-  <mat-button-toggle-group class="views" aria-label="Calendar view" hideSingleSelectionIndicator [value]="view()" (change)="setView($event)">
-    <mat-button-toggle class="view" value="month">Month</mat-button-toggle>
-    <mat-button-toggle class="view" value="year">Year</mat-button-toggle>
-  </mat-button-toggle-group>
+  <div class="segment">
+    <button
+      class="segment__icon"
+      matIconButton
+      type="button"
+      [attr.aria-label]="isYearView() ? 'Previous year' : 'Previous month'"
+      (click)="showPrevious()"
+    >
+      <mat-icon>chevron_left</mat-icon>
+    </button>
+    <button class="segment__today" matButton type="button" (click)="showToday()">Today</button>
+    <button class="segment__icon" matIconButton type="button" [attr.aria-label]="isYearView() ? 'Next year' : 'Next month'" (click)="showNext()">
+      <mat-icon>chevron_right</mat-icon>
+    </button>
+  </div>
+  <div class="segment">
+    <mat-button-toggle-group class="views" aria-label="Calendar view" hideSingleSelectionIndicator [value]="view()" (change)="setView($event)">
+      <mat-button-toggle class="view" value="month">Month</mat-button-toggle>
+      <mat-button-toggle class="view" value="year">Year</mat-button-toggle>
+    </mat-button-toggle-group>
+  </div>
 </div>

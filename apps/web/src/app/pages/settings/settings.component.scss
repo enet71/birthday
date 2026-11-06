@@ -1,0 +1,14 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding-bottom: 2rem;
+}
+
+.section {
+  max-width: 40rem;
+}
+
+.about {
+  align-self: flex-start;
+}

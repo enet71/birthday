@@ -1,7 +1,9 @@
 <ui-app-layout-sidenav class="sidenav" />
 <header class="header">
   <div class="content-width">
-    <ui-app-layout-top-bar />
+    <ui-app-layout-top-bar>
+      <ng-content select="[uiAppLayoutTopBarEnd]" />
+    </ui-app-layout-top-bar>
   </div>
 </header>
 <main class="main">

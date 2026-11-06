@@ -1,11 +1,13 @@
-import { effect, inject, Injectable, untracked } from '@angular/core';
+import { effect, inject, Injectable, PLATFORM_ID, untracked } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { Event as RouterEvent, NavigationEnd, Router, UrlTree } from '@angular/router';
 import { filter, Observable } from 'rxjs';
 import { addMonths, addYears, parseISO, startOfMonth } from 'date-fns';
 import { GoogleCalendarController, GoogleCalendarState } from '@birthday/web-google-calendar-data-access';
 import { injectState, ReadonlyState, StateController } from '@birthday/web-shared-data-access';
 import { BirthdaysController } from '@birthday/web-birthdays-data-access';
-import { Birthday } from '@birthday/web-birthdays-util';
+import { Birthday, CALENDAR_ADD_BIRTHDAY_QUERY_PARAM } from '@birthday/web-birthdays-util';
 import { BirthdayDialogData, BirthdayFormModel, CalendarView } from '../types';
 import { CalendarState } from './calendar.state';
 
@@ -15,10 +17,15 @@ export class CalendarController extends StateController {
   private readonly birthdaysController: BirthdaysController = inject(BirthdaysController);
   private readonly googleCalendarState: ReadonlyState<GoogleCalendarState> = injectState(GoogleCalendarState);
   private readonly googleCalendarController: GoogleCalendarController = inject(GoogleCalendarController);
+  private readonly router: Router = inject(Router);
 
   constructor() {
     super();
     this.birthdaysController.reloadBirthdays();
+    // Dialogs open only in the browser, so the server render of a link to the dialog shows the plain calendar.
+    if (isPlatformBrowser(inject(PLATFORM_ID))) {
+      this.openAddBirthdayDialogFromLinks();
+    }
     // Brings changes from Google once the connection is known; the server limits it to once an hour.
     effect(() => {
       if (this.googleCalendarState.isConnected()) {
@@ -41,10 +48,6 @@ export class CalendarController extends StateController {
 
   public showToday(): void {
     this.calendarState.viewMonth.set(startOfMonth(this.calendarState.today));
-  }
-
-  public setSearchQuery(query: string): void {
-    this.calendarState.searchQuery.set(query);
   }
 
   public openAddBirthdayDialog(date: Date = this.calendarState.today): void {
@@ -90,6 +93,31 @@ export class CalendarController extends StateController {
     if (this.calendarState.birthdayDialog() === dialog) {
       this.closeBirthdayDialog();
     }
+  }
+
+  // Pages outside the calendar link here with a query parameter to open the Add birthday dialog.
+  private openAddBirthdayDialogFromLinks(): void {
+    this.router.events
+      .pipe(
+        filter((event: RouterEvent): event is NavigationEnd => event instanceof NavigationEnd),
+        filter(({ urlAfterRedirects }: NavigationEnd) => this.isAddBirthdayLink(urlAfterRedirects)),
+        takeUntilDestroyed(this.destroyRef),
+      )
+      .subscribe(() => {
+        this.openAddBirthdayDialog();
+        this.router.navigate([], {
+          queryParams: { [CALENDAR_ADD_BIRTHDAY_QUERY_PARAM]: null },
+          queryParamsHandling: 'merge',
+          replaceUrl: true,
+        });
+      });
+  }
+
+  // Route providers outlive the page, so links elsewhere must not open the calendar dialog.
+  private isAddBirthdayLink(url: string): boolean {
+    const tree: UrlTree = this.router.parseUrl(url);
+
+    return !tree.root.hasChildren() && tree.queryParamMap.has(CALENDAR_ADD_BIRTHDAY_QUERY_PARAM);
   }
 
   private importFromGoogle(): void {

@@ -8,30 +8,8 @@ import { GoogleCalendarSectionComponent } from '@birthday/web-google-calendar-fe
 @Component({
   selector: 'app-settings',
   imports: [MatButton, MatIcon, RouterLink, AccountSectionComponent, GoogleCalendarSectionComponent],
-  template: `
-    <ui-account-section class="section" />
-    <ui-google-calendar-section class="section" />
-    <a class="about" matButton routerLink="/about">
-      <mat-icon>info</mat-icon>
-      About Birthdly
-    </a>
-  `,
-  styles: `
-    :host {
-      display: flex;
-      flex-direction: column;
-      gap: 1.5rem;
-      padding-bottom: 2rem;
-    }
-
-    .section {
-      max-width: 40rem;
-    }
-
-    .about {
-      align-self: flex-start;
-    }
-  `,
+  templateUrl: './settings.component.html',
+  styleUrl: './settings.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SettingsComponent {}

@@ -1,19 +1,18 @@
 import { ChangeDetectionStrategy, Component, inject, Signal } from '@angular/core';
 import { DatePipe } from '@angular/common';
-import { MatButton, MatIconButton } from '@angular/material/button';
-import { MatFormField, MatPrefix, MatSuffix } from '@angular/material/form-field';
+import { MatButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
-import { MatInput } from '@angular/material/input';
 import { RouterLink } from '@angular/router';
 import { injectState, ReadonlyState } from '@birthday/web-shared-data-access';
 import { SOON_BIRTHDAY_DAYS } from '../../constants';
+import { getBirthdayTone } from '../../helpers';
 import { CalendarController, CalendarState } from '../../state';
-import { UpcomingCelebration } from '../../types';
+import { BirthdayTone, UpcomingCelebration } from '../../types';
 import { BirthdayAvatarComponent } from '../birthday-avatar';
 
 @Component({
   selector: 'ui-next-birthdays',
-  imports: [DatePipe, MatButton, MatFormField, MatIcon, MatIconButton, MatInput, MatPrefix, MatSuffix, RouterLink, BirthdayAvatarComponent],
+  imports: [DatePipe, MatButton, MatIcon, RouterLink, BirthdayAvatarComponent],
   templateUrl: './next-birthdays.component.html',
   styleUrl: './next-birthdays.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -32,20 +31,22 @@ export class NextBirthdaysComponent {
     return this.calendarState.isLoading;
   }
 
-  protected get searchQuery(): Signal<string> {
-    return this.calendarState.searchQuery;
-  }
-
-  protected setSearchQuery(event: Event): void {
-    this.calendarController.setSearchQuery((event.target as HTMLInputElement).value);
-  }
-
-  protected clearSearch(): void {
-    this.calendarController.setSearchQuery('');
-  }
-
   protected openAddBirthdayDialog(): void {
     this.calendarController.openAddBirthdayDialog();
+  }
+
+  protected openEditBirthdayDialog({ birthday }: UpcomingCelebration): void {
+    this.calendarController.openEditBirthdayDialog(birthday);
+  }
+
+  // The row's tone colors its age pill to match the avatar.
+  protected getToneStyles(name: string): Record<string, string> {
+    const tone: BirthdayTone = getBirthdayTone(name);
+
+    return {
+      '--birthday-tone': `var(--app-tone-${tone}-ink)`,
+      '--birthday-tone-container': `var(--app-tone-${tone})`,
+    };
   }
 
   protected getDaysUntilLabel(daysUntil: number): string {

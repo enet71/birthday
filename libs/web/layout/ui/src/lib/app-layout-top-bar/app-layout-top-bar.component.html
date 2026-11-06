@@ -1,15 +1,5 @@
-<a
-  class="logo"
-  [routerLink]="config.homePath"
-  [attr.aria-label]="config.appName"
->
-  <img
-    alt=""
-    priority
-    [ngSrc]="config.logoSmall.src"
-    [width]="config.logoSmall.width"
-    [height]="config.logoSmall.height"
-  />
+<a class="logo" [routerLink]="config.homePath" [attr.aria-label]="config.appName">
+  <img alt="" priority [ngSrc]="config.logoSmall.src" [width]="config.logoSmall.width" [height]="config.logoSmall.height" />
 </a>
 <h1 class="title">{{ pageTitle() }}</h1>
 @if (search(); as search) {
@@ -25,14 +15,7 @@
       (input)="setSearchQuery($event)"
       (keydown.escape)="collapseSearch()"
     />
-    <button
-      class="search__close"
-      matSuffix
-      matIconButton
-      type="button"
-      aria-label="Close search"
-      (click)="collapseSearch()"
-    >
+    <button class="search__close" matSuffix matIconButton type="button" aria-label="Close search" (click)="collapseSearch()">
       <mat-icon>close</mat-icon>
     </button>
   </mat-form-field>
@@ -53,3 +36,6 @@
     <ng-container [ngTemplateOutlet]="actions"></ng-container>
   </div>
 }
+<div class="end">
+  <ng-content />
+</div>
