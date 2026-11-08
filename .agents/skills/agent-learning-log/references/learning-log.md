@@ -49,6 +49,16 @@ Add new entries under the category that best matches their purpose, keeping newe
 
 ### Workflow and Tooling
 
+## 2026-11-09 - "Write a commit" means write the message, not commit
+
+- Type: error
+- Context: The user asked "напиши коммит" after a finished change.
+- Incorrect behavior: Creating a branch and running `git commit` instead of only writing the commit message.
+- Preferred behavior: Reply with the suggested commit message (and branch name if useful) as text. Create branches or commits only when the user explicitly asks to commit, e.g. "закоммить", "сделай коммит".
+- Generalized rule: Requests to "write/compose a commit" are requests for the message text; never run git write operations without an explicit request to perform them.
+- Trigger cues: напиши коммит, write a commit, commit message, git commit, create branch
+- Status: active
+
 ## 2026-10-30 - Reply in the user's language
 
 - Type: error

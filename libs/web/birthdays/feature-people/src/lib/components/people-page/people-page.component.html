@@ -1,0 +1,85 @@
+<section class="people" aria-label="People">
+  <!-- Kept while a query is set, so a filter stays visible and can be cleared. -->
+  @if (people().length || searchQuery()) {
+    <mat-form-field class="search" appearance="outline" subscriptSizing="dynamic">
+      <mat-icon matPrefix aria-hidden="true">search</mat-icon>
+      <input
+        #searchInput
+        matInput
+        type="search"
+        placeholder="Search people…"
+        aria-label="Search people"
+        [value]="searchQuery()"
+        (input)="searchPeople($event)"
+        (keydown.escape)="clearSearch()"
+      />
+      @if (searchQuery()) {
+        <button matSuffix matIconButton type="button" aria-label="Clear search" (click)="clearSearch(); searchInput.focus()">
+          <mat-icon>close</mat-icon>
+        </button>
+      }
+    </mat-form-field>
+  }
+  <div class="people__content" [attr.aria-busy]="isLoading()">
+    @if (isLoading()) {
+      <mat-progress-bar class="people__progress" mode="indeterminate" aria-label="Loading people"></mat-progress-bar>
+    }
+    @if (visiblePeople().length) {
+      <table
+        mat-table
+        class="table"
+        matSort
+        [dataSource]="visiblePeople()"
+        [matSortActive]="sort().active"
+        [matSortDirection]="sort().direction"
+        (matSortChange)="sortPeople($event)"
+      >
+        <ng-container matColumnDef="name">
+          <th *matHeaderCellDef mat-header-cell mat-sort-header>Name</th>
+          <td *matCellDef="let row" mat-cell>
+            <span class="person">
+              <ui-birthday-avatar class="person__avatar" [name]="row.birthday.name"></ui-birthday-avatar>
+              <span class="person__name">{{ row.birthday.name }}</span>
+            </span>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="birthday">
+          <th *matHeaderCellDef class="table__secondary" mat-header-cell mat-sort-header>Birthday</th>
+          <td *matCellDef="let row" class="table__secondary table__numeric" mat-cell>
+            {{ row.birthDate | date: (row.hasBirthYear ? 'MMM d, y' : 'MMM d') }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="age">
+          <th *matHeaderCellDef class="table__secondary" mat-header-cell mat-sort-header>Age</th>
+          <td *matCellDef="let row" class="table__secondary table__numeric" mat-cell>{{ row.age }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="nextBirthday">
+          <th *matHeaderCellDef mat-header-cell mat-sort-header>Next birthday</th>
+          <td *matCellDef="let row" class="table__numeric" mat-cell>
+            <span class="next">
+              <span>{{ row.nextBirthday | date: 'MMM d' }}</span>
+              <span class="next__days" [class.next__days_today]="row.daysUntil === 0">{{ getDaysUntilLabel(row.daysUntil) }}</span>
+            </span>
+          </td>
+        </ng-container>
+
+        <tr *matHeaderRowDef="columns" mat-header-row></tr>
+        <tr *matRowDef="let row; columns: columns" mat-row></tr>
+      </table>
+    } @else if (people().length) {
+      <p class="message">No people match "{{ searchQuery().trim() }}"</p>
+    } @else if (!isLoading()) {
+      <div class="empty">
+        <h2 class="empty__title">No people yet</h2>
+        <p class="empty__text">Add a birthday in the calendar, and everyone you add shows up here.</p>
+        <a matButton="filled" routerLink="/" [queryParams]="addBirthdayQueryParams">
+          <mat-icon>add</mat-icon>
+          Add birthday
+        </a>
+      </div>
+    }
+  </div>
+</section>

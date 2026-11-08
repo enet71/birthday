@@ -29,8 +29,6 @@ export interface BirthdayFormModel {
 
 export type CalendarView = 'month' | 'year';
 
-export type BirthdayTone = 'violet' | 'rose' | 'sky' | 'peach' | 'mint';
-
 export interface UpcomingCelebration extends UpcomingBirthday {
   age: number | null;
 }

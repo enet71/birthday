@@ -1,0 +1,144 @@
+@use '@angular/material' as mat;
+
+:host {
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 2rem;
+}
+
+.people {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding-top: 0.5rem;
+
+  &__content {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__progress {
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+  }
+}
+
+.search {
+  @include mat.form-field-overrides(
+    (
+      container-height: 2.5rem,
+      container-vertical-padding: 0.5rem,
+      // Half the height makes a pill; a larger radius stretches the outline far past the field.
+      outlined-container-shape: 1.25rem,
+      outlined-outline-color: transparent,
+      outlined-hover-outline-color: var(--mat-sys-outline-variant),
+      leading-icon-color: var(--mat-sys-on-surface-variant),
+    )
+  );
+
+  width: 20rem;
+  max-width: 100%;
+  border-radius: 1.25rem;
+  background: color-mix(in srgb, var(--mat-sys-surface-container-lowest) 75%, transparent);
+  box-shadow: 0 0.25rem 1rem color-mix(in srgb, var(--mat-sys-primary) 8%, transparent);
+}
+
+.table {
+  @include mat.table-overrides(
+    (
+      background-color: color-mix(in srgb, var(--mat-sys-surface-container-lowest) 35%, transparent),
+      header-headline-color: var(--mat-sys-on-surface-variant),
+      row-item-label-text-color: var(--mat-sys-on-surface),
+      row-item-outline-color: color-mix(in srgb, var(--mat-sys-outline-variant) 30%, transparent),
+    )
+  );
+
+  overflow: hidden;
+  border: 0.0625rem solid color-mix(in srgb, var(--mat-sys-surface-container-lowest) 40%, transparent);
+  border-radius: 1rem;
+
+  &__numeric {
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+}
+
+.person {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  min-width: 0;
+  padding-block: 0.5rem;
+
+  &__avatar {
+    width: 2.25rem;
+    height: 2.25rem;
+    border-radius: 0.75rem;
+    font-size: 0.875rem;
+  }
+
+  &__name {
+    // A long name without spaces must not widen the table past a phone screen.
+    overflow-wrap: anywhere;
+    font-weight: 700;
+  }
+}
+
+.next {
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
+
+  &__days {
+    font-size: 0.75rem;
+    color: var(--mat-sys-outline);
+
+    &_today {
+      font-weight: 700;
+      color: var(--mat-sys-primary);
+    }
+  }
+}
+
+.message {
+  margin: 0;
+  padding: 1rem 0;
+  color: var(--mat-sys-on-surface-variant);
+}
+
+.empty {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.75rem;
+  max-width: 32rem;
+  padding: 1.25rem;
+  border: 0.0625rem solid color-mix(in srgb, var(--mat-sys-surface-container-lowest) 40%, transparent);
+  border-radius: 1rem;
+  background: color-mix(in srgb, var(--mat-sys-surface-container-lowest) 35%, transparent);
+
+  &__title {
+    margin: 0;
+    font-size: 1.125rem;
+    font-weight: 700;
+    line-height: 1.625rem;
+    color: var(--mat-sys-on-surface);
+  }
+
+  &__text {
+    margin: 0;
+    font-size: 0.875rem;
+    line-height: 1.375rem;
+    color: var(--mat-sys-on-surface-variant);
+  }
+}
+
+// On phones only the name and the next birthday fit without scrolling sideways.
+@media (max-width: 48rem) {
+  .table__secondary {
+    display: none;
+  }
+}
