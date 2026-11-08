@@ -12,8 +12,8 @@ export const APP_DOCUMENT_TITLE_DATA_KEY = 'documentTitle';
 export const APP_LAYOUT: AppLayoutConfig = {
   appName: 'Birthdly',
   homePath: '/',
-  logo: { src: '/logo.svg', width: 112, height: 32 },
-  logoSmall: { src: '/logo-small.svg', width: 32, height: 32 },
+  logo: { src: '/assets/images/logo-1.svg', width: 124, height: 40 },
+  logoSmall: { src: '/assets/images/logo-2.svg', width: 41, height: 40 },
   menu: [
     {
       label: 'Calendar',
