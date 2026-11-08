@@ -1,5 +1,5 @@
 import { Route } from '@angular/router';
-import { APP_DOCUMENT_TITLE_DATA_KEY, APP_NOINDEX_DATA_KEY } from './app.constants';
+import { APP_DESCRIPTION_DATA_KEY, APP_DOCUMENT_TITLE_DATA_KEY, APP_NOINDEX_DATA_KEY } from './app.constants';
 
 export const appRoutes: Route[] = [
   {
@@ -31,16 +31,28 @@ export const appRoutes: Route[] = [
   {
     path: 'about',
     title: 'About',
+    data: {
+      [APP_DESCRIPTION_DATA_KEY]:
+        'Learn what Birthdly does: a free birthday calendar with month and year views, upcoming birthdays, search, and Google sign-in to sync.',
+    },
     loadComponent: () => import('./pages/about/about.component').then((m) => m.AboutComponent),
   },
   {
     path: 'privacy',
     title: 'Privacy Policy',
+    data: {
+      [APP_DESCRIPTION_DATA_KEY]:
+        'How Birthdly collects, uses, and stores your data, including birthdays you add and Google Calendar and Contacts data, and how to delete it.',
+    },
     loadComponent: () => import('./pages/legal/privacy/privacy.component').then((m) => m.PrivacyComponent),
   },
   {
     path: 'terms',
     title: 'Terms of Service',
+    data: {
+      [APP_DESCRIPTION_DATA_KEY]:
+        'The terms for using Birthdly, the free birthday calendar: your account, your content, Google Calendar sync, and the limits of the service.',
+    },
     loadComponent: () => import('./pages/legal/terms/terms.component').then((m) => m.TermsComponent),
   },
   { path: 'calendar', redirectTo: '' },

@@ -1,7 +1,14 @@
 import { DOCUMENT, inject, Injectable } from '@angular/core';
 import { Meta, Title } from '@angular/platform-browser';
 import { ActivatedRouteSnapshot, RouterStateSnapshot, TitleStrategy } from '@angular/router';
-import { APP_DOCUMENT_TITLE_DATA_KEY, APP_LAYOUT, APP_NOINDEX_DATA_KEY, APP_SITE_URL } from './app.constants';
+import {
+  APP_DEFAULT_DESCRIPTION,
+  APP_DESCRIPTION_DATA_KEY,
+  APP_DOCUMENT_TITLE_DATA_KEY,
+  APP_LAYOUT,
+  APP_NOINDEX_DATA_KEY,
+  APP_SITE_URL,
+} from './app.constants';
 
 // Runs on every navigation on the server and in the browser, so it also owns the per-route SEO tags.
 // Route titles stay short for the layout top bar; the document title also carries the app name.
@@ -15,9 +22,22 @@ export class AppPageMetaStrategy extends TitleStrategy {
     const pageTitle: string | undefined = this.buildTitle(snapshot);
     const documentTitle: string | undefined = this.findRouteData(snapshot.root, APP_DOCUMENT_TITLE_DATA_KEY);
 
-    this.title.setTitle(documentTitle ?? (pageTitle ? `${pageTitle} · ${APP_LAYOUT.appName}` : APP_LAYOUT.appName));
+    const title: string = documentTitle ?? (pageTitle ? `${pageTitle} · ${APP_LAYOUT.appName}` : APP_LAYOUT.appName);
+    const description: string = this.findRouteData(snapshot.root, APP_DESCRIPTION_DATA_KEY) ?? APP_DEFAULT_DESCRIPTION;
+
+    this.title.setTitle(title);
+    this.updateSocialTags(title, description);
     this.updateCanonicalUrl(snapshot.url);
     this.updateRobots(snapshot.root);
+  }
+
+  // Link previews in messengers and social networks read these, so they follow the page like the document title.
+  private updateSocialTags(title: string, description: string): void {
+    this.meta.updateTag({ name: 'description', content: description });
+    this.meta.updateTag({ property: 'og:title', content: title });
+    this.meta.updateTag({ property: 'og:description', content: description });
+    this.meta.updateTag({ name: 'twitter:title', content: title });
+    this.meta.updateTag({ name: 'twitter:description', content: description });
   }
 
   private findRouteData<T>(root: ActivatedRouteSnapshot, key: string): T | undefined {

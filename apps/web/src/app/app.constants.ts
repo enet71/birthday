@@ -9,6 +9,13 @@ export const APP_NOINDEX_DATA_KEY = 'noindex';
 // Route data with a full document title that replaces the default "<route title> · <app name>".
 export const APP_DOCUMENT_TITLE_DATA_KEY = 'documentTitle';
 
+// Route data with the page's meta description; pages without one use `APP_DEFAULT_DESCRIPTION`.
+export const APP_DESCRIPTION_DATA_KEY = 'description';
+
+// Keep in sync with the description tags in `index.html`.
+export const APP_DEFAULT_DESCRIPTION =
+  "Birthdly is a free birthday calendar and reminder app. Keep track of friends' and family birthdays, see upcoming ones at a glance, and never miss a celebration.";
+
 export const APP_LAYOUT: AppLayoutConfig = {
   appName: 'Birthdly',
   homePath: '/',
