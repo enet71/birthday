@@ -1,6 +1,9 @@
 <form novalidate (submit)="save($event)">
-  <ui-dialog-header>
-    <h2 class="title" mat-dialog-title dialog-header="title">{{ isEdit ? 'Edit Birthday' : 'Add Birthday' }}</h2>
+  <ui-dialog-header class="header">
+    <div class="heading" dialog-header="title">
+      <h2 class="heading__title" mat-dialog-title>{{ isEdit ? 'Edit Birthday' : 'Add Birthday' }}</h2>
+      <p class="heading__subtitle">Add a new person and their birthday to your calendar.</p>
+    </div>
     <button matIconButton type="button" aria-label="Close" dialog-header="buttons" mat-dialog-close>
       <mat-icon>close</mat-icon>
     </button>
@@ -43,6 +46,40 @@
         }
       </mat-form-field>
     </div>
+    <div class="relationship">
+      <span class="relationship__label" id="birthday-relationship-label">Relationship</span>
+      <mat-chip-listbox
+        aria-labelledby="birthday-relationship-label"
+        hideSingleSelectionIndicator
+        [value]="birthdayForm.relationship().value()"
+        (change)="setRelationship($event.value)"
+      >
+        @for (option of relationshipOptions; track option.value) {
+          <mat-chip-option
+            class="relationship__chip"
+            [class.relationship__chip_selected]="birthdayForm.relationship().value() === option.value"
+            [value]="option.value"
+          >
+            <span class="relationship__option">
+              <span class="relationship__dot" [class]="'relationship__dot_' + option.value"></span>
+              {{ option.label }}
+            </span>
+          </mat-chip-option>
+        }
+      </mat-chip-listbox>
+    </div>
+    <mat-form-field appearance="outline">
+      <mat-label class="notes-label">
+        <mat-icon class="notes-label__icon">description</mat-icon>
+        Notes
+      </mat-label>
+      <textarea matInput rows="3" placeholder="Add a note about this person…" [formField]="birthdayForm.notes"></textarea>
+      <mat-hint>Optional</mat-hint>
+      <mat-hint align="end">{{ birthdayForm.notes().value().length }} / {{ notesMaxLength }}</mat-hint>
+      @for (error of birthdayForm.notes().errors(); track error.kind) {
+        <mat-error>{{ error.message }}</mat-error>
+      }
+    </mat-form-field>
   </mat-dialog-content>
   <mat-dialog-actions class="actions" [class.actions_edit]="isEdit">
     @if (isEdit) {

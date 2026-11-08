@@ -1,14 +1,47 @@
 @use '@angular/material' as mat;
 
-.title {
-  font-size: 1.125rem;
-  font-weight: 700;
+:host {
+  display: block;
+  // A plain white sheet, as in the design, instead of the tinted dialog surface.
+  background: var(--mat-sys-surface-container-lowest);
+  @include mat.form-field-overrides(
+    (
+      outlined-outline-color: var(--mat-sys-outline-variant),
+    )
+  );
+}
+
+.header {
+  background: var(--mat-sys-surface-container-lowest);
+}
+
+.heading {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  // The subtitle sits under the title, so the title keeps no padding of its own.
+  @include mat.dialog-overrides(
+    (
+      headline-padding: 0,
+    )
+  );
+
+  &__title {
+    font-size: 1.125rem;
+    font-weight: 700;
+  }
+
+  &__subtitle {
+    margin: 0;
+    font: var(--mat-sys-body-medium);
+    color: var(--mat-sys-on-surface-variant);
+  }
 }
 
 .content {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 1rem;
   padding-top: 1.5rem;
   container-type: inline-size;
 }
@@ -31,11 +64,72 @@
   }
 }
 
+.relationship {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+
+  &__label {
+    font: var(--mat-sys-body-medium);
+    color: var(--mat-sys-on-surface-variant);
+  }
+
+  &__chip {
+    @include mat.chips-overrides(
+      (
+        container-shape-radius: 999rem,
+        outline-color: var(--mat-sys-outline-variant),
+        flat-selected-outline-width: 0.0625rem,
+        label-text-color: var(--mat-sys-on-surface-variant),
+        selected-label-text-color: var(--mat-sys-on-surface),
+        elevated-selected-container-color: color-mix(in srgb, var(--mat-sys-primary) 8%, transparent),
+      )
+    );
+
+    &_selected {
+      @include mat.chips-overrides(
+        (
+          outline-color: var(--mat-sys-primary),
+        )
+      );
+    }
+  }
+
+  &__option {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  &__dot {
+    flex: none;
+    width: 0.625rem;
+    height: 0.625rem;
+    border-radius: 50%;
+
+    &_family {
+      background: var(--app-tone-rose-ink);
+    }
+
+    &_friends {
+      background: var(--mat-sys-primary);
+    }
+
+    &_colleagues {
+      background: var(--app-tone-mint-ink);
+    }
+
+    &_other {
+      background: var(--mat-sys-outline);
+    }
+  }
+}
+
 .actions {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 0.75rem;
-  padding: 0 1.5rem 1.5rem;
+  padding: 2rem 1.5rem 1.5rem;
 
   &_edit {
     grid-template-columns: repeat(3, 1fr);
@@ -48,5 +142,17 @@
         text-state-layer-color: var(--mat-sys-error),
       )
     );
+  }
+}
+
+.notes-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+
+  &__icon {
+    width: 1.125rem;
+    height: 1.125rem;
+    font-size: 1.125rem;
   }
 }

@@ -1,12 +1,13 @@
 import { effect, inject, Injectable, untracked } from '@angular/core';
 import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
 import { catchError, concatMap, EMPTY, filter, from, map, Observable, of, switchMap, take, tap, toArray } from 'rxjs';
-import { BirthdayDto } from '@birthday/shared-models';
+import { BirthdayDto, CreateBirthdayRequest } from '@birthday/shared-models';
 import { AuthState } from '@birthday/web-auth-data-access';
 import { injectState, ReadonlyState, StateController } from '@birthday/web-shared-data-access';
 import { NotificationsService } from '@birthday/web-shared-util';
 import { Birthday, toBirthDate } from '@birthday/web-birthdays-util';
 import { BirthdaysDataService, BirthdaysLocalStorageService, BirthdaysRemoteStorage } from '../services';
+import { BirthdayInput } from '../types';
 import { BirthdaysState } from './birthdays.state';
 
 @Injectable({ providedIn: 'root' })
@@ -51,8 +52,8 @@ export class BirthdaysController extends StateController {
   }
 
   // The methods below complete without emitting when the change could not be saved.
-  public addBirthday(name: string, date: Date, isYearKnown: boolean): Observable<Birthday> {
-    return this.birthdaysData.create({ name: name.trim(), birthDate: toBirthDate(date, isYearKnown) }).pipe(
+  public addBirthday(input: BirthdayInput): Observable<Birthday> {
+    return this.birthdaysData.create(this.toRequest(input)).pipe(
       tap((birthday: Birthday) => this.updateBirthdays((birthdays: Birthday[]) => [...birthdays, birthday])),
       catchError(() => {
         this.notifications.createErrorNotification("Couldn't save the birthday");
@@ -61,8 +62,8 @@ export class BirthdaysController extends StateController {
     );
   }
 
-  public updateBirthday(id: string, name: string, date: Date, isYearKnown: boolean): Observable<Birthday> {
-    return this.birthdaysData.update(id, { name: name.trim(), birthDate: toBirthDate(date, isYearKnown) }).pipe(
+  public updateBirthday(id: string, input: BirthdayInput): Observable<Birthday> {
+    return this.birthdaysData.update(id, this.toRequest(input)).pipe(
       tap((updated: Birthday) =>
         this.updateBirthdays((birthdays: Birthday[]) => birthdays.map((birthday: Birthday) => (birthday.id === id ? updated : birthday))),
       ),
@@ -95,8 +96,8 @@ export class BirthdaysController extends StateController {
         filter((birthdays: BirthdayDto[]) => birthdays.length > 0),
         switchMap((birthdays: BirthdayDto[]) =>
           from(birthdays).pipe(
-            concatMap(({ id, name, birthDate }: BirthdayDto) =>
-              this.remoteStorage.create({ name, birthDate }).pipe(
+            concatMap(({ id, ...request }: BirthdayDto) =>
+              this.remoteStorage.create(request).pipe(
                 concatMap(() => this.localStorage.delete(id)),
                 map(() => true),
                 catchError(() => of(false)),
@@ -122,6 +123,12 @@ export class BirthdaysController extends StateController {
         takeUntilDestroyed(this.destroyRef),
       )
       .subscribe(() => this.birthdaysState.birthdaysResource.reload());
+  }
+
+  private toRequest({ name, date, isYearKnown, relationship, notes }: BirthdayInput): CreateBirthdayRequest {
+    const trimmedNotes: string = notes.trim();
+
+    return { name: name.trim(), birthDate: toBirthDate(date, isYearKnown), relationship, notes: trimmedNotes || null };
   }
 
   // Writes through `birthdays()` so a failed load is updated from an empty list.

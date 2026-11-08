@@ -1,3 +1,4 @@
+import { BirthdayRelationship } from '@birthday/shared-models';
 import { Birthday, UpcomingBirthday } from '@birthday/web-birthdays-util';
 
 export interface CalendarDay {
@@ -25,6 +26,13 @@ export interface BirthdayFormModel {
   day: number;
   // Empty when the birth year is unknown.
   year: string;
+  relationship: BirthdayRelationship | null;
+  notes: string;
+}
+
+export interface RelationshipOption {
+  value: BirthdayRelationship;
+  label: string;
 }
 
 export type CalendarView = 'month' | 'year';
