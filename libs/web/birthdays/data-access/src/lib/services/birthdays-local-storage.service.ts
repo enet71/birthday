@@ -1,22 +1,13 @@
 import { inject, Injectable } from '@angular/core';
 import { defer, Observable, of, throwError } from 'rxjs';
-import {
-  BirthdayDto,
-  CreateBirthdayRequest,
-  UpdateBirthdayRequest,
-} from '@birthday/shared-models';
-import {
-  BrowserStorageService,
-  LocalStorageKey,
-} from '@birthday/web-shared-util';
+import { BIRTHDAY_RELATIONSHIPS, BirthdayDto, BirthdayRelationship, CreateBirthdayRequest, UpdateBirthdayRequest } from '@birthday/shared-models';
+import { BrowserStorageService, LocalStorageKey } from '@birthday/web-shared-util';
 import { BirthdaysStorage } from './birthdays.storage';
 
 // Keeps the birthdays of a signed-out user in the browser.
 @Injectable({ providedIn: 'root' })
 export class BirthdaysLocalStorageService implements BirthdaysStorage {
-  private readonly browserStorage: BrowserStorageService = inject(
-    BrowserStorageService,
-  );
+  private readonly browserStorage: BrowserStorageService = inject(BrowserStorageService);
 
   public getAll(): Observable<BirthdayDto[]> {
     return defer(() => of(this.read()));
@@ -31,15 +22,10 @@ export class BirthdaysLocalStorageService implements BirthdaysStorage {
     });
   }
 
-  public update(
-    id: string,
-    request: UpdateBirthdayRequest,
-  ): Observable<BirthdayDto> {
+  public update(id: string, request: UpdateBirthdayRequest): Observable<BirthdayDto> {
     return defer(() => {
       const birthdays: BirthdayDto[] = this.read();
-      const current: BirthdayDto | undefined = birthdays.find(
-        (birthday: BirthdayDto) => birthday.id === id,
-      );
+      const current: BirthdayDto | undefined = birthdays.find((birthday: BirthdayDto) => birthday.id === id);
 
       if (!current) {
         return throwError(() => new Error(`Birthday ${id} not found`));
@@ -47,28 +33,20 @@ export class BirthdaysLocalStorageService implements BirthdaysStorage {
 
       const updated: BirthdayDto = { ...current, ...request, id };
 
-      this.write(
-        birthdays.map((birthday: BirthdayDto) =>
-          birthday.id === id ? updated : birthday,
-        ),
-      );
+      this.write(birthdays.map((birthday: BirthdayDto) => (birthday.id === id ? updated : birthday)));
       return of(updated);
     });
   }
 
   public delete(id: string): Observable<void> {
     return defer(() => {
-      this.write(
-        this.read().filter((birthday: BirthdayDto) => birthday.id !== id),
-      );
+      this.write(this.read().filter((birthday: BirthdayDto) => birthday.id !== id));
       return of(undefined);
     });
   }
 
   private read(): BirthdayDto[] {
-    const value: string | null = this.browserStorage.getLocalItem(
-      LocalStorageKey.BIRTHDAYS,
-    );
+    const value: string | null = this.browserStorage.getLocalItem(LocalStorageKey.BIRTHDAYS);
 
     if (!value) {
       return [];
@@ -78,7 +56,7 @@ export class BirthdaysLocalStorageService implements BirthdaysStorage {
     try {
       const birthdays: unknown = JSON.parse(value);
 
-      return Array.isArray(birthdays) ? birthdays.filter(this.isBirthday) : [];
+      return Array.isArray(birthdays) ? birthdays.filter(this.isBirthday).map((birthday: BirthdayDto) => this.normalize(birthday)) : [];
     } catch {
       return [];
     }
@@ -95,11 +73,19 @@ export class BirthdaysLocalStorageService implements BirthdaysStorage {
     );
   }
 
+  // Birthdays saved by an older version have no relationship or notes.
+  private normalize(birthday: BirthdayDto): BirthdayDto {
+    return {
+      id: birthday.id,
+      name: birthday.name,
+      birthDate: birthday.birthDate,
+      relationship: BIRTHDAY_RELATIONSHIPS.includes(birthday.relationship as BirthdayRelationship) ? birthday.relationship : null,
+      notes: typeof birthday.notes === 'string' ? birthday.notes : null,
+    };
+  }
+
   private write(birthdays: BirthdayDto[]): void {
-    this.browserStorage.setLocalItem(
-      LocalStorageKey.BIRTHDAYS,
-      JSON.stringify(birthdays),
-    );
+    this.browserStorage.setLocalItem(LocalStorageKey.BIRTHDAYS, JSON.stringify(birthdays));
   }
 
   private createId(): string {

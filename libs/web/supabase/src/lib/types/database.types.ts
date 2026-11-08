@@ -42,6 +42,8 @@ export type Database = {
           google_event_id: string | null;
           id: string;
           name: string;
+          notes: string | null;
+          relationship: string | null;
           updated_at: string;
           user_id: string;
         };
@@ -53,6 +55,8 @@ export type Database = {
           google_event_id?: string | null;
           id?: string;
           name: string;
+          notes?: string | null;
+          relationship?: string | null;
           updated_at?: string;
           user_id?: string;
         };
@@ -64,6 +68,8 @@ export type Database = {
           google_event_id?: string | null;
           id?: string;
           name?: string;
+          notes?: string | null;
+          relationship?: string | null;
           updated_at?: string;
           user_id?: string;
         };

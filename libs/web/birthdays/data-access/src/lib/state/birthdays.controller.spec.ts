@@ -4,8 +4,11 @@ import { AuthClient } from '@birthday/web-auth-data-access';
 import { NotificationsService } from '@birthday/web-shared-util';
 import { Birthday, UpcomingBirthday } from '@birthday/web-birthdays-util';
 import { BirthdaysDataService, BirthdaysLocalStorageService, BirthdaysRemoteStorage } from '../services';
+import { BirthdayInput } from '../types';
 import { BirthdaysController } from './birthdays.controller';
 import { BirthdaysState } from './birthdays.state';
+
+const LIAM: BirthdayInput = { name: 'Liam', date: new Date(1999, 9, 25), isYearKnown: true, relationship: null, notes: '' };
 
 describe('BirthdaysController', () => {
   let controller: BirthdaysController;
@@ -45,14 +48,14 @@ describe('BirthdaysController', () => {
 
   describe('addBirthday', () => {
     it('appends a birthday with a trimmed name and a yyyy-MM-dd birth date', () => {
-      controller.addBirthday('  Liam  ', new Date(1999, 9, 25, 18, 45), true).subscribe();
+      controller.addBirthday({ ...LIAM, name: '  Liam  ', date: new Date(1999, 9, 25, 18, 45) }).subscribe();
 
-      expect(state.birthdays()).toEqual([{ id: expect.any(String), name: 'Liam', birthDate: '1999-10-25' }]);
+      expect(state.birthdays()).toEqual([{ id: expect.any(String), name: 'Liam', birthDate: '1999-10-25', relationship: null, notes: null }]);
     });
 
     it('gives every added birthday a unique id', () => {
-      controller.addBirthday('Liam', new Date(1999, 9, 25), true).subscribe();
-      controller.addBirthday('Liam', new Date(1999, 9, 25), true).subscribe();
+      controller.addBirthday(LIAM).subscribe();
+      controller.addBirthday(LIAM).subscribe();
 
       const ids: string[] = state.birthdays().map((birthday: Birthday) => birthday.id);
 
@@ -60,7 +63,7 @@ describe('BirthdaysController', () => {
     });
 
     it('updates upcoming birthdays with the added birthday', () => {
-      controller.addBirthday('Liam', new Date(1999, 9, 25), true).subscribe();
+      controller.addBirthday(LIAM).subscribe();
 
       const first: UpcomingBirthday = state.upcomingBirthdays()[0];
 
@@ -71,7 +74,7 @@ describe('BirthdaysController', () => {
   });
 
   it('clears the birthdays when the state is reset after adding', () => {
-    controller.addBirthday('Liam', new Date(1999, 9, 25), true).subscribe();
+    controller.addBirthday(LIAM).subscribe();
 
     state.resetState();
 

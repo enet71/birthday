@@ -1,14 +1,14 @@
 import { inject, Injectable } from '@angular/core';
 import { map, Observable } from 'rxjs';
-import { BirthdayDto, CreateBirthdayRequest, UpdateBirthdayRequest } from '@birthday/shared-models';
+import { BirthdayDto, BirthdayRelationship, CreateBirthdayRequest, UpdateBirthdayRequest } from '@birthday/shared-models';
 import { BirthdaysRemoteStorage } from '@birthday/web-birthdays-data-access';
 import { SUPABASE_CLIENT, SupabaseDatabaseClient } from '../client';
 import { fromSupabase } from '../helpers';
 import { Tables, TablesUpdate } from '../types';
 
-const BIRTHDAY_COLUMNS = 'id, name, birth_date';
+const BIRTHDAY_COLUMNS = 'id, name, birth_date, relationship, notes';
 
-type BirthdayRow = Pick<Tables<'birthdays'>, 'id' | 'name' | 'birth_date'>;
+type BirthdayRow = Pick<Tables<'birthdays'>, 'id' | 'name' | 'birth_date' | 'relationship' | 'notes'>;
 
 // RLS limits every query to the signed-in user's rows, and `user_id` defaults to that user on insert.
 @Injectable({ providedIn: 'root' })
@@ -23,7 +23,11 @@ export class BirthdaysSupabaseService extends BirthdaysRemoteStorage {
 
   public create(request: CreateBirthdayRequest): Observable<BirthdayDto> {
     return fromSupabase(() =>
-      this.supabase.from('birthdays').insert({ name: request.name, birth_date: request.birthDate }).select(BIRTHDAY_COLUMNS).single(),
+      this.supabase
+        .from('birthdays')
+        .insert({ name: request.name, birth_date: request.birthDate, relationship: request.relationship, notes: request.notes })
+        .select(BIRTHDAY_COLUMNS)
+        .single(),
     ).pipe(map(({ data }) => this.toDto(data)));
   }
 
@@ -35,6 +39,12 @@ export class BirthdaysSupabaseService extends BirthdaysRemoteStorage {
     }
     if (request.birthDate !== undefined) {
       changes.birth_date = request.birthDate;
+    }
+    if (request.relationship !== undefined) {
+      changes.relationship = request.relationship;
+    }
+    if (request.notes !== undefined) {
+      changes.notes = request.notes;
     }
 
     // `single()` fails when no row matched, for example a birthday that was deleted on another device.
@@ -48,6 +58,7 @@ export class BirthdaysSupabaseService extends BirthdaysRemoteStorage {
   }
 
   private toDto(row: BirthdayRow): BirthdayDto {
-    return { id: row.id, name: row.name, birthDate: row.birth_date };
+    // The database check allows only the known relationships.
+    return { id: row.id, name: row.name, birthDate: row.birth_date, relationship: row.relationship as BirthdayRelationship | null, notes: row.notes };
   }
 }

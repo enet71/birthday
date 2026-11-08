@@ -6,7 +6,7 @@ import { filter, Observable } from 'rxjs';
 import { addMonths, addYears, parseISO, startOfMonth } from 'date-fns';
 import { GoogleCalendarController, GoogleCalendarState } from '@birthday/web-google-calendar-data-access';
 import { injectState, ReadonlyState, StateController } from '@birthday/web-shared-data-access';
-import { BirthdaysController } from '@birthday/web-birthdays-data-access';
+import { BirthdayInput, BirthdaysController } from '@birthday/web-birthdays-data-access';
 import { Birthday, CALENDAR_ADD_BIRTHDAY_QUERY_PARAM } from '@birthday/web-birthdays-util';
 import { BirthdayDialogData, BirthdayFormModel, CalendarView } from '../types';
 import { CalendarState } from './calendar.state';
@@ -62,14 +62,15 @@ export class CalendarController extends StateController {
     this.calendarState.birthdayDialog.set(null);
   }
 
-  public saveBirthday({ name, month, day, year }: BirthdayFormModel): void {
+  public saveBirthday({ name, month, day, year, relationship, notes }: BirthdayFormModel): void {
     const dialog: BirthdayDialogData | null = this.calendarState.birthdayDialog();
     const isYearKnown: boolean = year !== '';
     // Without a year, a leap year keeps Feb 29; the year is then replaced by the unknown-year marker.
     const date: Date = new Date(isYearKnown ? Number(year) : 2000, month - 1, day);
+    const input: BirthdayInput = { name, date, isYearKnown, relationship, notes };
     const save$: Observable<Birthday> = dialog?.birthday
-      ? this.birthdaysController.updateBirthday(dialog.birthday.id, name, date, isYearKnown)
-      : this.birthdaysController.addBirthday(name, date, isYearKnown);
+      ? this.birthdaysController.updateBirthday(dialog.birthday.id, input)
+      : this.birthdaysController.addBirthday(input);
 
     save$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(() => this.closeBirthdayDialogIfCurrent(dialog));
   }

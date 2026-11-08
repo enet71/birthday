@@ -32,7 +32,7 @@ export function provideBirthdayDialog(): EnvironmentProviders {
           data,
           injector,
           autoFocus: 'input',
-          width: '26rem',
+          width: '32rem',
           maxWidth: 'calc(100vw - 2rem)',
         });
         dialogRef.afterClosed().subscribe(() => {

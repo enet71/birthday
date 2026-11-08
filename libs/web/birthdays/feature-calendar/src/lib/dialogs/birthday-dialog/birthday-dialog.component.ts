@@ -2,16 +2,19 @@ import { ChangeDetectionStrategy, Component, computed, inject, signal, Signal, W
 import { DatePipe } from '@angular/common';
 import { FieldTree, form, FormField, maxLength, pattern, required, submit, validate } from '@angular/forms/signals';
 import { MatButton, MatIconButton } from '@angular/material/button';
+import { MatChipListbox, MatChipOption } from '@angular/material/chips';
 import { MAT_DIALOG_DATA, MatDialogActions, MatDialogClose, MatDialogContent, MatDialogTitle } from '@angular/material/dialog';
 import { MatError, MatFormField, MatHint, MatLabel, MatPrefix } from '@angular/material/form-field';
 import { MatIcon } from '@angular/material/icon';
 import { MatInput } from '@angular/material/input';
 import { MatOption, MatSelect } from '@angular/material/select';
 import { getDaysInMonth, parseISO } from 'date-fns';
+import { BirthdayRelationship } from '@birthday/shared-models';
 import { hasBirthYear } from '@birthday/web-birthdays-util';
 import { DialogHeaderComponent } from '@birthday/web-shared-ui';
+import { BIRTHDAY_NOTES_MAX_LENGTH, RELATIONSHIP_OPTIONS } from '../../constants';
 import { CalendarController } from '../../state';
-import { BirthdayDialogData, BirthdayFormModel } from '../../types';
+import { BirthdayDialogData, BirthdayFormModel, RelationshipOption } from '../../types';
 
 // A leap year, so Feb 29 can be chosen while the birth year is empty.
 const ANY_LEAP_YEAR = 2000;
@@ -23,6 +26,8 @@ const ANY_LEAP_YEAR = 2000;
     FormField,
     MatButton,
     MatIconButton,
+    MatChipListbox,
+    MatChipOption,
     MatDialogActions,
     MatDialogClose,
     MatDialogContent,
@@ -47,6 +52,8 @@ export class BirthdayDialogComponent {
   private readonly calendarController: CalendarController = inject(CalendarController);
 
   protected readonly isEdit: boolean = !!this.data.birthday;
+  protected readonly relationshipOptions: RelationshipOption[] = RELATIONSHIP_OPTIONS;
+  protected readonly notesMaxLength: number = BIRTHDAY_NOTES_MAX_LENGTH;
   protected readonly months: Date[] = Array.from({ length: 12 }, (_, index: number) => new Date(ANY_LEAP_YEAR, index));
   protected readonly model: WritableSignal<BirthdayFormModel> = signal(this.createModel());
   protected readonly days: Signal<number[]> = computed(() =>
@@ -68,12 +75,18 @@ export class BirthdayDialogComponent {
 
       return value() > daysInMonth ? { kind: 'invalidDay', message: 'No such day' } : undefined;
     });
+    maxLength(path.notes, BIRTHDAY_NOTES_MAX_LENGTH, { message: `Notes can be up to ${BIRTHDAY_NOTES_MAX_LENGTH} characters` });
   });
 
   protected save(event: Event): void {
     event.preventDefault();
     // `submit` requires a Promise-returning action; saving itself stays an Observable.
     submit(this.birthdayForm, async () => this.calendarController.saveBirthday(this.model()));
+  }
+
+  // The listbox emits `undefined` when the selected chip is clicked again.
+  protected setRelationship(relationship: BirthdayRelationship | undefined): void {
+    this.birthdayForm.relationship().value.set(relationship ?? null);
   }
 
   protected delete(): void {
@@ -89,6 +102,8 @@ export class BirthdayDialogComponent {
       month: date.getMonth() + 1,
       day: date.getDate(),
       year: birthDate && hasBirthYear(birthDate) ? String(date.getFullYear()) : '',
+      relationship: this.data.birthday?.relationship ?? null,
+      notes: this.data.birthday?.notes ?? '',
     };
   }
 }
