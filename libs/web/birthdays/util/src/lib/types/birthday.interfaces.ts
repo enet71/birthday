@@ -7,3 +7,5 @@ export interface UpcomingBirthday {
   date: Date;
   daysUntil: number;
 }
+
+export type BirthdayTone = 'violet' | 'rose' | 'sky' | 'peach' | 'mint';

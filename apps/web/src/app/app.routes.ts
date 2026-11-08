@@ -1,5 +1,4 @@
 import { Route } from '@angular/router';
-import { APP_LAYOUT_SEARCH_DATA_KEY, AppLayoutSearch } from '@birthday/web-layout-util';
 import { APP_DOCUMENT_TITLE_DATA_KEY, APP_NOINDEX_DATA_KEY } from './app.constants';
 
 export const appRoutes: Route[] = [
@@ -13,13 +12,8 @@ export const appRoutes: Route[] = [
   {
     path: 'people',
     title: 'People',
-    data: {
-      [APP_LAYOUT_SEARCH_DATA_KEY]: {
-        placeholder: 'Search people…',
-      } satisfies AppLayoutSearch,
-      [APP_NOINDEX_DATA_KEY]: true,
-    },
-    loadComponent: () => import('./pages/people/people.component').then((m) => m.PeopleComponent),
+    data: { [APP_NOINDEX_DATA_KEY]: true },
+    loadChildren: () => import('@birthday/web-birthdays-feature-people').then((m) => m.PEOPLE_ROUTES),
   },
   {
     path: 'settings',

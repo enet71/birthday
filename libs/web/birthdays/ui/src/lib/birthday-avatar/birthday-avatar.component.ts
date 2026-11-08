@@ -1,6 +1,5 @@
 import { ChangeDetectionStrategy, Component, computed, input, InputSignal, Signal } from '@angular/core';
-import { getBirthdayTone } from '../../helpers';
-import { BirthdayTone } from '../../types';
+import { BirthdayTone, getBirthdayTone } from '@birthday/web-birthdays-util';
 
 @Component({
   selector: 'ui-birthday-avatar',

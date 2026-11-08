@@ -1,0 +1,11 @@
+{
+  "name": "web-birthdays-feature-people",
+  "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/web/birthdays/feature-people/src",
+  "prefix": "ui",
+  "projectType": "library",
+  "tags": ["platform:web", "type:feature"],
+  "targets": {
+    "typecheck": {}
+  }
+}
