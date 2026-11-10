@@ -105,18 +105,115 @@ export type Database = {
         };
         Relationships: [];
       };
+      notification_deliveries: {
+        Row: {
+          local_date: string;
+          user_id: string;
+        };
+        Insert: {
+          local_date: string;
+          user_id: string;
+        };
+        Update: {
+          local_date?: string;
+          user_id?: string;
+        };
+        Relationships: [];
+      };
+      notification_settings: {
+        Row: {
+          hour: number;
+          remind_day_before: boolean;
+          remind_on_day: boolean;
+          time_zone: string;
+          user_id: string;
+        };
+        Insert: {
+          hour?: number;
+          remind_day_before?: boolean;
+          remind_on_day?: boolean;
+          time_zone: string;
+          user_id?: string;
+        };
+        Update: {
+          hour?: number;
+          remind_day_before?: boolean;
+          remind_on_day?: boolean;
+          time_zone?: string;
+          user_id?: string;
+        };
+        Relationships: [];
+      };
+      push_subscriptions: {
+        Row: {
+          auth: string;
+          created_at: string;
+          endpoint: string;
+          id: string;
+          p256dh: string;
+          user_id: string;
+        };
+        Insert: {
+          auth: string;
+          created_at?: string;
+          endpoint: string;
+          id?: string;
+          p256dh: string;
+          user_id?: string;
+        };
+        Update: {
+          auth?: string;
+          created_at?: string;
+          endpoint?: string;
+          id?: string;
+          p256dh?: string;
+          user_id?: string;
+        };
+        Relationships: [];
+      };
     };
     Views: {
       [_ in never]: never;
     };
     Functions: {
+      claim_due_birthday_notifications: {
+        Args: { batch_size?: number };
+        Returns: {
+          local_date: string;
+          remind_day_before: boolean;
+          remind_on_day: boolean;
+          user_id: string;
+        }[];
+      };
       delete_google_calendar_refresh_token: {
         Args: { target_user_id: string };
         Returns: undefined;
       };
+      due_birthday_notifications: {
+        Args: never;
+        Returns: {
+          local_date: string;
+          user_id: string;
+        }[];
+      };
       get_google_calendar_refresh_token: {
         Args: { target_user_id: string };
         Returns: string;
+      };
+      get_notification_birthdays: {
+        Args: { local_date: string; target_user_id: string };
+        Returns: {
+          birth_date: string;
+          name: string;
+        }[];
+      };
+      is_valid_time_zone: {
+        Args: { time_zone: string };
+        Returns: boolean;
+      };
+      request_birthday_notifications: {
+        Args: never;
+        Returns: undefined;
       };
       set_google_calendar_refresh_token: {
         Args: { refresh_token: string; target_user_id: string };

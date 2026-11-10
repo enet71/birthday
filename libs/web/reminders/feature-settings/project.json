@@ -1,0 +1,11 @@
+{
+  "name": "web-reminders-feature-settings",
+  "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/web/reminders/feature-settings/src",
+  "prefix": "ui",
+  "projectType": "library",
+  "tags": ["platform:web", "type:feature"],
+  "targets": {
+    "typecheck": {}
+  }
+}

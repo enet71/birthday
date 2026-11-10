@@ -32,7 +32,9 @@
       "@birthday/web-google-calendar-data-access": ["./libs/web/google-calendar/data-access/src/index.ts"],
       "@birthday/web-google-calendar-feature-sync": ["./libs/web/google-calendar/feature-sync/src/index.ts"],
       "@birthday/web-birthdays-ui": ["./libs/web/birthdays/ui/src/index.ts"],
-      "@birthday/web-birthdays-feature-people": ["./libs/web/birthdays/feature-people/src/index.ts"]
+      "@birthday/web-birthdays-feature-people": ["./libs/web/birthdays/feature-people/src/index.ts"],
+      "@birthday/web-reminders-data-access": ["./libs/web/reminders/data-access/src/index.ts"],
+      "@birthday/web-reminders-feature-settings": ["./libs/web/reminders/feature-settings/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

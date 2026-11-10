@@ -10,8 +10,7 @@ export const GOOGLE_CALENDAR_BIRTHDAYS_GUIDE: Guide = {
 export const BIRTHDAY_REMINDERS_GUIDE: Guide = {
   slug: 'birthday-reminders',
   title: 'How to get birthday reminders',
-  description:
-    'Get a reminder the day before every birthday you add in Birthdly: set up Google Calendar notifications and keep upcoming birthdays in view.',
+  description: 'Get a reminder on the day or the day before every birthday with Birthdly notifications and Google Calendar reminders.',
   updatedAt: '2026-11-10',
 };
 

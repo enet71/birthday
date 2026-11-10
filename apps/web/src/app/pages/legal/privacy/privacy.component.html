@@ -24,9 +24,16 @@
     <li>
       <strong>Google Contacts data.</strong> If you connect Google Calendar, Birthdly also reads your Google contacts to import their names and
       birthdays into your Birthdly calendar. We store only the name, the birth date, and the contact ID of contacts that have a birthday. Other
-      contact details, such as phone numbers, email addresses, or addresses, are not read or stored.
+      contact details, such as phone numbers, email addresses, or addresses, are not read or stored. If you turn on birthday notifications, the names
+      of imported contacts can appear in them, as described below.
     </li>
     <li><strong>Google refresh token.</strong> To keep syncing after you connect, we store a Google refresh token in an encrypted secret store.</li>
+    <li>
+      <strong>Notification settings and device subscriptions.</strong> If you turn on birthday notifications, we store when you want them (the days,
+      the time, and your time zone) and, for each device where you turn them on, its push subscription: an address at your browser's push service and
+      the keys that encrypt notifications for that device. We also keep, for about a week, the days we already handled your notifications for, so none
+      is sent twice.
+    </li>
   </ul>
   <p>Birthdly does not use advertising, analytics, or tracking cookies.</p>
 </section>
@@ -35,8 +42,8 @@
   <h2>How we use your information</h2>
   <p>
     We use your information only to provide Birthdly's features to you: to show your birthdays on the calendar, keep them in your account on every
-    device, sync them with your Google Calendar, and import birthdays from your Google contacts. We do not sell your information, use it for
-    advertising, or share it with anyone except the service providers listed below that are needed to run Birthdly.
+    device, send you birthday notifications, sync them with your Google Calendar, and import birthdays from your Google contacts. We do not sell your
+    information, use it for advertising, or share it with anyone except the service providers listed below that are needed to run Birthdly.
   </p>
 </section>
 
@@ -62,7 +69,9 @@
     <li>Google user data is used only to provide the user-facing features described above.</li>
     <li>
       Google user data is stored and processed only by our infrastructure provider (Supabase) to run Birthdly. It is not shared with any other third
-      parties.
+      parties. If you turn on birthday notifications, the names of imported contacts who have a birthday that day or the next are sent to your own
+      device inside a notification. The notification is encrypted for your device and passes through your browser's push service, which cannot read
+      it.
     </li>
     <li>Google user data is not transferred to others, except as needed to provide those features, to comply with the law, or with your consent.</li>
     <li>Google user data is not used for advertising, including personalized, retargeted, or interest-based advertising.</li>
@@ -94,6 +103,10 @@
     <li><strong>DigitalOcean</strong> — website hosting. Like any web host, it processes your IP address and request logs.</li>
     <li><strong>Google</strong> — sign-in, Google Calendar, and Google Contacts, when you choose to use them.</li>
     <li><strong>Google Fonts</strong> — delivers the icon font, so Google receives your IP address when a page loads.</li>
+    <li>
+      <strong>Your browser's push service</strong>, such as Google for Chrome, Mozilla for Firefox, Apple for Safari, or Microsoft for Edge — delivers
+      birthday notifications, when you turn them on. Notifications are encrypted for your device, so the push service cannot read the names in them.
+    </li>
   </ul>
 </section>
 
@@ -105,6 +118,10 @@
       Disconnecting Google Calendar in <a routerLink="/settings">Settings</a> revokes Birthdly's access to your Google account, deletes the stored
       Google token and the stored IDs of Google Calendar events, and attempts to remove the birthday events Birthdly added to your Google Calendar. If
       removing them fails, they stay in your Google Calendar, where you can delete them yourself.
+    </li>
+    <li>
+      Turning off birthday notifications for a device in <a routerLink="/settings">Settings</a> deletes its push subscription. When you sign out on a
+      device, its subscription stops working and is deleted the next time a notification is sent.
     </li>
     <li>
       Birthdays imported from Google Contacts (name, birth date, and contact ID) stay in your Birthdly account after you disconnect, until you delete
