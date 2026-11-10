@@ -1,4 +1,4 @@
-<p class="legal__updated">Effective date: November 6, 2026</p>
+<p class="legal__updated">Effective date: November 10, 2026</p>
 
 <section>
   <p>
@@ -76,8 +76,9 @@
     </li>
     <li>
       <strong>With an account,</strong> your data is stored in a database hosted by
-      <a href="https://supabase.com" target="_blank" rel="noopener">Supabase</a>. Data is encrypted in transit (HTTPS), and access to each user's data
-      is restricted to that user.
+      <a href="https://supabase.com" target="_blank" rel="noopener">Supabase</a>. Data is encrypted in transit (HTTPS) and at rest (AES-256), and
+      database access rules restrict each user's data to that user. Google refresh tokens are kept in a separate encrypted secret store and are used
+      only by Birthdly's server functions; they are never sent to your browser.
     </li>
   </ul>
 </section>
