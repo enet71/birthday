@@ -52,6 +52,7 @@ export const APP_LAYOUT: AppLayoutConfig = {
     tagline: 'birthday calendar',
     links: [
       { label: 'About', path: '/about' },
+      { label: 'Guides', path: '/guides' },
       { label: 'Privacy Policy', path: '/privacy' },
       { label: 'Terms of Service', path: '/terms' },
     ],

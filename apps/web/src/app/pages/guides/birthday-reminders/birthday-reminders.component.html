@@ -1,0 +1,99 @@
+<p class="guide__lead">
+  Most forgotten birthdays are not forgotten at all: you simply did not think of the date in time. A reminder the day before solves that, and it works
+  best when it arrives on the phone you already carry. This guide shows how to get birthday reminders with Birthdly and Google Calendar.
+</p>
+
+<section>
+  <h2>What makes a good birthday reminder</h2>
+  <ul>
+    <li><strong>It comes early enough.</strong> The day before leaves time to send a card, order a gift, or plan a call.</li>
+    <li><strong>It comes where you look.</strong> A notification on your phone works better than an app you have to open.</li>
+    <li><strong>It repeats every year on its own.</strong> You set up a birthday once and never touch it again.</li>
+    <li><strong>It is easy to keep complete.</strong> Reminders only help for the people you actually added.</li>
+  </ul>
+</section>
+
+<section>
+  <h2>How reminders work with Birthdly</h2>
+  <p>
+    Birthdly keeps your list of birthdays, and Google Calendar delivers the reminders. Birthdly does not send notifications or emails on its own.
+    Instead, it adds each birthday to your Google Calendar as a birthday event with a reminder at 9:00 the day before. Google Calendar then shows that
+    reminder on your phone, tablet, and computer, wherever you are signed in to Google.
+  </p>
+  <p>This way you get reminders in an app you already use every day, and you do not need yet another app that asks for notification permissions.</p>
+</section>
+
+<section>
+  <h2>Set up birthday reminders step by step</h2>
+  <ol>
+    <li>
+      <strong>Add birthdays.</strong> Open the <a routerLink="/">calendar</a>, press <strong>Add birthday</strong>, and enter a name and a date. The
+      birth year is optional.
+    </li>
+    <li><strong>Sign in with Google</strong> using the account button in the top right corner.</li>
+    <li>
+      <strong>Connect Google Calendar.</strong> Open <strong>Settings</strong> and press <strong>Connect Google Calendar</strong>. Birthdly creates a
+      birthday event with a reminder for every birthday in your list, except the birthdays that come from your Google Contacts.
+    </li>
+    <li>
+      <strong>Allow notifications for Google Calendar.</strong> On your phone, make sure notifications are turned on for the Google Calendar app. On a
+      computer, allow notifications for Google Calendar in your browser.
+    </li>
+  </ol>
+  <p>
+    That is all. From now on, every birthday you add or change in Birthdly gets its event and reminder in Google Calendar as well. Birthdays from your
+    Google Contacts are the exception, as the next sections explain. The
+    <a [routerLink]="googleCalendarGuidePath">Google Calendar guide</a> explains the sync in more detail.
+  </p>
+</section>
+
+<section>
+  <h2>Keep upcoming birthdays in view</h2>
+  <p>A reminder covers the day before. For a longer look ahead, use Birthdly itself:</p>
+  <ul>
+    <li>
+      The <strong>Upcoming</strong> panel next to the calendar shows the next birthdays with labels such as "Tomorrow" or "in 5 days", and how old
+      each person turns.
+    </li>
+    <li>The <strong>year view</strong> shows all birthdays of the year at once, which helps when you plan presents or trips.</li>
+    <li>The <strong>People</strong> page lists everyone in one table that you can sort and search.</li>
+  </ul>
+  <p class="tip">Use the notes of a birthday for gift ideas. When the reminder arrives, open the person in Birthdly and the ideas are right there.</p>
+</section>
+
+<section>
+  <h2>Birthdays from Google Contacts</h2>
+  <p>
+    Google Calendar already shows the birthdays saved in your Google Contacts. Birthdly brings those birthdays into its own list too, but it does not
+    add a second event for them, so you do not get two reminders. Reminders for these birthdays come from Google Calendar itself and follow its
+    default notification settings for all-day events, so check those settings if you want a reminder for them too.
+  </p>
+</section>
+
+<section>
+  <h2>Tips for never missing a birthday</h2>
+  <ul>
+    <li>Add birthdays as soon as you hear them, even without the year. You can fill in the year later.</li>
+    <li>Save the relationship, such as family, friends, or colleagues, so you can see at a glance who is who.</li>
+    <li>Once a month, open the year view and check that nobody important is missing.</li>
+  </ul>
+</section>
+
+<section>
+  <h2>Frequently asked questions</h2>
+  <h3>Can Birthdly send me email reminders?</h3>
+  <p>Not at the moment. Reminders come from Google Calendar after you connect it.</p>
+  <h3>When does the reminder arrive?</h3>
+  <p>
+    For birthdays you add in Birthdly, at 9:00 the day before the birthday, in the time zone of your Google Calendar. For birthdays from your Google
+    Contacts, it depends on your Google Calendar notification settings.
+  </p>
+  <h3>Do I get reminders without connecting Google Calendar?</h3>
+  <p>
+    No. Without Google Calendar you can still see upcoming birthdays in Birthdly, but nothing notifies you. Connect Google Calendar to get reminders.
+  </p>
+</section>
+
+<p class="guide__updated">Last updated {{ guide.updatedAt | date: 'longDate' }}</p>
+
+<app-related-guides [current]="guide" />

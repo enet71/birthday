@@ -17,6 +17,10 @@ export const serverRoutes: ServerRoute[] = [
   { path: 'about', renderMode: RenderMode.Prerender },
   { path: 'privacy', renderMode: RenderMode.Prerender },
   { path: 'terms', renderMode: RenderMode.Prerender },
+  { path: 'guides', renderMode: RenderMode.Prerender },
+  { path: 'guides/google-calendar-birthdays', renderMode: RenderMode.Prerender },
+  { path: 'guides/birthday-reminders', renderMode: RenderMode.Prerender },
+  { path: 'guides/import-birthdays-from-google-contacts', renderMode: RenderMode.Prerender },
   {
     // Unknown URLs render the not-found page with a real 404, so search engines drop them instead of treating them as the home page.
     path: '**',

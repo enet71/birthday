@@ -65,6 +65,10 @@ export const appRoutes: Route[] = [
   },
   { path: 'calendar', redirectTo: '' },
   {
+    path: 'guides',
+    loadChildren: () => import('./pages/guides/guides.routes').then((m) => m.GUIDES_ROUTES),
+  },
+  {
     path: '**',
     title: 'Page not found',
     data: { [APP_NOINDEX_DATA_KEY]: true },
