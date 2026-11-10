@@ -418,3 +418,7 @@ enabled = true
 # Called by the database trigger on `birthdays` with the secret key, not with a user JWT.
 [functions.google-calendar-push]
 verify_jwt = false
+
+# Called every 15 minutes by `pg_cron` with the secret key, not with a user JWT.
+[functions.birthday-notifications-send]
+verify_jwt = false

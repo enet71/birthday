@@ -22,6 +22,11 @@ export const ABOUT_FEATURES: AboutFeature[] = [
     text: 'Keep everyone in one sortable list and find a person in seconds.',
   },
   {
+    icon: 'notifications_active',
+    title: 'Birthday notifications',
+    text: 'Get a notification on the day or the day before, at the time you choose, on your phone and computer.',
+  },
+  {
     icon: 'sync',
     title: 'Google Calendar sync',
     text: 'Show your birthdays in Google Calendar and bring in birthdays from your Google contacts.',
@@ -51,6 +56,11 @@ export const ABOUT_FAQ: AboutFaqItem[] = [
   {
     question: 'Can I add a birthday without the birth year?',
     answer: 'Yes. Leave the year empty, and Birthdly shows the birthday every year without the age.',
+  },
+  {
+    question: 'Will Birthdly remind me about birthdays?',
+    answer:
+      'Yes. Sign in with Google and turn on birthday notifications in Settings. You get a notification on the day, the day before, or both, at the time you choose, without keeping Birthdly open.',
   },
   {
     question: 'Can I sync birthdays with Google Calendar?',

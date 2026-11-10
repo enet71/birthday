@@ -37,7 +37,8 @@
         },
         "stylePreprocessorOptions": {
           "includePaths": ["."]
-        }
+        },
+        "serviceWorker": "apps/web/ngsw-config.json"
       },
       "configurations": {
         "production": {
