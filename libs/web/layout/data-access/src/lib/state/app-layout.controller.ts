@@ -2,7 +2,7 @@ import { effect, inject, Injectable, TemplateRef } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRouteSnapshot, Event as RouterEvent, NavigationEnd, Router } from '@angular/router';
 import { filter } from 'rxjs';
-import { APP_LAYOUT_SEARCH_DATA_KEY, AppLayoutSearch } from '@birthday/web-layout-util';
+import { APP_LAYOUT_HEADING_DATA_KEY, APP_LAYOUT_SEARCH_DATA_KEY, AppLayoutSearch } from '@birthday/web-layout-util';
 import { StateController } from '@birthday/web-shared-data-access';
 import { BrowserStorageService, LocalStorageKey, PlatformService } from '@birthday/web-shared-util';
 import { AppLayoutState } from './app-layout.state';
@@ -58,7 +58,7 @@ export class AppLayoutController extends StateController {
     let snapshot: ActivatedRouteSnapshot | null = this.router.routerState.snapshot.root;
 
     while (snapshot) {
-      title = snapshot.title ?? title;
+      title = snapshot.data[APP_LAYOUT_HEADING_DATA_KEY] ?? snapshot.title ?? title;
       search = snapshot.data[APP_LAYOUT_SEARCH_DATA_KEY] ?? search;
       snapshot = snapshot.firstChild;
     }

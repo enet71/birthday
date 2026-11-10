@@ -45,6 +45,16 @@ Add new entries under the category that best matches their purpose, keeping newe
 
 ### UI and Styling
 
+## 2026-11-10 - The calendar page shows only the calendar
+
+- Type: error
+- Context: Improving SEO of the home page (`/`), which is the calendar page (`feature-calendar` `CalendarPageComponent`).
+- Incorrect behavior: Adding a static marketing/SEO text section ("Free birthday calendar and reminder app", feature list, FAQ link) under the calendar.
+- Preferred behavior: Keep the calendar page limited to the calendar and its existing panels. Put descriptive or SEO text on other pages such as `/about` or dedicated landing pages, or in head metadata.
+- Generalized rule: Do not add marketing, intro, or SEO content blocks to the calendar page; propose another page for such content and confirm with the developer.
+- Trigger cues: SEO, home page text, intro section, landing content, calendar page, hero block
+- Status: active
+
 ### Testing
 
 ### Workflow and Tooling

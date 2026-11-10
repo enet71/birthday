@@ -8,7 +8,10 @@ import {
   APP_LAYOUT,
   APP_NOINDEX_DATA_KEY,
   APP_SITE_URL,
+  APP_STRUCTURED_DATA_DATA_KEY,
 } from './app.constants';
+
+const STRUCTURED_DATA_SCRIPT_ID = 'page-structured-data';
 
 // Runs on every navigation on the server and in the browser, so it also owns the per-route SEO tags.
 // Route titles stay short for the layout top bar; the document title also carries the app name.
@@ -29,6 +32,7 @@ export class AppPageMetaStrategy extends TitleStrategy {
     this.updateSocialTags(title, description);
     this.updateCanonicalUrl(snapshot.url);
     this.updateRobots(snapshot.root);
+    this.updateStructuredData(snapshot.root);
   }
 
   // Link previews in messengers and social networks read these, so they follow the page like the document title.
@@ -70,5 +74,25 @@ export class AppPageMetaStrategy extends TitleStrategy {
     } else {
       this.meta.removeTag('name="robots"');
     }
+  }
+
+  // The site-wide JSON-LD stays in `index.html`; this script holds only the current page's own markup.
+  private updateStructuredData(root: ActivatedRouteSnapshot): void {
+    const data: object | undefined = this.findRouteData(root, APP_STRUCTURED_DATA_DATA_KEY);
+    let script: HTMLScriptElement | null = this.document.head.querySelector(`#${STRUCTURED_DATA_SCRIPT_ID}`);
+
+    if (!data) {
+      script?.remove();
+      return;
+    }
+
+    if (!script) {
+      script = this.document.createElement('script');
+      script.id = STRUCTURED_DATA_SCRIPT_ID;
+      script.type = 'application/ld+json';
+      this.document.head.appendChild(script);
+    }
+
+    script.textContent = JSON.stringify(data);
   }
 }
