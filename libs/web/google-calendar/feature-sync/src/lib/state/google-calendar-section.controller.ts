@@ -3,7 +3,6 @@ import { isPlatformBrowser, Location } from '@angular/common';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { finalize, Observable } from 'rxjs';
-import { AuthController } from '@birthday/web-auth-data-access';
 import { GOOGLE_CALENDAR_REDIRECT_PATH, GoogleCalendarController } from '@birthday/web-google-calendar-data-access';
 import { StateController } from '@birthday/web-shared-data-access';
 import { GoogleCalendarSectionState } from './google-calendar-section.state';
@@ -12,7 +11,6 @@ import { GoogleCalendarSectionState } from './google-calendar-section.state';
 export class GoogleCalendarSectionController extends StateController {
   private readonly sectionState: GoogleCalendarSectionState = inject(GoogleCalendarSectionState);
   private readonly googleCalendarController: GoogleCalendarController = inject(GoogleCalendarController);
-  private readonly authController: AuthController = inject(AuthController);
   private readonly route: ActivatedRoute = inject(ActivatedRoute);
   private readonly location: Location = inject(Location);
   private readonly document: Document = inject(DOCUMENT);
@@ -23,10 +21,6 @@ export class GoogleCalendarSectionController extends StateController {
     if (isPlatformBrowser(inject(PLATFORM_ID))) {
       this.completeConsent();
     }
-  }
-
-  public signInWithGoogle(): void {
-    this.runPending(this.authController.signInWithGoogle());
   }
 
   // Google returns the user to the redirect page, which shows this section again, and `completeConsent` finishes.

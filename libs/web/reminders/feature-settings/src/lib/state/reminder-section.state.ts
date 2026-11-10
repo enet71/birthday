@@ -1,6 +1,5 @@
 import { computed, inject, Injectable, linkedSignal, signal, Signal, WritableSignal } from '@angular/core';
 import { disabled, FieldTree, form } from '@angular/forms/signals';
-import { AuthState } from '@birthday/web-auth-data-access';
 import { PushSupport, ReminderSettings, RemindersState } from '@birthday/web-reminders-data-access';
 import { injectState, ReadonlyState, State } from '@birthday/web-shared-data-access';
 import { PlatformService } from '@birthday/web-shared-util';
@@ -8,7 +7,6 @@ import { ReminderSectionView, ReminderSettingsModel } from '../types';
 
 @Injectable()
 export class ReminderSectionState extends State {
-  private readonly authState: ReadonlyState<AuthState> = injectState(AuthState);
   private readonly remindersState: ReadonlyState<RemindersState> = injectState(RemindersState);
   private readonly platform: PlatformService = inject(PlatformService);
 
@@ -19,9 +17,6 @@ export class ReminderSectionState extends State {
     // A reload on entering Settings keeps the current view.
     if (!this.platform.isRendered() || this.remindersState.isFirstLoad()) {
       return 'loading';
-    }
-    if (!this.authState.isAuthenticated()) {
-      return 'signedOut';
     }
     if (this.remindersState.hasLoadError()) {
       return 'error';
@@ -40,7 +35,7 @@ export class ReminderSectionState extends State {
   });
   // The account's settings apply to every device, so they show even where this device cannot get notifications.
   public readonly settings: Signal<ReminderSettings | null> = computed(() =>
-    ['loading', 'signedOut', 'error'].includes(this.view()) ? null : this.remindersState.settings(),
+    ['loading', 'error'].includes(this.view()) ? null : this.remindersState.settings(),
   );
   // What the controls show. It follows the saved settings; the Controller sets it back to them after a save.
   public readonly settingsModel: WritableSignal<ReminderSettingsModel> = linkedSignal(() => this.toModel(this.settings()));

@@ -1,5 +1,4 @@
 import { computed, inject, Injectable, signal, Signal, WritableSignal } from '@angular/core';
-import { AuthState } from '@birthday/web-auth-data-access';
 import { GoogleCalendarState } from '@birthday/web-google-calendar-data-access';
 import { injectState, ReadonlyState, State } from '@birthday/web-shared-data-access';
 import { PlatformService } from '@birthday/web-shared-util';
@@ -7,7 +6,6 @@ import { GoogleCalendarSectionView } from '../types';
 
 @Injectable()
 export class GoogleCalendarSectionState extends State {
-  private readonly authState: ReadonlyState<AuthState> = injectState(AuthState);
   private readonly googleCalendarState: ReadonlyState<GoogleCalendarState> = injectState(GoogleCalendarState);
   private readonly platform: PlatformService = inject(PlatformService);
 
@@ -19,9 +17,6 @@ export class GoogleCalendarSectionState extends State {
 
     if (!this.platform.isRendered() || isFirstLoad) {
       return 'loading';
-    }
-    if (!this.authState.isAuthenticated()) {
-      return 'signedOut';
     }
     if (this.googleCalendarState.connectionResource.error()) {
       return 'error';

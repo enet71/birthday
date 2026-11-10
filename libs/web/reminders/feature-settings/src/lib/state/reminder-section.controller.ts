@@ -1,7 +1,6 @@
 import { afterNextRender, inject, Injectable, Injector } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { finalize, Observable } from 'rxjs';
-import { AuthController } from '@birthday/web-auth-data-access';
 import { ReminderDays, RemindersController } from '@birthday/web-reminders-data-access';
 import { StateController } from '@birthday/web-shared-data-access';
 import { ReminderSettingsModel } from '../types';
@@ -11,16 +10,11 @@ import { ReminderSectionState } from './reminder-section.state';
 export class ReminderSectionController extends StateController {
   private readonly sectionState: ReminderSectionState = inject(ReminderSectionState);
   private readonly remindersController: RemindersController = inject(RemindersController);
-  private readonly authController: AuthController = inject(AuthController);
   private readonly injector: Injector = inject(Injector);
 
   constructor() {
     super();
     this.remindersController.reload();
-  }
-
-  public signInWithGoogle(): void {
-    this.runPending(this.authController.signInWithGoogle());
   }
 
   public enable(): void {

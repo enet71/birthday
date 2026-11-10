@@ -32,10 +32,6 @@ export class GoogleCalendarSectionComponent {
     return this.sectionState.isPending;
   }
 
-  protected signInWithGoogle(): void {
-    this.sectionController.signInWithGoogle();
-  }
-
   protected connect(): void {
     this.sectionController.connect();
   }
