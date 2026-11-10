@@ -1,7 +1,7 @@
 import { ReminderDays, ReminderSettings } from '@birthday/web-reminders-data-access';
 
 // `blocked`: the user blocked notifications for the site. `enabled` and `disabled` describe this device.
-export type ReminderSectionView = 'loading' | 'signedOut' | 'error' | 'unsupported' | 'iosNotInstalled' | 'blocked' | 'disabled' | 'enabled';
+export type ReminderSectionView = 'loading' | 'error' | 'unsupported' | 'iosNotInstalled' | 'blocked' | 'disabled' | 'enabled';
 
 export interface ReminderHourOption {
   hour: number;

@@ -1,6 +1,9 @@
 <ui-account-section class="section" />
-<ui-reminder-section class="section" />
-<ui-google-calendar-section class="section" />
+<!-- The Account section signs in, so these sections show only for a signed-in user. -->
+@if (isAuthenticated()) {
+  <ui-google-calendar-section class="section" />
+  <ui-reminder-section class="section" />
+}
 <a class="about" matButton routerLink="/about">
   <mat-icon>info</mat-icon>
   About Birthdly

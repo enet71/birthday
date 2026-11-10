@@ -65,10 +65,6 @@ export class ReminderSectionComponent {
     return this.sectionState.isPending;
   }
 
-  protected signInWithGoogle(): void {
-    this.sectionController.signInWithGoogle();
-  }
-
   constructor() {
     // Turning notifications on or off replaces the clicked button, so move the focus to the new one.
     afterRenderEffect(() => {

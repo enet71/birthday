@@ -8,13 +8,6 @@
         @case ('loading') {
           <mat-progress-spinner class="spinner" mode="indeterminate" diameter="32" aria-label="Loading Google Calendar status" />
         }
-        @case ('signedOut') {
-          <p class="description">Sign in with Google to sync your birthdays with Google Calendar.</p>
-          <button matButton="outlined" type="button" disabledInteractive [disabled]="isPending()" (click)="signInWithGoogle()">
-            <img class="google-logo" src="/assets/images/google-logo.svg" alt="" width="18" height="18" />
-            Sign in with Google
-          </button>
-        }
         @case ('error') {
           <p class="description">Couldn't load the Google Calendar status.</p>
           <button matButton="outlined" type="button" (click)="reloadConnection()">Try again</button>
