@@ -24,7 +24,7 @@ export const ABOUT_FEATURES: AboutFeature[] = [
   {
     icon: 'sync',
     title: 'Google Calendar sync',
-    text: 'Show your birthdays in Google Calendar and bring in birthdays from your Google contacts and calendar.',
+    text: 'Show your birthdays in Google Calendar and bring in birthdays from your Google contacts.',
   },
   {
     icon: 'smartphone',
@@ -55,7 +55,7 @@ export const ABOUT_FAQ: AboutFaqItem[] = [
   {
     question: 'Can I sync birthdays with Google Calendar?',
     answer:
-      'Yes. Sign in with Google and connect Google Calendar in Settings. Birthdly shows your birthdays in Google Calendar and brings in birthdays from your Google contacts and calendar.',
+      'Yes. Sign in with Google and connect Google Calendar in Settings. Birthdly shows your birthdays in Google Calendar and brings in birthdays from your Google contacts.',
   },
 ];
 

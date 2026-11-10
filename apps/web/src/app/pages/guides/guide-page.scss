@@ -1,0 +1,75 @@
+// Article styles shared by every guide page.
+:host {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  max-width: 48rem;
+  padding-bottom: 2rem;
+  line-height: 1.7;
+  color: var(--mat-sys-on-surface-variant);
+}
+
+.guide {
+  &__lead {
+    margin: 0;
+    font-size: 1.125rem;
+    color: var(--mat-sys-on-surface);
+  }
+
+  &__updated {
+    margin: 0;
+    font-size: 0.875rem;
+  }
+}
+
+section {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.75rem;
+}
+
+h2 {
+  margin: 0;
+  font-size: 1.375rem;
+  font-weight: 700;
+  line-height: 1.35;
+  letter-spacing: -0.01em;
+  color: var(--mat-sys-on-surface);
+}
+
+h3 {
+  margin: 0.5rem 0 0;
+  font-size: 1.0625rem;
+  font-weight: 700;
+  color: var(--mat-sys-on-surface);
+}
+
+p,
+ul,
+ol {
+  margin: 0;
+}
+
+ul,
+ol {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding-left: 1.5rem;
+}
+
+a {
+  color: var(--mat-sys-primary);
+}
+
+strong {
+  color: var(--mat-sys-on-surface);
+}
+
+.tip {
+  padding: 1rem 1.25rem;
+  border-left: 0.25rem solid var(--mat-sys-primary);
+  border-radius: 0.5rem;
+  background: var(--mat-sys-surface-container-low);
+}

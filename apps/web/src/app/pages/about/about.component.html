@@ -69,9 +69,21 @@
   </a>
 </section>
 
+<section class="section" aria-labelledby="about-guides-title">
+  <h2 id="about-guides-title" class="section__title section__title_small">Guides</h2>
+  <ul class="links">
+    @for (guide of guides; track guide.slug) {
+      <li>
+        <a [routerLink]="getGuidePath(guide)">{{ guide.title }}</a>
+      </li>
+    }
+    <li><a routerLink="/guides">All guides</a></li>
+  </ul>
+</section>
+
 <section class="section" aria-labelledby="about-legal-title">
   <h2 id="about-legal-title" class="section__title section__title_small">Legal</h2>
-  <ul class="legal-links">
+  <ul class="links links_inline">
     <li><a routerLink="/privacy">Privacy Policy</a></li>
     <li><a routerLink="/terms">Terms of Service</a></li>
   </ul>
