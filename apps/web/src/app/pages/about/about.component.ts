@@ -3,6 +3,8 @@ import { MatButton } from '@angular/material/button';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatIcon } from '@angular/material/icon';
 import { RouterLink } from '@angular/router';
+import { ABOUT_FAQ, ABOUT_FEATURES } from './about.constants';
+import { AboutFaqItem, AboutFeature } from './about.interfaces';
 
 @Component({
   selector: 'app-about',
@@ -11,4 +13,7 @@ import { RouterLink } from '@angular/router';
   styleUrl: './about.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AboutComponent {}
+export class AboutComponent {
+  protected readonly features: AboutFeature[] = ABOUT_FEATURES;
+  protected readonly faq: AboutFaqItem[] = ABOUT_FAQ;
+}

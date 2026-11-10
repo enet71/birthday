@@ -1,12 +1,17 @@
 import { Route } from '@angular/router';
-import { APP_DESCRIPTION_DATA_KEY, APP_DOCUMENT_TITLE_DATA_KEY, APP_NOINDEX_DATA_KEY } from './app.constants';
+import { APP_LAYOUT_HEADING_DATA_KEY } from '@birthday/web-layout-util';
+import { APP_DESCRIPTION_DATA_KEY, APP_DOCUMENT_TITLE_DATA_KEY, APP_NOINDEX_DATA_KEY, APP_STRUCTURED_DATA_DATA_KEY } from './app.constants';
+import { ABOUT_FAQ_STRUCTURED_DATA } from './pages/about/about.constants';
 
 export const appRoutes: Route[] = [
   {
     path: '',
     pathMatch: 'full',
     title: 'Calendar',
-    data: { [APP_DOCUMENT_TITLE_DATA_KEY]: 'Birthdly — birthday calendar' },
+    data: {
+      [APP_DOCUMENT_TITLE_DATA_KEY]: 'Birthdly — birthday calendar',
+      [APP_LAYOUT_HEADING_DATA_KEY]: 'Birthday calendar',
+    },
     loadChildren: () => import('@birthday/web-birthdays-feature-calendar').then((m) => m.CALENDAR_ROUTES),
   },
   {
@@ -32,8 +37,11 @@ export const appRoutes: Route[] = [
     path: 'about',
     title: 'About',
     data: {
+      [APP_DOCUMENT_TITLE_DATA_KEY]: 'Birthday Calendar & Reminder App · Birthdly',
+      [APP_LAYOUT_HEADING_DATA_KEY]: 'Birthday calendar & reminders',
       [APP_DESCRIPTION_DATA_KEY]:
-        'Learn what Birthdly does: a free birthday calendar with month and year views, upcoming birthdays, search, and Google sign-in to sync.',
+        'Birthdly is a birthday calendar and reminder app. See upcoming birthdays, keep notes and gift ideas, and sync with Google Calendar. No sign-up needed.',
+      [APP_STRUCTURED_DATA_DATA_KEY]: ABOUT_FAQ_STRUCTURED_DATA,
     },
     loadComponent: () => import('./pages/about/about.component').then((m) => m.AboutComponent),
   },
@@ -51,10 +59,15 @@ export const appRoutes: Route[] = [
     title: 'Terms of Service',
     data: {
       [APP_DESCRIPTION_DATA_KEY]:
-        'The terms for using Birthdly, the free birthday calendar: your account, your content, Google Calendar sync, and the limits of the service.',
+        'The terms for using Birthdly, the birthday calendar: your account, your content, Google Calendar sync, and the limits of the service.',
     },
     loadComponent: () => import('./pages/legal/terms/terms.component').then((m) => m.TermsComponent),
   },
   { path: 'calendar', redirectTo: '' },
-  { path: '**', redirectTo: '' },
+  {
+    path: '**',
+    title: 'Page not found',
+    data: { [APP_NOINDEX_DATA_KEY]: true },
+    loadComponent: () => import('./pages/not-found/not-found.component').then((m) => m.NotFoundComponent),
+  },
 ];
