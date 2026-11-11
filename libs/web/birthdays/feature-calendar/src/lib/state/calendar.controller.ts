@@ -2,8 +2,9 @@ import { effect, inject, Injectable, PLATFORM_ID, untracked } from '@angular/cor
 import { isPlatformBrowser } from '@angular/common';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Event as RouterEvent, NavigationEnd, Router, UrlTree } from '@angular/router';
-import { filter, Observable } from 'rxjs';
+import { filter, finalize, Observable } from 'rxjs';
 import { addMonths, addYears, parseISO, startOfMonth } from 'date-fns';
+import { AuthController } from '@birthday/web-auth-data-access';
 import { GoogleCalendarController, GoogleCalendarState } from '@birthday/web-google-calendar-data-access';
 import { injectState, ReadonlyState, StateController } from '@birthday/web-shared-data-access';
 import { BirthdayInput, BirthdaysController } from '@birthday/web-birthdays-data-access';
@@ -17,6 +18,7 @@ export class CalendarController extends StateController {
   private readonly birthdaysController: BirthdaysController = inject(BirthdaysController);
   private readonly googleCalendarState: ReadonlyState<GoogleCalendarState> = injectState(GoogleCalendarState);
   private readonly googleCalendarController: GoogleCalendarController = inject(GoogleCalendarController);
+  private readonly authController: AuthController = inject(AuthController);
   private readonly router: Router = inject(Router);
 
   constructor() {
@@ -87,6 +89,17 @@ export class CalendarController extends StateController {
       .deleteBirthday(dialog.birthday.id)
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(() => this.closeBirthdayDialogIfCurrent(dialog));
+  }
+
+  public signInWithGoogle(): void {
+    this.calendarState.isSigningIn.set(true);
+    this.authController
+      .signInWithGoogle()
+      .pipe(
+        finalize(() => this.calendarState.isSigningIn.set(false)),
+        takeUntilDestroyed(this.destroyRef),
+      )
+      .subscribe();
   }
 
   // A slow request must not close a dialog the user opened after closing the one it started from.

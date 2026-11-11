@@ -50,11 +50,14 @@
     top: 0;
   }
 
-  // Pinned to the bottom of the panel, also while a long page scrolls.
-  &__footer {
+  // The sign-in prompt and the footer, pinned together to the bottom of the panel, also while a long page scrolls.
+  &__bottom {
     position: sticky;
     bottom: 0;
     margin-top: auto;
+  }
+
+  &__footer {
     padding: 1rem;
     border-top: 0.0625rem solid color-mix(in srgb, var(--mat-sys-outline-variant) 20%, transparent);
   }
@@ -99,7 +102,7 @@
     border-radius: 1.5rem;
 
     &__content,
-    &__footer {
+    &__bottom {
       position: static;
     }
   }
