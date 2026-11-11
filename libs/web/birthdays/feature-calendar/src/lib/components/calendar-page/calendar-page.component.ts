@@ -10,6 +10,7 @@ import { CalendarMonthComponent } from '../calendar-month';
 import { CalendarToolbarComponent } from '../calendar-toolbar';
 import { CalendarYearComponent } from '../calendar-year';
 import { NextBirthdaysComponent } from '../next-birthdays';
+import { SignInPromptComponent } from '../sign-in-prompt';
 
 @Component({
   selector: 'ui-calendar-page',
@@ -22,6 +23,7 @@ import { NextBirthdaysComponent } from '../next-birthdays';
     CalendarToolbarComponent,
     CalendarYearComponent,
     NextBirthdaysComponent,
+    SignInPromptComponent,
   ],
   templateUrl: './calendar-page.component.html',
   styleUrl: './calendar-page.component.scss',
@@ -37,6 +39,10 @@ export class CalendarPageComponent {
 
   protected get isLoading(): Signal<boolean> {
     return this.calendarState.isLoading;
+  }
+
+  protected get isSignInPromptVisible(): Signal<boolean> {
+    return this.calendarState.isSignInPromptVisible;
   }
 
   protected openAddBirthdayDialog(): void {

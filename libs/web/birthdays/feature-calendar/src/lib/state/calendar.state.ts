@@ -1,6 +1,8 @@
-import { computed, Injectable, Signal, signal, WritableSignal } from '@angular/core';
+import { computed, inject, Injectable, Signal, signal, WritableSignal } from '@angular/core';
 import { eachMonthOfInterval, endOfYear, isSameDay, isSameMonth, startOfMonth, startOfYear } from 'date-fns';
+import { AuthState } from '@birthday/web-auth-data-access';
 import { injectState, ReadonlyState, State } from '@birthday/web-shared-data-access';
+import { PlatformService } from '@birthday/web-shared-util';
 import { BirthdaysState } from '@birthday/web-birthdays-data-access';
 import { Birthday, getAgeOnDate, getMonthGridDays, isBirthdayOn, UpcomingBirthday } from '@birthday/web-birthdays-util';
 import { NEXT_BIRTHDAYS_LIMIT } from '../constants';
@@ -9,12 +11,17 @@ import { BirthdayDialogData, CalendarDay, CalendarMonth, CalendarView, UpcomingC
 @Injectable()
 export class CalendarState extends State {
   private readonly birthdaysState: ReadonlyState<BirthdaysState> = injectState(BirthdaysState);
+  private readonly authState: ReadonlyState<AuthState> = injectState(AuthState);
+  private readonly platform: PlatformService = inject(PlatformService);
 
   public readonly today: Date = this.birthdaysState.today;
   public readonly isLoading: Signal<boolean> = this.birthdaysState.isLoading;
   public readonly view: WritableSignal<CalendarView> = signal('month');
   public readonly viewMonth: WritableSignal<Date> = signal(startOfMonth(this.today));
   public readonly birthdayDialog: WritableSignal<BirthdayDialogData | null> = signal(null);
+  public readonly isSigningIn: WritableSignal<boolean> = signal(false);
+  // The session is known only in the browser, so the server and the first client render leave the prompt out.
+  public readonly isSignInPromptVisible: Signal<boolean> = computed(() => this.platform.isRendered() && this.authState.status() === 'signedOut');
 
   public readonly days: Signal<CalendarDay[]> = computed(() => this.getMonthDays(this.viewMonth(), this.birthdaysState.birthdays()));
   public readonly yearMonths: Signal<CalendarMonth[]> = computed(() => {
@@ -48,6 +55,7 @@ export class CalendarState extends State {
     this.view.set('month');
     this.viewMonth.set(startOfMonth(this.today));
     this.birthdayDialog.set(null);
+    this.isSigningIn.set(false);
   }
 
   private getMonthDays(month: Date, birthdays: Birthday[]): CalendarDay[] {
