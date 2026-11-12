@@ -9,6 +9,7 @@ import { BirthdaysRemoteStorage } from '@birthday/web-birthdays-data-access';
 import { GoogleCalendarClient } from '@birthday/web-google-calendar-data-access';
 import { APP_LAYOUT_CONFIG } from '@birthday/web-layout-util';
 import { provideReminders, RemindersClient } from '@birthday/web-reminders-data-access';
+import { provideI18n } from '@birthday/web-shared-i18n';
 import { ENVIRONMENT_TOKEN } from '@birthday/web-shared-util';
 import {
   BirthdaysSupabaseService,
@@ -17,6 +18,7 @@ import {
   RemindersSupabaseClient,
   SupabaseAuthClient,
 } from '@birthday/web-supabase';
+import { loadAppTranslation } from './app.i18n';
 import { appRoutes } from './app.routes';
 import { APP_LAYOUT } from './app.constants';
 import { AppPageMetaStrategy } from './app-page-meta.strategy';
@@ -29,6 +31,7 @@ export const appConfig: ApplicationConfig = {
     { provide: TitleStrategy, useClass: AppPageMetaStrategy },
     provideHttpClient(withFetch()),
     provideSupabase(),
+    provideI18n({ loadTranslation: loadAppTranslation }),
     // Shows birthday push notifications. It caches no files (see `ngsw-config.json`), so every page comes from the network.
     provideServiceWorker('ngsw-worker.js', { enabled: !isDevMode(), registrationStrategy: 'registerWhenStable:5000' }),
     provideReminders(),

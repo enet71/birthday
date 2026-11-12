@@ -42,6 +42,8 @@ app.use(
  * Handle all other requests by rendering the Angular application.
  */
 app.use('/**', (req, res, next) => {
+  // Pages render in the language from the `locale` cookie or `Accept-Language`, so caches must keep one copy per language.
+  res.vary('Cookie').vary('Accept-Language');
   angularApp
     .handle(req)
     .then((response) => (response ? writeResponseToNodeResponse(response, res) : next()))

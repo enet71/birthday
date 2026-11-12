@@ -1,124 +1,83 @@
-<p class="guide__lead">
-  Google Calendar is where many people already plan their week, so it is a natural place for birthdays too. This guide shows two ways to get birthdays
-  into Google Calendar: by hand in Google, and automatically with Birthdly, which keeps them in sync for you.
-</p>
+<p class="guide__lead">{{ 'guides.googleCalendarBirthdays.text01' | transloco }}</p>
 
 <section>
-  <h2>How Google Calendar shows birthdays</h2>
-  <p>
-    Google Calendar has a special kind of event for birthdays. It is an all-day event that repeats every year and appears with a cake icon. Google
-    creates these events on its own for the people in your Google Contacts who have a birthday saved, so if a friend's birthday is in their contact
-    card, you will usually see it in your calendar already.
-  </p>
-  <p>
-    For everyone else, such as colleagues, neighbors, or relatives you never saved as contacts, Google Calendar shows nothing until you add the
-    birthday yourself.
-  </p>
+  <h2>{{ 'guides.googleCalendarBirthdays.text02' | transloco }}</h2>
+  <p>{{ 'guides.googleCalendarBirthdays.text03' | transloco }}</p>
+  <p>{{ 'guides.googleCalendarBirthdays.text04' | transloco }}</p>
 </section>
 
 <section>
-  <h2>Option 1: add birthdays in Google</h2>
-  <p>There are two common ways to do it without any extra tools.</p>
-  <h3>Add the birthday to a contact</h3>
+  <h2>{{ 'guides.googleCalendarBirthdays.text05' | transloco }}</h2>
+  <p>{{ 'guides.googleCalendarBirthdays.text06' | transloco }}</p>
+  <h3>{{ 'guides.googleCalendarBirthdays.text07' | transloco }}</h3>
   <ol>
-    <li>Open Google Contacts and find the person, or create a new contact.</li>
-    <li>Choose <strong>Edit</strong>, add the <strong>Birthday</strong> field, and enter the date. The year is optional.</li>
-    <li>Save the contact. The birthday appears in Google Calendar as a yearly birthday event.</li>
+    <li>{{ 'guides.googleCalendarBirthdays.text08' | transloco }}</li>
+    <li [innerHTML]="'guides.googleCalendarBirthdays.text09' | transloco"></li>
+    <li>{{ 'guides.googleCalendarBirthdays.text10' | transloco }}</li>
   </ol>
-  <h3>Create a yearly event</h3>
+  <h3>{{ 'guides.googleCalendarBirthdays.text11' | transloco }}</h3>
   <ol>
-    <li>In Google Calendar, create an all-day event on the birthday with the person's name as the title.</li>
-    <li>Set it to repeat <strong>annually</strong> and add a notification, for example one day before.</li>
-    <li>Save the event.</li>
+    <li>{{ 'guides.googleCalendarBirthdays.text12' | transloco }}</li>
+    <li [innerHTML]="'guides.googleCalendarBirthdays.text13' | transloco"></li>
+    <li>{{ 'guides.googleCalendarBirthdays.text14' | transloco }}</li>
   </ol>
-  <p>
-    Both work, but they get tedious with more than a handful of people. Contacts fill up with entries you only need for a date, and repeating events
-    are easy to get wrong, especially for someone born on February 29.
-  </p>
+  <p>{{ 'guides.googleCalendarBirthdays.text15' | transloco }}</p>
 </section>
 
 <section>
-  <h2>Option 2: sync birthdays from Birthdly</h2>
-  <p>
-    <a routerLink="/">Birthdly</a> is a birthday calendar made for this job. You keep all birthdays in one list, with the relationship and notes such
-    as gift ideas, and Birthdly adds them to Google Calendar as real birthday events.
-  </p>
+  <h2>{{ 'guides.googleCalendarBirthdays.text16' | transloco }}</h2>
+  <p><a routerLink="/">Birthdly</a><span [innerHTML]="'guides.googleCalendarBirthdays.intro.after' | transloco"></span></p>
   <ol>
     <li>
-      <strong>Add your birthdays.</strong> Open the <a routerLink="/">calendar</a>, press <strong>Add birthday</strong>, and enter a name and a date.
-      You can leave the birth year empty.
+      <span [innerHTML]="'guides.googleCalendarBirthdays.addStep.before' | transloco"></span
+      ><a routerLink="/">{{ 'guides.googleCalendarBirthdays.addStep.link' | transloco }}</a
+      ><span [innerHTML]="'guides.googleCalendarBirthdays.addStep.after' | transloco"></span>
     </li>
-    <li>
-      <strong>Sign in with Google.</strong> Use the account button in the top right corner. Birthdays you added before signing in can be moved to your
-      account.
-    </li>
-    <li>
-      <strong>Connect Google Calendar.</strong> Open <strong>Settings</strong>, find the Google Calendar card, and press
-      <strong>Connect Google Calendar</strong>. Google shows two permissions: to see, create, change, and delete events on calendars you own, and to
-      see your contacts. Birthdly only changes the birthday events it creates and never changes your contacts.
-    </li>
-    <li><strong>Done.</strong> Your birthdays appear in your primary Google calendar within moments.</li>
+    <li [innerHTML]="'guides.googleCalendarBirthdays.text17' | transloco"></li>
+    <li [innerHTML]="'guides.googleCalendarBirthdays.text18' | transloco"></li>
+    <li [innerHTML]="'guides.googleCalendarBirthdays.text19' | transloco"></li>
   </ol>
-  <p class="tip">
-    Birthdly reads your contacts only to bring their birthdays into Birthdly and never changes them. In Google Calendar it changes only the birthday
-    events it created itself.
-  </p>
+  <p class="tip">{{ 'guides.googleCalendarBirthdays.text20' | transloco }}</p>
 </section>
 
 <section>
-  <h2>What the birthday events look like</h2>
+  <h2>{{ 'guides.googleCalendarBirthdays.text21' | transloco }}</h2>
   <ul>
-    <li>Each birthday is a Google birthday event that repeats every year, so it shows up just like the birthdays of your contacts.</li>
-    <li>Every event has a reminder at 9:00 the day before, which gives you time to call or buy a present.</li>
-    <li>Events are private and do not mark you as busy, so they never block meetings.</li>
-    <li>A birthday on February 29 appears on February 28 in other years.</li>
-    <li>
-      People whose birthday comes from your Google Contacts do not get a second event, because Google already shows their birthday. You still see them
-      in Birthdly.
-    </li>
+    <li>{{ 'guides.googleCalendarBirthdays.text22' | transloco }}</li>
+    <li>{{ 'guides.googleCalendarBirthdays.text23' | transloco }}</li>
+    <li>{{ 'guides.googleCalendarBirthdays.text24' | transloco }}</li>
+    <li>{{ 'guides.googleCalendarBirthdays.text25' | transloco }}</li>
+    <li>{{ 'guides.googleCalendarBirthdays.text26' | transloco }}</li>
   </ul>
 </section>
 
 <section>
-  <h2>Keeping Birthdly and Google Calendar in sync</h2>
-  <p>Once connected, you can keep working in Birthdly and let it update Google:</p>
+  <h2>{{ 'guides.googleCalendarBirthdays.text27' | transloco }}</h2>
+  <p>{{ 'guides.googleCalendarBirthdays.text28' | transloco }}</p>
   <ul>
-    <li>When you add a birthday in Birthdly or change its name or date, its event in Google Calendar changes too.</li>
-    <li>When you delete a birthday in Birthdly, its event disappears from Google Calendar.</li>
-    <li>When you delete one of Birthdly's birthday events in Google Calendar, Birthdly deletes that birthday as well.</li>
-    <li>
-      Birthdly checks Google for changes when you open the calendar, at most once an hour. To check right away, press <strong>Sync now</strong> in
-      Settings.
-    </li>
+    <li>{{ 'guides.googleCalendarBirthdays.text29' | transloco }}</li>
+    <li>{{ 'guides.googleCalendarBirthdays.text30' | transloco }}</li>
+    <li>{{ 'guides.googleCalendarBirthdays.text31' | transloco }}</li>
+    <li [innerHTML]="'guides.googleCalendarBirthdays.text32' | transloco"></li>
   </ul>
-  <p>Google does not allow other edits to birthday events, such as changing the date in Google Calendar. Make those changes in Birthdly instead.</p>
+  <p>{{ 'guides.googleCalendarBirthdays.text33' | transloco }}</p>
 </section>
 
 <section>
-  <h2>How to stop syncing</h2>
-  <p>
-    Open <strong>Settings</strong> and press <strong>Disconnect</strong> on the Google Calendar card. Birthdly removes the birthday events it added to
-    Google Calendar, and your birthdays stay in Birthdly. You can connect again at any time.
-  </p>
+  <h2>{{ 'guides.googleCalendarBirthdays.text34' | transloco }}</h2>
+  <p [innerHTML]="'guides.googleCalendarBirthdays.text35' | transloco"></p>
 </section>
 
 <section>
-  <h2>Frequently asked questions</h2>
-  <h3>Do I need a Birthdly account?</h3>
-  <p>
-    You can add birthdays without an account. To sync with Google Calendar, sign in with Google, because the sync runs for your account on every
-    device.
-  </p>
-  <h3>Which calendar do the birthdays go to?</h3>
-  <p>Your primary Google calendar, the one named after your Google account.</p>
-  <h3>Will I see duplicates of my contacts' birthdays?</h3>
-  <p>
-    Not when the name and birthday match. If a person has the same name and birthday in Birthdly and in Google Contacts, Birthdly links them instead
-    of adding the person twice, and it does not create a second event. If the names differ, for example "Mom" in Birthdly and her full name in Google
-    Contacts, you will see both. In that case, delete the one you added by hand in Birthdly.
-  </p>
+  <h2>{{ 'guides.googleCalendarBirthdays.text36' | transloco }}</h2>
+  <h3>{{ 'guides.googleCalendarBirthdays.text37' | transloco }}</h3>
+  <p>{{ 'guides.googleCalendarBirthdays.text38' | transloco }}</p>
+  <h3>{{ 'guides.googleCalendarBirthdays.text39' | transloco }}</h3>
+  <p>{{ 'guides.googleCalendarBirthdays.text40' | transloco }}</p>
+  <h3>{{ 'guides.googleCalendarBirthdays.text41' | transloco }}</h3>
+  <p>{{ 'guides.googleCalendarBirthdays.text42' | transloco }}</p>
 </section>
 
-<p class="guide__updated">Last updated {{ guide.updatedAt | date: 'longDate' }}</p>
+<p class="guide__updated">{{ 'guides.lastUpdated' | transloco: { date: (guide.updatedAt | localeDate: 'longDate') } }}</p>
 
 <app-related-guides [current]="guide" />

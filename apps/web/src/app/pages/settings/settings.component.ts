@@ -7,10 +7,21 @@ import { AccountSectionComponent } from '@birthday/web-auth-feature-account';
 import { GoogleCalendarSectionComponent } from '@birthday/web-google-calendar-feature-sync';
 import { ReminderSectionComponent } from '@birthday/web-reminders-feature-settings';
 import { injectState, ReadonlyState } from '@birthday/web-shared-data-access';
+import { LanguageSectionComponent } from '../../components/language-section';
+import { TranslocoPipe } from '@jsverse/transloco';
 
 @Component({
   selector: 'app-settings',
-  imports: [MatButton, MatIcon, RouterLink, AccountSectionComponent, GoogleCalendarSectionComponent, ReminderSectionComponent],
+  imports: [
+    TranslocoPipe,
+    MatButton,
+    MatIcon,
+    RouterLink,
+    AccountSectionComponent,
+    GoogleCalendarSectionComponent,
+    LanguageSectionComponent,
+    ReminderSectionComponent,
+  ],
   templateUrl: './settings.component.html',
   styleUrl: './settings.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

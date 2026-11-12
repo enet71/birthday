@@ -11,10 +11,12 @@ import { CalendarToolbarComponent } from '../calendar-toolbar';
 import { CalendarYearComponent } from '../calendar-year';
 import { NextBirthdaysComponent } from '../next-birthdays';
 import { SignInPromptComponent } from '../sign-in-prompt';
+import { TranslocoPipe } from '@jsverse/transloco';
 
 @Component({
   selector: 'ui-calendar-page',
   imports: [
+    TranslocoPipe,
     MatFabButton,
     MatIcon,
     MatProgressBar,

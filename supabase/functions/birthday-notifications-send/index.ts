@@ -1,6 +1,6 @@
 import { withSupabase } from 'npm:@supabase/server@1';
 import * as webpush from 'jsr:@negrel/webpush@0.5.0';
-import { buildBirthdayNotification, NotifiedBirthday } from '../_shared/birthday-notifications.ts';
+import { buildBirthdayNotification, NotificationLocale, NotifiedBirthday } from '../_shared/birthday-notifications.ts';
 import { requireEnv } from '../_shared/env.ts';
 import { SupabaseAdmin } from '../_shared/google-calendar.ts';
 
@@ -9,6 +9,7 @@ interface DueUser {
   local_date: string;
   remind_on_day: boolean;
   remind_day_before: boolean;
+  locale: NotificationLocale;
 }
 
 interface StoredSubscription {
@@ -90,6 +91,7 @@ async function notifyUser(supabaseAdmin: SupabaseAdmin, appServer: webpush.Appli
     localDate: user.local_date,
     remindOnDay: user.remind_on_day,
     remindDayBefore: user.remind_day_before,
+    locale: user.locale,
   });
 
   if (!payload) {

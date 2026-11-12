@@ -1,6 +1,6 @@
-<section class="calendar" aria-label="Calendar" [attr.aria-busy]="isLoading()">
+<section class="calendar" [attr.aria-label]="'calendar.label' | transloco" [attr.aria-busy]="isLoading()">
   @if (isLoading()) {
-    <mat-progress-bar class="calendar__progress" mode="indeterminate" aria-label="Loading birthdays"></mat-progress-bar>
+    <mat-progress-bar class="calendar__progress" mode="indeterminate" [attr.aria-label]="'calendar.loadingBirthdays' | transloco"></mat-progress-bar>
   }
   <ui-calendar-toolbar></ui-calendar-toolbar>
   @if (view() === 'year') {
@@ -9,7 +9,7 @@
     <ui-calendar-month class="calendar__month"></ui-calendar-month>
   }
 </section>
-<aside class="next-birthdays" aria-label="Upcoming birthdays">
+<aside class="next-birthdays" [attr.aria-label]="'calendar.upcomingBirthdays' | transloco">
   <ui-next-birthdays class="next-birthdays__content"></ui-next-birthdays>
   <div class="next-birthdays__bottom">
     @if (isSignInPromptVisible()) {
@@ -22,7 +22,7 @@
   </div>
 </aside>
 <div class="fab">
-  <button matFab type="button" aria-label="Add birthday" (click)="openAddBirthdayDialog()">
+  <button matFab type="button" [attr.aria-label]="'calendar.addBirthday' | transloco" (click)="openAddBirthdayDialog()">
     <mat-icon>add</mat-icon>
   </button>
 </div>

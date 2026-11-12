@@ -1,53 +1,53 @@
 <form novalidate (submit)="save($event)">
   <ui-dialog-header class="header">
     <div class="heading" dialog-header="title">
-      <h2 class="heading__title" mat-dialog-title>{{ isEdit ? 'Edit Birthday' : 'Add Birthday' }}</h2>
-      <p class="heading__subtitle">Add a new person and their birthday to your calendar.</p>
+      <h2 class="heading__title" mat-dialog-title>{{ (isEdit ? 'birthdayDialog.editTitle' : 'birthdayDialog.addTitle') | transloco }}</h2>
+      <p class="heading__subtitle">{{ 'birthdayDialog.subtitle' | transloco }}</p>
     </div>
-    <button matIconButton type="button" aria-label="Close" dialog-header="buttons" mat-dialog-close>
+    <button matIconButton type="button" [attr.aria-label]="'common.close' | transloco" dialog-header="buttons" mat-dialog-close>
       <mat-icon>close</mat-icon>
     </button>
   </ui-dialog-header>
   <mat-dialog-content class="content">
     <mat-form-field appearance="outline">
-      <mat-label>Name</mat-label>
+      <mat-label>{{ 'birthdayDialog.name' | transloco }}</mat-label>
       <mat-icon matPrefix>person</mat-icon>
       <input matInput autocomplete="off" [formField]="birthdayForm.name" />
       @for (error of birthdayForm.name().errors(); track error.kind) {
-        <mat-error>{{ error.message }}</mat-error>
+        <mat-error>{{ error.message ?? '' | transloco: { max: notesMaxLength } }}</mat-error>
       }
     </mat-form-field>
     <div class="date">
       <mat-form-field class="date__month" appearance="outline">
-        <mat-label>Month</mat-label>
+        <mat-label>{{ 'birthdayDialog.month' | transloco }}</mat-label>
         <mat-select [formField]="birthdayForm.month">
           @for (month of months; track $index) {
-            <mat-option [value]="$index + 1">{{ month | date: 'MMMM' }}</mat-option>
+            <mat-option [value]="$index + 1">{{ month | localeDate: 'LLLL' }}</mat-option>
           }
         </mat-select>
       </mat-form-field>
       <mat-form-field appearance="outline">
-        <mat-label>Day</mat-label>
+        <mat-label>{{ 'birthdayDialog.day' | transloco }}</mat-label>
         <mat-select [formField]="birthdayForm.day">
           @for (day of days(); track day) {
             <mat-option [value]="day">{{ day }}</mat-option>
           }
         </mat-select>
         @for (error of birthdayForm.day().errors(); track error.kind) {
-          <mat-error>{{ error.message }}</mat-error>
+          <mat-error>{{ error.message ?? '' | transloco: { max: notesMaxLength } }}</mat-error>
         }
       </mat-form-field>
       <mat-form-field appearance="outline">
-        <mat-label>Year</mat-label>
+        <mat-label>{{ 'birthdayDialog.year' | transloco }}</mat-label>
         <input matInput inputmode="numeric" autocomplete="off" [formField]="birthdayForm.year" />
-        <mat-hint>Optional</mat-hint>
+        <mat-hint>{{ 'birthdayDialog.optional' | transloco }}</mat-hint>
         @for (error of birthdayForm.year().errors(); track error.kind) {
-          <mat-error>{{ error.message }}</mat-error>
+          <mat-error>{{ error.message ?? '' | transloco: { max: notesMaxLength } }}</mat-error>
         }
       </mat-form-field>
     </div>
     <div class="relationship">
-      <span class="relationship__label" id="birthday-relationship-label">Relationship</span>
+      <span class="relationship__label" id="birthday-relationship-label">{{ 'birthdayDialog.relationship' | transloco }}</span>
       <mat-chip-listbox
         aria-labelledby="birthday-relationship-label"
         hideSingleSelectionIndicator
@@ -62,7 +62,7 @@
           >
             <span class="relationship__option">
               <span class="relationship__dot" [class]="'relationship__dot_' + option.value"></span>
-              {{ option.label }}
+              {{ option.label | transloco }}
             </span>
           </mat-chip-option>
         }
@@ -71,13 +71,13 @@
     <mat-form-field appearance="outline">
       <mat-label class="notes-label">
         <mat-icon class="notes-label__icon">description</mat-icon>
-        Notes
+        {{ 'birthdayDialog.notes' | transloco }}
       </mat-label>
-      <textarea matInput rows="3" placeholder="Add a note about this person…" [formField]="birthdayForm.notes"></textarea>
-      <mat-hint>Optional</mat-hint>
+      <textarea matInput rows="3" [placeholder]="'birthdayDialog.notesPlaceholder' | transloco" [formField]="birthdayForm.notes"></textarea>
+      <mat-hint>{{ 'birthdayDialog.optional' | transloco }}</mat-hint>
       <mat-hint align="end">{{ birthdayForm.notes().value().length }} / {{ notesMaxLength }}</mat-hint>
       @for (error of birthdayForm.notes().errors(); track error.kind) {
-        <mat-error>{{ error.message }}</mat-error>
+        <mat-error>{{ error.message ?? '' | transloco: { max: notesMaxLength } }}</mat-error>
       }
     </mat-form-field>
   </mat-dialog-content>
@@ -85,10 +85,10 @@
     @if (isEdit) {
       <button class="actions__delete" matButton type="button" (click)="delete()">
         <mat-icon>delete</mat-icon>
-        Delete
+        {{ 'common.delete' | transloco }}
       </button>
     }
-    <button matButton="outlined" type="button" mat-dialog-close>Cancel</button>
-    <button matButton="filled" type="submit">Save</button>
+    <button matButton="outlined" type="button" mat-dialog-close>{{ 'common.cancel' | transloco }}</button>
+    <button matButton="filled" type="submit">{{ 'common.save' | transloco }}</button>
   </mat-dialog-actions>
 </form>

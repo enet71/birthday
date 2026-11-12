@@ -7,10 +7,12 @@ import { MatListItem, MatListItemIcon, MatListItemTitle, MatNavList } from '@ang
 import { AppLayoutController, AppLayoutState } from '@birthday/web-layout-data-access';
 import { APP_LAYOUT_CONFIG, AppLayoutConfig } from '@birthday/web-layout-util';
 import { ReadonlyState, injectState } from '@birthday/web-shared-data-access';
+import { TranslocoPipe } from '@jsverse/transloco';
 
 @Component({
   selector: 'ui-app-layout-sidenav',
   imports: [
+    TranslocoPipe,
     NgOptimizedImage,
     RouterLink,
     RouterLinkActive,

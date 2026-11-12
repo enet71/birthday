@@ -3,10 +3,11 @@ import { MatButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
 import { injectState, ReadonlyState } from '@birthday/web-shared-data-access';
 import { CalendarController, CalendarState } from '../../state';
+import { TranslocoPipe } from '@jsverse/transloco';
 
 @Component({
   selector: 'ui-sign-in-prompt',
-  imports: [MatButton, MatIcon],
+  imports: [TranslocoPipe, MatButton, MatIcon],
   templateUrl: './sign-in-prompt.component.html',
   styleUrl: './sign-in-prompt.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

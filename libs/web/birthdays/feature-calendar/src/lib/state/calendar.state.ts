@@ -2,6 +2,7 @@ import { computed, inject, Injectable, Signal, signal, WritableSignal } from '@a
 import { eachMonthOfInterval, endOfYear, isSameDay, isSameMonth, startOfMonth, startOfYear } from 'date-fns';
 import { AuthState } from '@birthday/web-auth-data-access';
 import { injectState, ReadonlyState, State } from '@birthday/web-shared-data-access';
+import { APP_LOCALE_FIRST_DAY_OF_WEEK, LocaleState } from '@birthday/web-shared-i18n';
 import { PlatformService } from '@birthday/web-shared-util';
 import { BirthdaysState } from '@birthday/web-birthdays-data-access';
 import { Birthday, getAgeOnDate, getMonthGridDays, isBirthdayOn, UpcomingBirthday } from '@birthday/web-birthdays-util';
@@ -13,6 +14,7 @@ export class CalendarState extends State {
   private readonly birthdaysState: ReadonlyState<BirthdaysState> = injectState(BirthdaysState);
   private readonly authState: ReadonlyState<AuthState> = injectState(AuthState);
   private readonly platform: PlatformService = inject(PlatformService);
+  private readonly localeState: ReadonlyState<LocaleState> = injectState(LocaleState);
 
   public readonly today: Date = this.birthdaysState.today;
   public readonly isLoading: Signal<boolean> = this.birthdaysState.isLoading;
@@ -58,8 +60,9 @@ export class CalendarState extends State {
     this.isSigningIn.set(false);
   }
 
+  // Reads the language, so the grid starts the week on the language's first day and redraws after a switch.
   private getMonthDays(month: Date, birthdays: Birthday[]): CalendarDay[] {
-    return getMonthGridDays(month).map(
+    return getMonthGridDays(month, APP_LOCALE_FIRST_DAY_OF_WEEK[this.localeState.locale()]).map(
       (date: Date): CalendarDay => ({
         date,
         isCurrentMonth: isSameMonth(date, month),

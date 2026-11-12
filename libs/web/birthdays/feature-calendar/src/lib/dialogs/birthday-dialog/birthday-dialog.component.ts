@@ -1,5 +1,4 @@
 import { ChangeDetectionStrategy, Component, computed, inject, signal, Signal, WritableSignal } from '@angular/core';
-import { DatePipe } from '@angular/common';
 import { FieldTree, form, FormField, maxLength, pattern, required, submit, validate } from '@angular/forms/signals';
 import { MatButton, MatIconButton } from '@angular/material/button';
 import { MatChipListbox, MatChipOption } from '@angular/material/chips';
@@ -11,10 +10,12 @@ import { MatOption, MatSelect } from '@angular/material/select';
 import { getDaysInMonth, parseISO } from 'date-fns';
 import { BirthdayRelationship } from '@birthday/shared-models';
 import { hasBirthYear } from '@birthday/web-birthdays-util';
+import { LocaleDatePipe } from '@birthday/web-shared-i18n';
 import { DialogHeaderComponent } from '@birthday/web-shared-ui';
 import { BIRTHDAY_NOTES_MAX_LENGTH, RELATIONSHIP_OPTIONS } from '../../constants';
 import { CalendarController } from '../../state';
 import { BirthdayDialogData, BirthdayFormModel, RelationshipOption } from '../../types';
+import { TranslocoPipe } from '@jsverse/transloco';
 
 // A leap year, so Feb 29 can be chosen while the birth year is empty.
 const ANY_LEAP_YEAR = 2000;
@@ -22,7 +23,8 @@ const ANY_LEAP_YEAR = 2000;
 @Component({
   selector: 'ui-birthday-dialog',
   imports: [
-    DatePipe,
+    TranslocoPipe,
+    LocaleDatePipe,
     FormField,
     MatButton,
     MatIconButton,
@@ -59,23 +61,24 @@ export class BirthdayDialogComponent {
   protected readonly days: Signal<number[]> = computed(() =>
     Array.from({ length: getDaysInMonth(new Date(ANY_LEAP_YEAR, this.model().month - 1)) }, (_, index: number) => index + 1),
   );
+  // Error messages are translation keys; the template translates them.
   protected readonly birthdayForm: FieldTree<BirthdayFormModel> = form(this.model, (path) => {
-    required(path.name, { message: 'Enter a name' });
-    pattern(path.name, /\S/, { message: 'Enter a name' });
+    required(path.name, { message: 'birthdayDialog.errors.nameRequired' });
+    pattern(path.name, /\S/, { message: 'birthdayDialog.errors.nameRequired' });
     // Matches the database limit for account birthdays.
-    maxLength(path.name, 200, { message: 'Name is too long' });
-    pattern(path.year, /^([1-9]\d{3})?$/, { message: 'Enter a 4-digit year' });
+    maxLength(path.name, 200, { message: 'birthdayDialog.errors.nameTooLong' });
+    pattern(path.year, /^([1-9]\d{3})?$/, { message: 'birthdayDialog.errors.yearFormat' });
     validate(path.year, ({ value }) =>
-      Number(value()) > new Date().getFullYear() ? { kind: 'futureYear', message: "The year can't be in the future" } : undefined,
+      Number(value()) > new Date().getFullYear() ? { kind: 'futureYear', message: 'birthdayDialog.errors.futureYear' } : undefined,
     );
     // Picking a shorter month keeps the chosen day, and Feb 29 exists only in leap years.
     validate(path.day, ({ value, valueOf }) => {
       const year: string = valueOf(path.year);
       const daysInMonth: number = getDaysInMonth(new Date(/^\d{4}$/.test(year) ? Number(year) : ANY_LEAP_YEAR, valueOf(path.month) - 1));
 
-      return value() > daysInMonth ? { kind: 'invalidDay', message: 'No such day' } : undefined;
+      return value() > daysInMonth ? { kind: 'invalidDay', message: 'birthdayDialog.errors.invalidDay' } : undefined;
     });
-    maxLength(path.notes, BIRTHDAY_NOTES_MAX_LENGTH, { message: `Notes can be up to ${BIRTHDAY_NOTES_MAX_LENGTH} characters` });
+    maxLength(path.notes, BIRTHDAY_NOTES_MAX_LENGTH, { message: 'birthdayDialog.errors.notesTooLong' });
   });
 
   protected save(event: Event): void {

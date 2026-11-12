@@ -1,18 +1,19 @@
 import { ChangeDetectionStrategy, Component, inject, Signal } from '@angular/core';
-import { DatePipe } from '@angular/common';
 import { MatButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
 import { RouterLink } from '@angular/router';
 import { injectState, ReadonlyState } from '@birthday/web-shared-data-access';
+import { AppTranslateService, LocaleDatePipe } from '@birthday/web-shared-i18n';
 import { BirthdayTone, getBirthdayTone } from '@birthday/web-birthdays-util';
 import { BirthdayAvatarComponent } from '@birthday/web-birthdays-ui';
 import { SOON_BIRTHDAY_DAYS } from '../../constants';
 import { CalendarController, CalendarState } from '../../state';
 import { UpcomingCelebration } from '../../types';
+import { TranslocoPipe } from '@jsverse/transloco';
 
 @Component({
   selector: 'ui-next-birthdays',
-  imports: [DatePipe, MatButton, MatIcon, RouterLink, BirthdayAvatarComponent],
+  imports: [TranslocoPipe, LocaleDatePipe, MatButton, MatIcon, RouterLink, BirthdayAvatarComponent],
   templateUrl: './next-birthdays.component.html',
   styleUrl: './next-birthdays.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -22,6 +23,7 @@ export class NextBirthdaysComponent {
 
   private readonly calendarState: ReadonlyState<CalendarState> = injectState(CalendarState);
   private readonly calendarController: CalendarController = inject(CalendarController);
+  private readonly translator: AppTranslateService = inject(AppTranslateService);
 
   protected get nextBirthdays(): Signal<UpcomingCelebration[]> {
     return this.calendarState.nextBirthdays;
@@ -51,9 +53,9 @@ export class NextBirthdaysComponent {
 
   protected getDaysUntilLabel(daysUntil: number): string {
     if (daysUntil === 0) {
-      return 'Today';
+      return this.translator.translate('calendar.today');
     }
 
-    return daysUntil === 1 ? 'Tomorrow' : `in ${daysUntil} days`;
+    return daysUntil === 1 ? this.translator.translate('calendar.tomorrow') : this.translator.translatePlural('calendar.inDays', daysUntil);
   }
 }

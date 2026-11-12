@@ -1,26 +1,26 @@
 @if (nextCelebration(); as next) {
   <div class="intro">
-    <p class="label">Next celebration</p>
+    <p class="label">{{ 'calendar.nextCelebration' | transloco }}</p>
     <h2 class="name">{{ next.birthday.name }}</h2>
     <p class="details">
       @if ((next.age ?? 0) > 0) {
-        Turns {{ next.age }} ·
+        {{ 'calendar.turns' | transloco: { age: next.age } }} ·
       }
-      {{ next.date | date: 'EEEE, MMMM d' }}
+      {{ next.date | localeDate: ('dates.weekdayMonthDay' | transloco) }}
     </p>
   </div>
   <div class="countdown" [class.countdown_today]="next.daysUntil === 0">
-    <p class="label countdown__label">Countdown</p>
+    <p class="label countdown__label">{{ 'calendar.countdown' | transloco }}</p>
     <p class="countdown__value">{{ countdown() }}</p>
     <mat-icon class="countdown__icon" aria-hidden="true">celebration</mat-icon>
   </div>
 } @else if (!isLoading()) {
   <div class="intro">
-    <h2 class="name name_empty">No birthdays yet</h2>
-    <p class="details">Add the first birthday to see who celebrates next.</p>
+    <h2 class="name name_empty">{{ 'calendar.noBirthdaysTitle' | transloco }}</h2>
+    <p class="details">{{ 'calendar.noBirthdaysText' | transloco }}</p>
     <button class="add" matButton="filled" type="button" (click)="openAddBirthdayDialog()">
       <mat-icon>add</mat-icon>
-      Add birthday
+      {{ 'calendar.addBirthday' | transloco }}
     </button>
   </div>
 }

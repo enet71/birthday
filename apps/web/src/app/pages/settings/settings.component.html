@@ -4,7 +4,8 @@
   <ui-google-calendar-section class="section" />
   <ui-reminder-section class="section" />
 }
+<app-language-section class="section" />
 <a class="about" matButton routerLink="/about">
   <mat-icon>info</mat-icon>
-  About Birthdly
+  {{ 'settings.about' | transloco }}
 </a>

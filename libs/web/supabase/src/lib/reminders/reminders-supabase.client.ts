@@ -1,13 +1,14 @@
 import { inject, Injectable } from '@angular/core';
 import { map, Observable } from 'rxjs';
 import { DevicePushSubscription, ReminderDays, ReminderSettings, RemindersClient } from '@birthday/web-reminders-data-access';
+import { APP_DEFAULT_LOCALE, AppLocale, isAppLocale } from '@birthday/web-shared-i18n';
 import { SUPABASE_CLIENT, SupabaseDatabaseClient } from '../client';
 import { fromSupabase } from '../helpers';
 import { Tables } from '../types';
 
-type SettingsRow = Pick<Tables<'notification_settings'>, 'remind_on_day' | 'remind_day_before' | 'hour' | 'time_zone'>;
+type SettingsRow = Pick<Tables<'notification_settings'>, 'remind_on_day' | 'remind_day_before' | 'hour' | 'time_zone' | 'locale'>;
 
-const SETTINGS_COLUMNS = 'remind_on_day, remind_day_before, hour, time_zone';
+const SETTINGS_COLUMNS = 'remind_on_day, remind_day_before, hour, time_zone, locale';
 
 // RLS limits every query to the signed-in user's rows, and the column defaults fill in `user_id`.
 @Injectable({ providedIn: 'root' })
@@ -20,11 +21,20 @@ export class RemindersSupabaseClient extends RemindersClient {
     );
   }
 
-  // Only `time_zone` is sent, so an existing row keeps its days and hour.
-  public saveTimeZone(timeZone: string): Observable<ReminderSettings> {
+  // Only `time_zone` and `locale` are sent, so an existing row keeps its days and hour.
+  public saveDevicePreferences({ timeZone, locale }: Pick<ReminderSettings, 'timeZone' | 'locale'>): Observable<ReminderSettings> {
     return fromSupabase(() =>
-      this.supabase.from('notification_settings').upsert({ time_zone: timeZone }, { onConflict: 'user_id' }).select(SETTINGS_COLUMNS).single(),
+      this.supabase
+        .from('notification_settings')
+        .upsert({ time_zone: timeZone, locale }, { onConflict: 'user_id' })
+        .select(SETTINGS_COLUMNS)
+        .single(),
     ).pipe(map(({ data }) => this.toSettings(data)));
+  }
+
+  // RLS limits the update to the user's own row; the filter is there because the API refuses an update without one.
+  public saveLocale(locale: AppLocale): Observable<void> {
+    return fromSupabase(() => this.supabase.from('notification_settings').update({ locale }).not('user_id', 'is', null)).pipe(map(() => undefined));
   }
 
   public saveSettings(settings: ReminderSettings): Observable<void> {
@@ -35,6 +45,7 @@ export class RemindersSupabaseClient extends RemindersClient {
           remind_day_before: settings.days !== 'onDay',
           hour: settings.hour,
           time_zone: settings.timeZone,
+          locale: settings.locale,
         },
         { onConflict: 'user_id' },
       ),
@@ -61,7 +72,8 @@ export class RemindersSupabaseClient extends RemindersClient {
   }
 
   private toSettings(row: SettingsRow): ReminderSettings {
-    return { days: this.toDays(row), hour: row.hour, timeZone: row.time_zone };
+    // The database allows only the app's languages; anything else falls back to the default.
+    return { days: this.toDays(row), hour: row.hour, timeZone: row.time_zone, locale: isAppLocale(row.locale) ? row.locale : APP_DEFAULT_LOCALE };
   }
 
   private toDays({ remind_on_day, remind_day_before }: SettingsRow): ReminderDays {

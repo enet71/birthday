@@ -5,10 +5,11 @@ import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { injectState, ReadonlyState } from '@birthday/web-shared-data-access';
 import { AccountController, AccountState } from '../../state';
 import { AccountView } from '../../types';
+import { TranslocoPipe } from '@jsverse/transloco';
 
 @Component({
   selector: 'ui-account-section',
-  imports: [MatButton, MatCard, MatCardContent, MatCardHeader, MatCardTitle, MatProgressSpinner],
+  imports: [TranslocoPipe, MatButton, MatCard, MatCardContent, MatCardHeader, MatCardTitle, MatProgressSpinner],
   providers: [AccountState, AccountController],
   templateUrl: './account-section.component.html',
   styleUrl: './account-section.component.scss',

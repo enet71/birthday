@@ -1,15 +1,9 @@
-import {
-  eachDayOfInterval,
-  endOfMonth,
-  endOfWeek,
-  startOfMonth,
-  startOfWeek,
-} from 'date-fns';
+import { Day, eachDayOfInterval, endOfMonth, endOfWeek, startOfMonth, startOfWeek } from 'date-fns';
 
-// Returns the days of the full weeks (Sunday to Saturday) that cover the month.
-export function getMonthGridDays(month: Date): Date[] {
+// Returns the days of the full weeks that cover the month; `weekStartsOn` is 0 for Sunday and 1 for Monday.
+export function getMonthGridDays(month: Date, weekStartsOn: Day = 0): Date[] {
   return eachDayOfInterval({
-    start: startOfWeek(startOfMonth(month), { weekStartsOn: 0 }),
-    end: endOfWeek(endOfMonth(month), { weekStartsOn: 0 }),
+    start: startOfWeek(startOfMonth(month), { weekStartsOn }),
+    end: endOfWeek(endOfMonth(month), { weekStartsOn }),
   });
 }

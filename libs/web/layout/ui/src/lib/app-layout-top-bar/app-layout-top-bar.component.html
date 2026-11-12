@@ -1,7 +1,7 @@
 <a class="logo" [routerLink]="config.homePath">
   <img [alt]="config.appName" priority [ngSrc]="config.logoSmall.src" [width]="config.logoSmall.width" [height]="config.logoSmall.height" />
 </a>
-<h1 class="title">{{ pageTitle() }}</h1>
+<h1 class="title">{{ pageTitle() | transloco }}</h1>
 @if (search(); as search) {
   <mat-form-field class="search" appearance="outline" subscriptSizing="dynamic">
     <mat-icon matPrefix aria-hidden="true">search</mat-icon>
@@ -9,13 +9,20 @@
       #searchInput
       matInput
       type="search"
-      [placeholder]="search.placeholder"
-      [attr.aria-label]="search.placeholder"
+      [placeholder]="search.placeholder | transloco"
+      [attr.aria-label]="search.placeholder | transloco"
       [value]="searchQuery()"
       (input)="setSearchQuery($event)"
       (keydown.escape)="collapseSearch()"
     />
-    <button class="search__close" matSuffix matIconButton type="button" aria-label="Close search" (click)="collapseSearch()">
+    <button
+      class="search__close"
+      matSuffix
+      matIconButton
+      type="button"
+      [attr.aria-label]="'layout.closeSearch' | transloco"
+      (click)="collapseSearch()"
+    >
       <mat-icon>close</mat-icon>
     </button>
   </mat-form-field>
@@ -24,7 +31,7 @@
     class="search-toggle"
     matIconButton
     type="button"
-    [attr.aria-label]="search.placeholder"
+    [attr.aria-label]="search.placeholder | transloco"
     [attr.aria-expanded]="isSearchExpanded()"
     (click)="expandSearch()"
   >

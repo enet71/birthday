@@ -1,90 +1,93 @@
 <section class="hero" aria-labelledby="about-hero-title">
-  <h2 id="about-hero-title" class="hero__title">Never miss a birthday again</h2>
-  <p class="hero__text">
-    Birthdly is a birthday calendar and reminder app. Keep the birthdays of friends, family, and colleagues in one place, see who celebrates next, get
-    notified on the day, and sync with Google Calendar.
-  </p>
+  <h2 id="about-hero-title" class="hero__title">{{ 'about.hero.title' | transloco }}</h2>
+  <p class="hero__text">{{ 'about.hero.text' | transloco }}</p>
   <div class="hero__actions">
     <a matButton="filled" routerLink="/">
       <mat-icon>calendar_month</mat-icon>
-      Open the calendar
+      {{ 'about.openCalendar' | transloco }}
     </a>
-    <span class="hero__note">No sign-up needed</span>
+    <span class="hero__note">{{ 'about.hero.note' | transloco }}</span>
   </div>
 </section>
 
 <section class="section" aria-labelledby="about-features-title">
-  <h2 id="about-features-title" class="section__title">Everything you need to remember birthdays</h2>
+  <h2 id="about-features-title" class="section__title">{{ 'about.featuresTitle' | transloco }}</h2>
   <ul class="features" role="list">
     @for (feature of features; track feature.title) {
       <li class="feature">
         <span class="feature__icon">
           <mat-icon aria-hidden="true">{{ feature.icon }}</mat-icon>
         </span>
-        <h3 class="feature__title">{{ feature.title }}</h3>
-        <p class="feature__text">{{ feature.text }}</p>
+        <h3 class="feature__title">{{ feature.title | transloco }}</h3>
+        <p class="feature__text">{{ feature.text | transloco }}</p>
       </li>
     }
   </ul>
 </section>
 
 <section class="section" aria-labelledby="about-steps-title">
-  <h2 id="about-steps-title" class="section__title">How it works</h2>
+  <h2 id="about-steps-title" class="section__title">{{ 'about.stepsTitle' | transloco }}</h2>
   <ol class="steps" role="list">
     <li class="step">
-      <h3 class="step__title">Open the calendar</h3>
-      <p class="step__text">Birthdly opens straight to your calendar. There is nothing to install.</p>
+      <h3 class="step__title">{{ 'about.steps.open.title' | transloco }}</h3>
+      <p class="step__text">{{ 'about.steps.open.text' | transloco }}</p>
     </li>
     <li class="step">
-      <h3 class="step__title">Add birthdays</h3>
-      <p class="step__text">Press the + button and enter a name and a date. The birth year is optional.</p>
+      <h3 class="step__title">{{ 'about.steps.add.title' | transloco }}</h3>
+      <p class="step__text">{{ 'about.steps.add.text' | transloco }}</p>
     </li>
     <li class="step">
-      <h3 class="step__title">Sync if you like</h3>
-      <p class="step__text">Sign in with Google to keep birthdays on every device, turn on birthday notifications, and connect Google Calendar.</p>
+      <h3 class="step__title">{{ 'about.steps.sync.title' | transloco }}</h3>
+      <p class="step__text">{{ 'about.steps.sync.text' | transloco }}</p>
     </li>
   </ol>
 </section>
 
 <section class="section" aria-labelledby="about-faq-title">
-  <h2 id="about-faq-title" class="section__title">Frequently asked questions</h2>
+  <h2 id="about-faq-title" class="section__title">{{ 'about.faqTitle' | transloco }}</h2>
   <mat-accordion class="faq">
     @for (item of faq; track item.question) {
       <mat-expansion-panel>
         <mat-expansion-panel-header>
-          <mat-panel-title>{{ item.question }}</mat-panel-title>
+          <mat-panel-title>{{ item.question | transloco }}</mat-panel-title>
         </mat-expansion-panel-header>
-        <p>{{ item.answer }}</p>
+        <p>{{ item.answer | transloco }}</p>
       </mat-expansion-panel>
     }
   </mat-accordion>
 </section>
 
 <section class="cta" aria-labelledby="about-cta-title">
-  <h2 id="about-cta-title" class="cta__title">Start your birthday calendar</h2>
-  <p class="cta__text">It takes a few seconds to add the first birthday.</p>
+  <h2 id="about-cta-title" class="cta__title">{{ 'about.cta.title' | transloco }}</h2>
+  <p class="cta__text">{{ 'about.cta.text' | transloco }}</p>
   <a matButton="filled" routerLink="/">
     <mat-icon>calendar_month</mat-icon>
-    Open the calendar
+    {{ 'about.openCalendar' | transloco }}
   </a>
 </section>
 
 <section class="section" aria-labelledby="about-guides-title">
-  <h2 id="about-guides-title" class="section__title section__title_small">Guides</h2>
+  <h2 id="about-guides-title" class="section__title section__title_small">{{ 'about.guidesTitle' | transloco }}</h2>
   <ul class="links">
     @for (guide of guides; track guide.slug) {
       <li>
-        <a [routerLink]="getGuidePath(guide)">{{ guide.title }}</a>
+        <a [routerLink]="getGuidePath(guide)">{{ guide.title | transloco }}</a>
       </li>
     }
-    <li><a routerLink="/guides">All guides</a></li>
+    <li>
+      <a routerLink="/guides">{{ 'about.allGuides' | transloco }}</a>
+    </li>
   </ul>
 </section>
 
 <section class="section" aria-labelledby="about-legal-title">
-  <h2 id="about-legal-title" class="section__title section__title_small">Legal</h2>
+  <h2 id="about-legal-title" class="section__title section__title_small">{{ 'about.legalTitle' | transloco }}</h2>
   <ul class="links links_inline">
-    <li><a routerLink="/privacy">Privacy Policy</a></li>
-    <li><a routerLink="/terms">Terms of Service</a></li>
+    <li>
+      <a routerLink="/privacy">{{ 'footer.privacy' | transloco }}</a>
+    </li>
+    <li>
+      <a routerLink="/terms">{{ 'footer.terms' | transloco }}</a>
+    </li>
   </ul>
 </section>

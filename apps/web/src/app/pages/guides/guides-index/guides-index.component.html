@@ -1,11 +1,11 @@
-<p class="intro">Step-by-step guides to keeping track of birthdays with Birthdly and Google Calendar.</p>
+<p class="intro">{{ 'routes.guides.description' | transloco }}</p>
 <ul class="guides" role="list">
   @for (guide of guides; track guide.slug) {
     <li>
       <a class="guide" [routerLink]="getGuidePath(guide)">
         <div class="guide__body">
-          <h2 class="guide__title">{{ guide.title }}</h2>
-          <span class="guide__text">{{ guide.description }}</span>
+          <h2 class="guide__title">{{ guide.title | transloco }}</h2>
+          <span class="guide__text">{{ guide.description | transloco }}</span>
         </div>
         <mat-icon class="guide__chevron" aria-hidden="true">chevron_right</mat-icon>
       </a>

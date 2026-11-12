@@ -34,7 +34,8 @@
       "@birthday/web-birthdays-ui": ["./libs/web/birthdays/ui/src/index.ts"],
       "@birthday/web-birthdays-feature-people": ["./libs/web/birthdays/feature-people/src/index.ts"],
       "@birthday/web-reminders-data-access": ["./libs/web/reminders/data-access/src/index.ts"],
-      "@birthday/web-reminders-feature-settings": ["./libs/web/reminders/feature-settings/src/index.ts"]
+      "@birthday/web-reminders-feature-settings": ["./libs/web/reminders/feature-settings/src/index.ts"],
+      "@birthday/web-shared-i18n": ["./libs/web/shared/i18n/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

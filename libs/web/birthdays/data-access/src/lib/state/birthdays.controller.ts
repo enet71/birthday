@@ -9,6 +9,7 @@ import { Birthday, toBirthDate } from '@birthday/web-birthdays-util';
 import { BirthdaysDataService, BirthdaysLocalStorageService, BirthdaysRemoteStorage } from '../services';
 import { BirthdayInput } from '../types';
 import { BirthdaysState } from './birthdays.state';
+import { AppTranslateService } from '@birthday/web-shared-i18n';
 
 @Injectable({ providedIn: 'root' })
 export class BirthdaysController extends StateController {
@@ -18,13 +19,15 @@ export class BirthdaysController extends StateController {
   private readonly localStorage: BirthdaysLocalStorageService = inject(BirthdaysLocalStorageService);
   private readonly remoteStorage: BirthdaysRemoteStorage = inject(BirthdaysRemoteStorage);
   private readonly notifications: NotificationsService = inject(NotificationsService);
+  private readonly translator: AppTranslateService = inject(AppTranslateService);
   private readonly isListLoading$: Observable<boolean> = toObservable(this.birthdaysState.birthdaysResource.isLoading);
 
   constructor() {
     super();
     effect(() => {
       if (this.birthdaysState.birthdaysResource.error()) {
-        this.notifications.createErrorNotification("Couldn't load birthdays");
+        // Untracked, so a language switch does not show the error again.
+        untracked(() => this.notifications.createErrorNotification(this.translator.translate('notifications.birthdays.loadFailed')));
       }
     });
     effect(() => {
@@ -56,7 +59,7 @@ export class BirthdaysController extends StateController {
     return this.birthdaysData.create(this.toRequest(input)).pipe(
       tap((birthday: Birthday) => this.updateBirthdays((birthdays: Birthday[]) => [...birthdays, birthday])),
       catchError(() => {
-        this.notifications.createErrorNotification("Couldn't save the birthday");
+        this.notifications.createErrorNotification(this.translator.translate('notifications.birthdays.saveFailed'));
         return EMPTY;
       }),
     );
@@ -68,7 +71,7 @@ export class BirthdaysController extends StateController {
         this.updateBirthdays((birthdays: Birthday[]) => birthdays.map((birthday: Birthday) => (birthday.id === id ? updated : birthday))),
       ),
       catchError(() => {
-        this.notifications.createErrorNotification("Couldn't save the birthday");
+        this.notifications.createErrorNotification(this.translator.translate('notifications.birthdays.saveFailed'));
         return EMPTY;
       }),
     );
@@ -81,7 +84,7 @@ export class BirthdaysController extends StateController {
         complete: () => this.updateBirthdays((birthdays: Birthday[]) => birthdays.filter((birthday: Birthday) => birthday.id !== id)),
       }),
       catchError(() => {
-        this.notifications.createErrorNotification("Couldn't delete the birthday");
+        this.notifications.createErrorNotification(this.translator.translate('notifications.birthdays.deleteFailed'));
         return EMPTY;
       }),
     );
@@ -110,7 +113,7 @@ export class BirthdaysController extends StateController {
           const failedCount: number = results.filter((isMoved: boolean) => !isMoved).length;
 
           if (failedCount > 0) {
-            this.notifications.createErrorNotification(`Couldn't move ${failedCount} local birthday(s) to your account`);
+            this.notifications.createErrorNotification(this.translator.translatePlural('notifications.birthdays.moveFailed', failedCount));
           }
         }),
         // `reload()` is ignored while a load is in flight, so wait for the current load of the account list first.

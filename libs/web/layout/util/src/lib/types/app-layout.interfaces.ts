@@ -1,3 +1,4 @@
+// Every `label`, `tagline`, and `placeholder` here is a translation key; the layout translates it.
 export interface AppLayoutMenuItem {
   label: string;
   path: string;

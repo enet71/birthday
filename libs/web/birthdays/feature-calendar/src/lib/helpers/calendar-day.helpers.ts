@@ -1,17 +1,17 @@
-import { format } from 'date-fns';
 import { Birthday } from '@birthday/web-birthdays-util';
+import { AppTranslateService } from '@birthday/web-shared-i18n';
 import { CalendarDay } from '../types';
 
 export function getBirthdayNames(day: CalendarDay): string {
   return day.birthdays.map((birthday: Birthday) => birthday.name).join(', ');
 }
 
-export function getCalendarDayLabel(day: CalendarDay): string {
-  const date: string = format(day.date, 'MMMM d, y');
+export function getCalendarDayLabel(day: CalendarDay, translator: AppTranslateService): string {
+  const date: string = translator.formatDate(day.date, 'dates.longDate');
 
   if (!day.birthdays.length) {
-    return `${date}. Add birthday`;
+    return translator.translate('calendar.dayLabel', { date });
   }
 
-  return `${date}, birthdays: ${getBirthdayNames(day)}. Add birthday`;
+  return translator.translate('calendar.dayLabelWithBirthdays', { date, names: getBirthdayNames(day) });
 }
