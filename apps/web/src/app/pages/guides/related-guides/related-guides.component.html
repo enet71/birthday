@@ -1,10 +1,14 @@
-<h2 class="title">Related guides</h2>
+<h2 class="title">{{ 'guides.related' | transloco }}</h2>
 <ul class="links">
   @for (guide of guides(); track guide.slug) {
     <li>
-      <a [routerLink]="getGuidePath(guide)">{{ guide.title }}</a>
+      <a [routerLink]="getGuidePath(guide)">{{ guide.title | transloco }}</a>
     </li>
   }
-  <li><a routerLink="/guides">All guides</a></li>
-  <li><a routerLink="/about">About Birthdly and FAQ</a></li>
+  <li>
+    <a routerLink="/guides">{{ 'about.allGuides' | transloco }}</a>
+  </li>
+  <li>
+    <a routerLink="/about">{{ 'guides.aboutAndFaq' | transloco }}</a>
+  </li>
 </ul>

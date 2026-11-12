@@ -1,0 +1,522 @@
+{
+  "i18n": {
+    "loadError": "Impossible de charger la langue. Vérifiez votre connexion et réessayez."
+  },
+  "settings": {
+    "language": {
+      "title": "Langue",
+      "label": "Langue du site"
+    },
+    "about": "À propos de Birthdly"
+  },
+  "app": {
+    "description": "Birthdly est un calendrier d'anniversaires avec rappels. Suivez les anniversaires de vos amis et de votre famille, voyez les prochains d'un coup d'œil et ne manquez plus aucune fête."
+  },
+  "nav": {
+    "calendar": "Calendrier",
+    "people": "Personnes",
+    "settings": "Paramètres",
+    "addBirthday": "Ajouter un anniversaire"
+  },
+  "footer": {
+    "tagline": "calendrier d'anniversaires",
+    "about": "À propos",
+    "guides": "Guides",
+    "privacy": "Politique de confidentialité",
+    "terms": "Conditions d'utilisation"
+  },
+  "layout": {
+    "mainNavigation": "Navigation principale",
+    "siteLinks": "Liens du site",
+    "collapseMenu": "Réduire le menu",
+    "expandMenu": "Développer le menu",
+    "closeSearch": "Fermer la recherche"
+  },
+  "routes": {
+    "calendar": {
+      "title": "Calendrier",
+      "documentTitle": "Birthdly — calendrier d'anniversaires",
+      "heading": "Calendrier d'anniversaires"
+    },
+    "people": {
+      "title": "Personnes"
+    },
+    "settings": {
+      "title": "Paramètres"
+    },
+    "about": {
+      "title": "À propos",
+      "documentTitle": "Calendrier et rappels d'anniversaires · Birthdly",
+      "heading": "Calendrier et rappels d'anniversaires",
+      "description": "Birthdly est un calendrier d'anniversaires avec rappels. Voyez les prochains anniversaires, gardez des notes et des idées de cadeaux, et synchronisez avec Google Agenda. Sans inscription."
+    },
+    "privacy": {
+      "title": "Politique de confidentialité",
+      "description": "Comment Birthdly collecte, utilise et stocke vos données, y compris les anniversaires que vous ajoutez et les données de Google Agenda et Contacts, et comment les supprimer."
+    },
+    "terms": {
+      "title": "Conditions d'utilisation",
+      "description": "Les conditions d'utilisation de Birthdly, le calendrier d'anniversaires : votre compte, votre contenu, la synchronisation avec Google Agenda et les limites du service."
+    },
+    "guides": {
+      "title": "Guides",
+      "description": "Des guides pas à pas pour suivre les anniversaires avec Birthdly et Google Agenda."
+    },
+    "notFound": {
+      "title": "Page introuvable"
+    }
+  },
+  "notFound": {
+    "text": "La page que vous cherchez n'existe pas ou a été déplacée.",
+    "openCalendar": "Ouvrir le calendrier"
+  },
+  "account": {
+    "button": "Compte",
+    "buttonSignedIn": "Compte : {{ email }}",
+    "title": "Compte",
+    "loading": "Chargement du compte",
+    "signedInAs": "Connecté en tant que",
+    "signedOutDescription": "Connectez-vous pour garder vos anniversaires dans votre compte, les utiliser sur tous vos appareils, les synchroniser avec Google Agenda et recevoir des notifications d'anniversaire.",
+    "signOut": "Se déconnecter",
+    "signIn": "Se connecter avec Google"
+  },
+  "common": {
+    "showLess": "Afficher moins",
+    "showMore": "Afficher plus",
+    "close": "Fermer",
+    "cancel": "Annuler",
+    "save": "Enregistrer",
+    "delete": "Supprimer",
+    "tryAgain": "Réessayer"
+  },
+  "dates": {
+    "monthDay": "d MMM",
+    "monthDayYear": "d MMM y",
+    "weekdayMonthDay": "EEEE d MMMM",
+    "longDate": "d MMMM y"
+  },
+  "calendar": {
+    "label": "Calendrier",
+    "loadingBirthdays": "Chargement des anniversaires",
+    "upcomingBirthdays": "Anniversaires à venir",
+    "addBirthday": "Ajouter un anniversaire",
+    "today": "Aujourd'hui",
+    "tomorrow": "Demain",
+    "editBirthdayOf": "Modifier l'anniversaire de {{ name }}",
+    "dayLabel": "{{ date }}. Ajouter un anniversaire",
+    "dayLabelWithBirthdays": "{{ date }}, anniversaires : {{ names }}. Ajouter un anniversaire",
+    "previousYear": "Année précédente",
+    "previousMonth": "Mois précédent",
+    "nextYear": "Année suivante",
+    "nextMonth": "Mois suivant",
+    "view": "Vue du calendrier",
+    "month": "Mois",
+    "year": "Année",
+    "upcoming": "À venir",
+    "viewAll": "Tout voir",
+    "turns": "Fête ses {{ age }}",
+    "welcomeTitle": "Ne manquez plus aucun anniversaire",
+    "welcomeText": "Birthdly réunit tous les anniversaires dans un seul calendrier. Ajoutez vos amis et votre famille pour voir à qui est le prochain anniversaire, parcourez par mois ou par année et connectez-vous avec Google pour synchroniser vos appareils.",
+    "inDays": {
+      "one": "dans {{ count }} jour",
+      "other": "dans {{ count }} jours"
+    },
+    "days": {
+      "one": "{{ count }} jour",
+      "other": "{{ count }} jours"
+    },
+    "nextCelebration": "Prochaine fête",
+    "countdown": "Compte à rebours",
+    "noBirthdaysTitle": "Aucun anniversaire pour l'instant",
+    "noBirthdaysText": "Ajoutez le premier anniversaire pour voir à qui est le prochain.",
+    "signInPromptTitle": "Vos anniversaires sont enregistrés uniquement dans ce navigateur.",
+    "signInPromptText": "Connectez-vous pour les enregistrer dans votre compte et les utiliser sur tous vos appareils."
+  },
+  "relationship": {
+    "family": "Famille",
+    "friends": "Amis",
+    "colleagues": "Collègues",
+    "other": "Autre"
+  },
+  "birthdayDialog": {
+    "addTitle": "Ajouter un anniversaire",
+    "editTitle": "Modifier l'anniversaire",
+    "subtitle": "Ajoutez une personne et son anniversaire à votre calendrier.",
+    "name": "Nom",
+    "month": "Mois",
+    "day": "Jour",
+    "year": "Année",
+    "optional": "Facultatif",
+    "relationship": "Relation",
+    "notes": "Notes",
+    "notesPlaceholder": "Ajoutez une note sur cette personne…",
+    "errors": {
+      "nameRequired": "Saisissez un nom",
+      "nameTooLong": "Le nom est trop long",
+      "yearFormat": "Saisissez une année à 4 chiffres",
+      "futureYear": "L'année ne peut pas être dans le futur",
+      "invalidDay": "Ce jour n'existe pas",
+      "notesTooLong": "Les notes peuvent contenir jusqu'à {{ max }} caractères"
+    }
+  },
+  "notifications": {
+    "auth": {
+      "restoreFailed": "Impossible de restaurer votre session",
+      "finishSignInFailed": "Impossible de terminer la connexion. Veuillez réessayer",
+      "signInFailed": "Impossible de se connecter avec Google",
+      "signOutFailed": "Impossible de se déconnecter"
+    },
+    "birthdays": {
+      "loadFailed": "Impossible de charger les anniversaires",
+      "saveFailed": "Impossible d'enregistrer l'anniversaire",
+      "deleteFailed": "Impossible de supprimer l'anniversaire",
+      "moveFailed": {
+        "one": "Impossible de transférer {{ count }} anniversaire local vers votre compte",
+        "other": "Impossible de transférer {{ count }} anniversaires locaux vers votre compte"
+      }
+    },
+    "googleCalendar": {
+      "statusFailed": "Impossible de charger l'état de Google Agenda",
+      "connectFailed": "Impossible de connecter Google Agenda",
+      "connected": "Google Agenda connecté",
+      "connectRetry": "Impossible de connecter Google Agenda. Veuillez réessayer",
+      "syncedRecently": "Google Agenda vient d'être synchronisé",
+      "upToDate": "Google Agenda est à jour",
+      "syncFailed": "Impossible de synchroniser avec Google Agenda",
+      "accessDenied": "Birthdly a besoin d'accéder à Google Agenda pour synchroniser les anniversaires",
+      "accessLost": "L'accès à Google Agenda a été perdu. Reconnectez-le dans les paramètres",
+      "disconnectFailed": "Impossible de déconnecter Google Agenda",
+      "added": {
+        "one": "{{ count }} ajouté",
+        "other": "{{ count }} ajoutés"
+      },
+      "updated": {
+        "one": "{{ count }} mis à jour",
+        "other": "{{ count }} mis à jour"
+      },
+      "deleted": {
+        "one": "{{ count }} supprimé",
+        "other": "{{ count }} supprimés"
+      },
+      "fromGoogle": "Depuis Google : {{ changes }}"
+    },
+    "reminders": {
+      "loadFailed": "Impossible de charger vos paramètres de notification",
+      "turnOnFailed": "Impossible d'activer les notifications",
+      "turnedOn": "Notifications activées",
+      "turnedOff": "Notifications désactivées sur cet appareil",
+      "turnOffFailed": "Impossible de désactiver les notifications",
+      "saved": "Paramètres de notification enregistrés",
+      "saveFailed": "Impossible d'enregistrer les paramètres de notification"
+    }
+  },
+  "people": {
+    "label": "Personnes",
+    "searchPlaceholder": "Rechercher des personnes…",
+    "search": "Rechercher des personnes",
+    "clearSearch": "Effacer la recherche",
+    "loading": "Chargement des personnes",
+    "columns": {
+      "name": "Nom",
+      "birthday": "Anniversaire",
+      "age": "Âge",
+      "nextBirthday": "Prochain anniversaire"
+    },
+    "noMatches": "Personne ne correspond à « {{ query }} »",
+    "emptyTitle": "Aucune personne pour l'instant",
+    "emptyText": "Ajoutez un anniversaire dans le calendrier : chaque personne ajoutée apparaîtra ici."
+  },
+  "googleCalendar": {
+    "title": "Google Agenda",
+    "loading": "Chargement de l'état de Google Agenda",
+    "loadError": "Impossible de charger l'état de Google Agenda.",
+    "description": "Affichez vos anniversaires parmi ceux de Google Agenda et importez dans Birthdly les anniversaires de vos contacts Google.",
+    "connect": "Connecter Google Agenda",
+    "connected": "Connecté",
+    "lastSynced": "Dernière synchronisation : {{ date }}",
+    "notSynced": "Pas encore synchronisé",
+    "disconnectHint": "La déconnexion supprime les anniversaires que Birthdly a ajoutés à Google Agenda. Ils restent dans Birthdly.",
+    "syncNow": "Synchroniser",
+    "disconnect": "Déconnecter",
+    "accessLost": "Accès perdu",
+    "accessLostText": "Google n'autorise plus Birthdly à utiliser votre agenda. Reconnectez-le pour reprendre la synchronisation.",
+    "reconnect": "Reconnecter"
+  },
+  "reminders": {
+    "title": "Notifications d'anniversaire",
+    "loading": "Chargement des paramètres de notification",
+    "loadError": "Impossible de charger vos paramètres de notification.",
+    "unsupported": "Ce navigateur ne peut pas afficher les notifications de Birthdly. Essayez un autre navigateur, comme Chrome, Edge, Firefox ou Safari.",
+    "iosNotInstalled": "Sur iPhone et iPad, les notifications fonctionnent une fois Birthdly ajouté à l'écran d'accueil. Touchez Partager, puis Sur l'écran d'accueil, et ouvrez Birthdly depuis là.",
+    "blocked": "Bloquées dans ce navigateur",
+    "blockedText": "Pour recevoir des notifications, autorisez-les pour ce site : cliquez sur l'icône à côté de la barre d'adresse, ouvrez les paramètres du site et autorisez les notifications. Rechargez ensuite la page.",
+    "disabledText": "Recevez une notification avec les anniversaires du jour, même lorsque Birthdly est fermé.",
+    "turnOn": "Activer sur cet appareil",
+    "enabled": "Activées sur cet appareil",
+    "turnOff": "Désactiver sur cet appareil",
+    "when": "Quand notifier",
+    "time": "Heure",
+    "timeZoneHint": "Fuseau horaire : {{ timeZone }}. Ces paramètres s'appliquent à tous vos appareils.",
+    "days": {
+      "both": "Le jour même et la veille",
+      "onDay": "Le jour même",
+      "dayBefore": "La veille"
+    }
+  },
+  "about": {
+    "features": {
+      "calendar": {
+        "title": "Calendrier mensuel et annuel",
+        "text": "Voyez chaque anniversaire dans un calendrier mensuel ou passez à la vue annuelle pour anticiper."
+      },
+      "upcoming": {
+        "title": "Anniversaires à venir",
+        "text": "Voyez à qui est le prochain anniversaire, combien de jours il reste et quel âge la personne aura."
+      },
+      "notes": {
+        "title": "Relation et notes",
+        "text": "Indiquez qui est chaque personne pour vous et gardez des notes, comme des idées de cadeaux."
+      },
+      "people": {
+        "title": "Liste des personnes et recherche",
+        "text": "Gardez tout le monde dans une liste triable et trouvez une personne en quelques secondes."
+      },
+      "notifications": {
+        "title": "Notifications d'anniversaire",
+        "text": "Recevez une notification le jour même ou la veille, à l'heure de votre choix, sur votre téléphone et votre ordinateur."
+      },
+      "googleCalendar": {
+        "title": "Synchronisation avec Google Agenda",
+        "text": "Affichez vos anniversaires dans Google Agenda et importez ceux de vos contacts Google."
+      },
+      "anyDevice": {
+        "title": "Sans compte, sur tous les appareils",
+        "text": "Commencez tout de suite dans n'importe quel navigateur, ajoutez Birthdly à l'écran d'accueil de votre téléphone et connectez-vous avec Google pour synchroniser."
+      }
+    },
+    "faq": {
+      "account": {
+        "question": "Ai-je besoin d'un compte ?",
+        "answer": "Non. Vous pouvez ajouter des anniversaires tout de suite, sans vous connecter. Connectez-vous avec Google quand vous voulez les garder dans votre compte."
+      },
+      "storage": {
+        "question": "Où sont stockés mes anniversaires ?",
+        "answer": "Sans compte, les anniversaires sont enregistrés uniquement dans ce navigateur. Une fois connecté avec Google, ils sont stockés dans votre compte, et ceux ajoutés avant la connexion peuvent y être transférés."
+      },
+      "phone": {
+        "question": "Est-ce que ça fonctionne sur mon téléphone ?",
+        "answer": "Oui. Birthdly fonctionne dans tout navigateur mobile récent, et vous pouvez l'ajouter à l'écran d'accueil pour l'ouvrir comme une application."
+      },
+      "addBirthday": {
+        "question": "Comment ajouter un anniversaire ?",
+        "answer": "Ouvrez le calendrier, appuyez sur le bouton + et saisissez un nom et une date."
+      },
+      "noYear": {
+        "question": "Puis-je ajouter un anniversaire sans l'année de naissance ?",
+        "answer": "Oui. Laissez l'année vide : Birthdly affichera l'anniversaire chaque année, sans l'âge."
+      },
+      "reminders": {
+        "question": "Birthdly me rappellera-t-il les anniversaires ?",
+        "answer": "Oui. Connectez-vous avec Google et activez les notifications d'anniversaire dans les paramètres. Vous recevez une notification le jour même, la veille ou les deux, à l'heure de votre choix, sans laisser Birthdly ouvert."
+      },
+      "googleCalendar": {
+        "question": "Puis-je synchroniser les anniversaires avec Google Agenda ?",
+        "answer": "Oui. Connectez-vous avec Google et connectez Google Agenda dans les paramètres. Birthdly affiche vos anniversaires dans Google Agenda et importe ceux de vos contacts Google."
+      }
+    },
+    "hero": {
+      "title": "Ne manquez plus jamais un anniversaire",
+      "text": "Birthdly est un calendrier d'anniversaires avec rappels. Réunissez les anniversaires de vos amis, de votre famille et de vos collègues, voyez à qui est le prochain anniversaire, soyez prévenu le jour même et synchronisez avec Google Agenda.",
+      "note": "Sans inscription"
+    },
+    "openCalendar": "Ouvrir le calendrier",
+    "featuresTitle": "Tout ce qu'il faut pour se souvenir des anniversaires",
+    "stepsTitle": "Comment ça marche",
+    "steps": {
+      "open": {
+        "title": "Ouvrez le calendrier",
+        "text": "Birthdly s'ouvre directement sur votre calendrier. Rien à installer."
+      },
+      "add": {
+        "title": "Ajoutez des anniversaires",
+        "text": "Appuyez sur le bouton + et saisissez un nom et une date. L'année de naissance est facultative."
+      },
+      "sync": {
+        "title": "Synchronisez si vous le souhaitez",
+        "text": "Connectez-vous avec Google pour retrouver vos anniversaires sur tous vos appareils, activer les notifications et connecter Google Agenda."
+      }
+    },
+    "faqTitle": "Questions fréquentes",
+    "cta": {
+      "title": "Créez votre calendrier d'anniversaires",
+      "text": "Ajouter le premier anniversaire ne prend que quelques secondes."
+    },
+    "guidesTitle": "Guides",
+    "allGuides": "Tous les guides",
+    "legalTitle": "Informations légales"
+  },
+  "guides": {
+    "googleCalendarBirthdays": {
+      "title": "Comment ajouter des anniversaires à Google Agenda",
+      "description": "Ajoutez des anniversaires à Google Agenda comme événements annuels avec un rappel la veille, et gardez-les synchronisés avec Birthdly.",
+      "text01": "Beaucoup de gens planifient déjà leur semaine dans Google Agenda : c'est donc aussi l'endroit naturel pour les anniversaires. Ce guide présente deux façons d'y ajouter des anniversaires : à la main dans Google, et automatiquement avec Birthdly, qui les garde synchronisés pour vous.",
+      "text02": "Comment Google Agenda affiche les anniversaires",
+      "text03": "Google Agenda propose un type d'événement spécial pour les anniversaires. C'est un événement sur toute la journée qui se répète chaque année et s'affiche avec une icône de gâteau. Google crée ces événements lui-même pour les personnes de vos contacts Google dont l'anniversaire est enregistré : si l'anniversaire d'un ami figure dans sa fiche, vous le voyez donc généralement déjà dans votre agenda.",
+      "text04": "Pour tous les autres, comme des collègues, des voisins ou des proches que vous n'avez jamais enregistrés comme contacts, Google Agenda n'affiche rien tant que vous n'ajoutez pas l'anniversaire vous-même.",
+      "text05": "Option 1 : ajouter des anniversaires dans Google",
+      "text06": "Il existe deux façons courantes de le faire sans outil supplémentaire.",
+      "text07": "Ajouter l'anniversaire à un contact",
+      "text08": "Ouvrez Google Contacts et trouvez la personne, ou créez un nouveau contact.",
+      "text09": "Choisissez <strong>Modifier</strong>, ajoutez le champ <strong>Anniversaire</strong> et saisissez la date. L'année est facultative.",
+      "text10": "Enregistrez le contact. L'anniversaire apparaît dans Google Agenda comme un événement d'anniversaire annuel.",
+      "text11": "Créer un événement annuel",
+      "text12": "Dans Google Agenda, créez un événement sur toute la journée à la date de l'anniversaire, avec le nom de la personne comme titre.",
+      "text13": "Réglez-le pour qu'il se répète <strong>chaque année</strong> et ajoutez une notification, par exemple un jour avant.",
+      "text14": "Enregistrez l'événement.",
+      "text15": "Les deux méthodes fonctionnent, mais elles deviennent fastidieuses au-delà de quelques personnes. Vos contacts se remplissent de fiches qui ne servent qu'à une date, et il est facile de se tromper avec les événements récurrents, surtout pour une personne née un 29 février.",
+      "text16": "Option 2 : synchroniser les anniversaires depuis Birthdly",
+      "text17": "<strong>Connectez-vous avec Google.</strong> Utilisez le bouton de compte en haut à droite. Les anniversaires ajoutés avant la connexion peuvent être transférés vers votre compte.",
+      "text18": "<strong>Connectez Google Agenda.</strong> Ouvrez les <strong>Paramètres</strong>, trouvez la carte Google Agenda et appuyez sur <strong>Connecter Google Agenda</strong>. Google affiche deux autorisations : voir, créer, modifier et supprimer des événements dans les agendas dont vous êtes propriétaire, et voir vos contacts. Birthdly ne modifie que les événements d'anniversaire qu'il crée et ne modifie jamais vos contacts.",
+      "text19": "<strong>C'est fait.</strong> Vos anniversaires apparaissent dans votre agenda Google principal en quelques instants.",
+      "text20": "Birthdly lit vos contacts uniquement pour importer leurs anniversaires dans Birthdly et ne les modifie jamais. Dans Google Agenda, il ne modifie que les événements d'anniversaire qu'il a lui-même créés.",
+      "text21": "À quoi ressemblent les événements d'anniversaire",
+      "text22": "Chaque anniversaire est un événement d'anniversaire Google qui se répète chaque année : il apparaît donc comme les anniversaires de vos contacts.",
+      "text23": "Chaque événement a un rappel à 9 h la veille, ce qui vous laisse le temps d'appeler ou d'acheter un cadeau.",
+      "text24": "Les événements sont privés et ne vous marquent pas comme occupé : ils ne bloquent donc jamais de réunions.",
+      "text25": "Un anniversaire le 29 février apparaît le 28 février les autres années.",
+      "text26": "Les personnes dont l'anniversaire vient de vos contacts Google n'ont pas de second événement, car Google affiche déjà leur anniversaire. Vous les voyez toujours dans Birthdly.",
+      "text27": "Garder Birthdly et Google Agenda synchronisés",
+      "text28": "Une fois connecté, vous pouvez continuer à travailler dans Birthdly et le laisser mettre Google à jour :",
+      "text29": "Quand vous ajoutez un anniversaire dans Birthdly ou modifiez son nom ou sa date, son événement dans Google Agenda change aussi.",
+      "text30": "Quand vous supprimez un anniversaire dans Birthdly, son événement disparaît de Google Agenda.",
+      "text31": "Quand vous supprimez l'un des événements d'anniversaire de Birthdly dans Google Agenda, Birthdly supprime aussi cet anniversaire.",
+      "text32": "Birthdly vérifie les modifications dans Google quand vous ouvrez le calendrier, au plus une fois par heure. Pour vérifier tout de suite, appuyez sur <strong>Synchroniser</strong> dans les paramètres.",
+      "text33": "Google n'autorise pas d'autres modifications des événements d'anniversaire, comme changer la date dans Google Agenda. Faites ces modifications dans Birthdly.",
+      "text34": "Comment arrêter la synchronisation",
+      "text35": "Ouvrez les <strong>Paramètres</strong> et appuyez sur <strong>Déconnecter</strong> sur la carte Google Agenda. Birthdly supprime les événements d'anniversaire qu'il a ajoutés à Google Agenda, et vos anniversaires restent dans Birthdly. Vous pouvez le reconnecter à tout moment.",
+      "text36": "Questions fréquentes",
+      "text37": "Ai-je besoin d'un compte Birthdly ?",
+      "text38": "Vous pouvez ajouter des anniversaires sans compte. Pour synchroniser avec Google Agenda, connectez-vous avec Google, car la synchronisation fonctionne pour votre compte sur tous vos appareils.",
+      "text39": "Dans quel agenda vont les anniversaires ?",
+      "text40": "Dans votre agenda Google principal, celui qui porte le nom de votre compte Google.",
+      "text41": "Vais-je voir les anniversaires de mes contacts en double ?",
+      "text42": "Pas si le nom et l'anniversaire correspondent. Si une personne a le même nom et le même anniversaire dans Birthdly et dans Google Contacts, Birthdly les associe au lieu d'ajouter la personne deux fois, et ne crée pas de second événement. Si les noms diffèrent, par exemple « Maman » dans Birthdly et son nom complet dans Google Contacts, vous verrez les deux. Dans ce cas, supprimez dans Birthdly celui que vous avez ajouté à la main.",
+      "intro": {
+        "after": " est un calendrier d'anniversaires conçu pour cela. Vous gardez tous les anniversaires dans une seule liste, avec la relation et des notes comme des idées de cadeaux, et Birthdly les ajoute à Google Agenda comme de vrais événements d'anniversaire."
+      },
+      "addStep": {
+        "before": "<strong>Ajoutez vos anniversaires.</strong> Ouvrez le ",
+        "link": "calendrier",
+        "after": ", appuyez sur <strong>Ajouter un anniversaire</strong> et saisissez un nom et une date. Vous pouvez laisser l'année de naissance vide."
+      }
+    },
+    "birthdayReminders": {
+      "title": "Comment recevoir des rappels d'anniversaire",
+      "description": "Recevez un rappel le jour même ou la veille de chaque anniversaire grâce aux notifications de Birthdly et aux rappels de Google Agenda.",
+      "text01": "La plupart des anniversaires oubliés ne le sont pas vraiment : vous n'avez simplement pas pensé à la date à temps. Un rappel la veille règle le problème, surtout s'il arrive sur l'appareil que vous utilisez déjà. Ce guide montre comment recevoir des rappels d'anniversaire avec Birthdly : par des notifications de Birthdly lui-même, via Google Agenda, ou les deux.",
+      "text02": "Ce qui fait un bon rappel d'anniversaire",
+      "text03": "<strong>Il arrive assez tôt.</strong> La veille laisse le temps d'envoyer une carte, de commander un cadeau ou de prévoir un appel.",
+      "text04": "<strong>Il arrive là où vous regardez.</strong> Une notification sur votre téléphone ou votre ordinateur fonctionne mieux qu'une application qu'il faut ouvrir.",
+      "text05": "<strong>Il se répète chaque année tout seul.</strong> Vous configurez un anniversaire une fois et n'y touchez plus.",
+      "text06": "<strong>Il est facile à garder complet.</strong> Les rappels n'aident que pour les personnes que vous avez réellement ajoutées.",
+      "text07": "Comment fonctionnent les rappels avec Birthdly",
+      "text08": "Birthdly garde votre liste d'anniversaires et peut vous les rappeler de deux façons :",
+      "text09": "<strong>Notifications d'anniversaire.</strong> Birthdly envoie une notification du navigateur avec les anniversaires du jour à chaque appareil où vous les activez. Vous choisissez si elle arrive le jour même, la veille ou les deux, et à quelle heure. La notification arrive même lorsque Birthdly est fermé.",
+      "text10": "<strong>Google Agenda.</strong> Birthdly ajoute chaque anniversaire à votre Google Agenda comme événement d'anniversaire avec un rappel à 9 h la veille. Google Agenda affiche ensuite ce rappel partout où vous êtes connecté à Google.",
+      "text11": "Les deux nécessitent de vous connecter avec Google. Vous pouvez utiliser l'un ou l'autre, ou les deux à la fois.",
+      "text12": "Activer les notifications d'anniversaire",
+      "text13": "<strong>Connectez-vous avec Google</strong> à l'aide du bouton de compte en haut à droite.",
+      "text14": "<strong>Activez les notifications.</strong> Ouvrez les <strong>Paramètres</strong>, trouvez <strong>Notifications d'anniversaire</strong> et appuyez sur <strong>Activer sur cet appareil</strong>. Quand votre navigateur le demande, autorisez les notifications.",
+      "text15": "<strong>Choisissez quand.</strong> Optez pour le jour même, la veille ou les deux, et l'heure. Ces paramètres s'appliquent à tous vos appareils. L'heure suit le fuseau horaire de l'appareil sur lequel vous avez activé les notifications ou modifié ces paramètres en dernier, indiqué sous les réglages.",
+      "text16": "Les notifications s'activent séparément sur chaque appareil : répétez donc les étapes 2 et 3 sur votre téléphone et votre ordinateur. Elles couvrent tous les anniversaires de votre compte, y compris ceux importés de Google Contacts. Les anniversaires du même jour arrivent ensemble dans une seule notification.",
+      "text17": "Sur iPhone et iPad, les notifications nécessitent iOS ou iPadOS 16.4 ou version ultérieure. Ajoutez d'abord Birthdly à votre écran d'accueil : ouvrez-le dans Safari, touchez <strong>Partager</strong>, puis <strong>Sur l'écran d'accueil</strong>. Ouvrez Birthdly depuis l'icône de l'écran d'accueil et activez-y les notifications.",
+      "text18": "Si vous avez bloqué les notifications de Birthdly auparavant, le bouton n'apparaît pas. Autorisez-les dans les paramètres du site de votre navigateur pour Birthdly, puis rechargez la page.",
+      "text19": "Recevoir des rappels dans Google Agenda",
+      "text20": "Ajoutez des anniversaires et connectez-vous avec Google, comme décrit ci-dessus.",
+      "text21": "<strong>Connectez Google Agenda.</strong> Ouvrez les <strong>Paramètres</strong> et appuyez sur <strong>Connecter Google Agenda</strong>. Birthdly crée un événement d'anniversaire avec rappel pour chaque anniversaire de votre liste, sauf ceux qui viennent de vos contacts Google.",
+      "text22": "<strong>Autorisez les notifications de Google Agenda.</strong> Sur votre téléphone, vérifiez que les notifications sont activées pour l'application Google Agenda. Sur un ordinateur, autorisez les notifications de Google Agenda dans votre navigateur.",
+      "text23": "Garder les prochains anniversaires en vue",
+      "text24": "Un rappel couvre le lendemain ou les deux jours suivants. Pour voir plus loin, utilisez Birthdly lui-même :",
+      "text25": "Le panneau <strong>À venir</strong> à côté du calendrier affiche les prochains anniversaires avec des mentions comme « Demain » ou « dans 5 jours », et l'âge que chaque personne aura.",
+      "text26": "La <strong>vue annuelle</strong> affiche tous les anniversaires de l'année d'un coup, ce qui aide à prévoir des cadeaux ou des voyages.",
+      "text27": "La page <strong>Personnes</strong> réunit tout le monde dans un tableau que vous pouvez trier et parcourir.",
+      "text28": "Utilisez les notes d'un anniversaire pour les idées de cadeaux. Quand le rappel arrive, ouvrez la personne dans Birthdly : les idées sont là.",
+      "text29": "Anniversaires venant de Google Contacts",
+      "text30": "Les notifications de Birthdly incluent les anniversaires importés de vos contacts Google, comme tout autre anniversaire de votre compte.",
+      "text31": "Google Agenda affiche déjà les anniversaires enregistrés dans vos contacts Google : Birthdly n'ajoute donc pas de second événement pour eux, et vous ne recevez pas deux rappels de Google Agenda. Ses rappels pour ces anniversaires suivent ses paramètres de notification par défaut pour les événements sur toute la journée ; vérifiez-les si vous voulez aussi un rappel pour eux.",
+      "text32": "Astuces pour ne jamais oublier un anniversaire",
+      "text33": "Ajoutez les anniversaires dès que vous les apprenez, même sans l'année. Vous pourrez la compléter plus tard.",
+      "text34": "Indiquez la relation, comme famille, amis ou collègues, pour voir d'un coup d'œil qui est qui.",
+      "text35": "Une fois par mois, ouvrez la vue annuelle et vérifiez que personne d'important ne manque.",
+      "text36": "Questions fréquentes",
+      "text37": "Birthdly peut-il m'envoyer des rappels par e-mail ?",
+      "text38": "Pas pour le moment. Birthdly envoie des notifications du navigateur, et Google Agenda peut vous rappeler les anniversaires une fois que vous l'avez connecté.",
+      "text39": "Quand le rappel arrive-t-il ?",
+      "text40": "Les notifications d'anniversaire arrivent à l'heure que vous choisissez dans les paramètres (9 h par défaut), le jour même, la veille ou les deux. Les rappels de Google Agenda pour les anniversaires ajoutés dans Birthdly arrivent à 9 h la veille, dans le fuseau horaire de votre Google Agenda. Pour les anniversaires de vos contacts Google, Google Agenda suit ses propres paramètres de notification.",
+      "text41": "Puis-je recevoir des rappels sans connecter Google Agenda ?",
+      "text42": "Oui. Activez les notifications d'anniversaire dans les paramètres. Elles ne dépendent pas de Google Agenda.",
+      "text43": "Les notifications fonctionnent-elles quand Birthdly est fermé ?",
+      "text44": "Oui. Inutile de laisser Birthdly ouvert. Sur un ordinateur, le navigateur lui-même doit être lancé. Sinon, la notification arrive quand vous ouvrez le navigateur plus tard dans la journée.",
+      "text45": "Vais-je recevoir le même anniversaire deux fois ?",
+      "text46": "Avec <strong>Le jour même et la veille</strong>, l'option par défaut, vous êtes prévenu de chaque anniversaire deux fois : la veille et le jour même. Choisissez l'une des deux dans les paramètres si vous voulez une seule notification. Si vous avez aussi connecté Google Agenda, son rappel s'ajoute ; désactivez le rappel dans Google Agenda ou les notifications d'un appareil dans les paramètres si c'est trop.",
+      "addStep": {
+        "before": "<strong>Ajoutez des anniversaires.</strong> Ouvrez le ",
+        "link": "calendrier",
+        "after": ", appuyez sur <strong>Ajouter un anniversaire</strong> et saisissez un nom et une date. L'année de naissance est facultative."
+      },
+      "googleCalendarLink": {
+        "before": "Désormais, chaque anniversaire que vous ajoutez ou modifiez dans Birthdly a aussi son événement et son rappel dans Google Agenda. Les anniversaires de vos contacts Google font exception, comme l'expliquent les sections suivantes. Le ",
+        "link": "guide Google Agenda",
+        "after": " explique la synchronisation plus en détail."
+      }
+    },
+    "importFromGoogleContacts": {
+      "title": "Comment importer des anniversaires depuis Google Contacts",
+      "description": "Importez dans Birthdly les anniversaires enregistrés dans vos contacts Google, évitez les doublons et gardez-les à jour sans modifier vos contacts.",
+      "text01": "Si vous utilisez Android ou Gmail, beaucoup d'anniversaires sont probablement déjà enregistrés dans vos contacts Google. Plutôt que de les saisir à nouveau, vous pouvez les importer dans Birthdly en une étape et les garder à jour automatiquement. Ce guide explique comment fonctionne l'importation et ce qu'il advient de vos contacts.",
+      "text02": "Avant de commencer",
+      "text03": "Il vous faut un compte Google avec des contacts dont l'anniversaire est enregistré.",
+      "text04": "Seuls les contacts enregistrés dans Google Contacts sont importés. Les personnes avec qui vous avez seulement échangé des e-mails, que Google range dans « Autres contacts », ne sont pas incluses.",
+      "text05": "Un contact doit avoir un nom et au moins le jour et le mois de l'anniversaire. L'année est facultative.",
+      "text06": "Importer les anniversaires étape par étape",
+      "text07": "Ouvrez les <strong>Paramètres</strong> et trouvez la carte Google Agenda.",
+      "text08": "Appuyez sur <strong>Connecter Google Agenda</strong>. Google affiche deux autorisations : voir, créer, modifier et supprimer des événements dans les agendas dont vous êtes propriétaire, et voir vos contacts. Birthdly ne modifie que les événements d'anniversaire qu'il crée et ne modifie jamais vos contacts. Autorisez les deux.",
+      "text09": "Birthdly lance la première synchronisation tout de suite. Peu après, les anniversaires de vos contacts apparaissent dans le calendrier et sur la page <strong>Personnes</strong>.",
+      "text10": "L'importation fait partie de la connexion à Google Agenda : la même étape ajoute donc aussi vos anniversaires Birthdly à Google Agenda avec un rappel la veille.",
+      "text11": "Ce qu'il advient de vos contacts",
+      "text12": "Rien. Birthdly se contente de lire vos contacts et ne les modifie, n'en ajoute ni n'en supprime jamais. Il lit le nom et l'anniversaire de chaque contact et ignore tout le reste, comme les numéros de téléphone et les adresses e-mail.",
+      "text13": "Comment les doublons sont évités",
+      "text14": "Si vous avez ajouté quelqu'un dans Birthdly avant l'importation, Birthdly essaie de l'associer à vos contacts. Une personne est associée quand le nom ainsi que le jour et le mois de l'anniversaire sont identiques et que les années ne se contredisent pas ; une année manquante correspond toujours, et la casse et les espaces en trop n'ont pas d'importance. Une personne associée reste une seule entrée dans Birthdly et conserve la relation et les notes que vous avez enregistrées.",
+      "text15": "Si les noms diffèrent, par exemple « Maman » dans Birthdly et son nom complet dans Google Contacts, Birthdly ne peut pas savoir qu'il s'agit de la même personne et vous voyez deux entrées. Supprimez dans Birthdly celle que vous avez ajoutée à la main.",
+      "text16": "Garder les anniversaires importés à jour",
+      "text17": "Birthdly vérifie à nouveau vos contacts quand vous ouvrez le calendrier, au plus une fois par heure, et quand vous appuyez sur <strong>Synchroniser</strong> dans les paramètres.",
+      "text18": "<strong>Les nouveaux contacts avec un anniversaire</strong> sont ajoutés à Birthdly.",
+      "text19": "<strong>Un anniversaire ou un nom modifié dans Google Contacts</strong> est mis à jour dans Birthdly, sauf si vous avez modifié cette personne dans Birthdly plus récemment. Votre dernière modification l'emporte.",
+      "text20": "<strong>Un contact sans année de naissance</strong> n'efface jamais une année déjà enregistrée dans Birthdly.",
+      "text21": "<strong>Un anniversaire retiré d'un contact</strong> reste dans Birthdly. Dès lors, Birthdly l'ajoute à Google Agenda comme son propre événement d'anniversaire.",
+      "text22": "Supprimer un anniversaire importé",
+      "text23": "Tant qu'un contact a encore un anniversaire dans Google Contacts, le supprimer dans Birthdly ne dure pas : la synchronisation suivante l'importe à nouveau. Pour supprimer définitivement un tel anniversaire, retirez d'abord l'anniversaire du contact dans Google Contacts, puis supprimez-le dans Birthdly.",
+      "text24": "Anniversaires importés dans Google Agenda",
+      "text25": "Questions fréquentes",
+      "text26": "Puis-je importer des anniversaires sans connecter Google Agenda ?",
+      "text27": "Non. L'importation fait partie de la connexion à Google Agenda.",
+      "text28": "Que deviennent les anniversaires importés si je me déconnecte ?",
+      "text29": "Ils restent dans Birthdly. La déconnexion supprime seulement les événements que Birthdly a ajoutés à Google Agenda et arrête la synchronisation.",
+      "text30": "Puis-je ajouter des notes aux anniversaires importés ?",
+      "text31": "Oui. Les anniversaires importés fonctionnent comme les autres : vous pouvez indiquer la relation et ajouter des notes, comme des idées de cadeaux.",
+      "openStep": {
+        "before": "Ouvrez ",
+        "after": " et connectez-vous avec Google à l'aide du bouton de compte en haut à droite."
+      },
+      "remindersLink": {
+        "before": "Google Agenda affiche déjà les anniversaires de vos contacts : Birthdly n'ajoute donc pas de second événement pour eux. Vous voyez l'anniversaire de chaque contact une seule fois. Son rappel dans Google Agenda suit vos paramètres de notification par défaut pour les événements sur toute la journée. Les notifications de Birthdly incluent aussi les anniversaires importés. Le ",
+        "link": "guide des rappels d'anniversaire",
+        "after": " explique comment fonctionnent les rappels."
+      }
+    },
+    "breadcrumbHome": "Accueil",
+    "related": "Guides associés",
+    "aboutAndFaq": "À propos de Birthdly et FAQ",
+    "lastUpdated": "Dernière mise à jour : {{ date }}"
+  }
+}

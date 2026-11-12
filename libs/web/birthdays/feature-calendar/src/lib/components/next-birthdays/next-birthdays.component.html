@@ -1,6 +1,6 @@
 <div class="header">
-  <h2 class="header__title">Upcoming</h2>
-  <a class="header__link" routerLink="/people">View all</a>
+  <h2 class="header__title">{{ 'calendar.upcoming' | transloco }}</h2>
+  <a class="header__link" routerLink="/people">{{ 'calendar.viewAll' | transloco }}</a>
 </div>
 <div class="body">
   @if (nextBirthdays().length) {
@@ -13,10 +13,10 @@
               <span class="item__title">
                 <span class="item__name">{{ item.birthday.name }}</span>
                 @if ((item.age ?? 0) > 0) {
-                  <span class="item__age">Turns {{ item.age }}</span>
+                  <span class="item__age">{{ 'calendar.turns' | transloco: { age: item.age } }}</span>
                 }
               </span>
-              <span class="item__date">{{ item.date | date: 'MMM d' }} · {{ getDaysUntilLabel(item.daysUntil) }}</span>
+              <span class="item__date">{{ item.date | localeDate: ('dates.monthDay' | transloco) }} · {{ getDaysUntilLabel(item.daysUntil) }}</span>
             </span>
             <mat-icon class="item__chevron" aria-hidden="true">chevron_right</mat-icon>
           </button>
@@ -25,14 +25,13 @@
     </ul>
   } @else if (!isLoading()) {
     <div class="welcome">
-      <h3 class="welcome__title">Never miss a birthday</h3>
+      <h3 class="welcome__title">{{ 'calendar.welcomeTitle' | transloco }}</h3>
       <p class="welcome__text">
-        Birthdly keeps every birthday in one calendar. Add friends and family to see who celebrates next, browse by month or year, and sign in with
-        Google to sync across devices.
+        {{ 'calendar.welcomeText' | transloco }}
       </p>
       <button matButton="filled" type="button" (click)="openAddBirthdayDialog()">
         <mat-icon>add</mat-icon>
-        Add birthday
+        {{ 'calendar.addBirthday' | transloco }}
       </button>
     </div>
   }

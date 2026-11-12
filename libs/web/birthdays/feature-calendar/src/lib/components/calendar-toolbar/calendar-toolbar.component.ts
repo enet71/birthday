@@ -1,45 +1,25 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  computed,
-  inject,
-  Signal,
-} from '@angular/core';
-import { DatePipe } from '@angular/common';
+import { ChangeDetectionStrategy, Component, computed, inject, Signal } from '@angular/core';
 import { MatButton, MatIconButton } from '@angular/material/button';
-import {
-  MatButtonToggle,
-  MatButtonToggleChange,
-  MatButtonToggleGroup,
-} from '@angular/material/button-toggle';
+import { MatButtonToggle, MatButtonToggleChange, MatButtonToggleGroup } from '@angular/material/button-toggle';
 import { MatIcon } from '@angular/material/icon';
+import { LocaleDatePipe } from '@birthday/web-shared-i18n';
 import { injectState, ReadonlyState } from '@birthday/web-shared-data-access';
 import { CalendarController, CalendarState } from '../../state';
 import { CalendarView } from '../../types';
+import { TranslocoPipe } from '@jsverse/transloco';
 
 @Component({
   selector: 'ui-calendar-toolbar',
-  imports: [
-    DatePipe,
-    MatButton,
-    MatIconButton,
-    MatButtonToggle,
-    MatButtonToggleGroup,
-    MatIcon,
-  ],
+  imports: [TranslocoPipe, LocaleDatePipe, MatButton, MatIconButton, MatButtonToggle, MatButtonToggleGroup, MatIcon],
   templateUrl: './calendar-toolbar.component.html',
   styleUrl: './calendar-toolbar.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CalendarToolbarComponent {
-  private readonly calendarState: ReadonlyState<CalendarState> =
-    injectState(CalendarState);
-  private readonly calendarController: CalendarController =
-    inject(CalendarController);
+  private readonly calendarState: ReadonlyState<CalendarState> = injectState(CalendarState);
+  private readonly calendarController: CalendarController = inject(CalendarController);
 
-  protected readonly isYearView: Signal<boolean> = computed(
-    () => this.view() === 'year',
-  );
+  protected readonly isYearView: Signal<boolean> = computed(() => this.view() === 'year');
 
   protected get view(): Signal<CalendarView> {
     return this.calendarState.view;

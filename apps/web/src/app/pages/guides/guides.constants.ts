@@ -2,23 +2,22 @@ import { Guide } from './guides.interfaces';
 
 export const GOOGLE_CALENDAR_BIRTHDAYS_GUIDE: Guide = {
   slug: 'google-calendar-birthdays',
-  title: 'How to add birthdays to Google Calendar',
-  description: 'Add birthdays to Google Calendar as yearly birthday events with a reminder the day before, and keep them in sync with Birthdly.',
+  title: 'guides.googleCalendarBirthdays.title',
+  description: 'guides.googleCalendarBirthdays.description',
   updatedAt: '2026-11-10',
 };
 
 export const BIRTHDAY_REMINDERS_GUIDE: Guide = {
   slug: 'birthday-reminders',
-  title: 'How to get birthday reminders',
-  description: 'Get a reminder on the day or the day before every birthday with Birthdly notifications and Google Calendar reminders.',
+  title: 'guides.birthdayReminders.title',
+  description: 'guides.birthdayReminders.description',
   updatedAt: '2026-11-10',
 };
 
 export const IMPORT_FROM_GOOGLE_CONTACTS_GUIDE: Guide = {
   slug: 'import-birthdays-from-google-contacts',
-  title: 'How to import birthdays from Google Contacts',
-  description:
-    'Bring the birthdays saved in your Google Contacts into Birthdly, avoid duplicates, and keep them up to date without changing your contacts.',
+  title: 'guides.importFromGoogleContacts.title',
+  description: 'guides.importFromGoogleContacts.description',
   updatedAt: '2026-11-10',
 };
 

@@ -1,106 +1,74 @@
-<p class="guide__lead">
-  If you use Android or Gmail, many birthdays are probably already saved in your Google Contacts. Instead of typing them again, you can bring them
-  into Birthdly in one step and keep them up to date automatically. This guide explains how the import works and what happens to your contacts.
-</p>
+<p class="guide__lead">{{ 'guides.importFromGoogleContacts.text01' | transloco }}</p>
 
 <section>
-  <h2>Before you start</h2>
+  <h2>{{ 'guides.importFromGoogleContacts.text02' | transloco }}</h2>
   <ul>
-    <li>You need a Google account with contacts that have a birthday saved.</li>
-    <li>
-      Only contacts saved in your Google Contacts are imported. People you only emailed, which Google lists under "Other contacts", are not included.
-    </li>
-    <li>A contact needs a name and at least the day and month of the birthday. The year is optional.</li>
+    <li>{{ 'guides.importFromGoogleContacts.text03' | transloco }}</li>
+    <li>{{ 'guides.importFromGoogleContacts.text04' | transloco }}</li>
+    <li>{{ 'guides.importFromGoogleContacts.text05' | transloco }}</li>
   </ul>
 </section>
 
 <section>
-  <h2>Import birthdays step by step</h2>
+  <h2>{{ 'guides.importFromGoogleContacts.text06' | transloco }}</h2>
   <ol>
-    <li>Open <a routerLink="/">Birthdly</a> and sign in with Google using the account button in the top right corner.</li>
-    <li>Open <strong>Settings</strong> and find the Google Calendar card.</li>
     <li>
-      Press <strong>Connect Google Calendar</strong>. Google shows two permissions: to see, create, change, and delete events on calendars you own,
-      and to see your contacts. Birthdly only changes the birthday events it creates and never changes your contacts. Allow both.
+      <span [innerHTML]="'guides.importFromGoogleContacts.openStep.before' | transloco"></span><a routerLink="/">Birthdly</a
+      ><span [innerHTML]="'guides.importFromGoogleContacts.openStep.after' | transloco"></span>
     </li>
-    <li>
-      Birthdly starts the first sync right away. After a short while, the birthdays of your contacts appear in the calendar and on the
-      <strong>People</strong> page.
-    </li>
+    <li [innerHTML]="'guides.importFromGoogleContacts.text07' | transloco"></li>
+    <li [innerHTML]="'guides.importFromGoogleContacts.text08' | transloco"></li>
+    <li [innerHTML]="'guides.importFromGoogleContacts.text09' | transloco"></li>
   </ol>
-  <p class="tip">
-    The import comes with the Google Calendar connection, so the same step also adds your Birthdly birthdays to Google Calendar with a reminder the
-    day before.
-  </p>
+  <p class="tip">{{ 'guides.importFromGoogleContacts.text10' | transloco }}</p>
 </section>
 
 <section>
-  <h2>What happens to your contacts</h2>
-  <p>
-    Nothing. Birthdly only reads your contacts and never changes, adds, or deletes them. It reads the name and birthday of each contact and ignores
-    everything else, such as phone numbers and email addresses.
-  </p>
+  <h2>{{ 'guides.importFromGoogleContacts.text11' | transloco }}</h2>
+  <p>{{ 'guides.importFromGoogleContacts.text12' | transloco }}</p>
 </section>
 
 <section>
-  <h2>How duplicates are avoided</h2>
-  <p>
-    If you added someone in Birthdly before importing, Birthdly tries to match them with your contacts. A person is matched when the name and the day
-    and month of the birthday are the same and the birth years do not conflict; a missing year always matches, and letter case and extra spaces do not
-    matter. A matched person stays one entry in Birthdly and keeps the relationship and notes you saved.
-  </p>
-  <p>
-    If the names differ, for example "Mom" in Birthdly and her full name in Google Contacts, Birthdly cannot tell they are the same person and you see
-    two entries. Delete the one you added by hand in Birthdly.
-  </p>
+  <h2>{{ 'guides.importFromGoogleContacts.text13' | transloco }}</h2>
+  <p>{{ 'guides.importFromGoogleContacts.text14' | transloco }}</p>
+  <p>{{ 'guides.importFromGoogleContacts.text15' | transloco }}</p>
 </section>
 
 <section>
-  <h2>Keeping imported birthdays up to date</h2>
-  <p>
-    Birthdly checks your contacts again when you open the calendar, at most once an hour, and when you press <strong>Sync now</strong> in Settings.
-  </p>
+  <h2>{{ 'guides.importFromGoogleContacts.text16' | transloco }}</h2>
+  <p [innerHTML]="'guides.importFromGoogleContacts.text17' | transloco"></p>
   <ul>
-    <li><strong>New contacts with a birthday</strong> are added to Birthdly.</li>
-    <li>
-      <strong>A birthday or name changed in Google Contacts</strong> is updated in Birthdly, unless you edited that person in Birthdly more recently.
-      Your latest edit wins.
-    </li>
-    <li><strong>A contact without a birth year</strong> never erases a year you already saved in Birthdly.</li>
-    <li>
-      <strong>A birthday removed from a contact</strong> stays in Birthdly. From then on, Birthdly adds it to Google Calendar as its own birthday
-      event.
-    </li>
+    <li [innerHTML]="'guides.importFromGoogleContacts.text18' | transloco"></li>
+    <li [innerHTML]="'guides.importFromGoogleContacts.text19' | transloco"></li>
+    <li [innerHTML]="'guides.importFromGoogleContacts.text20' | transloco"></li>
+    <li [innerHTML]="'guides.importFromGoogleContacts.text21' | transloco"></li>
   </ul>
 </section>
 
 <section>
-  <h2>Removing an imported birthday</h2>
+  <h2>{{ 'guides.importFromGoogleContacts.text22' | transloco }}</h2>
+  <p>{{ 'guides.importFromGoogleContacts.text23' | transloco }}</p>
+</section>
+
+<section>
+  <h2>{{ 'guides.importFromGoogleContacts.text24' | transloco }}</h2>
   <p>
-    While a contact still has a birthday in Google Contacts, deleting it in Birthdly does not last: the next sync imports it again. To remove such a
-    birthday for good, first remove the birthday from the contact in Google Contacts, then delete it in Birthdly.
+    <span [innerHTML]="'guides.importFromGoogleContacts.remindersLink.before' | transloco"></span
+    ><a [routerLink]="remindersGuidePath">{{ 'guides.importFromGoogleContacts.remindersLink.link' | transloco }}</a
+    ><span [innerHTML]="'guides.importFromGoogleContacts.remindersLink.after' | transloco"></span>
   </p>
 </section>
 
 <section>
-  <h2>Imported birthdays in Google Calendar</h2>
-  <p>
-    Google Calendar already shows the birthdays of your contacts, so Birthdly does not add a second event for them. You see each contact's birthday
-    once. Its reminder in Google Calendar follows your default notification settings for all-day events. Birthday notifications from Birthdly include
-    imported birthdays too. The <a [routerLink]="remindersGuidePath">birthday reminders guide</a> explains how reminders work.
-  </p>
+  <h2>{{ 'guides.importFromGoogleContacts.text25' | transloco }}</h2>
+  <h3>{{ 'guides.importFromGoogleContacts.text26' | transloco }}</h3>
+  <p>{{ 'guides.importFromGoogleContacts.text27' | transloco }}</p>
+  <h3>{{ 'guides.importFromGoogleContacts.text28' | transloco }}</h3>
+  <p>{{ 'guides.importFromGoogleContacts.text29' | transloco }}</p>
+  <h3>{{ 'guides.importFromGoogleContacts.text30' | transloco }}</h3>
+  <p>{{ 'guides.importFromGoogleContacts.text31' | transloco }}</p>
 </section>
 
-<section>
-  <h2>Frequently asked questions</h2>
-  <h3>Can I import birthdays without connecting Google Calendar?</h3>
-  <p>No. The import is part of the Google Calendar connection.</p>
-  <h3>What happens to imported birthdays if I disconnect?</h3>
-  <p>They stay in Birthdly. Disconnecting only removes the events Birthdly added to Google Calendar and stops the sync.</p>
-  <h3>Can I add notes to imported birthdays?</h3>
-  <p>Yes. Imported birthdays work like any other: you can set the relationship and add notes, such as gift ideas.</p>
-</section>
-
-<p class="guide__updated">Last updated {{ guide.updatedAt | date: 'longDate' }}</p>
+<p class="guide__updated">{{ 'guides.lastUpdated' | transloco: { date: (guide.updatedAt | localeDate: 'longDate') } }}</p>
 
 <app-related-guides [current]="guide" />

@@ -8,10 +8,11 @@ import { getGuidePath } from '../guides/guides.helpers';
 import { Guide } from '../guides/guides.interfaces';
 import { ABOUT_FAQ, ABOUT_FEATURES } from './about.constants';
 import { AboutFaqItem, AboutFeature } from './about.interfaces';
+import { TranslocoPipe } from '@jsverse/transloco';
 
 @Component({
   selector: 'app-about',
-  imports: [MatButton, MatExpansionModule, MatIcon, RouterLink],
+  imports: [TranslocoPipe, MatButton, MatExpansionModule, MatIcon, RouterLink],
   templateUrl: './about.component.html',
   styleUrl: './about.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

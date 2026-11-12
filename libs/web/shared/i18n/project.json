@@ -1,0 +1,11 @@
+{
+  "name": "web-shared-i18n",
+  "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/web/shared/i18n/src",
+  "prefix": "ui",
+  "projectType": "library",
+  "tags": ["platform:web", "type:data-access"],
+  "targets": {
+    "typecheck": {}
+  }
+}

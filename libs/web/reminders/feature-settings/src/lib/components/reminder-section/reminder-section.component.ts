@@ -1,5 +1,5 @@
 import { afterRenderEffect, ChangeDetectionStrategy, Component, ElementRef, inject, Signal, viewChild } from '@angular/core';
-import { DatePipe, DOCUMENT } from '@angular/common';
+import { DOCUMENT } from '@angular/common';
 import { FieldTree, FormField } from '@angular/forms/signals';
 import { MatButton } from '@angular/material/button';
 import { MatCard, MatCardContent, MatCardHeader, MatCardTitle } from '@angular/material/card';
@@ -13,11 +13,14 @@ import { injectState, ReadonlyState } from '@birthday/web-shared-data-access';
 import { REMINDER_DAY_OPTIONS, REMINDER_HOUR_OPTIONS } from '../../constants';
 import { ReminderSectionController, ReminderSectionState } from '../../state';
 import { ReminderDayOption, ReminderHourOption, ReminderSectionView, ReminderSettingsModel } from '../../types';
+import { LocaleDatePipe } from '@birthday/web-shared-i18n';
+import { TranslocoPipe } from '@jsverse/transloco';
 
 @Component({
   selector: 'ui-reminder-section',
   imports: [
-    DatePipe,
+    TranslocoPipe,
+    LocaleDatePipe,
     FormField,
     MatButton,
     MatCard,

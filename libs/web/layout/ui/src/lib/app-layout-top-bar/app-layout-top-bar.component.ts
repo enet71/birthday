@@ -14,37 +14,17 @@ import {
 import { NgOptimizedImage, NgTemplateOutlet } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { MatIconButton } from '@angular/material/button';
-import {
-  MatFormField,
-  MatPrefix,
-  MatSuffix,
-} from '@angular/material/form-field';
+import { MatFormField, MatPrefix, MatSuffix } from '@angular/material/form-field';
 import { MatIcon } from '@angular/material/icon';
 import { MatInput } from '@angular/material/input';
-import {
-  AppLayoutController,
-  AppLayoutState,
-} from '@birthday/web-layout-data-access';
-import {
-  APP_LAYOUT_CONFIG,
-  AppLayoutConfig,
-  AppLayoutSearch,
-} from '@birthday/web-layout-util';
+import { AppLayoutController, AppLayoutState } from '@birthday/web-layout-data-access';
+import { APP_LAYOUT_CONFIG, AppLayoutConfig, AppLayoutSearch } from '@birthday/web-layout-util';
 import { ReadonlyState, injectState } from '@birthday/web-shared-data-access';
+import { TranslocoPipe } from '@jsverse/transloco';
 
 @Component({
   selector: 'ui-app-layout-top-bar',
-  imports: [
-    NgOptimizedImage,
-    NgTemplateOutlet,
-    RouterLink,
-    MatIconButton,
-    MatFormField,
-    MatPrefix,
-    MatSuffix,
-    MatIcon,
-    MatInput,
-  ],
+  imports: [TranslocoPipe, NgOptimizedImage, NgTemplateOutlet, RouterLink, MatIconButton, MatFormField, MatPrefix, MatSuffix, MatIcon, MatInput],
   templateUrl: './app-layout-top-bar.component.html',
   styleUrl: './app-layout-top-bar.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -57,17 +37,11 @@ export class AppLayoutTopBarComponent {
   // On mobile the search collapses into an icon button; it collapses again when the route's search config changes.
   protected readonly isSearchExpanded: WritableSignal<boolean>;
 
-  private readonly appLayoutState: ReadonlyState<AppLayoutState> =
-    injectState(AppLayoutState);
-  private readonly appLayoutController: AppLayoutController =
-    inject(AppLayoutController);
+  private readonly appLayoutState: ReadonlyState<AppLayoutState> = injectState(AppLayoutState);
+  private readonly appLayoutController: AppLayoutController = inject(AppLayoutController);
   private readonly injector: Injector = inject(Injector);
-  private readonly searchInput: Signal<
-    ElementRef<HTMLInputElement> | undefined
-  > = viewChild<ElementRef<HTMLInputElement>>('searchInput');
-  private readonly searchToggle: Signal<
-    ElementRef<HTMLButtonElement> | undefined
-  > = viewChild('searchToggle', { read: ElementRef });
+  private readonly searchInput: Signal<ElementRef<HTMLInputElement> | undefined> = viewChild<ElementRef<HTMLInputElement>>('searchInput');
+  private readonly searchToggle: Signal<ElementRef<HTMLButtonElement> | undefined> = viewChild('searchToggle', { read: ElementRef });
 
   constructor() {
     this.isSearchExpanded = linkedSignal({
@@ -93,9 +67,7 @@ export class AppLayoutTopBarComponent {
   }
 
   protected setSearchQuery(event: Event): void {
-    this.appLayoutController.setSearchQuery(
-      (event.target as HTMLInputElement).value,
-    );
+    this.appLayoutController.setSearchQuery((event.target as HTMLInputElement).value);
   }
 
   protected expandSearch(): void {

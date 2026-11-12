@@ -1,10 +1,10 @@
 @for (month of months(); track month.date.getTime()) {
-  <section class="month" [attr.aria-label]="month.date | date: 'MMMM y'">
-    <h3 class="month__title">{{ month.date | date: 'MMMM' }}</h3>
+  <section class="month" [attr.aria-label]="month.date | localeDate: 'LLLL y'">
+    <h3 class="month__title">{{ month.date | localeDate: 'LLLL' }}</h3>
     <div class="month__grid">
       @for (weekday of weekdays(); track $index) {
         <span class="weekday" aria-hidden="true">
-          {{ weekday | date: 'EEEEEE' }}
+          {{ weekday | localeDate: 'EEEEEE' }}
         </span>
       }
       @for (day of month.days; track day.date.getTime()) {
@@ -19,7 +19,7 @@
             [attr.aria-current]="day.isToday ? 'date' : null"
             (click)="openAddBirthdayDialog(day.date)"
           >
-            {{ day.date | date: 'd' }}
+            {{ day.date | localeDate: 'd' }}
           </button>
         } @else {
           <span aria-hidden="true"></span>

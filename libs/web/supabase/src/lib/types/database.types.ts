@@ -123,6 +123,7 @@ export type Database = {
       notification_settings: {
         Row: {
           hour: number;
+          locale: string;
           remind_day_before: boolean;
           remind_on_day: boolean;
           time_zone: string;
@@ -130,6 +131,7 @@ export type Database = {
         };
         Insert: {
           hour?: number;
+          locale?: string;
           remind_day_before?: boolean;
           remind_on_day?: boolean;
           time_zone: string;
@@ -137,6 +139,7 @@ export type Database = {
         };
         Update: {
           hour?: number;
+          locale?: string;
           remind_day_before?: boolean;
           remind_on_day?: boolean;
           time_zone?: string;
@@ -180,6 +183,7 @@ export type Database = {
         Args: { batch_size?: number };
         Returns: {
           local_date: string;
+          locale: string;
           remind_day_before: boolean;
           remind_on_day: boolean;
           user_id: string;

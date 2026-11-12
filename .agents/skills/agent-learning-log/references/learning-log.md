@@ -59,6 +59,16 @@ Add new entries under the category that best matches their purpose, keeping newe
 
 ### Workflow and Tooling
 
+## 2026-11-12 - Never link node_modules into a temporary git worktree
+
+- Type: error
+- Context: Building `main` in a temporary `git worktree` on Windows to compare bundle sizes with the working copy.
+- Incorrect behavior: Creating a junction from the worktree's `node_modules` to the project's `node_modules` and then running `git worktree remove --force`, which deleted the contents of the real `node_modules` through the junction.
+- Preferred behavior: Avoid temporary worktrees for comparisons; compare against numbers from the base branch (CI output, an earlier build log) or ask the developer. If a worktree is unavoidable, install its own dependencies, or delete the junction itself (`Remove-Item` on the link, not its contents) before removing the worktree.
+- Generalized rule: Never let a recursive delete (`git worktree remove --force`, `rm -rf`, `Remove-Item -Recurse`) run over a directory that contains a junction or symlink to shared project data.
+- Trigger cues: git worktree, junction, symlink, mklink, node_modules, compare bundle size, build main, worktree remove
+- Status: active
+
 ## 2026-11-09 - "Write a commit" means write the message, not commit
 
 - Type: error

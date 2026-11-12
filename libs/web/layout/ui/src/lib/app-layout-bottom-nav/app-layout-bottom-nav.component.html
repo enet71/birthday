@@ -1,4 +1,4 @@
-<nav class="items" aria-label="Main navigation">
+<nav class="items" [attr.aria-label]="'layout.mainNavigation' | transloco">
   @for (item of config.menu; track item.path) {
     <a
       class="item"
@@ -10,7 +10,7 @@
       <span class="item__indicator">
         <mat-icon aria-hidden="true">{{ item.icon }}</mat-icon>
       </span>
-      <span class="item__label">{{ item.label }}</span>
+      <span class="item__label">{{ item.label | transloco }}</span>
     </a>
   }
 </nav>

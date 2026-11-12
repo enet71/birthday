@@ -63,7 +63,8 @@ a {
   color: var(--mat-sys-primary);
 }
 
-strong {
+// Translated paragraphs render their `<strong>` through `innerHTML`, which carries no encapsulation attribute.
+:host ::ng-deep strong {
   color: var(--mat-sys-on-surface);
 }
 

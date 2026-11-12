@@ -1,4 +1,4 @@
-<section class="people" aria-label="People">
+<section class="people" [attr.aria-label]="'people.label' | transloco">
   <!-- Kept while a query is set, so a filter stays visible and can be cleared. -->
   @if (people().length || searchQuery()) {
     <mat-form-field class="search" appearance="outline" subscriptSizing="dynamic">
@@ -7,14 +7,20 @@
         #searchInput
         matInput
         type="search"
-        placeholder="Search people…"
-        aria-label="Search people"
+        [placeholder]="'people.searchPlaceholder' | transloco"
+        [attr.aria-label]="'people.search' | transloco"
         [value]="searchQuery()"
         (input)="searchPeople($event)"
         (keydown.escape)="clearSearch()"
       />
       @if (searchQuery()) {
-        <button matSuffix matIconButton type="button" aria-label="Clear search" (click)="clearSearch(); searchInput.focus()">
+        <button
+          matSuffix
+          matIconButton
+          type="button"
+          [attr.aria-label]="'people.clearSearch' | transloco"
+          (click)="clearSearch(); searchInput.focus()"
+        >
           <mat-icon>close</mat-icon>
         </button>
       }
@@ -22,7 +28,7 @@
   }
   <div class="people__content" [attr.aria-busy]="isLoading()">
     @if (isLoading()) {
-      <mat-progress-bar class="people__progress" mode="indeterminate" aria-label="Loading people"></mat-progress-bar>
+      <mat-progress-bar class="people__progress" mode="indeterminate" [attr.aria-label]="'people.loading' | transloco"></mat-progress-bar>
     }
     @if (visiblePeople().length) {
       <table
@@ -35,7 +41,7 @@
         (matSortChange)="sortPeople($event)"
       >
         <ng-container matColumnDef="name">
-          <th *matHeaderCellDef mat-header-cell mat-sort-header>Name</th>
+          <th *matHeaderCellDef mat-header-cell mat-sort-header>{{ 'people.columns.name' | transloco }}</th>
           <td *matCellDef="let row" mat-cell>
             <span class="person">
               <ui-birthday-avatar class="person__avatar" [name]="row.birthday.name"></ui-birthday-avatar>
@@ -45,22 +51,22 @@
         </ng-container>
 
         <ng-container matColumnDef="birthday">
-          <th *matHeaderCellDef class="table__secondary" mat-header-cell mat-sort-header>Birthday</th>
+          <th *matHeaderCellDef class="table__secondary" mat-header-cell mat-sort-header>{{ 'people.columns.birthday' | transloco }}</th>
           <td *matCellDef="let row" class="table__secondary table__numeric" mat-cell>
-            {{ row.birthDate | date: (row.hasBirthYear ? 'MMM d, y' : 'MMM d') }}
+            {{ row.birthDate | localeDate: ((row.hasBirthYear ? 'dates.monthDayYear' : 'dates.monthDay') | transloco) }}
           </td>
         </ng-container>
 
         <ng-container matColumnDef="age">
-          <th *matHeaderCellDef class="table__secondary" mat-header-cell mat-sort-header>Age</th>
+          <th *matHeaderCellDef class="table__secondary" mat-header-cell mat-sort-header>{{ 'people.columns.age' | transloco }}</th>
           <td *matCellDef="let row" class="table__secondary table__numeric" mat-cell>{{ row.age }}</td>
         </ng-container>
 
         <ng-container matColumnDef="nextBirthday">
-          <th *matHeaderCellDef mat-header-cell mat-sort-header>Next birthday</th>
+          <th *matHeaderCellDef mat-header-cell mat-sort-header>{{ 'people.columns.nextBirthday' | transloco }}</th>
           <td *matCellDef="let row" class="table__numeric" mat-cell>
             <span class="next">
-              <span>{{ row.nextBirthday | date: 'MMM d' }}</span>
+              <span>{{ row.nextBirthday | localeDate: ('dates.monthDay' | transloco) }}</span>
               <span class="next__days" [class.next__days_today]="row.daysUntil === 0">{{ getDaysUntilLabel(row.daysUntil) }}</span>
             </span>
           </td>
@@ -70,14 +76,14 @@
         <tr *matRowDef="let row; columns: columns" mat-row></tr>
       </table>
     } @else if (people().length) {
-      <p class="message">No people match "{{ searchQuery().trim() }}"</p>
+      <p class="message">{{ 'people.noMatches' | transloco: { query: searchQuery().trim() } }}</p>
     } @else if (!isLoading()) {
       <div class="empty">
-        <h2 class="empty__title">No people yet</h2>
-        <p class="empty__text">Add a birthday in the calendar, and everyone you add shows up here.</p>
+        <h2 class="empty__title">{{ 'people.emptyTitle' | transloco }}</h2>
+        <p class="empty__text">{{ 'people.emptyText' | transloco }}</p>
         <a matButton="filled" routerLink="/" [queryParams]="addBirthdayQueryParams">
           <mat-icon>add</mat-icon>
-          Add birthday
+          {{ 'calendar.addBirthday' | transloco }}
         </a>
       </div>
     }

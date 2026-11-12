@@ -3,14 +3,14 @@ import { APP_DESCRIPTION_DATA_KEY } from '../../app.constants';
 import { BIRTHDAY_REMINDERS_GUIDE, GOOGLE_CALENDAR_BIRTHDAYS_GUIDE, IMPORT_FROM_GOOGLE_CONTACTS_GUIDE } from './guides.constants';
 import { buildGuideRoute } from './guides.helpers';
 
-// Every guide also needs a prerendered entry in `app.routes.server.ts` and a URL in `sitemap.xml`.
+// Every guide also needs an entry in `app.routes.server.ts` and a URL in `sitemap.xml`.
 export const GUIDES_ROUTES: Route[] = [
   {
     path: '',
     pathMatch: 'full',
-    title: 'Guides',
+    title: 'routes.guides.title',
     data: {
-      [APP_DESCRIPTION_DATA_KEY]: 'Step-by-step guides to keeping track of birthdays with Birthdly and Google Calendar.',
+      [APP_DESCRIPTION_DATA_KEY]: 'routes.guides.description',
     },
     loadComponent: () => import('./guides-index/guides-index.component').then((m) => m.GuidesIndexComponent),
   },

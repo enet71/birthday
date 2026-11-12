@@ -1,14 +1,15 @@
 import { ChangeDetectionStrategy, Component, computed, inject, Signal } from '@angular/core';
-import { DatePipe } from '@angular/common';
 import { MatButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
 import { injectState, ReadonlyState } from '@birthday/web-shared-data-access';
+import { AppTranslateService, LocaleDatePipe } from '@birthday/web-shared-i18n';
 import { CalendarController, CalendarState } from '../../state';
 import { UpcomingCelebration } from '../../types';
+import { TranslocoPipe } from '@jsverse/transloco';
 
 @Component({
   selector: 'ui-next-celebration',
-  imports: [DatePipe, MatButton, MatIcon],
+  imports: [TranslocoPipe, LocaleDatePipe, MatButton, MatIcon],
   templateUrl: './next-celebration.component.html',
   styleUrl: './next-celebration.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -16,15 +17,16 @@ import { UpcomingCelebration } from '../../types';
 export class NextCelebrationComponent {
   private readonly calendarState: ReadonlyState<CalendarState> = injectState(CalendarState);
   private readonly calendarController: CalendarController = inject(CalendarController);
+  private readonly translator: AppTranslateService = inject(AppTranslateService);
 
   protected readonly countdown: Signal<string> = computed(() => {
     const daysUntil: number = this.nextCelebration()?.daysUntil ?? 0;
 
     if (daysUntil === 0) {
-      return 'Today';
+      return this.translator.translate('calendar.today');
     }
 
-    return daysUntil === 1 ? 'Tomorrow' : `${daysUntil} days`;
+    return daysUntil === 1 ? this.translator.translate('calendar.tomorrow') : this.translator.translatePlural('calendar.days', daysUntil);
   });
 
   protected get nextCelebration(): Signal<UpcomingCelebration | null> {

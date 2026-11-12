@@ -1,15 +1,20 @@
 import { TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
+import { TranslocoTestingModule } from '@jsverse/transloco';
 import { of } from 'rxjs';
 import { AuthClient } from '@birthday/web-auth-data-access';
 import { APP_LAYOUT_CONFIG } from '@birthday/web-layout-util';
 import { App } from './app';
 import { APP_LAYOUT } from './app.constants';
+import en from '../i18n/en.json';
 
 describe('App', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [App],
+      imports: [
+        App,
+        TranslocoTestingModule.forRoot({ langs: { en }, preloadLangs: true, translocoConfig: { availableLangs: ['en'], defaultLang: 'en' } }),
+      ],
       providers: [
         provideRouter([]),
         { provide: APP_LAYOUT_CONFIG, useValue: APP_LAYOUT },

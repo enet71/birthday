@@ -14,8 +14,10 @@ import {
   viewChild,
   WritableSignal,
 } from '@angular/core';
+import { TranslocoPipe } from '@jsverse/transloco';
 
 @Component({
+  imports: [TranslocoPipe],
   selector: 'ui-expandable-text',
   templateUrl: './expandable-text.component.html',
   styleUrl: './expandable-text.component.scss',
@@ -28,8 +30,7 @@ export class ExpandableTextComponent {
   protected readonly isExpanded: WritableSignal<boolean> = signal(false);
   protected readonly showToggle: WritableSignal<boolean> = signal(false);
 
-  private readonly textMeasure: Signal<ElementRef<HTMLElement> | undefined> =
-    viewChild('textMeasure');
+  private readonly textMeasure: Signal<ElementRef<HTMLElement> | undefined> = viewChild('textMeasure');
   private readonly host: ElementRef<HTMLElement> = inject(ElementRef);
   private readonly destroyRef: DestroyRef = inject(DestroyRef);
 
@@ -48,15 +49,13 @@ export class ExpandableTextComponent {
   }
 
   private updateToggleVisibility(): void {
-    const textMeasure: HTMLElement | undefined =
-      this.textMeasure()?.nativeElement;
+    const textMeasure: HTMLElement | undefined = this.textMeasure()?.nativeElement;
 
     if (!textMeasure) {
       return;
     }
 
-    const showToggle: boolean =
-      textMeasure.scrollWidth > textMeasure.clientWidth;
+    const showToggle: boolean = textMeasure.scrollWidth > textMeasure.clientWidth;
     this.showToggle.set(showToggle);
 
     if (!showToggle) {
@@ -65,9 +64,7 @@ export class ExpandableTextComponent {
   }
 
   private addResizeObserver(): void {
-    const resizeObserver: ResizeObserver = new ResizeObserver(() =>
-      this.updateToggleVisibility(),
-    );
+    const resizeObserver: ResizeObserver = new ResizeObserver(() => this.updateToggleVisibility());
     resizeObserver.observe(this.host.nativeElement);
     this.destroyRef.onDestroy(() => resizeObserver.disconnect());
   }

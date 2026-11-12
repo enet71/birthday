@@ -13,14 +13,14 @@
     class="toggle"
     matIconButton
     type="button"
-    [attr.aria-label]="isExpanded() ? 'Collapse menu' : 'Expand menu'"
+    [attr.aria-label]="(isExpanded() ? 'layout.collapseMenu' : 'layout.expandMenu') | transloco"
     [attr.aria-expanded]="isExpanded()"
     (click)="toggle()"
   >
     <mat-icon>{{ isExpanded() ? 'chevron_left' : 'chevron_right' }}</mat-icon>
   </button>
 </div>
-<mat-nav-list class="items" aria-label="Main navigation">
+<mat-nav-list class="items" [attr.aria-label]="'layout.mainNavigation' | transloco">
   @for (item of config.menu; track item.path) {
     <a
       class="item"
@@ -31,16 +31,16 @@
       ariaCurrentWhenActive="page"
       [routerLink]="item.path"
       [activated]="link.isActive"
-      [attr.title]="item.label"
+      [attr.title]="item.label | transloco"
     >
       <mat-icon matListItemIcon>{{ item.icon }}</mat-icon>
-      <span class="item-label" matListItemTitle>{{ item.label }}</span>
+      <span class="item-label" matListItemTitle>{{ item.label | transloco }}</span>
     </a>
   }
 </mat-nav-list>
 @if (config.primaryAction; as action) {
-  <a class="primary-action" matButton="filled" [routerLink]="action.path" [queryParams]="action.queryParams" [attr.title]="action.label">
+  <a class="primary-action" matButton="filled" [routerLink]="action.path" [queryParams]="action.queryParams" [attr.title]="action.label | transloco">
     <mat-icon>{{ action.icon }}</mat-icon>
-    <span class="primary-action__label">{{ action.label }}</span>
+    <span class="primary-action__label">{{ action.label | transloco }}</span>
   </a>
 }

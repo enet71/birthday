@@ -1,3 +1,5 @@
+import { AppLocale } from '@birthday/web-shared-i18n';
+
 // Which days a notification mentions: birthdays on the day, the next day's birthdays, or both.
 export type ReminderDays = 'both' | 'onDay' | 'dayBefore';
 
@@ -8,6 +10,8 @@ export interface ReminderSettings {
   hour: number;
   // IANA time zone, for example `Europe/Berlin`.
   timeZone: string;
+  // The language of the notification texts.
+  locale: AppLocale;
 }
 
 // The push subscription the browser created for this device.

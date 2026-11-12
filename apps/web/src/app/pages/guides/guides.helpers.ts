@@ -1,4 +1,5 @@
 import { Route } from '@angular/router';
+import { AppTranslateService } from '@birthday/web-shared-i18n';
 import { APP_DESCRIPTION_DATA_KEY, APP_LAYOUT, APP_SITE_URL, APP_STRUCTURED_DATA_DATA_KEY } from '../../app.constants';
 import { Guide } from './guides.interfaces';
 
@@ -12,24 +13,25 @@ export function buildGuideRoute(guide: Guide, loadComponent: Route['loadComponen
     title: guide.title,
     data: {
       [APP_DESCRIPTION_DATA_KEY]: guide.description,
-      [APP_STRUCTURED_DATA_DATA_KEY]: buildGuideStructuredData(guide),
+      [APP_STRUCTURED_DATA_DATA_KEY]: (translator: AppTranslateService) => buildGuideStructuredData(guide, translator),
     },
     loadComponent,
   };
 }
 
 // The page script holds one object, so the article and its breadcrumbs share a `@graph`.
-function buildGuideStructuredData(guide: Guide): object {
+function buildGuideStructuredData(guide: Guide, translator: AppTranslateService): object {
   const url = `${APP_SITE_URL}${getGuidePath(guide)}`;
   const organization = { '@type': 'Organization', name: APP_LAYOUT.appName, url: `${APP_SITE_URL}/` };
+  const title: string = translator.translate(guide.title);
 
   return {
     '@context': 'https://schema.org',
     '@graph': [
       {
         '@type': 'Article',
-        headline: guide.title,
-        description: guide.description,
+        headline: title,
+        description: translator.translate(guide.description),
         url,
         mainEntityOfPage: url,
         dateModified: guide.updatedAt,
@@ -40,9 +42,9 @@ function buildGuideStructuredData(guide: Guide): object {
       {
         '@type': 'BreadcrumbList',
         itemListElement: [
-          { '@type': 'ListItem', position: 1, name: 'Home', item: `${APP_SITE_URL}/` },
-          { '@type': 'ListItem', position: 2, name: 'Guides', item: `${APP_SITE_URL}/guides` },
-          { '@type': 'ListItem', position: 3, name: guide.title, item: url },
+          { '@type': 'ListItem', position: 1, name: translator.translate('guides.breadcrumbHome'), item: `${APP_SITE_URL}/` },
+          { '@type': 'ListItem', position: 2, name: translator.translate('routes.guides.title'), item: `${APP_SITE_URL}/guides` },
+          { '@type': 'ListItem', position: 3, name: title, item: url },
         ],
       },
     ],

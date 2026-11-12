@@ -1,144 +1,96 @@
-<p class="guide__lead">
-  Most forgotten birthdays are not forgotten at all: you simply did not think of the date in time. A reminder the day before solves that, and it works
-  best when it arrives on the device you already use. This guide shows how to get birthday reminders with Birthdly: as notifications from Birthdly
-  itself, through Google Calendar, or both.
-</p>
+<p class="guide__lead">{{ 'guides.birthdayReminders.text01' | transloco }}</p>
 
 <section>
-  <h2>What makes a good birthday reminder</h2>
+  <h2>{{ 'guides.birthdayReminders.text02' | transloco }}</h2>
   <ul>
-    <li><strong>It comes early enough.</strong> The day before leaves time to send a card, order a gift, or plan a call.</li>
-    <li><strong>It comes where you look.</strong> A notification on your phone or computer works better than an app you have to open.</li>
-    <li><strong>It repeats every year on its own.</strong> You set up a birthday once and never touch it again.</li>
-    <li><strong>It is easy to keep complete.</strong> Reminders only help for the people you actually added.</li>
+    <li [innerHTML]="'guides.birthdayReminders.text03' | transloco"></li>
+    <li [innerHTML]="'guides.birthdayReminders.text04' | transloco"></li>
+    <li [innerHTML]="'guides.birthdayReminders.text05' | transloco"></li>
+    <li [innerHTML]="'guides.birthdayReminders.text06' | transloco"></li>
   </ul>
 </section>
 
 <section>
-  <h2>How reminders work with Birthdly</h2>
-  <p>Birthdly keeps your list of birthdays and can remind you about them in two ways:</p>
+  <h2>{{ 'guides.birthdayReminders.text07' | transloco }}</h2>
+  <p>{{ 'guides.birthdayReminders.text08' | transloco }}</p>
   <ul>
-    <li>
-      <strong>Birthday notifications.</strong> Birthdly sends a browser notification with the birthdays of the day to every device where you turn them
-      on. You choose whether it comes on the day, the day before, or both, and at what time. The notification arrives even when Birthdly is closed.
-    </li>
-    <li>
-      <strong>Google Calendar.</strong> Birthdly adds each birthday to your Google Calendar as a birthday event with a reminder at 9:00 the day
-      before. Google Calendar then shows that reminder wherever you are signed in to Google.
-    </li>
+    <li [innerHTML]="'guides.birthdayReminders.text09' | transloco"></li>
+    <li [innerHTML]="'guides.birthdayReminders.text10' | transloco"></li>
   </ul>
-  <p>Both need you to sign in with Google. You can use either one, or both at the same time.</p>
+  <p>{{ 'guides.birthdayReminders.text11' | transloco }}</p>
 </section>
 
 <section>
-  <h2>Turn on birthday notifications</h2>
+  <h2>{{ 'guides.birthdayReminders.text12' | transloco }}</h2>
   <ol>
     <li>
-      <strong>Add birthdays.</strong> Open the <a routerLink="/">calendar</a>, press <strong>Add birthday</strong>, and enter a name and a date. The
-      birth year is optional.
+      <span [innerHTML]="'guides.birthdayReminders.addStep.before' | transloco"></span
+      ><a routerLink="/">{{ 'guides.birthdayReminders.addStep.link' | transloco }}</a
+      ><span [innerHTML]="'guides.birthdayReminders.addStep.after' | transloco"></span>
     </li>
-    <li><strong>Sign in with Google</strong> using the account button in the top right corner.</li>
-    <li>
-      <strong>Turn on notifications.</strong> Open <strong>Settings</strong>, find <strong>Birthday notifications</strong>, and press
-      <strong>Turn on for this device</strong>. When your browser asks, allow notifications.
-    </li>
-    <li>
-      <strong>Choose when.</strong> Pick on the day, the day before, or both, and the time. These settings apply to all your devices. The time is in
-      the time zone of the device where you last turned notifications on or changed these settings, shown under the controls.
-    </li>
+    <li [innerHTML]="'guides.birthdayReminders.text13' | transloco"></li>
+    <li [innerHTML]="'guides.birthdayReminders.text14' | transloco"></li>
+    <li [innerHTML]="'guides.birthdayReminders.text15' | transloco"></li>
   </ol>
-  <p>
-    Notifications are turned on for each device separately, so repeat steps 2 and 3 on your phone and your computer. They cover every birthday in your
-    account, including the ones imported from Google Contacts. Birthdays on the same day come together in one notification.
-  </p>
-  <p class="tip">
-    On iPhone and iPad, notifications need iOS or iPadOS 16.4 or later. Add Birthdly to your Home Screen first: open it in Safari, tap
-    <strong>Share</strong>, then <strong>Add to Home Screen</strong>. Open Birthdly from the Home Screen icon and turn on notifications there.
-  </p>
-  <p>
-    If you blocked notifications for Birthdly earlier, the button does not appear. Allow them in your browser's site settings for Birthdly, then
-    reload the page.
-  </p>
+  <p>{{ 'guides.birthdayReminders.text16' | transloco }}</p>
+  <p class="tip" [innerHTML]="'guides.birthdayReminders.text17' | transloco"></p>
+  <p>{{ 'guides.birthdayReminders.text18' | transloco }}</p>
 </section>
 
 <section>
-  <h2>Get reminders in Google Calendar</h2>
+  <h2>{{ 'guides.birthdayReminders.text19' | transloco }}</h2>
   <ol>
-    <li>Add birthdays and sign in with Google, as described above.</li>
-    <li>
-      <strong>Connect Google Calendar.</strong> Open <strong>Settings</strong> and press <strong>Connect Google Calendar</strong>. Birthdly creates a
-      birthday event with a reminder for every birthday in your list, except the birthdays that come from your Google Contacts.
-    </li>
-    <li>
-      <strong>Allow notifications for Google Calendar.</strong> On your phone, make sure notifications are turned on for the Google Calendar app. On a
-      computer, allow notifications for Google Calendar in your browser.
-    </li>
+    <li>{{ 'guides.birthdayReminders.text20' | transloco }}</li>
+    <li [innerHTML]="'guides.birthdayReminders.text21' | transloco"></li>
+    <li [innerHTML]="'guides.birthdayReminders.text22' | transloco"></li>
   </ol>
   <p>
-    From now on, every birthday you add or change in Birthdly gets its event and reminder in Google Calendar as well. Birthdays from your Google
-    Contacts are the exception, as the next sections explain. The
-    <a [routerLink]="googleCalendarGuidePath">Google Calendar guide</a> explains the sync in more detail.
+    <span [innerHTML]="'guides.birthdayReminders.googleCalendarLink.before' | transloco"></span
+    ><a [routerLink]="googleCalendarGuidePath">{{ 'guides.birthdayReminders.googleCalendarLink.link' | transloco }}</a
+    ><span [innerHTML]="'guides.birthdayReminders.googleCalendarLink.after' | transloco"></span>
   </p>
 </section>
 
 <section>
-  <h2>Keep upcoming birthdays in view</h2>
-  <p>A reminder covers the next day or two. For a longer look ahead, use Birthdly itself:</p>
+  <h2>{{ 'guides.birthdayReminders.text23' | transloco }}</h2>
+  <p>{{ 'guides.birthdayReminders.text24' | transloco }}</p>
   <ul>
-    <li>
-      The <strong>Upcoming</strong> panel next to the calendar shows the next birthdays with labels such as "Tomorrow" or "in 5 days", and how old
-      each person turns.
-    </li>
-    <li>The <strong>year view</strong> shows all birthdays of the year at once, which helps when you plan presents or trips.</li>
-    <li>The <strong>People</strong> page lists everyone in one table that you can sort and search.</li>
+    <li [innerHTML]="'guides.birthdayReminders.text25' | transloco"></li>
+    <li [innerHTML]="'guides.birthdayReminders.text26' | transloco"></li>
+    <li [innerHTML]="'guides.birthdayReminders.text27' | transloco"></li>
   </ul>
-  <p class="tip">Use the notes of a birthday for gift ideas. When the reminder arrives, open the person in Birthdly and the ideas are right there.</p>
+  <p class="tip">{{ 'guides.birthdayReminders.text28' | transloco }}</p>
 </section>
 
 <section>
-  <h2>Birthdays from Google Contacts</h2>
-  <p>Birthday notifications from Birthdly include the birthdays imported from your Google Contacts, like any other birthday in your account.</p>
-  <p>
-    Google Calendar already shows the birthdays saved in your Google Contacts, so Birthdly does not add a second event for them, and you do not get
-    two reminders from Google Calendar. Its reminders for these birthdays follow its default notification settings for all-day events, so check those
-    settings if you want a reminder for them too.
-  </p>
+  <h2>{{ 'guides.birthdayReminders.text29' | transloco }}</h2>
+  <p>{{ 'guides.birthdayReminders.text30' | transloco }}</p>
+  <p>{{ 'guides.birthdayReminders.text31' | transloco }}</p>
 </section>
 
 <section>
-  <h2>Tips for never missing a birthday</h2>
+  <h2>{{ 'guides.birthdayReminders.text32' | transloco }}</h2>
   <ul>
-    <li>Add birthdays as soon as you hear them, even without the year. You can fill in the year later.</li>
-    <li>Save the relationship, such as family, friends, or colleagues, so you can see at a glance who is who.</li>
-    <li>Once a month, open the year view and check that nobody important is missing.</li>
+    <li>{{ 'guides.birthdayReminders.text33' | transloco }}</li>
+    <li>{{ 'guides.birthdayReminders.text34' | transloco }}</li>
+    <li>{{ 'guides.birthdayReminders.text35' | transloco }}</li>
   </ul>
 </section>
 
 <section>
-  <h2>Frequently asked questions</h2>
-  <h3>Can Birthdly send me email reminders?</h3>
-  <p>Not at the moment. Birthdly sends browser notifications, and Google Calendar can remind you after you connect it.</p>
-  <h3>When does the reminder arrive?</h3>
-  <p>
-    Birthday notifications arrive at the time you choose in Settings, 9:00 unless you change it, on the day, the day before, or both. Google Calendar
-    reminders for birthdays you add in Birthdly arrive at 9:00 the day before, in the time zone of your Google Calendar. For birthdays from your
-    Google Contacts, Google Calendar follows its own notification settings.
-  </p>
-  <h3>Do I get reminders without connecting Google Calendar?</h3>
-  <p>Yes. Turn on birthday notifications in Settings. They do not depend on Google Calendar.</p>
-  <h3>Do notifications work when Birthdly is closed?</h3>
-  <p>
-    Yes. You do not need to keep Birthdly open. On a computer, the browser itself needs to be running. If it is not, the notification arrives when you
-    open the browser later that day.
-  </p>
-  <h3>Will I get the same birthday twice?</h3>
-  <p>
-    With <strong>On the day and the day before</strong>, the default, you hear about each birthday twice: the day before and on the day. Pick one of
-    them in Settings if you want one notification. If you also connected Google Calendar, its reminder comes on top; turn off the reminder in Google
-    Calendar, or turn off notifications for a device in Settings, if that is too much.
-  </p>
+  <h2>{{ 'guides.birthdayReminders.text36' | transloco }}</h2>
+  <h3>{{ 'guides.birthdayReminders.text37' | transloco }}</h3>
+  <p>{{ 'guides.birthdayReminders.text38' | transloco }}</p>
+  <h3>{{ 'guides.birthdayReminders.text39' | transloco }}</h3>
+  <p>{{ 'guides.birthdayReminders.text40' | transloco }}</p>
+  <h3>{{ 'guides.birthdayReminders.text41' | transloco }}</h3>
+  <p>{{ 'guides.birthdayReminders.text42' | transloco }}</p>
+  <h3>{{ 'guides.birthdayReminders.text43' | transloco }}</h3>
+  <p>{{ 'guides.birthdayReminders.text44' | transloco }}</p>
+  <h3>{{ 'guides.birthdayReminders.text45' | transloco }}</h3>
+  <p [innerHTML]="'guides.birthdayReminders.text46' | transloco"></p>
 </section>
 
-<p class="guide__updated">Last updated {{ guide.updatedAt | date: 'longDate' }}</p>
+<p class="guide__updated">{{ 'guides.lastUpdated' | transloco: { date: (guide.updatedAt | localeDate: 'longDate') } }}</p>
 
 <app-related-guides [current]="guide" />

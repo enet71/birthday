@@ -2,6 +2,65 @@
 
 const MAX_NAMES_LENGTH = 300;
 
+// The app's languages; keep in sync with `APP_LOCALES` in `libs/web/shared/i18n` and the check on `notification_settings.locale`.
+export type NotificationLocale = 'en' | 'es' | 'de' | 'fr' | 'ru' | 'uk';
+
+interface NotificationTexts {
+  // The title for one birthday and for several.
+  titleToday: [string, string];
+  titleTomorrow: [string, string];
+  // Prefixes of the body lines.
+  today: string;
+  tomorrow: string;
+  // Ends a cut list of names; `{count}` is the number of names left out.
+  more: string;
+}
+
+const NOTIFICATION_TEXTS: Record<NotificationLocale, NotificationTexts> = {
+  en: {
+    titleToday: ['Birthday today', 'Birthdays today'],
+    titleTomorrow: ['Birthday tomorrow', 'Birthdays tomorrow'],
+    today: 'Today: ',
+    tomorrow: 'Tomorrow: ',
+    more: ' and {count} more',
+  },
+  es: {
+    titleToday: ['Cumpleaños hoy', 'Cumpleaños hoy'],
+    titleTomorrow: ['Cumpleaños mañana', 'Cumpleaños mañana'],
+    today: 'Hoy: ',
+    tomorrow: 'Mañana: ',
+    more: ' y {count} más',
+  },
+  de: {
+    titleToday: ['Geburtstag heute', 'Geburtstage heute'],
+    titleTomorrow: ['Geburtstag morgen', 'Geburtstage morgen'],
+    today: 'Heute: ',
+    tomorrow: 'Morgen: ',
+    more: ' und {count} weitere',
+  },
+  fr: {
+    titleToday: ["Anniversaire aujourd'hui", "Anniversaires aujourd'hui"],
+    titleTomorrow: ['Anniversaire demain', 'Anniversaires demain'],
+    today: "Aujourd'hui : ",
+    tomorrow: 'Demain : ',
+    more: ' et {count} de plus',
+  },
+  ru: {
+    titleToday: ['Сегодня день рождения', 'Сегодня дни рождения'],
+    titleTomorrow: ['Завтра день рождения', 'Завтра дни рождения'],
+    today: 'Сегодня: ',
+    tomorrow: 'Завтра: ',
+    more: ' и ещё {count}',
+  },
+  uk: {
+    titleToday: ['Сьогодні день народження', 'Сьогодні дні народження'],
+    titleTomorrow: ['Завтра день народження', 'Завтра дні народження'],
+    today: 'Сьогодні: ',
+    tomorrow: 'Завтра: ',
+    more: ' і ще {count}',
+  },
+};
+
 export interface NotifiedBirthday {
   name: string;
   // `yyyy-MM-dd`; the year 0004 marks an unknown birth year.
@@ -13,6 +72,7 @@ export interface BirthdayNotificationOptions {
   localDate: string;
   remindOnDay: boolean;
   remindDayBefore: boolean;
+  locale: NotificationLocale;
 }
 
 // The payload the Angular service worker shows as a notification; a click opens or focuses the calendar.
@@ -20,6 +80,7 @@ export interface AngularPushPayload {
   notification: {
     title: string;
     body: string;
+    lang: string;
     icon: string;
     tag: string;
     data: { onActionClick: { default: { operation: 'navigateLastFocusedOrOpen'; url: string } } };
@@ -29,13 +90,14 @@ export interface AngularPushPayload {
 export function buildBirthdayNotification(birthdays: NotifiedBirthday[], options: BirthdayNotificationOptions): AngularPushPayload | null {
   const today = options.remindOnDay ? getNamesOn(birthdays, options.localDate) : [];
   const tomorrow = options.remindDayBefore ? getNamesOn(birthdays, addDays(options.localDate, 1)) : [];
+  const texts: NotificationTexts = NOTIFICATION_TEXTS[options.locale] ?? NOTIFICATION_TEXTS.en;
   const lines: string[] = [];
 
   if (today.length) {
-    lines.push(`Today: ${joinNames(today)}`);
+    lines.push(texts.today + joinNames(today, texts.more));
   }
   if (tomorrow.length) {
-    lines.push(`Tomorrow: ${joinNames(tomorrow)}`);
+    lines.push(texts.tomorrow + joinNames(tomorrow, texts.more));
   }
   if (!lines.length) {
     return null;
@@ -43,8 +105,9 @@ export function buildBirthdayNotification(birthdays: NotifiedBirthday[], options
 
   return {
     notification: {
-      title: today.length ? getTitle(today, 'today') : getTitle(tomorrow, 'tomorrow'),
+      title: today.length ? getTitle(today, texts.titleToday) : getTitle(tomorrow, texts.titleTomorrow),
       body: lines.join('\n'),
+      lang: options.locale,
       icon: '/icon-192.png',
       // A later notification for the same day replaces this one instead of stacking.
       tag: `birthdays-${options.localDate}`,
@@ -75,7 +138,7 @@ export function addDays(date: string, days: number): string {
 }
 
 // Push services accept about 4 KB of encrypted payload, and a notification shows only a few lines anyway.
-export function joinNames(names: string[], maxLength = MAX_NAMES_LENGTH): string {
+export function joinNames(names: string[], more: string = NOTIFICATION_TEXTS.en.more, maxLength = MAX_NAMES_LENGTH): string {
   let joined = names[0];
   let count = 1;
 
@@ -84,11 +147,11 @@ export function joinNames(names: string[], maxLength = MAX_NAMES_LENGTH): string
     count++;
   }
 
-  return count < names.length ? `${joined} and ${names.length - count} more` : joined;
+  return count < names.length ? joined + more.replace('{count}', String(names.length - count)) : joined;
 }
 
-function getTitle(names: string[], day: 'today' | 'tomorrow'): string {
-  return `${names.length > 1 ? 'Birthdays' : 'Birthday'} ${day}`;
+function getTitle(names: string[], [single, several]: [string, string]): string {
+  return names.length > 1 ? several : single;
 }
 
 function isLeapYear(year: number): boolean {

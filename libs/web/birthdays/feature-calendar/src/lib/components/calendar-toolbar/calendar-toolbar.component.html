@@ -1,8 +1,8 @@
 <h2 class="title" aria-live="polite">
   @if (!isYearView()) {
-    <span class="title__month">{{ viewMonth() | date: 'MMMM' }}</span>
+    <span class="title__month">{{ viewMonth() | localeDate: 'LLLL' }}</span>
   }
-  <span class="title__year">{{ viewMonth() | date: 'y' }}</span>
+  <span class="title__year">{{ viewMonth() | localeDate: 'y' }}</span>
 </h2>
 <div class="controls">
   <div class="segment">
@@ -10,20 +10,32 @@
       class="segment__icon"
       matIconButton
       type="button"
-      [attr.aria-label]="isYearView() ? 'Previous year' : 'Previous month'"
+      [attr.aria-label]="(isYearView() ? 'calendar.previousYear' : 'calendar.previousMonth') | transloco"
       (click)="showPrevious()"
     >
       <mat-icon>chevron_left</mat-icon>
     </button>
-    <button class="segment__today" matButton type="button" (click)="showToday()">Today</button>
-    <button class="segment__icon" matIconButton type="button" [attr.aria-label]="isYearView() ? 'Next year' : 'Next month'" (click)="showNext()">
+    <button class="segment__today" matButton type="button" (click)="showToday()">{{ 'calendar.today' | transloco }}</button>
+    <button
+      class="segment__icon"
+      matIconButton
+      type="button"
+      [attr.aria-label]="(isYearView() ? 'calendar.nextYear' : 'calendar.nextMonth') | transloco"
+      (click)="showNext()"
+    >
       <mat-icon>chevron_right</mat-icon>
     </button>
   </div>
   <div class="segment">
-    <mat-button-toggle-group class="views" aria-label="Calendar view" hideSingleSelectionIndicator [value]="view()" (change)="setView($event)">
-      <mat-button-toggle class="view" value="month">Month</mat-button-toggle>
-      <mat-button-toggle class="view" value="year">Year</mat-button-toggle>
+    <mat-button-toggle-group
+      class="views"
+      [attr.aria-label]="'calendar.view' | transloco"
+      hideSingleSelectionIndicator
+      [value]="view()"
+      (change)="setView($event)"
+    >
+      <mat-button-toggle class="view" value="month">{{ 'calendar.month' | transloco }}</mat-button-toggle>
+      <mat-button-toggle class="view" value="year">{{ 'calendar.year' | transloco }}</mat-button-toggle>
     </mat-button-toggle-group>
   </div>
 </div>

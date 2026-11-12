@@ -37,27 +37,61 @@ describe('getMonthGridDays', () => {
     expect(days[days.length - 1]).toEqual(new Date(2026, 1, 28));
   });
 
-  it.each([
-    new Date(2026, 0, 1),
-    new Date(2026, 1, 1),
-    new Date(2026, 9, 1),
-    new Date(2028, 1, 29),
-  ])(
+  it.each([new Date(2026, 0, 1), new Date(2026, 1, 1), new Date(2026, 9, 1), new Date(2028, 1, 29)])(
     'returns consecutive days from Sunday to Saturday covering the month of %s',
     (month: Date) => {
       const days: Date[] = getMonthGridDays(month);
-      const monthDays: Date[] = days.filter(
-        (day: Date) => day.getMonth() === month.getMonth(),
-      );
-      const daysInMonth: number = new Date(
-        month.getFullYear(),
-        month.getMonth() + 1,
-        0,
-      ).getDate();
+      const monthDays: Date[] = days.filter((day: Date) => day.getMonth() === month.getMonth());
+      const daysInMonth: number = new Date(month.getFullYear(), month.getMonth() + 1, 0).getDate();
 
       expect(days.length % 7).toBe(0);
       expect(days[0].getDay()).toBe(SUNDAY);
       expect(days[days.length - 1].getDay()).toBe(SATURDAY);
+      expect(monthDays).toHaveLength(daysInMonth);
+      days.slice(1).forEach((day: Date, index: number) => {
+        expect(differenceInCalendarDays(day, days[index])).toBe(1);
+      });
+    },
+  );
+});
+
+describe('getMonthGridDays with weeks starting on Monday', () => {
+  const MONDAY = 1;
+
+  it('covers October 2026 with full weeks from Sep 28 to Nov 1', () => {
+    const days: Date[] = getMonthGridDays(new Date(2026, 9, 15), MONDAY);
+
+    expect(days).toHaveLength(35);
+    expect(days[0]).toEqual(new Date(2026, 8, 28));
+    expect(days[days.length - 1]).toEqual(new Date(2026, 10, 1));
+  });
+
+  it('starts the grid in the previous month when the month starts on Sunday', () => {
+    const days: Date[] = getMonthGridDays(new Date(2026, 10, 1), MONDAY);
+
+    expect(days).toHaveLength(42);
+    expect(days[0]).toEqual(new Date(2026, 9, 26));
+    expect(days[days.length - 1]).toEqual(new Date(2026, 11, 6));
+  });
+
+  it('returns exactly four weeks for a 28-day month from Monday to Sunday', () => {
+    const days: Date[] = getMonthGridDays(new Date(2027, 1, 10), MONDAY);
+
+    expect(days).toHaveLength(28);
+    expect(days[0]).toEqual(new Date(2027, 1, 1));
+    expect(days[days.length - 1]).toEqual(new Date(2027, 1, 28));
+  });
+
+  it.each([new Date(2026, 0, 1), new Date(2026, 1, 1), new Date(2026, 9, 1), new Date(2028, 1, 29)])(
+    'returns consecutive days from Monday to Sunday covering the month of %s',
+    (month: Date) => {
+      const days: Date[] = getMonthGridDays(month, MONDAY);
+      const monthDays: Date[] = days.filter((day: Date) => day.getMonth() === month.getMonth());
+      const daysInMonth: number = new Date(month.getFullYear(), month.getMonth() + 1, 0).getDate();
+
+      expect(days.length % 7).toBe(0);
+      expect(days[0].getDay()).toBe(MONDAY);
+      expect(days[days.length - 1].getDay()).toBe(SUNDAY);
       expect(monthDays).toHaveLength(daysInMonth);
       days.slice(1).forEach((day: Date, index: number) => {
         expect(differenceInCalendarDays(day, days[index])).toBe(1);

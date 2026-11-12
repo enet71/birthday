@@ -1,5 +1,4 @@
 import { ChangeDetectionStrategy, Component, inject, Signal } from '@angular/core';
-import { DatePipe } from '@angular/common';
 import { MatButton, MatIconButton } from '@angular/material/button';
 import { MatFormField, MatPrefix, MatSuffix } from '@angular/material/form-field';
 import { MatIcon } from '@angular/material/icon';
@@ -22,13 +21,16 @@ import { RouterLink } from '@angular/router';
 import { CALENDAR_ADD_BIRTHDAY_QUERY_PARAM } from '@birthday/web-birthdays-util';
 import { BirthdayAvatarComponent } from '@birthday/web-birthdays-ui';
 import { injectState, ReadonlyState } from '@birthday/web-shared-data-access';
+import { AppTranslateService, LocaleDatePipe } from '@birthday/web-shared-i18n';
 import { PeopleController, PeopleState } from '../../state';
 import { PeopleSortColumn, PersonRow } from '../../types';
+import { TranslocoPipe } from '@jsverse/transloco';
 
 @Component({
   selector: 'ui-people-page',
   imports: [
-    DatePipe,
+    TranslocoPipe,
+    LocaleDatePipe,
     MatButton,
     MatCell,
     MatCellDef,
@@ -62,6 +64,7 @@ export class PeoplePageComponent {
 
   private readonly peopleState: ReadonlyState<PeopleState> = injectState(PeopleState);
   private readonly peopleController: PeopleController = inject(PeopleController);
+  private readonly translator: AppTranslateService = inject(AppTranslateService);
 
   protected get people(): Signal<PersonRow[]> {
     return this.peopleState.people;
@@ -97,9 +100,9 @@ export class PeoplePageComponent {
 
   protected getDaysUntilLabel(daysUntil: number): string {
     if (daysUntil === 0) {
-      return 'Today';
+      return this.translator.translate('calendar.today');
     }
 
-    return daysUntil === 1 ? 'Tomorrow' : `in ${daysUntil} days`;
+    return daysUntil === 1 ? this.translator.translate('calendar.tomorrow') : this.translator.translatePlural('calendar.inDays', daysUntil);
   }
 }

@@ -1,0 +1,522 @@
+{
+  "i18n": {
+    "loadError": "Die Sprache konnte nicht geladen werden. Prüfe deine Verbindung und versuche es erneut."
+  },
+  "settings": {
+    "language": {
+      "title": "Sprache",
+      "label": "Sprache der Website"
+    },
+    "about": "Über Birthdly"
+  },
+  "app": {
+    "description": "Birthdly ist ein Geburtstagskalender mit Erinnerungen. Behalte die Geburtstage von Freunden und Familie im Blick, sieh sofort die nächsten und verpasse keine Feier mehr."
+  },
+  "nav": {
+    "calendar": "Kalender",
+    "people": "Personen",
+    "settings": "Einstellungen",
+    "addBirthday": "Geburtstag hinzufügen"
+  },
+  "footer": {
+    "tagline": "Geburtstagskalender",
+    "about": "Über uns",
+    "guides": "Anleitungen",
+    "privacy": "Datenschutzerklärung",
+    "terms": "Nutzungsbedingungen"
+  },
+  "layout": {
+    "mainNavigation": "Hauptnavigation",
+    "siteLinks": "Website-Links",
+    "collapseMenu": "Menü einklappen",
+    "expandMenu": "Menü ausklappen",
+    "closeSearch": "Suche schließen"
+  },
+  "routes": {
+    "calendar": {
+      "title": "Kalender",
+      "documentTitle": "Birthdly — Geburtstagskalender",
+      "heading": "Geburtstagskalender"
+    },
+    "people": {
+      "title": "Personen"
+    },
+    "settings": {
+      "title": "Einstellungen"
+    },
+    "about": {
+      "title": "Über uns",
+      "documentTitle": "Geburtstagskalender & Erinnerungs-App · Birthdly",
+      "heading": "Geburtstagskalender & Erinnerungen",
+      "description": "Birthdly ist ein Geburtstagskalender mit Erinnerungen. Sieh kommende Geburtstage, notiere Geschenkideen und synchronisiere mit Google Kalender. Ohne Anmeldung."
+    },
+    "privacy": {
+      "title": "Datenschutzerklärung",
+      "description": "Wie Birthdly deine Daten erhebt, nutzt und speichert, darunter die Geburtstage, die du hinzufügst, und Daten aus Google Kalender und Kontakten, und wie du sie löschst."
+    },
+    "terms": {
+      "title": "Nutzungsbedingungen",
+      "description": "Die Bedingungen für die Nutzung von Birthdly, dem Geburtstagskalender: dein Konto, deine Inhalte, die Synchronisierung mit Google Kalender und die Grenzen des Dienstes."
+    },
+    "guides": {
+      "title": "Anleitungen",
+      "description": "Schritt-für-Schritt-Anleitungen, um Geburtstage mit Birthdly und Google Kalender im Blick zu behalten."
+    },
+    "notFound": {
+      "title": "Seite nicht gefunden"
+    }
+  },
+  "notFound": {
+    "text": "Die gesuchte Seite existiert nicht oder wurde verschoben.",
+    "openCalendar": "Kalender öffnen"
+  },
+  "account": {
+    "button": "Konto",
+    "buttonSignedIn": "Konto: {{ email }}",
+    "title": "Konto",
+    "loading": "Konto wird geladen",
+    "signedInAs": "Angemeldet als",
+    "signedOutDescription": "Melde dich an, um deine Geburtstage in deinem Konto zu speichern, sie auf jedem Gerät zu nutzen, mit Google Kalender zu synchronisieren und Geburtstagsbenachrichtigungen zu erhalten.",
+    "signOut": "Abmelden",
+    "signIn": "Mit Google anmelden"
+  },
+  "common": {
+    "showLess": "Weniger anzeigen",
+    "showMore": "Mehr anzeigen",
+    "close": "Schließen",
+    "cancel": "Abbrechen",
+    "save": "Speichern",
+    "delete": "Löschen",
+    "tryAgain": "Erneut versuchen"
+  },
+  "dates": {
+    "monthDay": "d. MMM",
+    "monthDayYear": "d. MMM y",
+    "weekdayMonthDay": "EEEE, d. MMMM",
+    "longDate": "d. MMMM y"
+  },
+  "calendar": {
+    "label": "Kalender",
+    "loadingBirthdays": "Geburtstage werden geladen",
+    "upcomingBirthdays": "Kommende Geburtstage",
+    "addBirthday": "Geburtstag hinzufügen",
+    "today": "Heute",
+    "tomorrow": "Morgen",
+    "editBirthdayOf": "Geburtstag von {{ name }} bearbeiten",
+    "dayLabel": "{{ date }}. Geburtstag hinzufügen",
+    "dayLabelWithBirthdays": "{{ date }}, Geburtstage: {{ names }}. Geburtstag hinzufügen",
+    "previousYear": "Vorheriges Jahr",
+    "previousMonth": "Vorheriger Monat",
+    "nextYear": "Nächstes Jahr",
+    "nextMonth": "Nächster Monat",
+    "view": "Kalenderansicht",
+    "month": "Monat",
+    "year": "Jahr",
+    "upcoming": "Demnächst",
+    "viewAll": "Alle anzeigen",
+    "turns": "Wird {{ age }}",
+    "welcomeTitle": "Verpasse keinen Geburtstag",
+    "welcomeText": "Birthdly hält alle Geburtstage in einem Kalender fest. Füge Freunde und Familie hinzu, um zu sehen, wer als Nächstes feiert, blättere nach Monat oder Jahr und melde dich mit Google an, um deine Geräte zu synchronisieren.",
+    "inDays": {
+      "one": "in {{ count }} Tag",
+      "other": "in {{ count }} Tagen"
+    },
+    "days": {
+      "one": "{{ count }} Tag",
+      "other": "{{ count }} Tage"
+    },
+    "nextCelebration": "Nächste Feier",
+    "countdown": "Countdown",
+    "noBirthdaysTitle": "Noch keine Geburtstage",
+    "noBirthdaysText": "Füge den ersten Geburtstag hinzu, um zu sehen, wer als Nächstes feiert.",
+    "signInPromptTitle": "Deine Geburtstage sind nur in diesem Browser gespeichert.",
+    "signInPromptText": "Melde dich an, um sie in deinem Konto zu speichern und auf jedem Gerät zu nutzen."
+  },
+  "relationship": {
+    "family": "Familie",
+    "friends": "Freunde",
+    "colleagues": "Kollegen",
+    "other": "Sonstige"
+  },
+  "birthdayDialog": {
+    "addTitle": "Geburtstag hinzufügen",
+    "editTitle": "Geburtstag bearbeiten",
+    "subtitle": "Füge eine Person und ihren Geburtstag zu deinem Kalender hinzu.",
+    "name": "Name",
+    "month": "Monat",
+    "day": "Tag",
+    "year": "Jahr",
+    "optional": "Optional",
+    "relationship": "Beziehung",
+    "notes": "Notizen",
+    "notesPlaceholder": "Füge eine Notiz zu dieser Person hinzu…",
+    "errors": {
+      "nameRequired": "Gib einen Namen ein",
+      "nameTooLong": "Der Name ist zu lang",
+      "yearFormat": "Gib eine vierstellige Jahreszahl ein",
+      "futureYear": "Das Jahr darf nicht in der Zukunft liegen",
+      "invalidDay": "Diesen Tag gibt es nicht",
+      "notesTooLong": "Notizen dürfen höchstens {{ max }} Zeichen lang sein"
+    }
+  },
+  "notifications": {
+    "auth": {
+      "restoreFailed": "Deine Sitzung konnte nicht wiederhergestellt werden",
+      "finishSignInFailed": "Die Anmeldung konnte nicht abgeschlossen werden. Bitte versuche es erneut",
+      "signInFailed": "Anmeldung mit Google fehlgeschlagen",
+      "signOutFailed": "Abmeldung fehlgeschlagen"
+    },
+    "birthdays": {
+      "loadFailed": "Geburtstage konnten nicht geladen werden",
+      "saveFailed": "Der Geburtstag konnte nicht gespeichert werden",
+      "deleteFailed": "Der Geburtstag konnte nicht gelöscht werden",
+      "moveFailed": {
+        "one": "{{ count }} lokaler Geburtstag konnte nicht in dein Konto übertragen werden",
+        "other": "{{ count }} lokale Geburtstage konnten nicht in dein Konto übertragen werden"
+      }
+    },
+    "googleCalendar": {
+      "statusFailed": "Der Status von Google Kalender konnte nicht geladen werden",
+      "connectFailed": "Google Kalender konnte nicht verbunden werden",
+      "connected": "Google Kalender verbunden",
+      "connectRetry": "Google Kalender konnte nicht verbunden werden. Bitte versuche es erneut",
+      "syncedRecently": "Google Kalender wurde gerade synchronisiert",
+      "upToDate": "Google Kalender ist auf dem neuesten Stand",
+      "syncFailed": "Synchronisierung mit Google Kalender fehlgeschlagen",
+      "accessDenied": "Birthdly braucht Zugriff auf Google Kalender, um Geburtstage zu synchronisieren",
+      "accessLost": "Der Zugriff auf Google Kalender ist verloren gegangen. Verbinde ihn in den Einstellungen erneut",
+      "disconnectFailed": "Google Kalender konnte nicht getrennt werden",
+      "added": {
+        "one": "{{ count }} hinzugefügt",
+        "other": "{{ count }} hinzugefügt"
+      },
+      "updated": {
+        "one": "{{ count }} aktualisiert",
+        "other": "{{ count }} aktualisiert"
+      },
+      "deleted": {
+        "one": "{{ count }} gelöscht",
+        "other": "{{ count }} gelöscht"
+      },
+      "fromGoogle": "Von Google: {{ changes }}"
+    },
+    "reminders": {
+      "loadFailed": "Deine Benachrichtigungseinstellungen konnten nicht geladen werden",
+      "turnOnFailed": "Benachrichtigungen konnten nicht aktiviert werden",
+      "turnedOn": "Benachrichtigungen aktiviert",
+      "turnedOff": "Benachrichtigungen auf diesem Gerät deaktiviert",
+      "turnOffFailed": "Benachrichtigungen konnten nicht deaktiviert werden",
+      "saved": "Benachrichtigungseinstellungen gespeichert",
+      "saveFailed": "Die Benachrichtigungseinstellungen konnten nicht gespeichert werden"
+    }
+  },
+  "people": {
+    "label": "Personen",
+    "searchPlaceholder": "Personen suchen…",
+    "search": "Personen suchen",
+    "clearSearch": "Suche löschen",
+    "loading": "Personen werden geladen",
+    "columns": {
+      "name": "Name",
+      "birthday": "Geburtstag",
+      "age": "Alter",
+      "nextBirthday": "Nächster Geburtstag"
+    },
+    "noMatches": "Keine Personen passen zu „{{ query }}“",
+    "emptyTitle": "Noch keine Personen",
+    "emptyText": "Füge im Kalender einen Geburtstag hinzu, dann erscheint hier jeder, den du hinzufügst."
+  },
+  "googleCalendar": {
+    "title": "Google Kalender",
+    "loading": "Status von Google Kalender wird geladen",
+    "loadError": "Der Status von Google Kalender konnte nicht geladen werden.",
+    "description": "Zeige deine Geburtstage zwischen den Geburtstagen in Google Kalender und übernimm Geburtstage aus deinen Google-Kontakten in Birthdly.",
+    "connect": "Google Kalender verbinden",
+    "connected": "Verbunden",
+    "lastSynced": "Zuletzt synchronisiert: {{ date }}",
+    "notSynced": "Noch nicht synchronisiert",
+    "disconnectHint": "Beim Trennen werden die Geburtstage entfernt, die Birthdly zu Google Kalender hinzugefügt hat. In Birthdly bleiben sie erhalten.",
+    "syncNow": "Jetzt synchronisieren",
+    "disconnect": "Trennen",
+    "accessLost": "Zugriff verloren",
+    "accessLostText": "Google erlaubt Birthdly nicht mehr, deinen Kalender zu nutzen. Verbinde ihn erneut, um die Synchronisierung fortzusetzen.",
+    "reconnect": "Erneut verbinden"
+  },
+  "reminders": {
+    "title": "Geburtstagsbenachrichtigungen",
+    "loading": "Benachrichtigungseinstellungen werden geladen",
+    "loadError": "Deine Benachrichtigungseinstellungen konnten nicht geladen werden.",
+    "unsupported": "Dieser Browser kann keine Benachrichtigungen von Birthdly anzeigen. Versuche einen anderen Browser, etwa Chrome, Edge, Firefox oder Safari.",
+    "iosNotInstalled": "Auf iPhone und iPad funktionieren Benachrichtigungen, sobald Birthdly auf deinem Home-Bildschirm ist. Tippe auf Teilen, dann auf Zum Home-Bildschirm und öffne Birthdly von dort.",
+    "blocked": "In diesem Browser blockiert",
+    "blockedText": "Um Benachrichtigungen zu erhalten, erlaube sie für diese Website: Klicke auf das Symbol neben der Adressleiste, öffne die Website-Einstellungen und erlaube Benachrichtigungen. Lade die Seite danach neu.",
+    "disabledText": "Erhalte eine Benachrichtigung mit den Geburtstagen des Tages, auch wenn Birthdly geschlossen ist.",
+    "turnOn": "Auf diesem Gerät aktivieren",
+    "enabled": "Auf diesem Gerät aktiv",
+    "turnOff": "Auf diesem Gerät deaktivieren",
+    "when": "Wann benachrichtigen",
+    "time": "Uhrzeit",
+    "timeZoneHint": "Zeitzone: {{ timeZone }}. Diese Einstellungen gelten für alle deine Geräte.",
+    "days": {
+      "both": "Am Tag selbst und am Vortag",
+      "onDay": "Am Tag selbst",
+      "dayBefore": "Am Vortag"
+    }
+  },
+  "about": {
+    "features": {
+      "calendar": {
+        "title": "Monats- und Jahreskalender",
+        "text": "Sieh jeden Geburtstag im Monatskalender oder wechsle zur Jahresansicht, um vorauszuplanen."
+      },
+      "upcoming": {
+        "title": "Kommende Geburtstage",
+        "text": "Sieh, wer als Nächstes feiert, wie viele Tage noch bleiben und wie alt die Person wird."
+      },
+      "notes": {
+        "title": "Beziehung und Notizen",
+        "text": "Halte fest, wer jede Person für dich ist, und notiere zum Beispiel Geschenkideen."
+      },
+      "people": {
+        "title": "Personenliste und Suche",
+        "text": "Behalte alle in einer sortierbaren Liste und finde jede Person in Sekunden."
+      },
+      "notifications": {
+        "title": "Geburtstagsbenachrichtigungen",
+        "text": "Erhalte eine Benachrichtigung am Tag selbst oder am Vortag, zur gewünschten Uhrzeit, auf Smartphone und Computer."
+      },
+      "googleCalendar": {
+        "title": "Synchronisierung mit Google Kalender",
+        "text": "Zeige deine Geburtstage in Google Kalender und übernimm Geburtstage aus deinen Google-Kontakten."
+      },
+      "anyDevice": {
+        "title": "Ohne Konto, auf jedem Gerät",
+        "text": "Leg sofort in jedem Browser los, füge Birthdly zum Startbildschirm deines Smartphones hinzu und melde dich zum Synchronisieren mit Google an."
+      }
+    },
+    "faq": {
+      "account": {
+        "question": "Brauche ich ein Konto?",
+        "answer": "Nein. Du kannst sofort ohne Anmeldung Geburtstage hinzufügen. Melde dich mit Google an, wenn du sie in deinem Konto speichern möchtest."
+      },
+      "storage": {
+        "question": "Wo werden meine Geburtstage gespeichert?",
+        "answer": "Ohne Konto werden Geburtstage nur in diesem Browser gespeichert. Nachdem du dich mit Google angemeldet hast, liegen sie in deinem Konto, und die vorher hinzugefügten Geburtstage können dorthin übertragen werden."
+      },
+      "phone": {
+        "question": "Funktioniert es auf meinem Smartphone?",
+        "answer": "Ja. Birthdly funktioniert in jedem modernen mobilen Browser, und du kannst es zum Startbildschirm hinzufügen, um es wie eine App zu öffnen."
+      },
+      "addBirthday": {
+        "question": "Wie füge ich einen Geburtstag hinzu?",
+        "answer": "Öffne den Kalender, tippe auf die Schaltfläche + und gib einen Namen und ein Datum ein."
+      },
+      "noYear": {
+        "question": "Kann ich einen Geburtstag ohne Geburtsjahr hinzufügen?",
+        "answer": "Ja. Lass das Jahr leer, dann zeigt Birthdly den Geburtstag jedes Jahr ohne Alter an."
+      },
+      "reminders": {
+        "question": "Erinnert mich Birthdly an Geburtstage?",
+        "answer": "Ja. Melde dich mit Google an und aktiviere Geburtstagsbenachrichtigungen in den Einstellungen. Du erhältst eine Benachrichtigung am Tag selbst, am Vortag oder an beiden Tagen, zur gewünschten Uhrzeit, ohne Birthdly geöffnet zu lassen."
+      },
+      "googleCalendar": {
+        "question": "Kann ich Geburtstage mit Google Kalender synchronisieren?",
+        "answer": "Ja. Melde dich mit Google an und verbinde Google Kalender in den Einstellungen. Birthdly zeigt deine Geburtstage in Google Kalender und übernimmt Geburtstage aus deinen Google-Kontakten."
+      }
+    },
+    "hero": {
+      "title": "Nie wieder einen Geburtstag vergessen",
+      "text": "Birthdly ist ein Geburtstagskalender mit Erinnerungen. Behalte die Geburtstage von Freunden, Familie und Kollegen an einem Ort, sieh, wer als Nächstes feiert, lass dich am Tag selbst benachrichtigen und synchronisiere mit Google Kalender.",
+      "note": "Ohne Anmeldung"
+    },
+    "openCalendar": "Kalender öffnen",
+    "featuresTitle": "Alles, um an Geburtstage zu denken",
+    "stepsTitle": "So funktioniert es",
+    "steps": {
+      "open": {
+        "title": "Kalender öffnen",
+        "text": "Birthdly öffnet sich direkt mit deinem Kalender. Du musst nichts installieren."
+      },
+      "add": {
+        "title": "Geburtstage hinzufügen",
+        "text": "Tippe auf die Schaltfläche + und gib einen Namen und ein Datum ein. Das Geburtsjahr ist optional."
+      },
+      "sync": {
+        "title": "Synchronisieren, wenn du möchtest",
+        "text": "Melde dich mit Google an, um Geburtstage auf jedem Gerät zu haben, Benachrichtigungen zu aktivieren und Google Kalender zu verbinden."
+      }
+    },
+    "faqTitle": "Häufige Fragen",
+    "cta": {
+      "title": "Starte deinen Geburtstagskalender",
+      "text": "Den ersten Geburtstag hinzuzufügen dauert nur ein paar Sekunden."
+    },
+    "guidesTitle": "Anleitungen",
+    "allGuides": "Alle Anleitungen",
+    "legalTitle": "Rechtliches"
+  },
+  "guides": {
+    "googleCalendarBirthdays": {
+      "title": "So fügst du Geburtstage zu Google Kalender hinzu",
+      "description": "Füge Geburtstage als jährliche Geburtstagstermine mit einer Erinnerung am Vortag zu Google Kalender hinzu und halte sie mit Birthdly synchron.",
+      "text01": "Viele planen ihre Woche ohnehin in Google Kalender, also gehören auch Geburtstage dorthin. Diese Anleitung zeigt zwei Wege, Geburtstage in Google Kalender zu bringen: von Hand in Google und automatisch mit Birthdly, das sie für dich synchron hält.",
+      "text02": "Wie Google Kalender Geburtstage anzeigt",
+      "text03": "Google Kalender hat eine besondere Terminart für Geburtstage. Es ist ein ganztägiger Termin, der sich jedes Jahr wiederholt und mit einem Kuchensymbol erscheint. Google erstellt diese Termine selbst für die Personen in deinen Google-Kontakten, bei denen ein Geburtstag gespeichert ist. Steht der Geburtstag eines Freundes also in seinem Kontakt, siehst du ihn meist schon in deinem Kalender.",
+      "text04": "Für alle anderen, etwa Kollegen, Nachbarn oder Verwandte, die du nie als Kontakt gespeichert hast, zeigt Google Kalender nichts an, bis du den Geburtstag selbst hinzufügst.",
+      "text05": "Option 1: Geburtstage in Google hinzufügen",
+      "text06": "Dafür gibt es zwei übliche Wege ohne zusätzliche Tools.",
+      "text07": "Den Geburtstag zu einem Kontakt hinzufügen",
+      "text08": "Öffne Google Kontakte und suche die Person oder erstelle einen neuen Kontakt.",
+      "text09": "Wähle <strong>Bearbeiten</strong>, füge das Feld <strong>Geburtstag</strong> hinzu und gib das Datum ein. Das Jahr ist optional.",
+      "text10": "Speichere den Kontakt. Der Geburtstag erscheint in Google Kalender als jährlicher Geburtstagstermin.",
+      "text11": "Einen jährlichen Termin erstellen",
+      "text12": "Erstelle in Google Kalender am Geburtstag einen ganztägigen Termin mit dem Namen der Person als Titel.",
+      "text13": "Stelle die Wiederholung auf <strong>Jährlich</strong> und füge eine Benachrichtigung hinzu, zum Beispiel einen Tag vorher.",
+      "text14": "Speichere den Termin.",
+      "text15": "Beides funktioniert, wird aber mühsam, sobald es mehr als eine Handvoll Personen sind. Die Kontakte füllen sich mit Einträgen, die du nur wegen eines Datums brauchst, und bei wiederkehrenden Terminen passieren schnell Fehler, besonders bei jemandem, der am 29. Februar geboren ist.",
+      "text16": "Option 2: Geburtstage aus Birthdly synchronisieren",
+      "text17": "<strong>Mit Google anmelden.</strong> Nutze die Kontoschaltfläche oben rechts. Geburtstage, die du vor der Anmeldung hinzugefügt hast, können in dein Konto übertragen werden.",
+      "text18": "<strong>Google Kalender verbinden.</strong> Öffne die <strong>Einstellungen</strong>, suche die Karte Google Kalender und tippe auf <strong>Google Kalender verbinden</strong>. Google zeigt zwei Berechtigungen: Termine in deinen eigenen Kalendern ansehen, erstellen, ändern und löschen sowie deine Kontakte ansehen. Birthdly ändert nur die Geburtstagstermine, die es selbst erstellt, und ändert nie deine Kontakte.",
+      "text19": "<strong>Fertig.</strong> Deine Geburtstage erscheinen innerhalb weniger Augenblicke in deinem Google-Hauptkalender.",
+      "text20": "Birthdly liest deine Kontakte nur, um deren Geburtstage in Birthdly zu übernehmen, und ändert sie nie. In Google Kalender ändert es nur die Geburtstagstermine, die es selbst erstellt hat.",
+      "text21": "So sehen die Geburtstagstermine aus",
+      "text22": "Jeder Geburtstag ist ein Google-Geburtstagstermin, der sich jährlich wiederholt, und sieht daher genauso aus wie die Geburtstage deiner Kontakte.",
+      "text23": "Jeder Termin hat eine Erinnerung um 9:00 Uhr am Vortag, sodass du Zeit hast, anzurufen oder ein Geschenk zu kaufen.",
+      "text24": "Die Termine sind privat und zeigen dich nicht als beschäftigt an, blockieren also nie Besprechungen.",
+      "text25": "Ein Geburtstag am 29. Februar erscheint in anderen Jahren am 28. Februar.",
+      "text26": "Personen, deren Geburtstag aus deinen Google-Kontakten stammt, erhalten keinen zweiten Termin, weil Google ihren Geburtstag schon anzeigt. In Birthdly siehst du sie trotzdem.",
+      "text27": "Birthdly und Google Kalender synchron halten",
+      "text28": "Nach dem Verbinden kannst du einfach in Birthdly weiterarbeiten und es Google aktualisieren lassen:",
+      "text29": "Wenn du in Birthdly einen Geburtstag hinzufügst oder Name oder Datum änderst, ändert sich auch der Termin in Google Kalender.",
+      "text30": "Wenn du in Birthdly einen Geburtstag löschst, verschwindet sein Termin aus Google Kalender.",
+      "text31": "Wenn du in Google Kalender einen der Geburtstagstermine von Birthdly löschst, löscht Birthdly diesen Geburtstag ebenfalls.",
+      "text32": "Birthdly prüft Google auf Änderungen, wenn du den Kalender öffnest, höchstens einmal pro Stunde. Um sofort zu prüfen, tippe in den Einstellungen auf <strong>Jetzt synchronisieren</strong>.",
+      "text33": "Google erlaubt keine anderen Änderungen an Geburtstagsterminen, etwa das Datum in Google Kalender zu ändern. Nimm solche Änderungen in Birthdly vor.",
+      "text34": "So beendest du die Synchronisierung",
+      "text35": "Öffne die <strong>Einstellungen</strong> und tippe auf der Karte Google Kalender auf <strong>Trennen</strong>. Birthdly entfernt die Geburtstagstermine, die es zu Google Kalender hinzugefügt hat, und deine Geburtstage bleiben in Birthdly. Du kannst jederzeit wieder verbinden.",
+      "text36": "Häufige Fragen",
+      "text37": "Brauche ich ein Birthdly-Konto?",
+      "text38": "Du kannst Geburtstage ohne Konto hinzufügen. Für die Synchronisierung mit Google Kalender melde dich mit Google an, denn die Synchronisierung läuft für dein Konto auf jedem Gerät.",
+      "text39": "In welchen Kalender kommen die Geburtstage?",
+      "text40": "In deinen Google-Hauptkalender, der nach deinem Google-Konto benannt ist.",
+      "text41": "Sehe ich die Geburtstage meiner Kontakte doppelt?",
+      "text42": "Nicht, wenn Name und Geburtstag übereinstimmen. Hat eine Person in Birthdly und in Google Kontakte denselben Namen und Geburtstag, verknüpft Birthdly beide, statt die Person doppelt anzulegen, und erstellt keinen zweiten Termin. Unterscheiden sich die Namen, zum Beispiel „Mama“ in Birthdly und ihr vollständiger Name in Google Kontakte, siehst du beide. Lösche dann in Birthdly den Eintrag, den du von Hand angelegt hast.",
+      "intro": {
+        "after": " ist ein Geburtstagskalender, der genau dafür gemacht ist. Du hältst alle Geburtstage in einer Liste, mit Beziehung und Notizen wie Geschenkideen, und Birthdly fügt sie als echte Geburtstagstermine zu Google Kalender hinzu."
+      },
+      "addStep": {
+        "before": "<strong>Geburtstage hinzufügen.</strong> Öffne den ",
+        "link": "Kalender",
+        "after": ", tippe auf <strong>Geburtstag hinzufügen</strong> und gib einen Namen und ein Datum ein. Das Geburtsjahr kannst du leer lassen."
+      }
+    },
+    "birthdayReminders": {
+      "title": "So erhältst du Geburtstagserinnerungen",
+      "description": "Erhalte am Tag selbst oder am Vortag jedes Geburtstags eine Erinnerung mit Birthdly-Benachrichtigungen und Erinnerungen in Google Kalender.",
+      "text01": "Die meisten vergessenen Geburtstage sind gar nicht vergessen: Du hast nur nicht rechtzeitig an das Datum gedacht. Eine Erinnerung am Vortag löst das, und am besten funktioniert sie, wenn sie auf dem Gerät ankommt, das du sowieso nutzt. Diese Anleitung zeigt, wie du mit Birthdly Geburtstagserinnerungen erhältst: als Benachrichtigungen von Birthdly selbst, über Google Kalender oder beides.",
+      "text02": "Was eine gute Geburtstagserinnerung ausmacht",
+      "text03": "<strong>Sie kommt früh genug.</strong> Der Vortag lässt Zeit, eine Karte zu schicken, ein Geschenk zu bestellen oder einen Anruf zu planen.",
+      "text04": "<strong>Sie kommt dort an, wo du hinschaust.</strong> Eine Benachrichtigung auf Smartphone oder Computer funktioniert besser als eine App, die du erst öffnen musst.",
+      "text05": "<strong>Sie wiederholt sich jedes Jahr von selbst.</strong> Du richtest einen Geburtstag einmal ein und musst ihn nie wieder anfassen.",
+      "text06": "<strong>Sie lässt sich leicht vollständig halten.</strong> Erinnerungen helfen nur bei den Personen, die du tatsächlich hinzugefügt hast.",
+      "text07": "So funktionieren Erinnerungen mit Birthdly",
+      "text08": "Birthdly speichert deine Geburtstagsliste und kann dich auf zwei Arten daran erinnern:",
+      "text09": "<strong>Geburtstagsbenachrichtigungen.</strong> Birthdly sendet eine Browserbenachrichtigung mit den Geburtstagen des Tages an jedes Gerät, auf dem du sie aktivierst. Du wählst, ob sie am Tag selbst, am Vortag oder an beiden Tagen kommt, und zu welcher Uhrzeit. Die Benachrichtigung kommt auch an, wenn Birthdly geschlossen ist.",
+      "text10": "<strong>Google Kalender.</strong> Birthdly fügt jeden Geburtstag als Geburtstagstermin mit einer Erinnerung um 9:00 Uhr am Vortag zu deinem Google Kalender hinzu. Google Kalender zeigt diese Erinnerung überall an, wo du bei Google angemeldet bist.",
+      "text11": "Für beides musst du dich mit Google anmelden. Du kannst eine der beiden Möglichkeiten nutzen oder beide gleichzeitig.",
+      "text12": "Geburtstagsbenachrichtigungen aktivieren",
+      "text13": "<strong>Melde dich mit Google an</strong> – über die Kontoschaltfläche oben rechts.",
+      "text14": "<strong>Benachrichtigungen aktivieren.</strong> Öffne die <strong>Einstellungen</strong>, suche <strong>Geburtstagsbenachrichtigungen</strong> und tippe auf <strong>Auf diesem Gerät aktivieren</strong>. Wenn dein Browser fragt, erlaube Benachrichtigungen.",
+      "text15": "<strong>Zeitpunkt wählen.</strong> Wähle den Tag selbst, den Vortag oder beides und die Uhrzeit. Diese Einstellungen gelten für alle deine Geräte. Die Uhrzeit bezieht sich auf die Zeitzone des Geräts, auf dem du Benachrichtigungen zuletzt aktiviert oder diese Einstellungen geändert hast; sie wird unter den Einstellungen angezeigt.",
+      "text16": "Benachrichtigungen werden für jedes Gerät einzeln aktiviert, wiederhole also die Schritte 2 und 3 auf Smartphone und Computer. Sie umfassen jeden Geburtstag in deinem Konto, auch die aus Google Kontakte importierten. Geburtstage am selben Tag kommen zusammen in einer Benachrichtigung.",
+      "text17": "Auf iPhone und iPad brauchen Benachrichtigungen iOS oder iPadOS 16.4 oder neuer. Füge Birthdly zuerst zu deinem Home-Bildschirm hinzu: Öffne es in Safari, tippe auf <strong>Teilen</strong> und dann auf <strong>Zum Home-Bildschirm</strong>. Öffne Birthdly über das Symbol auf dem Home-Bildschirm und aktiviere dort die Benachrichtigungen.",
+      "text18": "Wenn du Benachrichtigungen für Birthdly früher blockiert hast, erscheint die Schaltfläche nicht. Erlaube sie in den Website-Einstellungen deines Browsers für Birthdly und lade die Seite neu.",
+      "text19": "Erinnerungen in Google Kalender erhalten",
+      "text20": "Füge Geburtstage hinzu und melde dich mit Google an, wie oben beschrieben.",
+      "text21": "<strong>Google Kalender verbinden.</strong> Öffne die <strong>Einstellungen</strong> und tippe auf <strong>Google Kalender verbinden</strong>. Birthdly erstellt für jeden Geburtstag in deiner Liste einen Geburtstagstermin mit Erinnerung, außer für die Geburtstage aus deinen Google-Kontakten.",
+      "text22": "<strong>Benachrichtigungen für Google Kalender erlauben.</strong> Stelle auf dem Smartphone sicher, dass Benachrichtigungen für die Google Kalender-App aktiviert sind. Erlaube auf dem Computer Benachrichtigungen für Google Kalender in deinem Browser.",
+      "text23": "Kommende Geburtstage im Blick behalten",
+      "text24": "Eine Erinnerung deckt den nächsten Tag oder die nächsten zwei ab. Für einen längeren Blick nach vorn nutze Birthdly selbst:",
+      "text25": "Der Bereich <strong>Demnächst</strong> neben dem Kalender zeigt die nächsten Geburtstage mit Hinweisen wie „Morgen“ oder „in 5 Tagen“ und wie alt jede Person wird.",
+      "text26": "Die <strong>Jahresansicht</strong> zeigt alle Geburtstage des Jahres auf einmal, was beim Planen von Geschenken oder Reisen hilft.",
+      "text27": "Die Seite <strong>Personen</strong> listet alle in einer Tabelle, die du sortieren und durchsuchen kannst.",
+      "text28": "Nutze die Notizen eines Geburtstags für Geschenkideen. Wenn die Erinnerung kommt, öffne die Person in Birthdly, und die Ideen sind gleich da.",
+      "text29": "Geburtstage aus Google Kontakte",
+      "text30": "Benachrichtigungen von Birthdly enthalten die aus deinen Google-Kontakten importierten Geburtstage wie jeden anderen Geburtstag in deinem Konto.",
+      "text31": "Google Kalender zeigt die in deinen Google-Kontakten gespeicherten Geburtstage bereits an, daher fügt Birthdly für sie keinen zweiten Termin hinzu, und du erhältst keine zwei Erinnerungen von Google Kalender. Die Erinnerungen für diese Geburtstage folgen den Standardbenachrichtigungen für ganztägige Termine; prüfe diese Einstellungen, wenn du auch für sie eine Erinnerung möchtest.",
+      "text32": "Tipps, um keinen Geburtstag zu verpassen",
+      "text33": "Füge Geburtstage hinzu, sobald du von ihnen hörst, auch ohne Jahr. Das Jahr kannst du später ergänzen.",
+      "text34": "Halte die Beziehung fest, etwa Familie, Freunde oder Kollegen, damit du auf einen Blick siehst, wer wer ist.",
+      "text35": "Öffne einmal im Monat die Jahresansicht und prüfe, ob jemand Wichtiges fehlt.",
+      "text36": "Häufige Fragen",
+      "text37": "Kann Birthdly mir Erinnerungen per E-Mail senden?",
+      "text38": "Derzeit nicht. Birthdly sendet Browserbenachrichtigungen, und Google Kalender kann dich erinnern, nachdem du ihn verbunden hast.",
+      "text39": "Wann kommt die Erinnerung?",
+      "text40": "Geburtstagsbenachrichtigungen kommen zu der Uhrzeit, die du in den Einstellungen wählst – 9:00 Uhr, wenn du sie nicht änderst –, am Tag selbst, am Vortag oder an beiden Tagen. Erinnerungen in Google Kalender für Geburtstage, die du in Birthdly hinzufügst, kommen um 9:00 Uhr am Vortag in der Zeitzone deines Google Kalenders. Für Geburtstage aus deinen Google-Kontakten folgt Google Kalender seinen eigenen Benachrichtigungseinstellungen.",
+      "text41": "Erhalte ich Erinnerungen, ohne Google Kalender zu verbinden?",
+      "text42": "Ja. Aktiviere Geburtstagsbenachrichtigungen in den Einstellungen. Sie hängen nicht von Google Kalender ab.",
+      "text43": "Funktionieren Benachrichtigungen, wenn Birthdly geschlossen ist?",
+      "text44": "Ja. Du musst Birthdly nicht geöffnet lassen. Auf einem Computer muss der Browser selbst laufen. Tut er das nicht, kommt die Benachrichtigung, wenn du den Browser später am Tag öffnest.",
+      "text45": "Erhalte ich denselben Geburtstag zweimal?",
+      "text46": "Mit <strong>Am Tag selbst und am Vortag</strong>, der Standardeinstellung, erfährst du von jedem Geburtstag zweimal: am Vortag und am Tag selbst. Wähle in den Einstellungen eines davon, wenn du nur eine Benachrichtigung möchtest. Hast du außerdem Google Kalender verbunden, kommt dessen Erinnerung noch hinzu; schalte die Erinnerung in Google Kalender oder die Benachrichtigungen für ein Gerät in den Einstellungen aus, wenn dir das zu viel ist.",
+      "addStep": {
+        "before": "<strong>Geburtstage hinzufügen.</strong> Öffne den ",
+        "link": "Kalender",
+        "after": ", tippe auf <strong>Geburtstag hinzufügen</strong> und gib einen Namen und ein Datum ein. Das Geburtsjahr ist optional."
+      },
+      "googleCalendarLink": {
+        "before": "Ab jetzt erhält jeder Geburtstag, den du in Birthdly hinzufügst oder änderst, auch seinen Termin und seine Erinnerung in Google Kalender. Ausnahme sind Geburtstage aus deinen Google-Kontakten, wie die nächsten Abschnitte erklären. Die ",
+        "link": "Anleitung zu Google Kalender",
+        "after": " erklärt die Synchronisierung genauer."
+      }
+    },
+    "importFromGoogleContacts": {
+      "title": "So importierst du Geburtstage aus Google Kontakte",
+      "description": "Übernimm die in deinen Google-Kontakten gespeicherten Geburtstage in Birthdly, vermeide Duplikate und halte sie aktuell, ohne deine Kontakte zu ändern.",
+      "text01": "Wenn du Android oder Gmail nutzt, sind viele Geburtstage wahrscheinlich schon in deinen Google-Kontakten gespeichert. Statt sie erneut einzutippen, kannst du sie in einem Schritt in Birthdly übernehmen und automatisch aktuell halten. Diese Anleitung erklärt, wie der Import funktioniert und was mit deinen Kontakten passiert.",
+      "text02": "Bevor du loslegst",
+      "text03": "Du brauchst ein Google-Konto mit Kontakten, bei denen ein Geburtstag gespeichert ist.",
+      "text04": "Nur in Google Kontakte gespeicherte Kontakte werden importiert. Personen, mit denen du nur E-Mails geschrieben hast und die Google unter „Weitere Kontakte“ führt, sind nicht dabei.",
+      "text05": "Ein Kontakt braucht einen Namen und mindestens Tag und Monat des Geburtstags. Das Jahr ist optional.",
+      "text06": "Geburtstage Schritt für Schritt importieren",
+      "text07": "Öffne die <strong>Einstellungen</strong> und suche die Karte Google Kalender.",
+      "text08": "Tippe auf <strong>Google Kalender verbinden</strong>. Google zeigt zwei Berechtigungen: Termine in deinen eigenen Kalendern ansehen, erstellen, ändern und löschen sowie deine Kontakte ansehen. Birthdly ändert nur die Geburtstagstermine, die es selbst erstellt, und ändert nie deine Kontakte. Erlaube beides.",
+      "text09": "Birthdly startet die erste Synchronisierung sofort. Nach kurzer Zeit erscheinen die Geburtstage deiner Kontakte im Kalender und auf der Seite <strong>Personen</strong>.",
+      "text10": "Der Import gehört zur Verbindung mit Google Kalender, daher fügt derselbe Schritt auch deine Birthdly-Geburtstage mit einer Erinnerung am Vortag zu Google Kalender hinzu.",
+      "text11": "Was mit deinen Kontakten passiert",
+      "text12": "Nichts. Birthdly liest deine Kontakte nur und ändert, ergänzt oder löscht sie nie. Es liest Namen und Geburtstag jedes Kontakts und ignoriert alles andere, etwa Telefonnummern und E-Mail-Adressen.",
+      "text13": "Wie Duplikate vermieden werden",
+      "text14": "Wenn du jemanden vor dem Import in Birthdly hinzugefügt hast, versucht Birthdly, ihn deinen Kontakten zuzuordnen. Eine Person wird zugeordnet, wenn Name sowie Tag und Monat des Geburtstags übereinstimmen und sich die Geburtsjahre nicht widersprechen; ein fehlendes Jahr passt immer, und Groß- und Kleinschreibung sowie zusätzliche Leerzeichen spielen keine Rolle. Eine zugeordnete Person bleibt ein Eintrag in Birthdly und behält die Beziehung und Notizen, die du gespeichert hast.",
+      "text15": "Unterscheiden sich die Namen, zum Beispiel „Mama“ in Birthdly und ihr vollständiger Name in Google Kontakte, kann Birthdly nicht erkennen, dass es dieselbe Person ist, und du siehst zwei Einträge. Lösche in Birthdly den Eintrag, den du von Hand angelegt hast.",
+      "text16": "Importierte Geburtstage aktuell halten",
+      "text17": "Birthdly prüft deine Kontakte erneut, wenn du den Kalender öffnest, höchstens einmal pro Stunde, und wenn du in den Einstellungen auf <strong>Jetzt synchronisieren</strong> tippst.",
+      "text18": "<strong>Neue Kontakte mit Geburtstag</strong> werden zu Birthdly hinzugefügt.",
+      "text19": "<strong>Ein in Google Kontakte geänderter Geburtstag oder Name</strong> wird in Birthdly aktualisiert, es sei denn, du hast diese Person in Birthdly später bearbeitet. Deine letzte Änderung gilt.",
+      "text20": "<strong>Ein Kontakt ohne Geburtsjahr</strong> löscht nie ein Jahr, das du in Birthdly bereits gespeichert hast.",
+      "text21": "<strong>Ein aus einem Kontakt entfernter Geburtstag</strong> bleibt in Birthdly. Ab dann fügt Birthdly ihn als eigenen Geburtstagstermin zu Google Kalender hinzu.",
+      "text22": "Einen importierten Geburtstag entfernen",
+      "text23": "Solange ein Kontakt in Google Kontakte noch einen Geburtstag hat, hält das Löschen in Birthdly nicht: Die nächste Synchronisierung importiert ihn erneut. Um einen solchen Geburtstag endgültig zu entfernen, entferne zuerst den Geburtstag aus dem Kontakt in Google Kontakte und lösche ihn dann in Birthdly.",
+      "text24": "Importierte Geburtstage in Google Kalender",
+      "text25": "Häufige Fragen",
+      "text26": "Kann ich Geburtstage importieren, ohne Google Kalender zu verbinden?",
+      "text27": "Nein. Der Import ist Teil der Verbindung mit Google Kalender.",
+      "text28": "Was passiert mit importierten Geburtstagen, wenn ich die Verbindung trenne?",
+      "text29": "Sie bleiben in Birthdly. Das Trennen entfernt nur die Termine, die Birthdly zu Google Kalender hinzugefügt hat, und beendet die Synchronisierung.",
+      "text30": "Kann ich importierten Geburtstagen Notizen hinzufügen?",
+      "text31": "Ja. Importierte Geburtstage funktionieren wie alle anderen: Du kannst die Beziehung festlegen und Notizen wie Geschenkideen hinzufügen.",
+      "openStep": {
+        "before": "Öffne ",
+        "after": " und melde dich über die Kontoschaltfläche oben rechts mit Google an."
+      },
+      "remindersLink": {
+        "before": "Google Kalender zeigt die Geburtstage deiner Kontakte bereits an, daher fügt Birthdly für sie keinen zweiten Termin hinzu. Du siehst den Geburtstag jedes Kontakts nur einmal. Seine Erinnerung in Google Kalender folgt deinen Standardbenachrichtigungen für ganztägige Termine. Benachrichtigungen von Birthdly enthalten auch importierte Geburtstage. Die ",
+        "link": "Anleitung zu Geburtstagserinnerungen",
+        "after": " erklärt, wie Erinnerungen funktionieren."
+      }
+    },
+    "breadcrumbHome": "Startseite",
+    "related": "Verwandte Anleitungen",
+    "aboutAndFaq": "Über Birthdly und häufige Fragen",
+    "lastUpdated": "Zuletzt aktualisiert: {{ date }}"
+  }
+}

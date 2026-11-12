@@ -1,0 +1,522 @@
+{
+  "i18n": {
+    "loadError": "Could not load the language. Check your connection and try again."
+  },
+  "settings": {
+    "language": {
+      "title": "Language",
+      "label": "Site language"
+    },
+    "about": "About Birthdly"
+  },
+  "app": {
+    "description": "Birthdly is a birthday calendar and reminder app. Keep track of friends' and family birthdays, see upcoming ones at a glance, and never miss a celebration."
+  },
+  "nav": {
+    "calendar": "Calendar",
+    "people": "People",
+    "settings": "Settings",
+    "addBirthday": "Add birthday"
+  },
+  "footer": {
+    "tagline": "birthday calendar",
+    "about": "About",
+    "guides": "Guides",
+    "privacy": "Privacy Policy",
+    "terms": "Terms of Service"
+  },
+  "layout": {
+    "mainNavigation": "Main navigation",
+    "siteLinks": "Site links",
+    "collapseMenu": "Collapse menu",
+    "expandMenu": "Expand menu",
+    "closeSearch": "Close search"
+  },
+  "routes": {
+    "calendar": {
+      "title": "Calendar",
+      "documentTitle": "Birthdly — birthday calendar",
+      "heading": "Birthday calendar"
+    },
+    "people": {
+      "title": "People"
+    },
+    "settings": {
+      "title": "Settings"
+    },
+    "about": {
+      "title": "About",
+      "documentTitle": "Birthday Calendar & Reminder App · Birthdly",
+      "heading": "Birthday calendar & reminders",
+      "description": "Birthdly is a birthday calendar and reminder app. See upcoming birthdays, keep notes and gift ideas, and sync with Google Calendar. No sign-up needed."
+    },
+    "privacy": {
+      "title": "Privacy Policy",
+      "description": "How Birthdly collects, uses, and stores your data, including birthdays you add and Google Calendar and Contacts data, and how to delete it."
+    },
+    "terms": {
+      "title": "Terms of Service",
+      "description": "The terms for using Birthdly, the birthday calendar: your account, your content, Google Calendar sync, and the limits of the service."
+    },
+    "guides": {
+      "title": "Guides",
+      "description": "Step-by-step guides to keeping track of birthdays with Birthdly and Google Calendar."
+    },
+    "notFound": {
+      "title": "Page not found"
+    }
+  },
+  "notFound": {
+    "text": "The page you are looking for doesn't exist or has moved.",
+    "openCalendar": "Open the calendar"
+  },
+  "account": {
+    "button": "Account",
+    "buttonSignedIn": "Account: {{ email }}",
+    "title": "Account",
+    "loading": "Loading account",
+    "signedInAs": "Signed in as",
+    "signedOutDescription": "Sign in to keep your birthdays in your account, use them on any device, sync with Google Calendar, and get birthday notifications.",
+    "signOut": "Sign out",
+    "signIn": "Sign in with Google"
+  },
+  "common": {
+    "showLess": "Show less",
+    "showMore": "Show more",
+    "close": "Close",
+    "cancel": "Cancel",
+    "save": "Save",
+    "delete": "Delete",
+    "tryAgain": "Try again"
+  },
+  "dates": {
+    "monthDay": "MMM d",
+    "monthDayYear": "MMM d, y",
+    "weekdayMonthDay": "EEEE, MMMM d",
+    "longDate": "MMMM d, y"
+  },
+  "calendar": {
+    "label": "Calendar",
+    "loadingBirthdays": "Loading birthdays",
+    "upcomingBirthdays": "Upcoming birthdays",
+    "addBirthday": "Add birthday",
+    "today": "Today",
+    "tomorrow": "Tomorrow",
+    "editBirthdayOf": "Edit birthday of {{ name }}",
+    "dayLabel": "{{ date }}. Add birthday",
+    "dayLabelWithBirthdays": "{{ date }}, birthdays: {{ names }}. Add birthday",
+    "previousYear": "Previous year",
+    "previousMonth": "Previous month",
+    "nextYear": "Next year",
+    "nextMonth": "Next month",
+    "view": "Calendar view",
+    "month": "Month",
+    "year": "Year",
+    "upcoming": "Upcoming",
+    "viewAll": "View all",
+    "turns": "Turns {{ age }}",
+    "welcomeTitle": "Never miss a birthday",
+    "welcomeText": "Birthdly keeps every birthday in one calendar. Add friends and family to see who celebrates next, browse by month or year, and sign in with Google to sync across devices.",
+    "inDays": {
+      "one": "in {{ count }} day",
+      "other": "in {{ count }} days"
+    },
+    "days": {
+      "one": "{{ count }} day",
+      "other": "{{ count }} days"
+    },
+    "nextCelebration": "Next celebration",
+    "countdown": "Countdown",
+    "noBirthdaysTitle": "No birthdays yet",
+    "noBirthdaysText": "Add the first birthday to see who celebrates next.",
+    "signInPromptTitle": "Your birthdays are saved only in this browser.",
+    "signInPromptText": "Sign in to save them to your account and use them on any device."
+  },
+  "relationship": {
+    "family": "Family",
+    "friends": "Friends",
+    "colleagues": "Colleagues",
+    "other": "Other"
+  },
+  "birthdayDialog": {
+    "addTitle": "Add Birthday",
+    "editTitle": "Edit Birthday",
+    "subtitle": "Add a new person and their birthday to your calendar.",
+    "name": "Name",
+    "month": "Month",
+    "day": "Day",
+    "year": "Year",
+    "optional": "Optional",
+    "relationship": "Relationship",
+    "notes": "Notes",
+    "notesPlaceholder": "Add a note about this person…",
+    "errors": {
+      "nameRequired": "Enter a name",
+      "nameTooLong": "Name is too long",
+      "yearFormat": "Enter a 4-digit year",
+      "futureYear": "The year can't be in the future",
+      "invalidDay": "No such day",
+      "notesTooLong": "Notes can be up to {{ max }} characters"
+    }
+  },
+  "notifications": {
+    "auth": {
+      "restoreFailed": "Couldn't restore your session",
+      "finishSignInFailed": "Couldn't finish signing in. Please try again",
+      "signInFailed": "Couldn't sign in with Google",
+      "signOutFailed": "Couldn't sign out"
+    },
+    "birthdays": {
+      "loadFailed": "Couldn't load birthdays",
+      "saveFailed": "Couldn't save the birthday",
+      "deleteFailed": "Couldn't delete the birthday",
+      "moveFailed": {
+        "one": "Couldn't move {{ count }} local birthday to your account",
+        "other": "Couldn't move {{ count }} local birthdays to your account"
+      }
+    },
+    "googleCalendar": {
+      "statusFailed": "Couldn't load the Google Calendar status",
+      "connectFailed": "Couldn't connect Google Calendar",
+      "connected": "Google Calendar connected",
+      "connectRetry": "Couldn't connect Google Calendar. Please try again",
+      "syncedRecently": "Google Calendar was synced a moment ago",
+      "upToDate": "Google Calendar is up to date",
+      "syncFailed": "Couldn't sync with Google Calendar",
+      "accessDenied": "Birthdly needs access to Google Calendar to sync birthdays",
+      "accessLost": "Google Calendar access was lost. Connect it again in Settings",
+      "disconnectFailed": "Couldn't disconnect Google Calendar",
+      "added": {
+        "one": "{{ count }} added",
+        "other": "{{ count }} added"
+      },
+      "updated": {
+        "one": "{{ count }} updated",
+        "other": "{{ count }} updated"
+      },
+      "deleted": {
+        "one": "{{ count }} deleted",
+        "other": "{{ count }} deleted"
+      },
+      "fromGoogle": "From Google: {{ changes }}"
+    },
+    "reminders": {
+      "loadFailed": "Couldn't load your notification settings",
+      "turnOnFailed": "Couldn't turn on notifications",
+      "turnedOn": "Notifications turned on",
+      "turnedOff": "Notifications turned off for this device",
+      "turnOffFailed": "Couldn't turn off notifications",
+      "saved": "Notification settings saved",
+      "saveFailed": "Couldn't save the notification settings"
+    }
+  },
+  "people": {
+    "label": "People",
+    "searchPlaceholder": "Search people…",
+    "search": "Search people",
+    "clearSearch": "Clear search",
+    "loading": "Loading people",
+    "columns": {
+      "name": "Name",
+      "birthday": "Birthday",
+      "age": "Age",
+      "nextBirthday": "Next birthday"
+    },
+    "noMatches": "No people match \"{{ query }}\"",
+    "emptyTitle": "No people yet",
+    "emptyText": "Add a birthday in the calendar, and everyone you add shows up here."
+  },
+  "googleCalendar": {
+    "title": "Google Calendar",
+    "loading": "Loading Google Calendar status",
+    "loadError": "Couldn't load the Google Calendar status.",
+    "description": "Show your birthdays among the birthdays in Google Calendar, and bring birthdays from your Google contacts into Birthdly.",
+    "connect": "Connect Google Calendar",
+    "connected": "Connected",
+    "lastSynced": "Last synced {{ date }}",
+    "notSynced": "Not synced yet",
+    "disconnectHint": "Disconnecting removes the birthdays Birthdly added to Google Calendar. They stay in Birthdly.",
+    "syncNow": "Sync now",
+    "disconnect": "Disconnect",
+    "accessLost": "Access lost",
+    "accessLostText": "Google no longer lets Birthdly use your calendar. Connect again to resume syncing.",
+    "reconnect": "Reconnect"
+  },
+  "reminders": {
+    "title": "Birthday notifications",
+    "loading": "Loading notification settings",
+    "loadError": "Couldn't load your notification settings.",
+    "unsupported": "This browser can't show notifications from Birthdly. Try another browser, such as Chrome, Edge, Firefox or Safari.",
+    "iosNotInstalled": "On iPhone and iPad, notifications work once Birthdly is on your Home Screen. Tap Share, then Add to Home Screen, and open Birthdly from there.",
+    "blocked": "Blocked in this browser",
+    "blockedText": "To get notifications, allow them for this site: click the icon next to the address bar, open the site settings and set Notifications to Allow. Then reload the page.",
+    "disabledText": "Get a notification with the birthdays of the day, even when Birthdly is closed.",
+    "turnOn": "Turn on for this device",
+    "enabled": "On for this device",
+    "turnOff": "Turn off for this device",
+    "when": "When to notify",
+    "time": "Time",
+    "timeZoneHint": "Time zone: {{ timeZone }}. These settings apply to all your devices.",
+    "days": {
+      "both": "On the day and the day before",
+      "onDay": "On the day",
+      "dayBefore": "The day before"
+    }
+  },
+  "about": {
+    "features": {
+      "calendar": {
+        "title": "Month and year calendar",
+        "text": "See every birthday on a month calendar, or switch to the year view to plan ahead."
+      },
+      "upcoming": {
+        "title": "Upcoming birthdays",
+        "text": "Check who celebrates next, how many days are left, and how old they turn."
+      },
+      "notes": {
+        "title": "Relationship and notes",
+        "text": "Save who each person is to you and keep notes, such as gift ideas."
+      },
+      "people": {
+        "title": "People list and search",
+        "text": "Keep everyone in one sortable list and find a person in seconds."
+      },
+      "notifications": {
+        "title": "Birthday notifications",
+        "text": "Get a notification on the day or the day before, at the time you choose, on your phone and computer."
+      },
+      "googleCalendar": {
+        "title": "Google Calendar sync",
+        "text": "Show your birthdays in Google Calendar and bring in birthdays from your Google contacts."
+      },
+      "anyDevice": {
+        "title": "No account, any device",
+        "text": "Start right away in any browser, add it to your phone home screen, and sign in with Google to sync."
+      }
+    },
+    "faq": {
+      "account": {
+        "question": "Do I need an account?",
+        "answer": "No. You can add birthdays right away without signing in. Sign in with Google when you want to keep them in your account."
+      },
+      "storage": {
+        "question": "Where are my birthdays stored?",
+        "answer": "Without an account, birthdays are saved in this browser only. After you sign in with Google, they are stored in your account, and the birthdays you added before signing in can be moved there."
+      },
+      "phone": {
+        "question": "Does it work on my phone?",
+        "answer": "Yes. Birthdly works in any modern mobile browser, and you can add it to your home screen to open it like an app."
+      },
+      "addBirthday": {
+        "question": "How do I add a birthday?",
+        "answer": "Open the calendar, press the + button, and enter a name and a date."
+      },
+      "noYear": {
+        "question": "Can I add a birthday without the birth year?",
+        "answer": "Yes. Leave the year empty, and Birthdly shows the birthday every year without the age."
+      },
+      "reminders": {
+        "question": "Will Birthdly remind me about birthdays?",
+        "answer": "Yes. Sign in with Google and turn on birthday notifications in Settings. You get a notification on the day, the day before, or both, at the time you choose, without keeping Birthdly open."
+      },
+      "googleCalendar": {
+        "question": "Can I sync birthdays with Google Calendar?",
+        "answer": "Yes. Sign in with Google and connect Google Calendar in Settings. Birthdly shows your birthdays in Google Calendar and brings in birthdays from your Google contacts."
+      }
+    },
+    "hero": {
+      "title": "Never miss a birthday again",
+      "text": "Birthdly is a birthday calendar and reminder app. Keep the birthdays of friends, family, and colleagues in one place, see who celebrates next, get notified on the day, and sync with Google Calendar.",
+      "note": "No sign-up needed"
+    },
+    "openCalendar": "Open the calendar",
+    "featuresTitle": "Everything you need to remember birthdays",
+    "stepsTitle": "How it works",
+    "steps": {
+      "open": {
+        "title": "Open the calendar",
+        "text": "Birthdly opens straight to your calendar. There is nothing to install."
+      },
+      "add": {
+        "title": "Add birthdays",
+        "text": "Press the + button and enter a name and a date. The birth year is optional."
+      },
+      "sync": {
+        "title": "Sync if you like",
+        "text": "Sign in with Google to keep birthdays on every device, turn on birthday notifications, and connect Google Calendar."
+      }
+    },
+    "faqTitle": "Frequently asked questions",
+    "cta": {
+      "title": "Start your birthday calendar",
+      "text": "It takes a few seconds to add the first birthday."
+    },
+    "guidesTitle": "Guides",
+    "allGuides": "All guides",
+    "legalTitle": "Legal"
+  },
+  "guides": {
+    "googleCalendarBirthdays": {
+      "title": "How to add birthdays to Google Calendar",
+      "description": "Add birthdays to Google Calendar as yearly birthday events with a reminder the day before, and keep them in sync with Birthdly.",
+      "text01": "Google Calendar is where many people already plan their week, so it is a natural place for birthdays too. This guide shows two ways to get birthdays into Google Calendar: by hand in Google, and automatically with Birthdly, which keeps them in sync for you.",
+      "text02": "How Google Calendar shows birthdays",
+      "text03": "Google Calendar has a special kind of event for birthdays. It is an all-day event that repeats every year and appears with a cake icon. Google creates these events on its own for the people in your Google Contacts who have a birthday saved, so if a friend's birthday is in their contact card, you will usually see it in your calendar already.",
+      "text04": "For everyone else, such as colleagues, neighbors, or relatives you never saved as contacts, Google Calendar shows nothing until you add the birthday yourself.",
+      "text05": "Option 1: add birthdays in Google",
+      "text06": "There are two common ways to do it without any extra tools.",
+      "text07": "Add the birthday to a contact",
+      "text08": "Open Google Contacts and find the person, or create a new contact.",
+      "text09": "Choose <strong>Edit</strong>, add the <strong>Birthday</strong> field, and enter the date. The year is optional.",
+      "text10": "Save the contact. The birthday appears in Google Calendar as a yearly birthday event.",
+      "text11": "Create a yearly event",
+      "text12": "In Google Calendar, create an all-day event on the birthday with the person's name as the title.",
+      "text13": "Set it to repeat <strong>annually</strong> and add a notification, for example one day before.",
+      "text14": "Save the event.",
+      "text15": "Both work, but they get tedious with more than a handful of people. Contacts fill up with entries you only need for a date, and repeating events are easy to get wrong, especially for someone born on February 29.",
+      "text16": "Option 2: sync birthdays from Birthdly",
+      "text17": "<strong>Sign in with Google.</strong> Use the account button in the top right corner. Birthdays you added before signing in can be moved to your account.",
+      "text18": "<strong>Connect Google Calendar.</strong> Open <strong>Settings</strong>, find the Google Calendar card, and press <strong>Connect Google Calendar</strong>. Google shows two permissions: to see, create, change, and delete events on calendars you own, and to see your contacts. Birthdly only changes the birthday events it creates and never changes your contacts.",
+      "text19": "<strong>Done.</strong> Your birthdays appear in your primary Google calendar within moments.",
+      "text20": "Birthdly reads your contacts only to bring their birthdays into Birthdly and never changes them. In Google Calendar it changes only the birthday events it created itself.",
+      "text21": "What the birthday events look like",
+      "text22": "Each birthday is a Google birthday event that repeats every year, so it shows up just like the birthdays of your contacts.",
+      "text23": "Every event has a reminder at 9:00 the day before, which gives you time to call or buy a present.",
+      "text24": "Events are private and do not mark you as busy, so they never block meetings.",
+      "text25": "A birthday on February 29 appears on February 28 in other years.",
+      "text26": "People whose birthday comes from your Google Contacts do not get a second event, because Google already shows their birthday. You still see them in Birthdly.",
+      "text27": "Keeping Birthdly and Google Calendar in sync",
+      "text28": "Once connected, you can keep working in Birthdly and let it update Google:",
+      "text29": "When you add a birthday in Birthdly or change its name or date, its event in Google Calendar changes too.",
+      "text30": "When you delete a birthday in Birthdly, its event disappears from Google Calendar.",
+      "text31": "When you delete one of Birthdly's birthday events in Google Calendar, Birthdly deletes that birthday as well.",
+      "text32": "Birthdly checks Google for changes when you open the calendar, at most once an hour. To check right away, press <strong>Sync now</strong> in Settings.",
+      "text33": "Google does not allow other edits to birthday events, such as changing the date in Google Calendar. Make those changes in Birthdly instead.",
+      "text34": "How to stop syncing",
+      "text35": "Open <strong>Settings</strong> and press <strong>Disconnect</strong> on the Google Calendar card. Birthdly removes the birthday events it added to Google Calendar, and your birthdays stay in Birthdly. You can connect again at any time.",
+      "text36": "Frequently asked questions",
+      "text37": "Do I need a Birthdly account?",
+      "text38": "You can add birthdays without an account. To sync with Google Calendar, sign in with Google, because the sync runs for your account on every device.",
+      "text39": "Which calendar do the birthdays go to?",
+      "text40": "Your primary Google calendar, the one named after your Google account.",
+      "text41": "Will I see duplicates of my contacts' birthdays?",
+      "text42": "Not when the name and birthday match. If a person has the same name and birthday in Birthdly and in Google Contacts, Birthdly links them instead of adding the person twice, and it does not create a second event. If the names differ, for example \"Mom\" in Birthdly and her full name in Google Contacts, you will see both. In that case, delete the one you added by hand in Birthdly.",
+      "intro": {
+        "after": " is a birthday calendar made for this job. You keep all birthdays in one list, with the relationship and notes such as gift ideas, and Birthdly adds them to Google Calendar as real birthday events."
+      },
+      "addStep": {
+        "before": "<strong>Add your birthdays.</strong> Open the ",
+        "link": "calendar",
+        "after": ", press <strong>Add birthday</strong>, and enter a name and a date. You can leave the birth year empty."
+      }
+    },
+    "birthdayReminders": {
+      "title": "How to get birthday reminders",
+      "description": "Get a reminder on the day or the day before every birthday with Birthdly notifications and Google Calendar reminders.",
+      "text01": "Most forgotten birthdays are not forgotten at all: you simply did not think of the date in time. A reminder the day before solves that, and it works best when it arrives on the device you already use. This guide shows how to get birthday reminders with Birthdly: as notifications from Birthdly itself, through Google Calendar, or both.",
+      "text02": "What makes a good birthday reminder",
+      "text03": "<strong>It comes early enough.</strong> The day before leaves time to send a card, order a gift, or plan a call.",
+      "text04": "<strong>It comes where you look.</strong> A notification on your phone or computer works better than an app you have to open.",
+      "text05": "<strong>It repeats every year on its own.</strong> You set up a birthday once and never touch it again.",
+      "text06": "<strong>It is easy to keep complete.</strong> Reminders only help for the people you actually added.",
+      "text07": "How reminders work with Birthdly",
+      "text08": "Birthdly keeps your list of birthdays and can remind you about them in two ways:",
+      "text09": "<strong>Birthday notifications.</strong> Birthdly sends a browser notification with the birthdays of the day to every device where you turn them on. You choose whether it comes on the day, the day before, or both, and at what time. The notification arrives even when Birthdly is closed.",
+      "text10": "<strong>Google Calendar.</strong> Birthdly adds each birthday to your Google Calendar as a birthday event with a reminder at 9:00 the day before. Google Calendar then shows that reminder wherever you are signed in to Google.",
+      "text11": "Both need you to sign in with Google. You can use either one, or both at the same time.",
+      "text12": "Turn on birthday notifications",
+      "text13": "<strong>Sign in with Google</strong> using the account button in the top right corner.",
+      "text14": "<strong>Turn on notifications.</strong> Open <strong>Settings</strong>, find <strong>Birthday notifications</strong>, and press <strong>Turn on for this device</strong>. When your browser asks, allow notifications.",
+      "text15": "<strong>Choose when.</strong> Pick on the day, the day before, or both, and the time. These settings apply to all your devices. The time is in the time zone of the device where you last turned notifications on or changed these settings, shown under the controls.",
+      "text16": "Notifications are turned on for each device separately, so repeat steps 2 and 3 on your phone and your computer. They cover every birthday in your account, including the ones imported from Google Contacts. Birthdays on the same day come together in one notification.",
+      "text17": "On iPhone and iPad, notifications need iOS or iPadOS 16.4 or later. Add Birthdly to your Home Screen first: open it in Safari, tap <strong>Share</strong>, then <strong>Add to Home Screen</strong>. Open Birthdly from the Home Screen icon and turn on notifications there.",
+      "text18": "If you blocked notifications for Birthdly earlier, the button does not appear. Allow them in your browser's site settings for Birthdly, then reload the page.",
+      "text19": "Get reminders in Google Calendar",
+      "text20": "Add birthdays and sign in with Google, as described above.",
+      "text21": "<strong>Connect Google Calendar.</strong> Open <strong>Settings</strong> and press <strong>Connect Google Calendar</strong>. Birthdly creates a birthday event with a reminder for every birthday in your list, except the birthdays that come from your Google Contacts.",
+      "text22": "<strong>Allow notifications for Google Calendar.</strong> On your phone, make sure notifications are turned on for the Google Calendar app. On a computer, allow notifications for Google Calendar in your browser.",
+      "text23": "Keep upcoming birthdays in view",
+      "text24": "A reminder covers the next day or two. For a longer look ahead, use Birthdly itself:",
+      "text25": "The <strong>Upcoming</strong> panel next to the calendar shows the next birthdays with labels such as \"Tomorrow\" or \"in 5 days\", and how old each person turns.",
+      "text26": "The <strong>year view</strong> shows all birthdays of the year at once, which helps when you plan presents or trips.",
+      "text27": "The <strong>People</strong> page lists everyone in one table that you can sort and search.",
+      "text28": "Use the notes of a birthday for gift ideas. When the reminder arrives, open the person in Birthdly and the ideas are right there.",
+      "text29": "Birthdays from Google Contacts",
+      "text30": "Birthday notifications from Birthdly include the birthdays imported from your Google Contacts, like any other birthday in your account.",
+      "text31": "Google Calendar already shows the birthdays saved in your Google Contacts, so Birthdly does not add a second event for them, and you do not get two reminders from Google Calendar. Its reminders for these birthdays follow its default notification settings for all-day events, so check those settings if you want a reminder for them too.",
+      "text32": "Tips for never missing a birthday",
+      "text33": "Add birthdays as soon as you hear them, even without the year. You can fill in the year later.",
+      "text34": "Save the relationship, such as family, friends, or colleagues, so you can see at a glance who is who.",
+      "text35": "Once a month, open the year view and check that nobody important is missing.",
+      "text36": "Frequently asked questions",
+      "text37": "Can Birthdly send me email reminders?",
+      "text38": "Not at the moment. Birthdly sends browser notifications, and Google Calendar can remind you after you connect it.",
+      "text39": "When does the reminder arrive?",
+      "text40": "Birthday notifications arrive at the time you choose in Settings, 9:00 unless you change it, on the day, the day before, or both. Google Calendar reminders for birthdays you add in Birthdly arrive at 9:00 the day before, in the time zone of your Google Calendar. For birthdays from your Google Contacts, Google Calendar follows its own notification settings.",
+      "text41": "Do I get reminders without connecting Google Calendar?",
+      "text42": "Yes. Turn on birthday notifications in Settings. They do not depend on Google Calendar.",
+      "text43": "Do notifications work when Birthdly is closed?",
+      "text44": "Yes. You do not need to keep Birthdly open. On a computer, the browser itself needs to be running. If it is not, the notification arrives when you open the browser later that day.",
+      "text45": "Will I get the same birthday twice?",
+      "text46": "With <strong>On the day and the day before</strong>, the default, you hear about each birthday twice: the day before and on the day. Pick one of them in Settings if you want one notification. If you also connected Google Calendar, its reminder comes on top; turn off the reminder in Google Calendar, or turn off notifications for a device in Settings, if that is too much.",
+      "addStep": {
+        "before": "<strong>Add birthdays.</strong> Open the ",
+        "link": "calendar",
+        "after": ", press <strong>Add birthday</strong>, and enter a name and a date. The birth year is optional."
+      },
+      "googleCalendarLink": {
+        "before": "From now on, every birthday you add or change in Birthdly gets its event and reminder in Google Calendar as well. Birthdays from your Google Contacts are the exception, as the next sections explain. The ",
+        "link": "Google Calendar guide",
+        "after": " explains the sync in more detail."
+      }
+    },
+    "importFromGoogleContacts": {
+      "title": "How to import birthdays from Google Contacts",
+      "description": "Bring the birthdays saved in your Google Contacts into Birthdly, avoid duplicates, and keep them up to date without changing your contacts.",
+      "text01": "If you use Android or Gmail, many birthdays are probably already saved in your Google Contacts. Instead of typing them again, you can bring them into Birthdly in one step and keep them up to date automatically. This guide explains how the import works and what happens to your contacts.",
+      "text02": "Before you start",
+      "text03": "You need a Google account with contacts that have a birthday saved.",
+      "text04": "Only contacts saved in your Google Contacts are imported. People you only emailed, which Google lists under \"Other contacts\", are not included.",
+      "text05": "A contact needs a name and at least the day and month of the birthday. The year is optional.",
+      "text06": "Import birthdays step by step",
+      "text07": "Open <strong>Settings</strong> and find the Google Calendar card.",
+      "text08": "Press <strong>Connect Google Calendar</strong>. Google shows two permissions: to see, create, change, and delete events on calendars you own, and to see your contacts. Birthdly only changes the birthday events it creates and never changes your contacts. Allow both.",
+      "text09": "Birthdly starts the first sync right away. After a short while, the birthdays of your contacts appear in the calendar and on the <strong>People</strong> page.",
+      "text10": "The import comes with the Google Calendar connection, so the same step also adds your Birthdly birthdays to Google Calendar with a reminder the day before.",
+      "text11": "What happens to your contacts",
+      "text12": "Nothing. Birthdly only reads your contacts and never changes, adds, or deletes them. It reads the name and birthday of each contact and ignores everything else, such as phone numbers and email addresses.",
+      "text13": "How duplicates are avoided",
+      "text14": "If you added someone in Birthdly before importing, Birthdly tries to match them with your contacts. A person is matched when the name and the day and month of the birthday are the same and the birth years do not conflict; a missing year always matches, and letter case and extra spaces do not matter. A matched person stays one entry in Birthdly and keeps the relationship and notes you saved.",
+      "text15": "If the names differ, for example \"Mom\" in Birthdly and her full name in Google Contacts, Birthdly cannot tell they are the same person and you see two entries. Delete the one you added by hand in Birthdly.",
+      "text16": "Keeping imported birthdays up to date",
+      "text17": "Birthdly checks your contacts again when you open the calendar, at most once an hour, and when you press <strong>Sync now</strong> in Settings.",
+      "text18": "<strong>New contacts with a birthday</strong> are added to Birthdly.",
+      "text19": "<strong>A birthday or name changed in Google Contacts</strong> is updated in Birthdly, unless you edited that person in Birthdly more recently. Your latest edit wins.",
+      "text20": "<strong>A contact without a birth year</strong> never erases a year you already saved in Birthdly.",
+      "text21": "<strong>A birthday removed from a contact</strong> stays in Birthdly. From then on, Birthdly adds it to Google Calendar as its own birthday event.",
+      "text22": "Removing an imported birthday",
+      "text23": "While a contact still has a birthday in Google Contacts, deleting it in Birthdly does not last: the next sync imports it again. To remove such a birthday for good, first remove the birthday from the contact in Google Contacts, then delete it in Birthdly.",
+      "text24": "Imported birthdays in Google Calendar",
+      "text25": "Frequently asked questions",
+      "text26": "Can I import birthdays without connecting Google Calendar?",
+      "text27": "No. The import is part of the Google Calendar connection.",
+      "text28": "What happens to imported birthdays if I disconnect?",
+      "text29": "They stay in Birthdly. Disconnecting only removes the events Birthdly added to Google Calendar and stops the sync.",
+      "text30": "Can I add notes to imported birthdays?",
+      "text31": "Yes. Imported birthdays work like any other: you can set the relationship and add notes, such as gift ideas.",
+      "openStep": {
+        "before": "Open ",
+        "after": " and sign in with Google using the account button in the top right corner."
+      },
+      "remindersLink": {
+        "before": "Google Calendar already shows the birthdays of your contacts, so Birthdly does not add a second event for them. You see each contact's birthday once. Its reminder in Google Calendar follows your default notification settings for all-day events. Birthday notifications from Birthdly include imported birthdays too. The ",
+        "link": "birthday reminders guide",
+        "after": " explains how reminders work."
+      }
+    },
+    "breadcrumbHome": "Home",
+    "related": "Related guides",
+    "aboutAndFaq": "About Birthdly and FAQ",
+    "lastUpdated": "Last updated {{ date }}"
+  }
+}
