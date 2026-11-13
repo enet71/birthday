@@ -34,6 +34,15 @@ Add new entries under the category that best matches their purpose, keeping newe
 
 ### Angular
 
+## 2026-11-13 - Router must use withAutoCleanupInjectors
+
+- Type: rule
+- Context: Route-scoped State and Controllers are provided in `Route.providers`. Without the router feature, the route `EnvironmentInjector` and its State live on after the user leaves the route.
+- Preferred behavior: `provideRouter` in `apps/web/src/app/app.config.ts` must include `withAutoCleanupInjectors()` (`@angular/router` 22.2+; replaces the deprecated `withExperimentalAutoCleanupInjectors`). A custom `RouteReuseStrategy` must keep `shouldDestroyInjector` returning `true` for routes whose State must be cleaned and implement `retrieveStoredRouteHandles` when it stores handles.
+- Generalized rule: Route-provided State must be destroyed when its route is left; keep `withAutoCleanupInjectors()` enabled and check it whenever adding route providers, changing the router configuration, or adding a route reuse strategy.
+- Trigger cues: provideRouter, Route providers, route-scoped State, Controller, state cleanup, RouteReuseStrategy, app.config, withAutoCleanupInjectors
+- Status: active
+
 ## 2026-08-30 - Expose state signals with component getters
 
 - Type: rule

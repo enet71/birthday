@@ -1,7 +1,7 @@
 import { ApplicationConfig, isDevMode, provideBrowserGlobalErrorListeners } from '@angular/core';
 import { provideHttpClient, withFetch } from '@angular/common/http';
 import { MAT_ICON_DEFAULT_OPTIONS } from '@angular/material/icon';
-import { provideRouter, TitleStrategy } from '@angular/router';
+import { provideRouter, TitleStrategy, withAutoCleanupInjectors } from '@angular/router';
 import { provideClientHydration, withEventReplay } from '@angular/platform-browser';
 import { provideServiceWorker } from '@angular/service-worker';
 import { AuthClient } from '@birthday/web-auth-data-access';
@@ -27,7 +27,8 @@ export const appConfig: ApplicationConfig = {
   providers: [
     provideClientHydration(withEventReplay()),
     provideBrowserGlobalErrorListeners(),
-    provideRouter(appRoutes),
+    // Destroys route injectors when their route is left, so route-provided State and Controllers do not outlive the page.
+    provideRouter(appRoutes, withAutoCleanupInjectors()),
     { provide: TitleStrategy, useClass: AppPageMetaStrategy },
     provideHttpClient(withFetch()),
     provideSupabase(),
