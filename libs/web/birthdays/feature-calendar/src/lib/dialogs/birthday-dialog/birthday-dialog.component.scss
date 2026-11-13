@@ -100,29 +100,6 @@
     align-items: center;
     gap: 0.5rem;
   }
-
-  &__dot {
-    flex: none;
-    width: 0.625rem;
-    height: 0.625rem;
-    border-radius: 50%;
-
-    &_family {
-      background: var(--app-tone-rose-ink);
-    }
-
-    &_friends {
-      background: var(--mat-sys-primary);
-    }
-
-    &_colleagues {
-      background: var(--app-tone-mint-ink);
-    }
-
-    &_other {
-      background: var(--mat-sys-outline);
-    }
-  }
 }
 
 .actions {

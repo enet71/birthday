@@ -227,14 +227,19 @@
     "searchPlaceholder": "Пошук людей…",
     "search": "Пошук людей",
     "clearSearch": "Очистити пошук",
+    "relationshipFilter": "Фільтр «Ким доводиться»",
+    "allRelationships": "Усі",
+    "noRelationship": "Не вказано",
     "loading": "Завантаження списку людей",
     "columns": {
       "name": "Ім'я",
+      "relationship": "Ким доводиться",
       "birthday": "День народження",
-      "age": "Вік",
       "nextBirthday": "Найближчий день народження"
     },
     "noMatches": "Нікого не знайдено за запитом «{{ query }}»",
+    "noRelationshipMatches": "За цим фільтром нікого немає",
+    "noRelationshipQueryMatches": "За цим фільтром ніхто не відповідає «{{ query }}»",
     "emptyTitle": "Поки нікого немає",
     "emptyText": "Додайте день народження в календарі, і всі, кого ви додасте, з'являться тут."
   },

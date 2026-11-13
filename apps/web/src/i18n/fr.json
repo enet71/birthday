@@ -215,14 +215,19 @@
     "searchPlaceholder": "Rechercher des personnes…",
     "search": "Rechercher des personnes",
     "clearSearch": "Effacer la recherche",
+    "relationshipFilter": "Filtrer par relation",
+    "allRelationships": "Toutes les relations",
+    "noRelationship": "Sans relation",
     "loading": "Chargement des personnes",
     "columns": {
       "name": "Nom",
+      "relationship": "Relation",
       "birthday": "Anniversaire",
-      "age": "Âge",
       "nextBirthday": "Prochain anniversaire"
     },
     "noMatches": "Personne ne correspond à « {{ query }} »",
+    "noRelationshipMatches": "Aucune personne avec cette relation",
+    "noRelationshipQueryMatches": "Aucune personne avec cette relation ne correspond à « {{ query }} »",
     "emptyTitle": "Aucune personne pour l'instant",
     "emptyText": "Ajoutez un anniversaire dans le calendrier : chaque personne ajoutée apparaîtra ici."
   },

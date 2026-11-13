@@ -1,30 +1,51 @@
 <section class="people" [attr.aria-label]="'people.label' | transloco">
-  <!-- Kept while a query is set, so a filter stays visible and can be cleared. -->
-  @if (people().length || searchQuery()) {
-    <mat-form-field class="search" appearance="outline" subscriptSizing="dynamic">
-      <mat-icon matPrefix aria-hidden="true">search</mat-icon>
-      <input
-        #searchInput
-        matInput
-        type="search"
-        [placeholder]="'people.searchPlaceholder' | transloco"
-        [attr.aria-label]="'people.search' | transloco"
-        [value]="searchQuery()"
-        (input)="searchPeople($event)"
-        (keydown.escape)="clearSearch()"
-      />
-      @if (searchQuery()) {
-        <button
-          matSuffix
-          matIconButton
-          type="button"
-          [attr.aria-label]="'people.clearSearch' | transloco"
-          (click)="clearSearch(); searchInput.focus()"
+  <!-- Kept while a query or filter is set, so it stays visible and can be cleared. -->
+  @if (people().length || searchQuery() || relationshipFilter() !== 'all') {
+    <div class="toolbar">
+      <mat-form-field class="field field_search" appearance="outline" subscriptSizing="dynamic">
+        <mat-icon matPrefix aria-hidden="true">search</mat-icon>
+        <input
+          #searchInput
+          matInput
+          type="search"
+          [placeholder]="'people.searchPlaceholder' | transloco"
+          [attr.aria-label]="'people.search' | transloco"
+          [value]="searchQuery()"
+          (input)="searchPeople($event)"
+          (keydown.escape)="clearSearch()"
+        />
+        @if (searchQuery()) {
+          <button
+            matSuffix
+            matIconButton
+            type="button"
+            [attr.aria-label]="'people.clearSearch' | transloco"
+            (click)="clearSearch(); searchInput.focus()"
+          >
+            <mat-icon>close</mat-icon>
+          </button>
+        }
+      </mat-form-field>
+      <mat-form-field class="field field_relationship" appearance="outline" subscriptSizing="dynamic">
+        <mat-icon matPrefix aria-hidden="true">filter_list</mat-icon>
+        <mat-select
+          [attr.aria-label]="'people.relationshipFilter' | transloco"
+          [value]="relationshipFilter()"
+          (selectionChange)="filterPeopleByRelationship($event.value)"
         >
-          <mat-icon>close</mat-icon>
-        </button>
-      }
-    </mat-form-field>
+          <mat-option value="all">{{ 'people.allRelationships' | transloco }}</mat-option>
+          @for (option of relationshipOptions; track option.value) {
+            <mat-option [value]="option.value">
+              <span class="relationship">
+                <ui-relationship-dot [relationship]="option.value"></ui-relationship-dot>
+                {{ option.label | transloco }}
+              </span>
+            </mat-option>
+          }
+          <mat-option value="none">{{ 'people.noRelationship' | transloco }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
   }
   <div class="people__content" [attr.aria-busy]="isLoading()">
     @if (isLoading()) {
@@ -50,16 +71,26 @@
           </td>
         </ng-container>
 
+        <ng-container matColumnDef="relationship">
+          <th *matHeaderCellDef class="table__secondary" mat-header-cell mat-sort-header>{{ 'people.columns.relationship' | transloco }}</th>
+          <td *matCellDef="let row" class="table__secondary" mat-cell>
+            @if (row.birthday.relationship) {
+              <span class="relationship">
+                <ui-relationship-dot [relationship]="row.birthday.relationship"></ui-relationship-dot>
+                {{ 'relationship.' + row.birthday.relationship | transloco }}
+              </span>
+            }
+          </td>
+        </ng-container>
+
         <ng-container matColumnDef="birthday">
           <th *matHeaderCellDef class="table__secondary" mat-header-cell mat-sort-header>{{ 'people.columns.birthday' | transloco }}</th>
           <td *matCellDef="let row" class="table__secondary table__numeric" mat-cell>
             {{ row.birthDate | localeDate: ((row.hasBirthYear ? 'dates.monthDayYear' : 'dates.monthDay') | transloco) }}
+            @if (row.age !== null) {
+              ({{ row.age }})
+            }
           </td>
-        </ng-container>
-
-        <ng-container matColumnDef="age">
-          <th *matHeaderCellDef class="table__secondary" mat-header-cell mat-sort-header>{{ 'people.columns.age' | transloco }}</th>
-          <td *matCellDef="let row" class="table__secondary table__numeric" mat-cell>{{ row.age }}</td>
         </ng-container>
 
         <ng-container matColumnDef="nextBirthday">
@@ -76,7 +107,15 @@
         <tr *matRowDef="let row; columns: columns" mat-row></tr>
       </table>
     } @else if (people().length) {
-      <p class="message">{{ 'people.noMatches' | transloco: { query: searchQuery().trim() } }}</p>
+      <p class="message">
+        @if (searchQuery().trim() && relationshipFilter() !== 'all') {
+          {{ 'people.noRelationshipQueryMatches' | transloco: { query: searchQuery().trim() } }}
+        } @else if (searchQuery().trim()) {
+          {{ 'people.noMatches' | transloco: { query: searchQuery().trim() } }}
+        } @else {
+          {{ 'people.noRelationshipMatches' | transloco }}
+        }
+      </p>
     } @else if (!isLoading()) {
       <div class="empty">
         <h2 class="empty__title">{{ 'people.emptyTitle' | transloco }}</h2>

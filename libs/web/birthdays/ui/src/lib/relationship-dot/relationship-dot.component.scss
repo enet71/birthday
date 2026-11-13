@@ -1,0 +1,23 @@
+:host {
+  flex: none;
+  display: inline-block;
+  width: 0.625rem;
+  height: 0.625rem;
+  border-radius: 50%;
+}
+
+:host(.relationship-dot_family) {
+  background: var(--app-tone-rose-ink);
+}
+
+:host(.relationship-dot_friends) {
+  background: var(--mat-sys-primary);
+}
+
+:host(.relationship-dot_colleagues) {
+  background: var(--app-tone-mint-ink);
+}
+
+:host(.relationship-dot_other) {
+  background: var(--mat-sys-outline);
+}

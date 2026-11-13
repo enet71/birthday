@@ -1,7 +1,7 @@
 import { Sort } from '@angular/material/sort';
 import { differenceInCalendarDays, differenceInYears, format, parseISO } from 'date-fns';
-import { Birthday, getNextBirthday, hasBirthYear } from '@birthday/web-birthdays-util';
-import { PeopleSortColumn, PersonRow } from '../types';
+import { Birthday, getNextBirthday, hasBirthYear, RELATIONSHIP_OPTIONS, RelationshipOption } from '@birthday/web-birthdays-util';
+import { PeopleSortColumn, PersonRow, RelationshipFilter } from '../types';
 
 export function toPersonRow(birthday: Birthday, today: Date): PersonRow {
   const birthDate: Date = parseISO(birthday.birthDate);
@@ -20,21 +20,24 @@ export function toPersonRow(birthday: Birthday, today: Date): PersonRow {
   };
 }
 
-export function filterPersonRows(rows: PersonRow[], query: string): PersonRow[] {
+export function filterPersonRows(rows: PersonRow[], query: string, relationship: RelationshipFilter): PersonRow[] {
   const normalizedQuery: string = query.trim().toLocaleLowerCase();
 
-  return normalizedQuery ? rows.filter((row: PersonRow) => row.birthday.name.toLocaleLowerCase().includes(normalizedQuery)) : rows;
+  return rows.filter((row: PersonRow) => row.birthday.name.toLocaleLowerCase().includes(normalizedQuery) && matchesRelationship(row, relationship));
 }
 
-// Without a sort direction the rows keep the default order: the nearest birthday first. Rows without an age stay last
-// in both directions.
+// Without a sort direction the rows keep the default order: the nearest birthday first. Rows without a relationship
+// stay last in both directions.
 export function sortPersonRows(rows: PersonRow[], { active, direction }: Sort): PersonRow[] {
   const column: PeopleSortColumn = direction ? (active as PeopleSortColumn) : 'nextBirthday';
   const sign: number = direction === 'desc' ? -1 : 1;
 
   return [...rows].sort((a: PersonRow, b: PersonRow) => {
-    if (column === 'age' && (a.age === null || b.age === null)) {
-      return Number(a.age === null) - Number(b.age === null) || compareNames(a, b);
+    const isAMissing: boolean = isValueMissing(a, column);
+    const isBMissing: boolean = isValueMissing(b, column);
+
+    if (isAMissing || isBMissing) {
+      return Number(isAMissing) - Number(isBMissing) || compareNames(a, b);
     }
 
     return sign * compareByColumn(a, b, column) || compareNames(a, b);
@@ -45,13 +48,33 @@ function compareByColumn(a: PersonRow, b: PersonRow, column: PeopleSortColumn): 
   switch (column) {
     case 'name':
       return compareNames(a, b);
+    case 'relationship':
+      return getRelationshipOrder(a) - getRelationshipOrder(b);
     case 'birthday':
       return getCalendarKey(a).localeCompare(getCalendarKey(b));
-    case 'age':
-      return (a.age ?? 0) - (b.age ?? 0);
     case 'nextBirthday':
       return a.daysUntil - b.daysUntil;
   }
+}
+
+function matchesRelationship({ birthday }: PersonRow, relationship: RelationshipFilter): boolean {
+  switch (relationship) {
+    case 'all':
+      return true;
+    case 'none':
+      return birthday.relationship === null;
+    default:
+      return birthday.relationship === relationship;
+  }
+}
+
+function isValueMissing(row: PersonRow, column: PeopleSortColumn): boolean {
+  return column === 'relationship' && row.birthday.relationship === null;
+}
+
+// Follows the order of the relationship options rather than the translated labels, so it is the same in every language.
+function getRelationshipOrder({ birthday }: PersonRow): number {
+  return RELATIONSHIP_OPTIONS.findIndex((option: RelationshipOption) => option.value === birthday.relationship);
 }
 
 function compareNames(a: PersonRow, b: PersonRow): number {
