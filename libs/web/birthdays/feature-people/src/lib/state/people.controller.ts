@@ -10,9 +10,10 @@ export class PeopleController extends StateController {
   private readonly peopleState: PeopleState = inject(PeopleState);
   private readonly birthdaysController: BirthdaysController = inject(BirthdaysController);
 
-  // Every visit starts with a fresh list, no search or filter, and the default sort.
-  public openPeoplePage(): void {
-    this.peopleState.resetState();
+  // The route injector is created on every visit, so only the shared birthdays list needs a refresh, which also
+  // retries a failed load.
+  constructor() {
+    super();
     this.birthdaysController.reloadBirthdays();
   }
 

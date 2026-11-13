@@ -1,7 +1,7 @@
 import { effect, inject, Injectable, PLATFORM_ID, untracked } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { Event as RouterEvent, NavigationEnd, Router, UrlTree } from '@angular/router';
+import { Event as RouterEvent, NavigationEnd, Router } from '@angular/router';
 import { filter, finalize, Observable } from 'rxjs';
 import { addMonths, addYears, parseISO, startOfMonth } from 'date-fns';
 import { AuthController } from '@birthday/web-auth-data-access';
@@ -114,7 +114,9 @@ export class CalendarController extends StateController {
     this.router.events
       .pipe(
         filter((event: RouterEvent): event is NavigationEnd => event instanceof NavigationEnd),
-        filter(({ urlAfterRedirects }: NavigationEnd) => this.isAddBirthdayLink(urlAfterRedirects)),
+        filter(({ urlAfterRedirects }: NavigationEnd) =>
+          this.router.parseUrl(urlAfterRedirects).queryParamMap.has(CALENDAR_ADD_BIRTHDAY_QUERY_PARAM),
+        ),
         takeUntilDestroyed(this.destroyRef),
       )
       .subscribe(() => {
@@ -125,13 +127,6 @@ export class CalendarController extends StateController {
           replaceUrl: true,
         });
       });
-  }
-
-  // Route providers outlive the page, so links elsewhere must not open the calendar dialog.
-  private isAddBirthdayLink(url: string): boolean {
-    const tree: UrlTree = this.router.parseUrl(url);
-
-    return !tree.root.hasChildren() && tree.queryParamMap.has(CALENDAR_ADD_BIRTHDAY_QUERY_PARAM);
   }
 
   private importFromGoogle(): void {

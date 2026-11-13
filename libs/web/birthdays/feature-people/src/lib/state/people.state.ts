@@ -25,10 +25,4 @@ export class PeopleState extends State {
   public readonly visiblePeople: Signal<PersonRow[]> = computed(() =>
     sortPersonRows(filterPersonRows(this.people(), this.searchQuery(), this.relationshipFilter()), this.sort()),
   );
-
-  public override resetState(): void {
-    this.searchQuery.set('');
-    this.relationshipFilter.set('all');
-    this.sort.set({ active: 'nextBirthday', direction: 'asc' });
-  }
 }
