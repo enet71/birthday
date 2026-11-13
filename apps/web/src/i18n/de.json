@@ -215,14 +215,19 @@
     "searchPlaceholder": "Personen suchen…",
     "search": "Personen suchen",
     "clearSearch": "Suche löschen",
+    "relationshipFilter": "Nach Beziehung filtern",
+    "allRelationships": "Alle Beziehungen",
+    "noRelationship": "Ohne Beziehung",
     "loading": "Personen werden geladen",
     "columns": {
       "name": "Name",
+      "relationship": "Beziehung",
       "birthday": "Geburtstag",
-      "age": "Alter",
       "nextBirthday": "Nächster Geburtstag"
     },
     "noMatches": "Keine Personen passen zu „{{ query }}“",
+    "noRelationshipMatches": "Keine Personen mit dieser Beziehung",
+    "noRelationshipQueryMatches": "Keine Personen mit dieser Beziehung passen zu „{{ query }}“",
     "emptyTitle": "Noch keine Personen",
     "emptyText": "Füge im Kalender einen Geburtstag hinzu, dann erscheint hier jeder, den du hinzufügst."
   },

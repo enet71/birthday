@@ -26,7 +26,13 @@
   }
 }
 
-.search {
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.field {
   @include mat.form-field-overrides(
     (
       container-height: 2.5rem,
@@ -39,11 +45,25 @@
     )
   );
 
-  width: 20rem;
   max-width: 100%;
   border-radius: 1.25rem;
   background: color-mix(in srgb, var(--mat-sys-surface-container-lowest) 75%, transparent);
   box-shadow: 0 0.25rem 1rem color-mix(in srgb, var(--mat-sys-primary) 8%, transparent);
+
+  &_search {
+    width: 20rem;
+  }
+
+  &_relationship {
+    width: 14rem;
+  }
+}
+
+.relationship {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  white-space: nowrap;
 }
 
 .table {

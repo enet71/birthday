@@ -5,7 +5,7 @@ import { Birthday } from '@birthday/web-birthdays-util';
 import { injectState, ReadonlyState, State } from '@birthday/web-shared-data-access';
 import { PlatformService } from '@birthday/web-shared-util';
 import { filterPersonRows, sortPersonRows, toPersonRow } from '../helpers';
-import { PersonRow } from '../types';
+import { PersonRow, RelationshipFilter } from '../types';
 
 @Injectable()
 export class PeopleState extends State {
@@ -16,17 +16,19 @@ export class PeopleState extends State {
   // an empty list that would flash before the table.
   public readonly isLoading: Signal<boolean> = computed(() => !this.platform.isRendered() || this.birthdaysState.isLoading());
   public readonly searchQuery: WritableSignal<string> = signal('');
+  public readonly relationshipFilter: WritableSignal<RelationshipFilter> = signal('all');
   public readonly sort: WritableSignal<Sort> = signal({ active: 'nextBirthday', direction: 'asc' });
 
   public readonly people: Signal<PersonRow[]> = computed(() =>
     this.birthdaysState.birthdays().map((birthday: Birthday) => toPersonRow(birthday, this.birthdaysState.today)),
   );
   public readonly visiblePeople: Signal<PersonRow[]> = computed(() =>
-    sortPersonRows(filterPersonRows(this.people(), this.searchQuery()), this.sort()),
+    sortPersonRows(filterPersonRows(this.people(), this.searchQuery(), this.relationshipFilter()), this.sort()),
   );
 
   public override resetState(): void {
     this.searchQuery.set('');
+    this.relationshipFilter.set('all');
     this.sort.set({ active: 'nextBirthday', direction: 'asc' });
   }
 }

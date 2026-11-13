@@ -227,14 +227,19 @@
     "searchPlaceholder": "Поиск людей…",
     "search": "Поиск людей",
     "clearSearch": "Очистить поиск",
+    "relationshipFilter": "Фильтр «Кем приходится»",
+    "allRelationships": "Все",
+    "noRelationship": "Не указано",
     "loading": "Загрузка списка людей",
     "columns": {
       "name": "Имя",
+      "relationship": "Кем приходится",
       "birthday": "День рождения",
-      "age": "Возраст",
       "nextBirthday": "Ближайший день рождения"
     },
     "noMatches": "Никто не найден по запросу «{{ query }}»",
+    "noRelationshipMatches": "По этому фильтру никого нет",
+    "noRelationshipQueryMatches": "По этому фильтру никто не подходит под «{{ query }}»",
     "emptyTitle": "Пока никого нет",
     "emptyText": "Добавьте день рождения в календаре, и все, кого вы добавите, появятся здесь."
   },

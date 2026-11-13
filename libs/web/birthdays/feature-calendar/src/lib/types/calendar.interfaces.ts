@@ -30,11 +30,6 @@ export interface BirthdayFormModel {
   notes: string;
 }
 
-export interface RelationshipOption {
-  value: BirthdayRelationship;
-  label: string;
-}
-
 export type CalendarView = 'month' | 'year';
 
 export interface UpcomingCelebration extends UpcomingBirthday {

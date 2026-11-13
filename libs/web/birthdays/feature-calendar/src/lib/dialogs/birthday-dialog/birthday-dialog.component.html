@@ -61,7 +61,7 @@
             [value]="option.value"
           >
             <span class="relationship__option">
-              <span class="relationship__dot" [class]="'relationship__dot_' + option.value"></span>
+              <ui-relationship-dot [relationship]="option.value"></ui-relationship-dot>
               {{ option.label | transloco }}
             </span>
           </mat-chip-option>

@@ -1,3 +1,4 @@
+import { BirthdayRelationship } from '@birthday/shared-models';
 import { Birthday } from '@birthday/web-birthdays-util';
 
 export interface PersonRow {
@@ -11,4 +12,7 @@ export interface PersonRow {
   daysUntil: number;
 }
 
-export type PeopleSortColumn = 'name' | 'birthday' | 'age' | 'nextBirthday';
+export type PeopleSortColumn = 'name' | 'relationship' | 'birthday' | 'nextBirthday';
+
+// `none` keeps only people without a relationship.
+export type RelationshipFilter = 'all' | 'none' | BirthdayRelationship;

@@ -215,14 +215,19 @@
     "searchPlaceholder": "Search people…",
     "search": "Search people",
     "clearSearch": "Clear search",
+    "relationshipFilter": "Filter by relationship",
+    "allRelationships": "All relationships",
+    "noRelationship": "No relationship",
     "loading": "Loading people",
     "columns": {
       "name": "Name",
+      "relationship": "Relationship",
       "birthday": "Birthday",
-      "age": "Age",
       "nextBirthday": "Next birthday"
     },
     "noMatches": "No people match \"{{ query }}\"",
+    "noRelationshipMatches": "No people with this relationship",
+    "noRelationshipQueryMatches": "No people with this relationship match \"{{ query }}\"",
     "emptyTitle": "No people yet",
     "emptyText": "Add a birthday in the calendar, and everyone you add shows up here."
   },

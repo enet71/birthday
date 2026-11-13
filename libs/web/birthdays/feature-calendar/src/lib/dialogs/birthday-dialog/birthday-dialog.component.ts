@@ -9,12 +9,13 @@ import { MatInput } from '@angular/material/input';
 import { MatOption, MatSelect } from '@angular/material/select';
 import { getDaysInMonth, parseISO } from 'date-fns';
 import { BirthdayRelationship } from '@birthday/shared-models';
-import { hasBirthYear } from '@birthday/web-birthdays-util';
+import { RelationshipDotComponent } from '@birthday/web-birthdays-ui';
+import { hasBirthYear, RELATIONSHIP_OPTIONS, RelationshipOption } from '@birthday/web-birthdays-util';
 import { LocaleDatePipe } from '@birthday/web-shared-i18n';
 import { DialogHeaderComponent } from '@birthday/web-shared-ui';
-import { BIRTHDAY_NOTES_MAX_LENGTH, RELATIONSHIP_OPTIONS } from '../../constants';
+import { BIRTHDAY_NOTES_MAX_LENGTH } from '../../constants';
 import { CalendarController } from '../../state';
-import { BirthdayDialogData, BirthdayFormModel, RelationshipOption } from '../../types';
+import { BirthdayDialogData, BirthdayFormModel } from '../../types';
 import { TranslocoPipe } from '@jsverse/transloco';
 
 // A leap year, so Feb 29 can be chosen while the birth year is empty.
@@ -44,6 +45,7 @@ const ANY_LEAP_YEAR = 2000;
     MatOption,
     MatSelect,
     DialogHeaderComponent,
+    RelationshipDotComponent,
   ],
   templateUrl: './birthday-dialog.component.html',
   styleUrl: './birthday-dialog.component.scss',
