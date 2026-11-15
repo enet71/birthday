@@ -41,6 +41,9 @@
     "people": {
       "title": "Personnes"
     },
+    "person": {
+      "title": "Personne"
+    },
     "settings": {
       "title": "Paramètres"
     },
@@ -230,6 +233,22 @@
     "noRelationshipQueryMatches": "Aucune personne avec cette relation ne correspond à « {{ query }} »",
     "emptyTitle": "Aucune personne pour l'instant",
     "emptyText": "Ajoutez un anniversaire dans le calendrier : chaque personne ajoutée apparaîtra ici."
+  },
+  "person": {
+    "label": "Détails de la personne",
+    "back": "Retour aux personnes",
+    "loading": "Chargement de la personne",
+    "birthday": "Anniversaire",
+    "age": "Âge",
+    "nextBirthday": "Prochain anniversaire",
+    "notes": "Notes",
+    "notFoundTitle": "Personne introuvable",
+    "notFoundText": "Cette personne a peut-être été supprimée ou enregistrée dans un autre compte.",
+    "openPeople": "Voir les personnes",
+    "years": {
+      "one": "{{ count }} an",
+      "other": "{{ count }} ans"
+    }
   },
   "googleCalendar": {
     "title": "Google Agenda",

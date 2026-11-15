@@ -41,6 +41,9 @@
     "people": {
       "title": "Люди"
     },
+    "person": {
+      "title": "Человек"
+    },
     "settings": {
       "title": "Настройки"
     },
@@ -242,6 +245,24 @@
     "noRelationshipQueryMatches": "По этому фильтру никто не подходит под «{{ query }}»",
     "emptyTitle": "Пока никого нет",
     "emptyText": "Добавьте день рождения в календаре, и все, кого вы добавите, появятся здесь."
+  },
+  "person": {
+    "label": "Сведения о человеке",
+    "back": "Назад к списку",
+    "loading": "Загрузка",
+    "birthday": "День рождения",
+    "age": "Возраст",
+    "nextBirthday": "Ближайший день рождения",
+    "notes": "Заметки",
+    "notFoundTitle": "Человек не найден",
+    "notFoundText": "Возможно, запись удалена или сохранена в другом аккаунте.",
+    "openPeople": "К списку людей",
+    "years": {
+      "one": "{{ count }} год",
+      "few": "{{ count }} года",
+      "many": "{{ count }} лет",
+      "other": "{{ count }} года"
+    }
   },
   "googleCalendar": {
     "title": "Google Календарь",

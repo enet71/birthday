@@ -10,6 +10,8 @@ export interface PersonRow {
   age: number | null;
   nextBirthday: Date;
   daysUntil: number;
+  // The age on the next birthday, `null` when the birth year is unknown.
+  turningAge: number | null;
 }
 
 export type PeopleSortColumn = 'name' | 'relationship' | 'birthday' | 'nextBirthday';

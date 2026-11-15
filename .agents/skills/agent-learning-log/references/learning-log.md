@@ -26,10 +26,10 @@ Add new entries under the category that best matches their purpose, keeping newe
 
 - Type: error
 - Context: Implementing default child-route navigation in a route shell, such as opening the first child item after a resolver loads the parent entity.
-- Incorrect behavior: Putting the redirect/default-navigation `effect` directly in the shell component, exposing a public controller init method like `openFirstItemByDefault()`, or injecting a controller in a shell component only to force service construction.
-- Preferred behavior: Keep the shell component passive. Put the default-navigation `effect` inside the relevant route-scoped controller constructor, use private helper methods for the effect body when useful, and rely on natural component/controller usage rather than artificial `inject(...)` calls just for instantiation.
-- Generalized rule: For Angular route shell behavior in this repository, place reactive navigation side effects in the route-scoped controller constructor, not in the shell component, not behind public lifecycle-style methods, and not via forced DI side effects.
-- Trigger cues: default child route, first child redirect, route shell component, controller effect, constructor effect, inject only to instantiate
+- Incorrect behavior: Putting the redirect/default-navigation `effect` directly in the shell component, or exposing a public controller init method like `openFirstItemByDefault()`.
+- Preferred behavior: Keep the shell component passive. Put the default-navigation `effect` inside the relevant route-scoped controller constructor, and use private helper methods for the effect body when useful. When no component uses a route-scoped controller, create it with `provideEnvironmentInitializer(() => inject(XxxController))` in the route `providers`, not with an unused `inject` in a component.
+- Generalized rule: For Angular route shell behavior in this repository, place reactive navigation side effects in the route-scoped controller constructor, not in the shell component and not behind public lifecycle-style methods. A controller that nothing else uses is created by an environment initializer on its route.
+- Trigger cues: default child route, first child redirect, route shell component, controller effect, constructor effect, controller not injected, reload on entry, provideEnvironmentInitializer
 - Status: active
 
 ### Angular

@@ -41,6 +41,9 @@
     "people": {
       "title": "People"
     },
+    "person": {
+      "title": "Person"
+    },
     "settings": {
       "title": "Settings"
     },
@@ -230,6 +233,22 @@
     "noRelationshipQueryMatches": "No people with this relationship match \"{{ query }}\"",
     "emptyTitle": "No people yet",
     "emptyText": "Add a birthday in the calendar, and everyone you add shows up here."
+  },
+  "person": {
+    "label": "Person details",
+    "back": "Back to people",
+    "loading": "Loading person",
+    "birthday": "Birthday",
+    "age": "Age",
+    "nextBirthday": "Next birthday",
+    "notes": "Notes",
+    "notFoundTitle": "Person not found",
+    "notFoundText": "This person may have been deleted or saved in another account.",
+    "openPeople": "Open people",
+    "years": {
+      "one": "{{ count }} year",
+      "other": "{{ count }} years"
+    }
   },
   "googleCalendar": {
     "title": "Google Calendar",

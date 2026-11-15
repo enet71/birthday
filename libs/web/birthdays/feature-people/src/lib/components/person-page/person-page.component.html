@@ -1,0 +1,67 @@
+<section class="person-page" [attr.aria-label]="'person.label' | transloco">
+  <a class="person-page__back" matButton routerLink="/people">
+    <mat-icon>arrow_back</mat-icon>
+    {{ 'person.back' | transloco }}
+  </a>
+  <div class="person-page__content" [attr.aria-busy]="isLoading()">
+    @if (isLoading()) {
+      <mat-progress-bar class="person-page__progress" mode="indeterminate" [attr.aria-label]="'person.loading' | transloco"></mat-progress-bar>
+    }
+    @if (person(); as person) {
+      <article class="card">
+        <header class="card__header">
+          <ui-birthday-avatar class="card__avatar" [name]="person.birthday.name"></ui-birthday-avatar>
+          <div class="card__title">
+            <h2 class="card__name">{{ person.birthday.name }}</h2>
+            @if (person.birthday.relationship) {
+              <span class="card__relationship">
+                <ui-relationship-dot [relationship]="person.birthday.relationship"></ui-relationship-dot>
+                {{ 'relationship.' + person.birthday.relationship | transloco }}
+              </span>
+            }
+          </div>
+        </header>
+
+        <dl class="facts">
+          <div class="facts__item">
+            <dt class="facts__label">{{ 'person.birthday' | transloco }}</dt>
+            <dd class="facts__value">
+              {{ person.birthDate | localeDate: ((person.hasBirthYear ? 'dates.monthDayYear' : 'dates.monthDay') | transloco) }}
+            </dd>
+          </div>
+          @if (person.age !== null) {
+            <div class="facts__item">
+              <dt class="facts__label">{{ 'person.age' | transloco }}</dt>
+              <dd class="facts__value">{{ getAgeLabel(person.age) }}</dd>
+            </div>
+          }
+          <div class="facts__item">
+            <dt class="facts__label">{{ 'person.nextBirthday' | transloco }}</dt>
+            <dd class="facts__value">
+              <span>{{ person.nextBirthday | localeDate: ('dates.monthDayYear' | transloco) }}</span>
+              <span class="facts__hint" [class.facts__hint_today]="person.daysUntil === 0">
+                {{ getDaysUntilLabel(person.daysUntil) }}
+                @if (person.turningAge !== null) {
+                  · {{ 'calendar.turns' | transloco: { age: person.turningAge } }}
+                }
+              </span>
+            </dd>
+          </div>
+        </dl>
+
+        @if (person.birthday.notes) {
+          <div class="notes">
+            <h3 class="notes__title">{{ 'person.notes' | transloco }}</h3>
+            <p class="notes__text">{{ person.birthday.notes }}</p>
+          </div>
+        }
+      </article>
+    } @else if (!isLoading()) {
+      <div class="card card_empty">
+        <h2 class="card__empty-title">{{ 'person.notFoundTitle' | transloco }}</h2>
+        <p class="card__empty-text">{{ 'person.notFoundText' | transloco }}</p>
+        <a matButton="filled" routerLink="/people">{{ 'person.openPeople' | transloco }}</a>
+      </div>
+    }
+  </div>
+</section>

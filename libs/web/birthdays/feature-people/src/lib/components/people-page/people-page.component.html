@@ -64,10 +64,11 @@
         <ng-container matColumnDef="name">
           <th *matHeaderCellDef mat-header-cell mat-sort-header>{{ 'people.columns.name' | transloco }}</th>
           <td *matCellDef="let row" mat-cell>
-            <span class="person">
+            <!-- The link covers the whole row, so a click anywhere on the row opens the person. -->
+            <a class="person" [routerLink]="row.birthday.id">
               <ui-birthday-avatar class="person__avatar" [name]="row.birthday.name"></ui-birthday-avatar>
               <span class="person__name">{{ row.birthday.name }}</span>
-            </span>
+            </a>
           </td>
         </ng-container>
 
@@ -104,7 +105,7 @@
         </ng-container>
 
         <tr *matHeaderRowDef="columns" mat-header-row></tr>
-        <tr *matRowDef="let row; columns: columns" mat-row></tr>
+        <tr *matRowDef="let row; columns: columns" class="table__row" mat-row></tr>
       </table>
     } @else if (people().length) {
       <p class="message">

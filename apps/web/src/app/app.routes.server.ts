@@ -13,6 +13,7 @@ export const serverRoutes: ServerRoute[] = [
     status: 301,
   },
   { path: 'people', renderMode: RenderMode.Server },
+  { path: 'people/:id', renderMode: RenderMode.Server },
   { path: 'settings', renderMode: RenderMode.Server },
   { path: 'settings/google-calendar', renderMode: RenderMode.Server },
   { path: 'about', renderMode: RenderMode.Server },

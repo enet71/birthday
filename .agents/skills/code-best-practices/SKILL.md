@@ -75,6 +75,7 @@ The workspace splits libraries by the platform they run on. Every project has ex
 - Prefer Signal Forms for new forms when the existing APIs support them.
 - Never use inline `template` or `styles` in components, even for small ones. Put the template in `<name>.component.html` and the styles in `<name>.component.scss` next to the class, and reference them with `templateUrl` and `styleUrl`.
 - Prefer `host` metadata to `@HostBinding` and `@HostListener`.
+- Keep `computed` and `linkedSignal` callbacks to a single expression. When the derivation needs more than one statement (local variables, branches, early returns), move it into a named private method and call it from the signal, for example `computed(() => this.findPerson())`.
 - Initialize signals that depend on injected services in the constructor. Keep imperative initialization side effects in constructors rather than introducing unused `void` fields.
 - Avoid controller methods that only forward a single analytics event. Put the event at the owner of the workflow.
 - Keep templates focused on rendering and simple bindings. When conditions, derived display values, or event expressions become complex, move them into clearly named component methods, `computed` signals, or view-model state when that makes the code easier to read; retain simple local template control flow when extraction would add indirection.

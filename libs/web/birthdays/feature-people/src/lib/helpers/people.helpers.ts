@@ -1,6 +1,6 @@
 import { Sort } from '@angular/material/sort';
 import { differenceInCalendarDays, differenceInYears, format, parseISO } from 'date-fns';
-import { Birthday, getNextBirthday, hasBirthYear, RELATIONSHIP_OPTIONS, RelationshipOption } from '@birthday/web-birthdays-util';
+import { Birthday, getAgeOnDate, getNextBirthday, hasBirthYear, RELATIONSHIP_OPTIONS, RelationshipOption } from '@birthday/web-birthdays-util';
 import { PeopleSortColumn, PersonRow, RelationshipFilter } from '../types';
 
 export function toPersonRow(birthday: Birthday, today: Date): PersonRow {
@@ -8,15 +8,17 @@ export function toPersonRow(birthday: Birthday, today: Date): PersonRow {
   const isYearKnown: boolean = hasBirthYear(birthday.birthDate);
   const nextBirthday: Date = getNextBirthday(birthday.birthDate, today);
   const age: number = differenceInYears(today, birthDate);
+  const turningAge: number | null = getAgeOnDate(birthday.birthDate, nextBirthday);
 
   return {
     birthday,
     birthDate,
     hasBirthYear: isYearKnown,
-    // A birth date in the future has no meaningful age.
+    // A birth date in the future has no meaningful age, here and in `turningAge`.
     age: isYearKnown && age >= 0 ? age : null,
     nextBirthday,
     daysUntil: differenceInCalendarDays(nextBirthday, today),
+    turningAge: turningAge !== null && turningAge > 0 ? turningAge : null,
   };
 }
 
