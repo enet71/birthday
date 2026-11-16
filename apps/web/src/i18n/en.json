@@ -10,7 +10,7 @@
     "about": "About Birthdly"
   },
   "app": {
-    "description": "Birthdly is a birthday calendar and reminder app. Keep track of friends' and family birthdays, see upcoming ones at a glance, and never miss a celebration."
+    "description": "See whose birthday is this month and what's coming up next. A birthday calendar with reminders for friends and family, so you never miss a celebration."
   },
   "nav": {
     "calendar": "Calendar",
@@ -35,7 +35,7 @@
   "routes": {
     "calendar": {
       "title": "Calendar",
-      "documentTitle": "Birthdly — birthday calendar",
+      "documentTitle": "Birthday Calendar & Reminders · Birthdly",
       "heading": "Birthday calendar"
     },
     "people": {
@@ -49,9 +49,9 @@
     },
     "about": {
       "title": "About",
-      "documentTitle": "Birthday Calendar & Reminder App · Birthdly",
+      "documentTitle": "About Birthdly: Features & FAQ",
       "heading": "Birthday calendar & reminders",
-      "description": "Birthdly is a birthday calendar and reminder app. See upcoming birthdays, keep notes and gift ideas, and sync with Google Calendar. No sign-up needed."
+      "description": "Learn how Birthdly works: upcoming birthdays, notes and gift ideas, reminders and Google Calendar sync. Answers to common questions."
     },
     "privacy": {
       "title": "Privacy Policy",
@@ -63,6 +63,7 @@
     },
     "guides": {
       "title": "Guides",
+      "documentTitle": "Birthday Guides for Google Calendar & Reminders · Birthdly",
       "description": "Step-by-step guides to keeping track of birthdays with Birthdly and Google Calendar."
     },
     "notFound": {

@@ -10,7 +10,7 @@
     "about": "À propos de Birthdly"
   },
   "app": {
-    "description": "Birthdly est un calendrier d'anniversaires avec rappels. Suivez les anniversaires de vos amis et de votre famille, voyez les prochains d'un coup d'œil et ne manquez plus aucune fête."
+    "description": "Voyez qui fête son anniversaire ce mois-ci et qui sera le prochain. Calendrier d'anniversaires avec rappels pour vos amis et votre famille."
   },
   "nav": {
     "calendar": "Calendrier",
@@ -35,7 +35,7 @@
   "routes": {
     "calendar": {
       "title": "Calendrier",
-      "documentTitle": "Birthdly — calendrier d'anniversaires",
+      "documentTitle": "Calendrier et rappels d'anniversaires · Birthdly",
       "heading": "Calendrier d'anniversaires"
     },
     "people": {
@@ -49,9 +49,9 @@
     },
     "about": {
       "title": "À propos",
-      "documentTitle": "Calendrier et rappels d'anniversaires · Birthdly",
+      "documentTitle": "À propos de Birthdly : fonctionnalités et FAQ",
       "heading": "Calendrier et rappels d'anniversaires",
-      "description": "Birthdly est un calendrier d'anniversaires avec rappels. Voyez les prochains anniversaires, gardez des notes et des idées de cadeaux, et synchronisez avec Google Agenda. Sans inscription."
+      "description": "Découvrez comment fonctionne Birthdly : anniversaires à venir, notes et idées de cadeaux, rappels et synchronisation avec Google Agenda. Questions fréquentes."
     },
     "privacy": {
       "title": "Politique de confidentialité",
@@ -63,6 +63,7 @@
     },
     "guides": {
       "title": "Guides",
+      "documentTitle": "Guides d'anniversaires : Google Agenda et rappels",
       "description": "Des guides pas à pas pour suivre les anniversaires avec Birthdly et Google Agenda."
     },
     "notFound": {

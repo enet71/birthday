@@ -2,12 +2,43 @@ import { AngularNodeAppEngine, createNodeRequestHandler, isMainModule, writeResp
 import express from 'express';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { APP_SITE_URL } from './app/app.constants';
 
 const serverDistFolder = dirname(fileURLToPath(import.meta.url));
 const browserDistFolder = resolve(serverDistFolder, '../browser');
+const wwwHostname = `www.${new URL(APP_SITE_URL).hostname}`;
 
 const app = express();
 const angularApp = new AngularNodeAppEngine();
+
+/**
+ * Moves the `www` copy of the site to the main domain, so search engines index one address per page.
+ * Behind the App Platform router the visitor's host may arrive in `X-Forwarded-Host`, so both headers are checked.
+ * The target is fixed, so a forged header can only redirect its own sender to the main domain; `private` keeps shared caches
+ * from serving that answer to everyone else under the main domain's URL.
+ */
+app.use((req, res, next) => {
+  if (![req.get('x-forwarded-host'), req.get('host')].some(isWwwHost)) {
+    next();
+    return;
+  }
+
+  res.set('Cache-Control', 'private');
+
+  // A service worker installed on `www` cannot follow a cross-origin redirect of its manifest and would stay forever;
+  // a missing manifest makes the Angular service worker unregister itself.
+  if (req.path === '/ngsw.json') {
+    res.sendStatus(404);
+    return;
+  }
+
+  res.redirect(301, `${APP_SITE_URL}${req.originalUrl}`);
+});
+
+// `www.birthdly.com:443` and `www.birthdly.com, proxy` → `www.birthdly.com`.
+function isWwwHost(header: string | undefined): boolean {
+  return header?.split(',')[0].trim().split(':')[0].toLowerCase() === wwwHostname;
+}
 
 /**
  * Example Express Rest API endpoints can be defined here.
