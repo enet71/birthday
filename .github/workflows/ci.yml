@@ -28,6 +28,8 @@ jobs:
           --health-retries 10
     env:
       DATABASE_URL: postgresql://postgres:postgres@localhost:5432/postgres
+      # Only the issuer and the key URL are derived from it; no e2e test sends a token.
+      SUPABASE_URL: https://example.supabase.co
     steps:
       - uses: actions/checkout@v7
         with:
