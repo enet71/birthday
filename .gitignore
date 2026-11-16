@@ -55,3 +55,6 @@ vitest.config.*.timestamp*
 
 # Temporary agent task files (task-execution skill)
 .ai/tasks/
+
+# Local environment files
+.env

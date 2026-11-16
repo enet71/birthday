@@ -9,10 +9,7 @@
       "dependsOn": ["build"],
       "cache": true,
       "executor": "@nx/js:prune-lockfile",
-      "outputs": [
-        "{workspaceRoot}/dist/apps/api/package.json",
-        "{workspaceRoot}/dist/apps/api/package-lock.json"
-      ],
+      "outputs": ["{workspaceRoot}/dist/apps/api/package.json", "{workspaceRoot}/dist/apps/api/package-lock.json"],
       "options": {
         "buildTarget": "build"
       }
@@ -49,6 +46,13 @@
         "production": {
           "buildTarget": "api:build:production"
         }
+      }
+    },
+    "docker-build": {
+      "dependsOn": ["prune"],
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "docker build -f apps/api/Dockerfile -t birthday-api:local dist/apps/api"
       }
     }
   }

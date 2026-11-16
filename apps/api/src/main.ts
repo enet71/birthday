@@ -1,33 +1,32 @@
-/**
- * This is not a production server yet!
- * This is only a minimal backend to get started.
- */
-
-import { Logger } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
+import { Logger } from 'nestjs-pino';
 import { AppModule } from './app/app.module';
+import { Env } from './app/config';
 
-async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
-  const globalPrefix = 'api';
-  app.setGlobalPrefix(globalPrefix);
-  const port = process.env.PORT || 3000;
+async function bootstrap(): Promise<void> {
+  const app = await NestFactory.create(AppModule, { bufferLogs: true });
+  const logger = app.get(Logger);
+  const port = app.get(ConfigService<Env, true>).get('PORT', { infer: true });
+
+  app.useLogger(logger);
+  app.setGlobalPrefix('api');
+  // Closes the database pool when Docker stops the container.
+  app.enableShutdownHooks();
   await app.listen(port);
+
   // Set when Nx waits for this server to be ready
-  if (process.env.NX_READY_SIGNAL_SOCKET) {
+  if (process.env['NX_READY_SIGNAL_SOCKET']) {
     try {
       // Function keeps TypeScript and bundlers from rewriting or bundling the import
-      const load = new Function('s', 'return import(s)') as (
-        s: string,
-      ) => Promise<{ emitReadySignal(server: unknown): boolean }>;
+      const load = new Function('s', 'return import(s)') as (s: string) => Promise<{ emitReadySignal(server: unknown): boolean }>;
       (await load('@nx/js/ready-signal')).emitReadySignal(app.getHttpServer());
     } catch {
       // @nx/js isn't installed
     }
   }
-  Logger.log(
-    `🚀 Application is running on: http://localhost:${port}/${globalPrefix}`,
-  );
+
+  logger.log(`The API is listening on http://localhost:${port}/api`);
 }
 
 bootstrap();
