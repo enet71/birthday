@@ -5,10 +5,11 @@ import { MatProgressBar } from '@angular/material/progress-bar';
 import { AppLayoutFooterComponent } from '@birthday/web-layout-ui';
 import { injectState, ReadonlyState } from '@birthday/web-shared-data-access';
 import { CalendarController, CalendarState } from '../../state';
-import { CalendarView } from '../../types';
+import { CalendarView, GoogleCalendarPrompt } from '../../types';
 import { CalendarMonthComponent } from '../calendar-month';
 import { CalendarToolbarComponent } from '../calendar-toolbar';
 import { CalendarYearComponent } from '../calendar-year';
+import { GoogleCalendarPromptComponent } from '../google-calendar-prompt';
 import { NextBirthdaysComponent } from '../next-birthdays';
 import { SignInPromptComponent } from '../sign-in-prompt';
 import { TranslocoPipe } from '@jsverse/transloco';
@@ -24,6 +25,7 @@ import { TranslocoPipe } from '@jsverse/transloco';
     CalendarMonthComponent,
     CalendarToolbarComponent,
     CalendarYearComponent,
+    GoogleCalendarPromptComponent,
     NextBirthdaysComponent,
     SignInPromptComponent,
   ],
@@ -45,6 +47,10 @@ export class CalendarPageComponent {
 
   protected get isSignInPromptVisible(): Signal<boolean> {
     return this.calendarState.isSignInPromptVisible;
+  }
+
+  protected get googleCalendarPrompt(): Signal<GoogleCalendarPrompt | null> {
+    return this.calendarState.googleCalendarPrompt;
   }
 
   protected openAddBirthdayDialog(): void {

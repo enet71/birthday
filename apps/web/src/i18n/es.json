@@ -6,8 +6,7 @@
     "language": {
       "title": "Idioma",
       "label": "Idioma del sitio"
-    },
-    "about": "Acerca de Birthdly"
+    }
   },
   "app": {
     "description": "Mira quién cumple años este mes y quién es el siguiente. Calendario de cumpleaños con recordatorios para amigos y familia."
@@ -134,7 +133,11 @@
     "noBirthdaysTitle": "Aún no hay cumpleaños",
     "noBirthdaysText": "Añade el primer cumpleaños para ver quién es el próximo en cumplir años.",
     "signInPromptTitle": "Tus cumpleaños solo están guardados en este navegador.",
-    "signInPromptText": "Inicia sesión para guardarlos en tu cuenta y usarlos en cualquier dispositivo."
+    "signInPromptText": "Inicia sesión para guardarlos en tu cuenta y usarlos en cualquier dispositivo.",
+    "googleCalendarPromptTitle": "Sincroniza con Google Calendar",
+    "googleCalendarPromptText": "Ve tus cumpleaños en Google Calendar y trae los cumpleaños de tus contactos de Google.",
+    "googleCalendarRevokedTitle": "Se perdió el acceso a Google Calendar",
+    "googleCalendarRevokedText": "Google ya no permite que Birthdly use tu calendario. Vuelve a conectarlo para seguir sincronizando."
   },
   "relationship": {
     "family": "Familia",

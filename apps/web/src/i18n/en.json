@@ -6,8 +6,7 @@
     "language": {
       "title": "Language",
       "label": "Site language"
-    },
-    "about": "About Birthdly"
+    }
   },
   "app": {
     "description": "See whose birthday is this month and what's coming up next. A birthday calendar with reminders for friends and family, so you never miss a celebration."
@@ -134,7 +133,11 @@
     "noBirthdaysTitle": "No birthdays yet",
     "noBirthdaysText": "Add the first birthday to see who celebrates next.",
     "signInPromptTitle": "Your birthdays are saved only in this browser.",
-    "signInPromptText": "Sign in to save them to your account and use them on any device."
+    "signInPromptText": "Sign in to save them to your account and use them on any device.",
+    "googleCalendarPromptTitle": "Sync with Google Calendar",
+    "googleCalendarPromptText": "See your birthdays in Google Calendar and bring in birthdays from your Google contacts.",
+    "googleCalendarRevokedTitle": "Google Calendar access lost",
+    "googleCalendarRevokedText": "Google no longer lets Birthdly use your calendar. Connect again to resume syncing."
   },
   "relationship": {
     "family": "Family",

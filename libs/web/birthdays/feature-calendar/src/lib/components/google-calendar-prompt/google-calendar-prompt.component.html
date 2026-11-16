@@ -1,0 +1,13 @@
+@let isRevoked = prompt() === 'revoked';
+<div class="message">
+  <mat-icon class="message__icon" aria-hidden="true">{{ isRevoked ? 'sync_problem' : 'event_repeat' }}</mat-icon>
+  <p class="message__text">
+    <strong class="message__title">
+      {{ (isRevoked ? 'calendar.googleCalendarRevokedTitle' : 'calendar.googleCalendarPromptTitle') | transloco }}
+    </strong>
+    {{ (isRevoked ? 'calendar.googleCalendarRevokedText' : 'calendar.googleCalendarPromptText') | transloco }}
+  </p>
+</div>
+<button matButton="outlined" type="button" disabledInteractive [disabled]="isConnecting()" (click)="connect()">
+  {{ (isRevoked ? 'googleCalendar.reconnect' : 'googleCalendar.connect') | transloco }}
+</button>

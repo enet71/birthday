@@ -14,6 +14,8 @@
   <div class="next-birthdays__bottom">
     @if (isSignInPromptVisible()) {
       <ui-sign-in-prompt></ui-sign-in-prompt>
+    } @else if (googleCalendarPrompt()) {
+      <ui-google-calendar-prompt></ui-google-calendar-prompt>
     }
     <!-- Google OAuth branding requires the app name and the legal links on the home page. -->
     <footer class="next-birthdays__footer">

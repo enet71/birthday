@@ -6,8 +6,7 @@
     "language": {
       "title": "Langue",
       "label": "Langue du site"
-    },
-    "about": "À propos de Birthdly"
+    }
   },
   "app": {
     "description": "Voyez qui fête son anniversaire ce mois-ci et qui sera le prochain. Calendrier d'anniversaires avec rappels pour vos amis et votre famille."
@@ -134,7 +133,11 @@
     "noBirthdaysTitle": "Aucun anniversaire pour l'instant",
     "noBirthdaysText": "Ajoutez le premier anniversaire pour voir à qui est le prochain.",
     "signInPromptTitle": "Vos anniversaires sont enregistrés uniquement dans ce navigateur.",
-    "signInPromptText": "Connectez-vous pour les enregistrer dans votre compte et les utiliser sur tous vos appareils."
+    "signInPromptText": "Connectez-vous pour les enregistrer dans votre compte et les utiliser sur tous vos appareils.",
+    "googleCalendarPromptTitle": "Synchronisez avec Google Agenda",
+    "googleCalendarPromptText": "Retrouvez vos anniversaires dans Google Agenda et importez ceux de vos contacts Google.",
+    "googleCalendarRevokedTitle": "Accès à Google Agenda perdu",
+    "googleCalendarRevokedText": "Google n'autorise plus Birthdly à utiliser votre agenda. Reconnectez-le pour reprendre la synchronisation."
   },
   "relationship": {
     "family": "Famille",
