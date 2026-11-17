@@ -90,18 +90,19 @@
         "watch": false
       }
     },
-    "serve-static": {
+    "serve-ssr": {
       "continuous": true,
       "readyWhen": {
         "signal": true
       },
       "dependsOn": ["build"],
-      "executor": "@nx/web:file-server",
+      "executor": "nx:run-commands",
       "options": {
-        "buildTarget": "web:build",
-        "port": 4200,
-        "staticFilePath": "dist/apps/web/browser",
-        "spa": true
+        "command": "node dist/apps/web/server/server.mjs",
+        "env": {
+          "PORT": "4200",
+          "NG_ALLOWED_HOSTS": "localhost"
+        }
       }
     }
   }

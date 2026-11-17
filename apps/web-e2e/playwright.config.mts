@@ -32,7 +32,8 @@ export default defineConfig({
     trace: 'on-first-retry',
   },
   webServer: {
-    command: isCI ? 'npx nx run web:serve-static' : 'npx nx run web:serve',
+    // CI tests the production build through the SSR server, as it runs in production.
+    command: isCI ? 'npx nx run web:serve-ssr' : 'npx nx run web:serve',
     url: getReadyUrl('http://localhost:4200'),
     reuseExistingServer: true,
     cwd: workspaceRoot,
