@@ -1,15 +1,19 @@
 import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
+import { NestExpressApplication } from '@nestjs/platform-express';
 import { Logger } from 'nestjs-pino';
 import { AppModule } from './app/app.module';
 import { Env } from './app/config';
 
 async function bootstrap(): Promise<void> {
-  const app = await NestFactory.create(AppModule, { bufferLogs: true });
+  const app = await NestFactory.create<NestExpressApplication>(AppModule, { bufferLogs: true });
   const logger = app.get(Logger);
   const port = app.get(ConfigService<Env, true>).get('PORT', { infer: true });
 
   app.useLogger(logger);
+  // In production the reverse proxy on the private Docker network sets `X-Forwarded-For` to the visitor's address,
+  // so `req.ip` is the visitor rather than the proxy.
+  app.set('trust proxy', 'loopback, uniquelocal');
   app.setGlobalPrefix('api');
   // Closes the database pool when Docker stops the container.
   app.enableShutdownHooks();

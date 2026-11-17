@@ -2,6 +2,9 @@
 # Build with `npx nx run api:docker-build`.
 FROM node:24-alpine
 
+# Links the GHCR package to the repository.
+LABEL org.opencontainers.image.source=https://github.com/enet71/birthday
+
 ENV NODE_ENV=production
 WORKDIR /app
 

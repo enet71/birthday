@@ -1,0 +1,48 @@
+# The production stack on the droplet, in /opt/birthdly. `deploy.sh` runs it; see README.md.
+name: birthdly
+
+x-logging: &logging
+  driver: json-file
+  options:
+    max-size: 10m
+    max-file: '5'
+
+services:
+  api:
+    # `deploy.sh` sets the tag: the commit SHA of the deployed build. API_IMAGE is only overridden to test locally.
+    image: ${API_IMAGE:-ghcr.io/enet71/birthday-api}:${API_TAG:?API_TAG is not set}
+    env_file: .env
+    environment:
+      NODE_ENV: production
+    volumes:
+      - ./certs/supabase-ca.crt:/certs/supabase-ca.crt:ro
+    restart: unless-stopped
+    healthcheck:
+      test: ['CMD-SHELL', 'wget -qO- http://127.0.0.1:3000/api/health > /dev/null || exit 1']
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 30s
+      # Probes every 2 seconds while starting, so `docker compose up --wait` returns soon after the API is ready.
+      start_interval: 2s
+    logging: *logging
+
+  caddy:
+    image: caddy:2.11-alpine
+    ports:
+      - '80:80'
+      - '443:443'
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - ./certs:/certs:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    depends_on:
+      api:
+        condition: service_healthy
+    restart: unless-stopped
+    logging: *logging
+
+volumes:
+  caddy_data:
+  caddy_config:

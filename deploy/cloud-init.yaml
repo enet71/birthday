@@ -1,0 +1,53 @@
+#cloud-config
+# First-boot setup of the droplet. README.md fills in the two keys before passing it as user data:
+#   ${ADMIN_SSH_KEY}   the developer's public key; `ops` may use sudo and read /opt/birthdly (Ubuntu already has an `admin` group, so not `admin`)
+#   ${DEPLOY_SSH_KEY}  the CI deploy key; `deploy` runs the stack. Docker access is root-equivalent, so this key must be
+#                      guarded like a root key.
+package_update: true
+package_upgrade: true
+packages:
+  - ca-certificates
+  - curl
+  - fail2ban
+  - unattended-upgrades
+
+# Password logins stay off even when DigitalOcean sets a root password.
+ssh_pwauth: false
+disable_root: true
+
+users:
+  - name: deploy
+    shell: /bin/bash
+    ssh_authorized_keys:
+      - ${DEPLOY_SSH_KEY}
+  - name: ops
+    groups: [sudo]
+    shell: /bin/bash
+    sudo: 'ALL=(ALL) NOPASSWD:ALL'
+    ssh_authorized_keys:
+      - ${ADMIN_SSH_KEY}
+
+write_files:
+  # sshd keeps the first value it reads, and drop-ins are read in name order, so this file goes before cloud-init's.
+  - path: /etc/ssh/sshd_config.d/00-hardening.conf
+    content: |
+      PermitRootLogin no
+      PasswordAuthentication no
+      KbdInteractiveAuthentication no
+  - path: /etc/apt/apt.conf.d/20auto-upgrades
+    content: |
+      APT::Periodic::Update-Package-Lists "1";
+      APT::Periodic::Unattended-Upgrade "1";
+
+runcmd:
+  # Docker Engine from Docker's own repository.
+  - curl -fsSL https://get.docker.com | sh
+  - usermod -aG docker deploy
+  - usermod -aG deploy ops
+  - install -d -o deploy -g deploy -m 750 /opt/birthdly /opt/birthdly/certs
+  # 2 GB of swap absorbs short memory peaks, such as unpacking an image.
+  - fallocate -l 2G /swapfile && chmod 600 /swapfile && mkswap /swapfile && swapon /swapfile
+  - echo '/swapfile none swap sw 0 0' >> /etc/fstab
+  - sysctl -w vm.swappiness=10 && echo 'vm.swappiness=10' > /etc/sysctl.d/99-swappiness.conf
+  - systemctl enable --now fail2ban
+  - systemctl restart ssh

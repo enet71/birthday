@@ -1,0 +1,168 @@
+name: Deploy API
+
+on:
+  # After CI passes for a push to main.
+  workflow_run:
+    workflows: [CI]
+    types: [completed]
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      ref:
+        description: Commit, branch or tag to deploy
+        default: main
+      force:
+        description: Deploy even if neither the API nor deploy/ changed, or the commit is older than the deployed one
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+  packages: write
+
+# One deployment at a time; a newer one waits instead of cancelling a deployment halfway.
+concurrency:
+  group: deploy-api
+  cancel-in-progress: false
+
+env:
+  IMAGE: ghcr.io/enet71/birthday-api
+  API_URL: https://api.birthdly.com
+  SERVER_DIR: /opt/birthdly
+
+# The deploy key is root-equivalent on the server (the `deploy` user runs Docker). It exists on the runner only inside
+# the steps that use SSH, never while dependencies or build tools run.
+jobs:
+  deploy:
+    if: github.event_name == 'workflow_dispatch' || (github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.event == 'push')
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: ${{ github.event.workflow_run.head_sha || inputs.ref }}
+          filter: tree:0
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Read the deployed commit
+        id: server
+        env:
+          DEPLOY_HOST: ${{ secrets.DEPLOY_HOST }}
+          DEPLOY_SSH_KEY: ${{ secrets.DEPLOY_SSH_KEY }}
+          DEPLOY_KNOWN_HOSTS: ${{ secrets.DEPLOY_KNOWN_HOSTS }}
+        run: |
+          bash .github/scripts/ssh-key.sh install
+          trap 'bash .github/scripts/ssh-key.sh remove' EXIT
+          # An SSH failure fails the step; only a missing file means that nothing is deployed yet.
+          deployed="$(ssh server "if [ -f $SERVER_DIR/api.tag ]; then cat $SERVER_DIR/api.tag; fi")"
+          echo "deployed=$deployed" >> "$GITHUB_OUTPUT"
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 24
+          cache: 'npm'
+
+      - run: npm ci --no-audit --no-fund
+
+      - name: Decide whether to deploy
+        id: decide
+        env:
+          FORCE: ${{ inputs.force }}
+          DEPLOYED: ${{ steps.server.outputs.deployed }}
+        run: |
+          sha="$(git rev-parse HEAD)"
+          echo "sha=$sha" >> "$GITHUB_OUTPUT"
+          echo "Deployed: ${DEPLOYED:-none}, candidate: $sha"
+
+          skip() {
+            echo "deploy=false" >> "$GITHUB_OUTPUT"
+            echo "Not deploying: $1."
+            exit 0
+          }
+
+          if [ "$FORCE" = "true" ]; then
+            reason="forced"
+          elif [ -z "$DEPLOYED" ] || ! git cat-file -e "$DEPLOYED^{commit}" 2>/dev/null; then
+            reason="first deployment, or the deployed commit is unknown"
+          elif [ "$DEPLOYED" = "$sha" ]; then
+            skip "$sha is already deployed"
+          elif git merge-base --is-ancestor "$sha" "$DEPLOYED"; then
+            # CI runs can finish out of order; an older commit must not replace a newer one.
+            skip "$sha is older than the deployed $DEPLOYED"
+          elif ! git diff --quiet "$DEPLOYED" "$sha" -- deploy/; then
+            reason="deploy/ changed"
+          else
+            affected="$(npx nx show projects --affected --base="$DEPLOYED" --head="$sha" --json)"
+            if echo "$affected" | jq -e 'index("api")' > /dev/null; then
+              reason="the API changed"
+            else
+              skip "neither the API nor deploy/ changed since $DEPLOYED"
+            fi
+          fi
+
+          echo "deploy=true" >> "$GITHUB_OUTPUT"
+          echo "Deploying: $reason."
+
+      - name: Build the image
+        if: steps.decide.outputs.deploy == 'true'
+        env:
+          SHA: ${{ steps.decide.outputs.sha }}
+        run: |
+          npx nx run api:prune
+          docker build -f apps/api/Dockerfile -t "$IMAGE:$SHA" dist/apps/api
+
+      - name: Push the image
+        if: steps.decide.outputs.deploy == 'true'
+        env:
+          SHA: ${{ steps.decide.outputs.sha }}
+          TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ACTOR: ${{ github.actor }}
+        run: |
+          echo "$TOKEN" | docker login ghcr.io -u "$ACTOR" --password-stdin
+          trap 'docker logout ghcr.io' EXIT
+          docker push "$IMAGE:$SHA"
+
+      - name: Deploy
+        if: steps.decide.outputs.deploy == 'true'
+        env:
+          SHA: ${{ steps.decide.outputs.sha }}
+          TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ACTOR: ${{ github.actor }}
+          DEPLOY_HOST: ${{ secrets.DEPLOY_HOST }}
+          DEPLOY_SSH_KEY: ${{ secrets.DEPLOY_SSH_KEY }}
+          DEPLOY_KNOWN_HOSTS: ${{ secrets.DEPLOY_KNOWN_HOSTS }}
+        run: |
+          bash .github/scripts/ssh-key.sh install
+          trap 'bash .github/scripts/ssh-key.sh remove' EXIT
+          ssh server "rm -rf $SERVER_DIR/incoming && mkdir $SERVER_DIR/incoming"
+          scp deploy/compose.yml deploy/Caddyfile deploy/deploy.sh "server:$SERVER_DIR/incoming/"
+          # The job's token lets the server pull a private image; it expires with the job, and the server logs out.
+          echo "$TOKEN" | ssh server "docker login ghcr.io -u '$ACTOR' --password-stdin > /dev/null"
+          status=0
+          ssh server "sh $SERVER_DIR/incoming/deploy.sh $SHA" || status=$?
+          ssh server "docker logout ghcr.io > /dev/null"
+          exit "$status"
+
+      - name: Smoke test through Cloudflare
+        id: smoke
+        if: steps.decide.outputs.deploy == 'true'
+        run: |
+          health="$(curl -s -o /dev/null -w '%{http_code}' --retry 5 --retry-delay 3 --retry-all-errors "$API_URL/api/health")"
+          me="$(curl -s -o /dev/null -w '%{http_code}' "$API_URL/api/me")"
+          echo "GET /api/health → $health, GET /api/me without a token → $me"
+          [ "$health" = "200" ] && [ "$me" = "401" ]
+
+      # deploy.sh already returns to the running deployment when the API does not become healthy. This covers a failure
+      # only visible from outside, such as in Caddy or Cloudflare. A redeployment of the running commit has nothing
+      # newer to leave, so it is not rolled back.
+      - name: Roll back after a failed smoke test
+        if: failure() && steps.smoke.outcome == 'failure' && steps.server.outputs.deployed != steps.decide.outputs.sha
+        env:
+          DEPLOY_HOST: ${{ secrets.DEPLOY_HOST }}
+          DEPLOY_SSH_KEY: ${{ secrets.DEPLOY_SSH_KEY }}
+          DEPLOY_KNOWN_HOSTS: ${{ secrets.DEPLOY_KNOWN_HOSTS }}
+        run: |
+          bash .github/scripts/ssh-key.sh install
+          trap 'bash .github/scripts/ssh-key.sh remove' EXIT
+          ssh server "sh $SERVER_DIR/deploy.sh --rollback"

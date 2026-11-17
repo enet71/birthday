@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { AuthModule } from '@birthday/api-auth';
 import { DatabaseModule } from '@birthday/api-database';
+import type { Request } from 'express';
 import { LoggerModule } from 'nestjs-pino';
 import { Env, validateEnv } from './config';
 import { HealthModule } from './health/health.module';
@@ -23,6 +24,8 @@ import { HealthModule } from './health/health.module';
           transport: config.get('NODE_ENV', { infer: true }) === 'development' ? { target: 'pino-pretty' } : undefined,
           // Docker probes the health check every 30 seconds.
           autoLogging: { ignore: (req) => req.url === '/api/health' },
+          // The socket address is the reverse proxy; Express resolves the visitor's from `X-Forwarded-For`.
+          customProps: (req) => ({ clientIp: (req as Request).ip }),
           redact: ['req.headers.authorization', 'req.headers.cookie'],
         },
       }),
