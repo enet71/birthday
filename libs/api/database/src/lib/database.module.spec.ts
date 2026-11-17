@@ -32,7 +32,7 @@ describe('DatabaseModule', () => {
     vi.spyOn(Logger.prototype, 'error').mockImplementation(() => undefined);
 
     moduleRef = await Test.createTestingModule({
-      imports: [DatabaseModule.forRoot({ connectionString })],
+      imports: [DatabaseModule.forRoot({ connectionString, migrationsFolder: 'migrations' })],
     }).compile();
 
     pool = moduleRef.get<InstanceType<typeof FakePool>>(DATABASE_POOL);
