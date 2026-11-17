@@ -82,6 +82,22 @@ jobs:
       - run: npx nx run-many -t lint test build e2e
       # Builds the images without publishing them, so a broken Dockerfile fails the PR.
       - run: npx nx run-many -t docker-build -p api web
+      # The image installs only the dependencies listed in apps/api/package.json, so it must start on its own: a missing
+      # one shows up only here. It uses the job's Postgres and applies the migrations.
+      - name: Start the API image
+        run: |
+          docker run -d --name api-image --network host -e PORT=3100 -e DATABASE_URL -e APP_ORIGIN -e GOOGLE_CLIENT_ID \
+            -e GOOGLE_CLIENT_SECRET -e AUTH_SECRET birthday-api:local
+          for _ in $(seq 1 30); do
+            if [ "$(curl -s -o /dev/null -w '%{http_code}' http://localhost:3100/api/health || true)" = "200" ]; then
+              echo "The API image is healthy."
+              docker rm -f api-image > /dev/null
+              exit 0
+            fi
+            sleep 2
+          done
+          docker logs api-image
+          exit 1
       # Nx Cloud recommends fixes for failures to help you get CI green faster. Learn more: https://nx.dev/ci/features/self-healing-ci
       - run: npx nx fix-ci
         if: always()
