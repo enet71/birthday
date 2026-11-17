@@ -1,7 +1,8 @@
 import { Translation } from '@jsverse/transloco';
-import { APP_LOCALES } from '../constants';
+import type { AppLocale } from '@birthday/shared-models';
 
-export type AppLocale = (typeof APP_LOCALES)[number];
+// Shared with the API, which validates the language of notifications.
+export type { AppLocale };
 
 export type DateInput = Date | string | number;
 

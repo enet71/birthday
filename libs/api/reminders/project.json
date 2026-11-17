@@ -1,0 +1,10 @@
+{
+  "name": "api-reminders",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/api/reminders/src",
+  "projectType": "library",
+  "tags": ["platform:api", "type:feature"],
+  "targets": {
+    "typecheck": {}
+  }
+}

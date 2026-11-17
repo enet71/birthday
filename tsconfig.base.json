@@ -38,7 +38,8 @@
       "@birthday/web-shared-i18n": ["./libs/web/shared/i18n/src/index.ts"],
       "@birthday/api-database": ["./libs/api/database/src/index.ts"],
       "@birthday/api-auth": ["./libs/api/auth/src/index.ts"],
-      "@birthday/api-birthdays": ["./libs/api/birthdays/src/index.ts"]
+      "@birthday/api-birthdays": ["./libs/api/birthdays/src/index.ts"],
+      "@birthday/api-reminders": ["./libs/api/reminders/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

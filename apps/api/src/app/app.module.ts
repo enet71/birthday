@@ -3,6 +3,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { APP_FILTER } from '@nestjs/core';
 import { AuthModule } from '@birthday/api-auth';
 import { BirthdaysModule } from '@birthday/api-birthdays';
+import { RemindersModule } from '@birthday/api-reminders';
 import { DatabaseModule } from '@birthday/api-database';
 import type { Request } from 'express';
 import { join } from 'node:path';
@@ -54,6 +55,7 @@ import { HealthModule } from './health/health.module';
     }),
     HealthModule,
     BirthdaysModule,
+    RemindersModule,
   ],
   providers: [{ provide: APP_FILTER, useClass: ZodExceptionFilter }],
 })

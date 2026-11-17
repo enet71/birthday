@@ -1,4 +1,7 @@
-export const APP_LOCALES = ['en', 'es', 'de', 'fr', 'ru', 'uk'] as const;
+import { APP_LOCALES } from '@birthday/shared-models';
+
+// Shared with the API, which validates the language of notifications.
+export { APP_LOCALES };
 
 export const APP_DEFAULT_LOCALE = 'en';
 
