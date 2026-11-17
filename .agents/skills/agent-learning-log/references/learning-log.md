@@ -68,6 +68,16 @@ Add new entries under the category that best matches their purpose, keeping newe
 
 ### Workflow and Tooling
 
+## 2026-11-17 - List every API runtime dependency in apps/api/package.json
+
+- Type: error
+- Context: Adding an npm package that `apps/api` or a `libs/api/*` library imports at runtime (for example `jose`, `openid-client`, `cookie`).
+- Incorrect behavior: Installing the package only at the workspace root. The production build (`nx run api:prune`, `generatePackageJson`) did not pick it up, the Docker image installed only the dependencies listed in `apps/api/package.json`, the API failed with `Cannot find module`, and the deployment rolled back. It happened twice (step 0 with `jose`, subtask 2 with `openid-client`).
+- Preferred behavior: Add the package with the same exact version to both the root `package.json` and the `dependencies` of `apps/api/package.json`, then build the image (`npx nx run api:docker-build --skip-nx-cache`) and start it to confirm the module resolves. CI's "Start the API image" step now catches a miss.
+- Generalized rule: A runtime dependency of the API belongs in `apps/api/package.json` too; verify by starting the built image, not only by building it.
+- Trigger cues: npm install, new dependency, apps/api, libs/api, Docker image, prune, generatePackageJson, Cannot find module, MODULE_NOT_FOUND, deploy rolled back
+- Status: active
+
 ## 2026-11-17 - Do not poll SSH logins against a fresh server
 
 - Type: error
