@@ -1,11 +1,14 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { APP_FILTER } from '@nestjs/core';
 import { AuthModule } from '@birthday/api-auth';
+import { BirthdaysModule } from '@birthday/api-birthdays';
 import { DatabaseModule } from '@birthday/api-database';
 import type { Request } from 'express';
 import { join } from 'node:path';
 import { LoggerModule } from 'nestjs-pino';
 import { Env, validateEnv } from './config';
+import { ZodExceptionFilter } from './filters';
 import { HealthModule } from './health/health.module';
 
 @Module({
@@ -50,6 +53,8 @@ import { HealthModule } from './health/health.module';
       }),
     }),
     HealthModule,
+    BirthdaysModule,
   ],
+  providers: [{ provide: APP_FILTER, useClass: ZodExceptionFilter }],
 })
 export class AppModule {}
