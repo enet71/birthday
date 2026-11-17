@@ -13,7 +13,7 @@ const angularApp = new AngularNodeAppEngine();
 
 /**
  * Moves the `www` copy of the site to the main domain, so search engines index one address per page.
- * Behind the App Platform router the visitor's host may arrive in `X-Forwarded-Host`, so both headers are checked.
+ * Behind a reverse proxy the visitor's host may arrive in `X-Forwarded-Host`, so both headers are checked.
  * The target is fixed, so a forged header can only redirect its own sender to the main domain; `private` keeps shared caches
  * from serving that answer to everyone else under the main domain's URL.
  */

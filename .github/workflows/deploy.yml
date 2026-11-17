@@ -25,6 +25,12 @@ concurrency:
   group: deploy
   cancel-in-progress: false
 
+# `shell: bash` runs every step with `-eo pipefail`; GitHub's implicit default has no pipefail, which would hide a
+# failing `ssh … | tee` in the Deploy step.
+defaults:
+  run:
+    shell: bash
+
 env:
   API_IMAGE: ghcr.io/enet71/birthday-api
   WEB_IMAGE: ghcr.io/enet71/birthday-web
@@ -177,7 +183,7 @@ jobs:
           echo "$TOKEN" | ssh server "docker login ghcr.io -u '$ACTOR' --password-stdin > /dev/null"
           status=0
           ssh server "sh $SERVER_DIR/incoming/deploy.sh $release" | tee deploy.log || status=$?
-          ssh server "docker logout ghcr.io > /dev/null"
+          ssh server "docker logout ghcr.io > /dev/null" || echo "Logging out of ghcr.io on the server failed" >&2
           # Only a release that replaced the previous one can be rolled back after a failed smoke test.
           if grep -qx 'Replaced the previous release' deploy.log; then
             echo "replaced_previous=true" >> "$GITHUB_OUTPUT"
@@ -188,12 +194,31 @@ jobs:
         id: smoke
         if: steps.decide.outputs.deploy == 'true'
         run: |
-          health="$(curl -s -o /dev/null -w '%{http_code}' --retry 5 --retry-delay 3 --retry-all-errors "$API_URL/api/health")"
-          me="$(curl -s -o /dev/null -w '%{http_code}' "$API_URL/api/me")"
-          home="$(curl -s -w '\n%{http_code}' --retry 5 --retry-delay 3 --retry-all-errors "$SITE_URL/")"
-          home_status="$(echo "$home" | tail -n 1)"
-          echo "API: /api/health → $health, /api/me without a token → $me. Site: / → $home_status"
-          [ "$health" = "200" ] && [ "$me" = "401" ] && [ "$home_status" = "200" ] && echo "$home" | grep -q '<title>[^<]*Birthdly'
+          failed=0
+          # Retries connection errors, 408, 429 and 5xx (not the expected 4xx answers); a stalled origin fails within 20 s.
+          curl_retry=(--retry 5 --retry-delay 3 --retry-all-errors --max-time 20)
+          # Prints the status of a URL and fails the step at the end when it is not the expected one. `|| true` keeps a
+          # connection error (status 000) from stopping the step before every check is printed.
+          expect() {
+            status="$(curl -s -o /dev/null -w '%{http_code}' "${curl_retry[@]}" "$2" || true)"
+            echo "$2 → $status (expected $1)"
+            if [ "$status" != "$1" ]; then failed=1; fi
+          }
+
+          expect 200 "$SITE_URL/api/health"
+          expect 401 "$SITE_URL/api/me"
+          expect 200 "$API_URL/api/health"
+          expect 404 "$SITE_URL/this-page-does-not-exist"
+
+          home="$(curl -s "${curl_retry[@]}" "$SITE_URL/" || true)"
+          # A here-string, not a pipe: under pipefail, `grep -q` exiting early would fail the `echo` with SIGPIPE.
+          if grep -q '<title>[^<]*Birthdly' <<< "$home"; then echo "$SITE_URL/ renders the app"; else echo "$SITE_URL/ does not render the app"; failed=1; fi
+
+          www="$(curl -s -o /dev/null -w '%{http_code} %{redirect_url}' "${curl_retry[@]}" "https://www.birthdly.com/about" || true)"
+          echo "https://www.birthdly.com/about → $www"
+          if [ "$www" != "301 $SITE_URL/about" ]; then failed=1; fi
+
+          exit "$failed"
 
       # deploy.sh already returns to the running release when it does not become healthy. This covers a failure only
       # visible from outside, such as in Caddy or Cloudflare. A redeployment of the running release has nothing to

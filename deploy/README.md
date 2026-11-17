@@ -115,8 +115,10 @@ doctl compute firewall create --name birthdly-web --tag-names birthdly \
 1. **DNS → Records:** `A @`, `A www` and `A api`, each `<droplet IP>` and Proxied (orange cloud).
 2. **SSL/TLS → Origin Server → Create certificate:** RSA or ECC, hostnames `birthdly.com, *.birthdly.com`, 15 years.
    Save the certificate as `origin.pem` and the key as `origin-key.pem`; Cloudflare shows the key only once.
-3. **Rules → Configuration Rules → Create:** when Hostname is in `birthdly.com`, `www.birthdly.com`,
-   `api.birthdly.com`, set SSL to **Full (strict)**.
+3. **SSL/TLS → Overview → Configure:** **Full (Strict)**, not Automatic: Cloudflare then always validates the Origin
+   CA certificate instead of picking a mode from occasional scans.
+4. **SSL/TLS → Edge Certificates → Always Use HTTPS:** On. In Full (Strict) mode Cloudflare reaches the server only over
+   HTTPS, so the server never sees an `http://` request and only Cloudflare can redirect it.
 
 ### 5. Server files
 

@@ -180,7 +180,8 @@ if start release.env.new; then
   fi
   mv release.env.new release.env
   rm -rf .running incoming
-  prune_images
+  # The release is live; failing here would make the workflow skip its smoke test and rollback.
+  prune_images || echo "Could not remove old images" >&2
   echo "Deployed $(release_value COMMIT release.env)"
   exit 0
 fi
