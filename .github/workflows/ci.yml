@@ -33,6 +33,8 @@ jobs:
       GOOGLE_CLIENT_ID: e2e-client.apps.googleusercontent.com
       GOOGLE_CLIENT_SECRET: e2e-client-secret
       AUTH_SECRET: e2e-auth-secret-that-is-at-least-32-characters
+      GOOGLE_TOKEN_ENCRYPTION_KEY: 0000000000000000000000000000000000000000000000000000000000000000
+      GOOGLE_OAUTH_STATE_SECRET: e2e-oauth-state-secret-that-is-at-least-32-characters
     steps:
       - uses: actions/checkout@v7
         with:
@@ -87,7 +89,7 @@ jobs:
       - name: Start the API image
         run: |
           docker run -d --name api-image --network host -e PORT=3100 -e DATABASE_URL -e APP_ORIGIN -e GOOGLE_CLIENT_ID \
-            -e GOOGLE_CLIENT_SECRET -e AUTH_SECRET birthday-api:local
+            -e GOOGLE_CLIENT_SECRET -e AUTH_SECRET -e GOOGLE_TOKEN_ENCRYPTION_KEY -e GOOGLE_OAUTH_STATE_SECRET birthday-api:local
           for _ in $(seq 1 30); do
             if [ "$(curl -s -o /dev/null -w '%{http_code}' http://localhost:3100/api/health || true)" = "200" ]; then
               echo "The API image is healthy."

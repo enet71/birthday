@@ -127,6 +127,9 @@ Google Cloud Console → APIs & Services → Credentials → the OAuth client: a
 `https://birthdly.com/api/auth/google/callback` to the authorized redirect URIs, and keep its client ID and secret for
 `.env` (`GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`).
 
+The Google Calendar sync uses the same client: add `https://birthdly.com/settings/google-calendar` to the authorized
+redirect URIs too, and enable the Google Calendar API and the People API in its project (APIs & Services → Library).
+
 ### 6. Server files
 
 ```bash

@@ -11,6 +11,8 @@ export const googleCalendarConnections = pgTable(
     status: text('status', { enum: ['connected', 'revoked', 'disconnected'] }).notNull(),
     connectedAt: timestamp('connected_at', { withTimezone: true }).notNull().defaultNow(),
     lastSyncedAt: timestamp('last_synced_at', { withTimezone: true }),
+    // Google's refresh token, encrypted by the API (AES-256-GCM); `null` after a disconnect.
+    refreshTokenEncrypted: text('refresh_token_encrypted'),
     // These default to `-infinity`, which a JavaScript `Date` cannot hold, so they are read as strings.
     lastPulledAt: timestamp('last_pulled_at', { withTimezone: true, mode: 'string' })
       .notNull()

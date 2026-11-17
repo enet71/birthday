@@ -1,0 +1,10 @@
+{
+  "name": "api-jobs",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/api/jobs/src",
+  "projectType": "library",
+  "tags": ["platform:api", "type:data-access"],
+  "targets": {
+    "typecheck": {}
+  }
+}

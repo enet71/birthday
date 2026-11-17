@@ -3,6 +3,8 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { APP_FILTER } from '@nestjs/core';
 import { AuthModule } from '@birthday/api-auth';
 import { BirthdaysModule } from '@birthday/api-birthdays';
+import { GoogleCalendarModule } from '@birthday/api-google-calendar';
+import { JobsModule } from '@birthday/api-jobs';
 import { RemindersModule } from '@birthday/api-reminders';
 import { DatabaseModule } from '@birthday/api-database';
 import type { Request } from 'express';
@@ -51,6 +53,20 @@ import { HealthModule } from './health/health.module';
         googleClientSecret: config.get('GOOGLE_CLIENT_SECRET', { infer: true }),
         appOrigin: config.get('APP_ORIGIN', { infer: true }),
         secret: config.get('AUTH_SECRET', { infer: true }),
+      }),
+    }),
+    JobsModule.forRootAsync({
+      inject: [ConfigService],
+      useFactory: (config: ConfigService<Env, true>) => ({ connectionString: config.get('DATABASE_URL', { infer: true }) }),
+    }),
+    GoogleCalendarModule.forRootAsync({
+      inject: [ConfigService],
+      useFactory: (config: ConfigService<Env, true>) => ({
+        googleClientId: config.get('GOOGLE_CLIENT_ID', { infer: true }),
+        googleClientSecret: config.get('GOOGLE_CLIENT_SECRET', { infer: true }),
+        appOrigin: config.get('APP_ORIGIN', { infer: true }),
+        tokenEncryptionKey: config.get('GOOGLE_TOKEN_ENCRYPTION_KEY', { infer: true }),
+        oauthStateSecret: config.get('GOOGLE_OAUTH_STATE_SECRET', { infer: true }),
       }),
     }),
     HealthModule,

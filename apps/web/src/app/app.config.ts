@@ -6,12 +6,12 @@ import { provideClientHydration, withEventReplay } from '@angular/platform-brows
 import { provideServiceWorker } from '@angular/service-worker';
 import { AuthApiService, AuthClient } from '@birthday/web-auth-data-access';
 import { BirthdaysApiService, BirthdaysRemoteStorage } from '@birthday/web-birthdays-data-access';
-import { GoogleCalendarClient } from '@birthday/web-google-calendar-data-access';
+import { GoogleCalendarApiService, GoogleCalendarClient } from '@birthday/web-google-calendar-data-access';
 import { APP_LAYOUT_CONFIG } from '@birthday/web-layout-util';
 import { provideReminders, RemindersApiService, RemindersClient } from '@birthday/web-reminders-data-access';
 import { provideI18n } from '@birthday/web-shared-i18n';
 import { ENVIRONMENT_TOKEN } from '@birthday/web-shared-util';
-import { GoogleCalendarSupabaseClient, provideSupabase } from '@birthday/web-supabase';
+import { provideSupabase } from '@birthday/web-supabase';
 import { loadAppTranslation } from './app.i18n';
 import { appRoutes } from './app.routes';
 import { APP_LAYOUT } from './app.constants';
@@ -33,7 +33,7 @@ export const appConfig: ApplicationConfig = {
     // Swap these implementations to move auth and account data to another backend, for example the NestJS API.
     { provide: AuthClient, useExisting: AuthApiService },
     { provide: BirthdaysRemoteStorage, useExisting: BirthdaysApiService },
-    { provide: GoogleCalendarClient, useExisting: GoogleCalendarSupabaseClient },
+    { provide: GoogleCalendarClient, useExisting: GoogleCalendarApiService },
     { provide: RemindersClient, useExisting: RemindersApiService },
     {
       provide: MAT_ICON_DEFAULT_OPTIONS,

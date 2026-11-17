@@ -39,7 +39,9 @@
       "@birthday/api-database": ["./libs/api/database/src/index.ts"],
       "@birthday/api-auth": ["./libs/api/auth/src/index.ts"],
       "@birthday/api-birthdays": ["./libs/api/birthdays/src/index.ts"],
-      "@birthday/api-reminders": ["./libs/api/reminders/src/index.ts"]
+      "@birthday/api-reminders": ["./libs/api/reminders/src/index.ts"],
+      "@birthday/api-jobs": ["./libs/api/jobs/src/index.ts"],
+      "@birthday/api-google-calendar": ["./libs/api/google-calendar/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

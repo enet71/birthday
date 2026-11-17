@@ -14,6 +14,11 @@ export const envSchema = z.object({
   GOOGLE_CLIENT_SECRET: z.string().min(1),
   // Encrypts the sign-in cookie. Generate it with `openssl rand -hex 32`.
   AUTH_SECRET: z.string().min(32),
+  // Encrypts the saved Google Calendar refresh tokens (AES-256). Generate it with `openssl rand -hex 32`; changing it
+  // makes every saved connection unusable, so users have to connect Google Calendar again.
+  GOOGLE_TOKEN_ENCRYPTION_KEY: z.string().regex(/^[0-9a-f]{64}$/i, { message: 'Must be 64 hex characters: openssl rand -hex 32' }),
+  // Signs the Google Calendar connect request. Generate it with `openssl rand -hex 32`.
+  GOOGLE_OAUTH_STATE_SECRET: z.string().min(32),
   LOG_LEVEL: z.enum(['fatal', 'error', 'warn', 'info', 'debug', 'trace']).default('info'),
 });
 

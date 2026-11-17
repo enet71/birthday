@@ -59,7 +59,4 @@ vitest.config.*.timestamp*
 # Local environment files
 .env
 
-# Certificates and private keys
-*.pem
-*.key
-*.crt
+secrets
