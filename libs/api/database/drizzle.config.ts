@@ -11,10 +11,12 @@ if (existsSync(ENV_FILE)) {
 export default defineConfig({
   dialect: 'postgresql',
   schema: './libs/api/database/src/lib/schema',
-  // `pull` writes here; the folder is ignored by Git.
-  out: './tmp/drizzle',
+  // The API applies these on start; see README.md.
+  out: './libs/api/database/migrations',
   schemaFilter: ['public'],
   dbCredentials: {
     url: process.env['DATABASE_URL'] ?? '',
   },
+  strict: true,
+  verbose: true,
 });

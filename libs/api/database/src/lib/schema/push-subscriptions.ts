@@ -1,6 +1,6 @@
 import { sql } from 'drizzle-orm';
 import { check, pgTable, text, timestamp, unique, uuid } from 'drizzle-orm/pg-core';
-import { authUsers } from './auth-users';
+import { users } from './users';
 
 export const pushSubscriptions = pgTable(
   'push_subscriptions',
@@ -8,7 +8,7 @@ export const pushSubscriptions = pgTable(
     id: uuid('id').primaryKey().defaultRandom(),
     userId: uuid('user_id')
       .notNull()
-      .references(() => authUsers.id, { onDelete: 'cascade' }),
+      .references(() => users.id, { onDelete: 'cascade' }),
     endpoint: text('endpoint').notNull(),
     p256dh: text('p256dh').notNull(),
     auth: text('auth').notNull(),

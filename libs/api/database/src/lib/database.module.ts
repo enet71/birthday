@@ -1,5 +1,6 @@
-import { Global, Inject, Logger, Module, OnApplicationShutdown } from '@nestjs/common';
+import { Global, Inject, Logger, Module, OnApplicationBootstrap, OnApplicationShutdown } from '@nestjs/common';
 import { drizzle } from 'drizzle-orm/node-postgres';
+import { migrate } from 'drizzle-orm/node-postgres/migrator';
 import { Pool } from 'pg';
 import { DATABASE, DATABASE_POOL } from './constants';
 import { ConfigurableModuleClass, MODULE_OPTIONS_TOKEN } from './database.module-definition';
@@ -25,9 +26,20 @@ const logger: Logger = new Logger('DatabaseModule');
   ],
   exports: [DATABASE],
 })
-export class DatabaseModule extends ConfigurableModuleClass implements OnApplicationShutdown {
-  constructor(@Inject(DATABASE_POOL) private readonly pool: Pool) {
+export class DatabaseModule extends ConfigurableModuleClass implements OnApplicationBootstrap, OnApplicationShutdown {
+  constructor(
+    @Inject(DATABASE_POOL) private readonly pool: Pool,
+    @Inject(DATABASE) private readonly db: Database,
+    @Inject(MODULE_OPTIONS_TOKEN) private readonly options: DatabaseModuleOptions,
+  ) {
     super();
+  }
+
+  // Runs before the HTTP server listens, so a failing migration keeps the application from becoming healthy and the
+  // deployment returns to the previous release. Applied migrations are recorded in `drizzle.__drizzle_migrations`.
+  public async onApplicationBootstrap(): Promise<void> {
+    await migrate(this.db, { migrationsFolder: this.options.migrationsFolder });
+    logger.log('The database schema is up to date');
   }
 
   public async onApplicationShutdown(): Promise<void> {

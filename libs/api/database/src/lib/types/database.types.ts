@@ -5,4 +5,6 @@ export type Database = NodePgDatabase<typeof schema>;
 
 export interface DatabaseModuleOptions {
   connectionString: string;
+  // The folder with the generated migrations. They are applied when the application starts, before it serves requests.
+  migrationsFolder: string;
 }

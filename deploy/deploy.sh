@@ -187,7 +187,7 @@ if start release.env.new; then
 fi
 
 echo "The release did not become healthy. The last logs:" >&2
-docker compose logs --tail 50 api web >&2 || true
+docker compose logs --tail 50 api web postgres >&2 || true
 rm -rf incoming release.env.new
 if [ -f .running/release.env ]; then
   restore .running

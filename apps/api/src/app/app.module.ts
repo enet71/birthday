@@ -3,6 +3,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { AuthModule } from '@birthday/api-auth';
 import { DatabaseModule } from '@birthday/api-database';
 import type { Request } from 'express';
+import { join } from 'node:path';
 import { LoggerModule } from 'nestjs-pino';
 import { Env, validateEnv } from './config';
 import { HealthModule } from './health/health.module';
@@ -32,7 +33,11 @@ import { HealthModule } from './health/health.module';
     }),
     DatabaseModule.forRootAsync({
       inject: [ConfigService],
-      useFactory: (config: ConfigService<Env, true>) => ({ connectionString: config.get('DATABASE_URL', { infer: true }) }),
+      useFactory: (config: ConfigService<Env, true>) => ({
+        connectionString: config.get('DATABASE_URL', { infer: true }),
+        // The build copies libs/api/database/migrations next to main.js.
+        migrationsFolder: join(__dirname, 'migrations'),
+      }),
     }),
     AuthModule.forRootAsync({
       inject: [ConfigService],

@@ -12,6 +12,8 @@ COPY package.json package-lock.json ./
 RUN npm ci --omit=dev --ignore-scripts && npm cache clean --force
 
 COPY main.js main.js.map ./
+# Applied by the API on start.
+COPY migrations ./migrations
 
 USER node
 EXPOSE 3000

@@ -6,12 +6,12 @@ origin as the site, under `birthdly.com/api`; `api.birthdly.com` stays until the
 ```
 visitor ──HTTPS──► Cloudflare (proxy) ──HTTPS, Origin CA──► droplet :443 Caddy ─┬─► web:4000 (Angular SSR)
                                                                                 └─► api:3000 (NestJS, /api/*)
-                                                                                     └──► Supabase Postgres (session pooler, TLS)
+                                                                                     └──► postgres:5432 (Postgres 17, volume postgres_data)
 ```
 
 | What       | Where                                                                                                  |
 | ---------- | ------------------------------------------------------------------------------------------------------ |
-| Droplet    | `birthdly-1`, LON1 (next to Supabase `eu-west-1`), `s-1vcpu-2gb`, Ubuntu 24.04                         |
+| Droplet    | `birthdly-1`, LON1, `s-1vcpu-2gb`, Ubuntu 24.04                                                        |
 | Firewall   | DO Cloud Firewall `birthdly-web`: SSH from anywhere, 443 only from Cloudflare                          |
 | Files      | `/opt/birthdly`: `compose.yml`, `Caddyfile`, `deploy.sh`, `release.env`, `previous/`, `.env`, `certs/` |
 | Users      | `ops` (developer, sudo), `deploy` (CI; runs Docker, so root-equivalent); no root or password login     |
@@ -51,9 +51,10 @@ ssh ops@<droplet IP>
 cd /opt/birthdly                                                    # ops is in the deploy group
 
 cat release.env previous/release.env                                # running and previous release
-sudo -u deploy docker compose --env-file release.env ps
-sudo -u deploy docker compose --env-file release.env logs -f api   # JSON logs; `clientIp` is the visitor
-sudo -u deploy docker compose --env-file release.env logs -f web
+sudo -u deploy docker compose --env-file .env --env-file release.env ps
+sudo -u deploy docker compose --env-file .env --env-file release.env logs -f api   # JSON logs; `clientIp` is the visitor
+sudo -u deploy docker compose --env-file .env --env-file release.env logs -f web
+sudo -u deploy docker compose --env-file .env --env-file release.env exec postgres psql -U birthdly birthdly # SQL console
 sudo -u deploy sh deploy.sh --rollback                              # back to the previous release; again to undo
 sudo sshd -T | grep -Ei 'passwordauth|permitroot|kbdinter'         # all three must be "no"
 ```
@@ -123,15 +124,18 @@ doctl compute firewall create --name birthdly-web --tag-names birthdly \
 ### 5. Server files
 
 ```bash
-# Supabase Dashboard → Project Settings → Database → SSL Configuration → Download certificate.
-scp origin.pem origin-key.pem supabase-ca.crt ops@<IP>:/tmp/
-ssh ops@<IP> 'sudo install -o deploy -g deploy -m 640 /tmp/origin.pem /tmp/origin-key.pem /opt/birthdly/certs/ && sudo install -o deploy -g deploy -m 644 /tmp/supabase-ca.crt /opt/birthdly/certs/ && rm /tmp/origin*.pem /tmp/supabase-ca.crt'
+scp origin.pem origin-key.pem ops@<IP>:/tmp/
+ssh ops@<IP> 'sudo install -o deploy -g deploy -m 640 /tmp/origin.pem /tmp/origin-key.pem /opt/birthdly/certs/ && rm /tmp/origin*.pem'
 
-# Fill in deploy/.env.example (the pooler URL with the database password) on the server itself.
+# Fill in deploy/.env.example on the server itself; generate POSTGRES_PASSWORD there with `openssl rand -hex 24`.
 ssh -t ops@<IP> 'sudo -u deploy nano /opt/birthdly/.env && sudo chmod 600 /opt/birthdly/.env'
 ```
 
-Compose interpolates `$` in `.env`, so write a `$` in the password as `$$`.
+Compose interpolates `$` in `.env`, so write a `$` in a value as `$$`. The database itself is created on the first
+deployment: the `postgres` container initialises the `postgres_data` volume, and the API applies the migrations.
+
+Until the app no longer uses Supabase, keep `certs/supabase-ca.crt` and the Supabase `DATABASE_URL` in `.env` on a
+server that ran a release from before the own database: a rollback to such a release needs them.
 
 ### 6. GitHub
 

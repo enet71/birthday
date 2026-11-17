@@ -1,13 +1,13 @@
 import { sql } from 'drizzle-orm';
 import { check, pgTable, text, timestamp, uuid } from 'drizzle-orm/pg-core';
-import { authUsers } from './auth-users';
+import { users } from './users';
 
 export const googleCalendarConnections = pgTable(
   'google_calendar_connections',
   {
     userId: uuid('user_id')
       .primaryKey()
-      .references(() => authUsers.id, { onDelete: 'cascade' }),
+      .references(() => users.id, { onDelete: 'cascade' }),
     status: text('status', { enum: ['connected', 'revoked', 'disconnected'] }).notNull(),
     connectedAt: timestamp('connected_at', { withTimezone: true }).notNull().defaultNow(),
     lastSyncedAt: timestamp('last_synced_at', { withTimezone: true }),

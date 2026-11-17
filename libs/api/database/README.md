@@ -1,6 +1,7 @@
 # api-database
 
-Postgres access for `apps/api`: the Drizzle schema and `DatabaseModule`, which provides a typed Drizzle client.
+Postgres access for `apps/api`: the Drizzle schema, the migrations, and `DatabaseModule`, which provides a typed
+Drizzle client and applies the migrations when the API starts.
 
 ## Usage
 
@@ -8,7 +9,10 @@ Postgres access for `apps/api`: the Drizzle schema and `DatabaseModule`, which p
 // app.module.ts
 DatabaseModule.forRootAsync({
   inject: [ConfigService],
-  useFactory: (config: ConfigService) => ({ connectionString: config.getOrThrow('DATABASE_URL') }),
+  useFactory: (config: ConfigService) => ({
+    connectionString: config.getOrThrow('DATABASE_URL'),
+    migrationsFolder: join(__dirname, 'migrations'),
+  }),
 });
 
 // any provider
@@ -17,26 +21,45 @@ constructor(@Inject(DATABASE) private readonly db: Database) {}
 const rows = await this.db.select().from(birthdays).where(eq(birthdays.userId, userId));
 ```
 
-## Who owns the schema
+There is no row-level security: the API connects as the database owner, so every query must filter by the signed-in
+user itself.
 
-Until the database moves off Supabase (migration step 5), **`supabase/migrations` is the source of truth**.
+## Schema and migrations
 
-- Change the database with a Supabase migration first, then update the matching file in `src/lib/schema` by hand.
-- The Drizzle schema describes the `public` tables, their keys, indexes and checks. It does not describe RLS policies,
-  grants, triggers or SQL functions; they stay in the Supabase migrations.
-- Never run `drizzle-kit generate`, `migrate` or `push` against the Supabase database.
+`src/lib/schema` is the source of truth. `migrations/` holds the SQL that brings a database to it; Drizzle records the
+applied ones in `drizzle.__drizzle_migrations`. The API applies the missing ones on start, before it serves requests
+(`DatabaseModule.onApplicationBootstrap`); a failing migration stops the start, so a deployment does not become healthy
+and returns to the previous release.
 
-At step 5 Drizzle becomes the owner: a baseline migration is generated from this schema, and `auth.users` is replaced
-with an own `users` table.
+To change the database:
 
-## drizzle-kit
+1. Change the schema in `src/lib/schema`.
+2. Generate the migration from the workspace root, with a short name:
+   ```bash
+   npx drizzle-kit generate --config libs/api/database/drizzle.config.ts --name add-birthday-photo
+   ```
+3. Read the generated SQL, commit it with the schema change, and restart the API to apply it locally.
 
-Run from the workspace root. The config reads `DATABASE_URL` from `apps/api/.env`.
+Rules:
+
+- Never edit or delete a migration that was deployed; fix it with a new one.
+- After rebasing onto `main`, delete your unmerged migration (the SQL file, its snapshot and its journal entry) and
+  generate it again. Drizzle applies only migrations newer than the newest applied one, so a migration that is older
+  than one already deployed would be skipped without an error. CI fails when the journal is out of order or when the
+  schema has changes without a migration.
+- Keep migrations backward compatible: the previous release must still work with the new schema, because a rollback
+  returns to the previous image but not to the previous schema. Add a column as nullable or with a default, and drop
+  or rename one only in a later release, once no running code uses it.
+- What Drizzle cannot express (functions, for example) goes into a custom migration:
+  `npx drizzle-kit generate --config libs/api/database/drizzle.config.ts --custom --name <name>`.
+
+## Local database
 
 ```bash
+docker compose -f docker-compose.dev.yml up -d   # Postgres 17 on localhost:5432, see apps/api/.env.example
+
 # Browse the data
 npx drizzle-kit studio --config libs/api/database/drizzle.config.ts
-
-# Introspect the live database into tmp/drizzle to compare it with src/lib/schema
-npx drizzle-kit pull --config libs/api/database/drizzle.config.ts
 ```
+
+The drizzle-kit config reads `DATABASE_URL` from `apps/api/.env`.

@@ -15,7 +15,8 @@ module.exports = {
       compiler: 'tsc',
       main: './src/main.ts',
       tsConfig: './tsconfig.app.json',
-      assets: ['./src/assets'],
+      // The API applies the database migrations on start (libs/api/database README).
+      assets: ['./src/assets', { input: '../../libs/api/database/migrations', glob: '**/*', output: 'migrations' }],
       optimization: false,
       outputHashing: 'none',
       generatePackageJson: true,

@@ -1,6 +1,6 @@
 import { sql } from 'drizzle-orm';
 import { check, date, index, pgTable, text, timestamp, uniqueIndex, uuid } from 'drizzle-orm/pg-core';
-import { authUsers } from './auth-users';
+import { users } from './users';
 
 export const birthdays = pgTable(
   'birthdays',
@@ -8,7 +8,7 @@ export const birthdays = pgTable(
     id: uuid('id').primaryKey().defaultRandom(),
     userId: uuid('user_id')
       .notNull()
-      .references(() => authUsers.id, { onDelete: 'cascade' }),
+      .references(() => users.id, { onDelete: 'cascade' }),
     name: text('name').notNull(),
     // `yyyy-MM-dd`; the year 0004 marks an unknown birth year.
     birthDate: date('birth_date').notNull(),
@@ -18,8 +18,12 @@ export const birthdays = pgTable(
     googleContactSnapshot: text('google_contact_snapshot'),
     googleEventId: text('google_event_id'),
     createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
-    // The `set_birthday_updated_at` trigger sets it on every update.
-    updatedAt: timestamp('updated_at', { withTimezone: true }).notNull().defaultNow(),
+    // Drizzle sets it to the database time on every update through the schema, unless the update sets it itself; raw
+    // SQL must set it. The Google sync compares it with the time of changes in Google.
+    updatedAt: timestamp('updated_at', { withTimezone: true })
+      .notNull()
+      .defaultNow()
+      .$onUpdate(() => sql`now()`),
   },
   (table) => [
     index('birthdays_user_id_idx').on(table.userId),

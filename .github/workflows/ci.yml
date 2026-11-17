@@ -52,6 +52,25 @@ jobs:
       - run: npm ci
       - run: npx playwright install --with-deps
 
+      # The schema and its migrations must agree, and the journal must stay in order: Drizzle applies only migrations
+      # newer than the newest applied one (libs/api/database/README.md).
+      - name: Check the database migrations
+        run: |
+          npx drizzle-kit check --config libs/api/database/drizzle.config.ts
+          npx drizzle-kit generate --config libs/api/database/drizzle.config.ts
+          if [ -n "$(git status --porcelain -- libs/api/database/migrations)" ]; then
+            echo "The schema has changes without a migration; run drizzle-kit generate and commit the result."
+            exit 1
+          fi
+          node -e "
+            const { entries } = require('./libs/api/database/migrations/meta/_journal.json');
+            entries.forEach((entry, index) => {
+              if (entry.idx !== index || (index > 0 && entry.when <= entries[index - 1].when)) {
+                throw new Error('The migration journal is out of order at ' + entry.tag + '; generate the migration again.');
+              }
+            });
+          "
+
       # Prepend any command with "nx record --" to record its logs to Nx Cloud
       # - run: npx nx record -- echo Hello World
       # When you enable task distribution, run the e2e-ci task instead of e2e

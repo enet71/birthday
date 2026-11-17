@@ -1,13 +1,13 @@
 import { sql } from 'drizzle-orm';
 import { boolean, check, pgTable, smallint, text, uuid } from 'drizzle-orm/pg-core';
-import { authUsers } from './auth-users';
+import { users } from './users';
 
 export const notificationSettings = pgTable(
   'notification_settings',
   {
     userId: uuid('user_id')
       .primaryKey()
-      .references(() => authUsers.id, { onDelete: 'cascade' }),
+      .references(() => users.id, { onDelete: 'cascade' }),
     remindOnDay: boolean('remind_on_day').notNull().default(true),
     remindDayBefore: boolean('remind_day_before').notNull().default(true),
     // The user's local hour, 0–23.
