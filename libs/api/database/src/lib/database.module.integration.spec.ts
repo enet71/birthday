@@ -31,7 +31,17 @@ interface SnapshotTable {
 const CONTAINER_TIMEOUT_MS = 120_000;
 const MIGRATIONS_FOLDER = join(import.meta.dirname, '../../migrations');
 const DRIZZLE_KIT_BIN = join(dirname(createRequire(import.meta.url).resolve('drizzle-kit')), 'bin.cjs');
-const TABLES = ['birthdays', 'google_calendar_connections', 'notification_deliveries', 'notification_settings', 'push_subscriptions', 'users'];
+// One per SQL file in libs/api/database/migrations.
+const MIGRATION_COUNT = 3;
+const TABLES = [
+  'birthdays',
+  'google_calendar_connections',
+  'notification_deliveries',
+  'notification_settings',
+  'push_subscriptions',
+  'sessions',
+  'users',
+];
 
 describe('DatabaseModule with a real Postgres', () => {
   let container: StartedPostgreSqlContainer;
@@ -80,7 +90,7 @@ describe('DatabaseModule with a real Postgres', () => {
     );
 
     expect(tables.rows.map((row) => row.table_name)).toEqual(TABLES);
-    expect(await countAppliedMigrations(db)).toBe(2);
+    expect(await countAppliedMigrations(db)).toBe(MIGRATION_COUNT);
   });
 
   it('creates the time zone check function', async () => {
@@ -96,7 +106,7 @@ describe('DatabaseModule with a real Postgres', () => {
   it('does nothing when the migrations were already applied', async () => {
     const db = await bootstrapDatabase();
 
-    expect(await countAppliedMigrations(db)).toBe(2);
+    expect(await countAppliedMigrations(db)).toBe(MIGRATION_COUNT);
   });
 
   // `pushSchema` from `drizzle-kit/api` 0.31 drops query parameters and fails on the composite primary key of

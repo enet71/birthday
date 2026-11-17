@@ -2,15 +2,20 @@ import { validateEnv } from './env';
 
 describe('validateEnv', () => {
   const databaseUrl = 'postgresql://user:password@localhost:5432/birthday';
-  const supabaseUrl = 'http://127.0.0.1:54321';
-  const required = { DATABASE_URL: databaseUrl, SUPABASE_URL: supabaseUrl };
+  const auth = {
+    APP_ORIGIN: 'http://localhost:4200',
+    GOOGLE_CLIENT_ID: 'client-id',
+    GOOGLE_CLIENT_SECRET: 'client-secret',
+    AUTH_SECRET: 'a'.repeat(32),
+  };
+  const required = { DATABASE_URL: databaseUrl, ...auth };
 
   it('applies defaults when optional variables are missing', () => {
     expect(validateEnv(required)).toEqual({
       NODE_ENV: 'development',
       PORT: 3000,
       DATABASE_URL: databaseUrl,
-      SUPABASE_URL: supabaseUrl,
+      ...auth,
       LOG_LEVEL: 'info',
     });
   });
@@ -20,7 +25,7 @@ describe('validateEnv', () => {
       NODE_ENV: 'production',
       PORT: 8080,
       DATABASE_URL: databaseUrl,
-      SUPABASE_URL: supabaseUrl,
+      ...auth,
       LOG_LEVEL: 'debug',
     });
   });
@@ -34,7 +39,7 @@ describe('validateEnv', () => {
   });
 
   it('throws an error naming DATABASE_URL when it is missing', () => {
-    expect(() => validateEnv({ SUPABASE_URL: supabaseUrl })).toThrow(/DATABASE_URL/);
+    expect(() => validateEnv(auth)).toThrow(/DATABASE_URL/);
   });
 
   it.each(['mysql://user:password@localhost:3306/birthday', 'https://example.com/db', 'not a url'])(
@@ -50,21 +55,6 @@ describe('validateEnv', () => {
       expect(validateEnv({ ...required, DATABASE_URL: url }).DATABASE_URL).toBe(url);
     },
   );
-
-  it('throws an error naming SUPABASE_URL when it is missing', () => {
-    expect(() => validateEnv({ DATABASE_URL: databaseUrl })).toThrow(/SUPABASE_URL/);
-  });
-
-  it.each(['ftp://project.supabase.co', 'postgresql://user:password@localhost:5432/birthday', 'not a url', ''])(
-    'rejects the non-HTTP SUPABASE_URL %j',
-    (url: string) => {
-      expect(() => validateEnv({ ...required, SUPABASE_URL: url })).toThrow(/SUPABASE_URL/);
-    },
-  );
-
-  it.each(['http://127.0.0.1:54321', 'https://project.supabase.co'])('accepts the HTTP SUPABASE_URL %s', (url: string) => {
-    expect(validateEnv({ ...required, SUPABASE_URL: url }).SUPABASE_URL).toBe(url);
-  });
 
   it('rejects an unknown NODE_ENV', () => {
     expect(() => validateEnv({ ...required, NODE_ENV: 'staging' })).toThrow(/NODE_ENV/);

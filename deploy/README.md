@@ -121,7 +121,13 @@ doctl compute firewall create --name birthdly-web --tag-names birthdly \
 4. **SSL/TLS → Edge Certificates → Always Use HTTPS:** On. In Full (Strict) mode Cloudflare reaches the server only over
    HTTPS, so the server never sees an `http://` request and only Cloudflare can redirect it.
 
-### 5. Server files
+### 5. Google sign-in
+
+Google Cloud Console → APIs & Services → Credentials → the OAuth client: add
+`https://birthdly.com/api/auth/google/callback` to the authorized redirect URIs, and keep its client ID and secret for
+`.env` (`GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`).
+
+### 6. Server files
 
 ```bash
 scp origin.pem origin-key.pem ops@<IP>:/tmp/
@@ -134,10 +140,12 @@ ssh -t ops@<IP> 'sudo -u deploy nano /opt/birthdly/.env && sudo chmod 600 /opt/b
 Compose interpolates `$` in `.env`, so write a `$` in a value as `$$`. The database itself is created on the first
 deployment: the `postgres` container initialises the `postgres_data` volume, and the API applies the migrations.
 
-Until the app no longer uses Supabase, keep `certs/supabase-ca.crt` and the Supabase `DATABASE_URL` in `.env` on a
-server that ran a release from before the own database: a rollback to such a release needs them.
+Until the app no longer uses Supabase, keep `certs/supabase-ca.crt` and the Supabase `DATABASE_URL` and `SUPABASE_URL`
+in `.env` on a server that ran a release from before the own database and sign-in: a rollback to such a release needs
+them. A release validates its settings on start, so add new variables to `.env` before deploying the release that
+needs them; otherwise the deployment returns to the running release.
 
-### 6. GitHub
+### 7. GitHub
 
 ```bash
 gh api -X PUT repos/enet71/birthday/environments/production > /dev/null
@@ -148,10 +156,10 @@ ssh-keyscan -t ed25519 <droplet IP> | gh secret set DEPLOY_KNOWN_HOSTS --env pro
 
 Compare the `ssh-keyscan` fingerprint with the one `ssh ops@<IP>` showed on the first connection.
 
-### 7. First deployment
+### 8. First deployment
 
 Actions → Deploy → Run workflow. Then check `https://birthdly.com` (200), `https://www.birthdly.com` (301 to
-`birthdly.com`), `https://birthdly.com/api/health` (200) and `https://birthdly.com/api/me` (401 without a token).
+`birthdly.com`), `https://birthdly.com/api/health` (200) and `https://birthdly.com/api/me` (401 without a session).
 Requests to `https://<droplet IP>` must time out.
 
 The packages `birthday-api` and `birthday-web` may stay private: the server pulls with the workflow's token, and

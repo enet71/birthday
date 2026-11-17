@@ -1,22 +1,19 @@
 import { Module } from '@nestjs/common';
 import { APP_GUARD } from '@nestjs/core';
-import { JWTVerifyGetKey } from 'jose';
-import { AuthGuard } from './auth.guard';
-import { ConfigurableModuleClass, MODULE_OPTIONS_TOKEN } from './auth.module-definition';
-import { JWT_KEY_SET } from './constants';
-import { MeController } from './me.controller';
-import { createSupabaseKeySet } from './supabase-key-set';
-import { AuthModuleOptions } from './types';
-import { getSupabaseJwksUrl } from './utils';
+import { ConfigurableModuleClass } from './auth.module-definition';
+import { AuthController, MeController } from './controllers';
+import { AuthGuard, OriginGuard } from './guards';
+import { AuthUsersService, GoogleOidcService, SessionsService, SignInFlowSealer } from './services';
 
 @Module({
-  controllers: [MeController],
+  controllers: [AuthController, MeController],
   providers: [
-    {
-      provide: JWT_KEY_SET,
-      inject: [MODULE_OPTIONS_TOKEN],
-      useFactory: (options: AuthModuleOptions): JWTVerifyGetKey => createSupabaseKeySet(getSupabaseJwksUrl(options.supabaseUrl)),
-    },
+    GoogleOidcService,
+    SignInFlowSealer,
+    SessionsService,
+    AuthUsersService,
+    // Global guards run in this order: a forged request is rejected before its session is even looked up.
+    { provide: APP_GUARD, useClass: OriginGuard },
     { provide: APP_GUARD, useClass: AuthGuard },
   ],
 })

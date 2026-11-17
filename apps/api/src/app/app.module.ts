@@ -27,7 +27,8 @@ import { HealthModule } from './health/health.module';
           autoLogging: { ignore: (req) => req.url === '/api/health' },
           // The socket address is the reverse proxy; Express resolves the visitor's from `X-Forwarded-For`.
           customProps: (req) => ({ clientIp: (req as Request).ip }),
-          redact: ['req.headers.authorization', 'req.headers.cookie'],
+          // Session and sign-in cookies travel in these headers.
+          redact: ['req.headers.authorization', 'req.headers.cookie', 'res.headers["set-cookie"]'],
         },
       }),
     }),
@@ -41,7 +42,12 @@ import { HealthModule } from './health/health.module';
     }),
     AuthModule.forRootAsync({
       inject: [ConfigService],
-      useFactory: (config: ConfigService<Env, true>) => ({ supabaseUrl: config.get('SUPABASE_URL', { infer: true }) }),
+      useFactory: (config: ConfigService<Env, true>) => ({
+        googleClientId: config.get('GOOGLE_CLIENT_ID', { infer: true }),
+        googleClientSecret: config.get('GOOGLE_CLIENT_SECRET', { infer: true }),
+        appOrigin: config.get('APP_ORIGIN', { infer: true }),
+        secret: config.get('AUTH_SECRET', { infer: true }),
+      }),
     }),
     HealthModule,
   ],
