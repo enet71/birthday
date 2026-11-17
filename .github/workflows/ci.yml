@@ -57,9 +57,11 @@ jobs:
       - name: Check the database migrations
         run: |
           npx drizzle-kit check --config libs/api/database/drizzle.config.ts
-          npx drizzle-kit generate --config libs/api/database/drizzle.config.ts
-          if [ -n "$(git status --porcelain -- libs/api/database/migrations)" ]; then
-            echo "The schema has changes without a migration; run drizzle-kit generate and commit the result."
+          # drizzle-kit exits with 0 even when it fails to load the schema, so its output must confirm the comparison.
+          generated="$(npx drizzle-kit generate --config libs/api/database/drizzle.config.ts 2>&1)"
+          echo "$generated"
+          if ! grep -q 'No schema changes' <<< "$generated" || [ -n "$(git status --porcelain -- libs/api/database/migrations)" ]; then
+            echo "drizzle-kit did not confirm that the migrations match the schema: it failed (see above), or the schema has changes without a migration; run drizzle-kit generate and commit the result."
             exit 1
           fi
           node -e "

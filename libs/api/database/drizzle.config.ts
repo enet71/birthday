@@ -10,7 +10,8 @@ if (existsSync(ENV_FILE)) {
 
 export default defineConfig({
   dialect: 'postgresql',
-  schema: './libs/api/database/src/lib/schema',
+  // The barrel, not the folder: the folder also holds specs, which drizzle-kit must not load.
+  schema: './libs/api/database/src/lib/schema/index.ts',
   // The API applies these on start; see README.md.
   out: './libs/api/database/migrations',
   schemaFilter: ['public'],
