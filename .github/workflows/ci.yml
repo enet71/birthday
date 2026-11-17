@@ -33,7 +33,8 @@ jobs:
       GOOGLE_CLIENT_ID: e2e-client.apps.googleusercontent.com
       GOOGLE_CLIENT_SECRET: e2e-client-secret
       AUTH_SECRET: e2e-auth-secret-that-is-at-least-32-characters
-      GOOGLE_TOKEN_ENCRYPTION_KEY: 0000000000000000000000000000000000000000000000000000000000000000
+      # Quoted: YAML would read the digits as the number 0.
+      GOOGLE_TOKEN_ENCRYPTION_KEY: '0000000000000000000000000000000000000000000000000000000000000000'
       GOOGLE_OAUTH_STATE_SECRET: e2e-oauth-state-secret-that-is-at-least-32-characters
     steps:
       - uses: actions/checkout@v7

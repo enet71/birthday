@@ -68,6 +68,16 @@ Add new entries under the category that best matches their purpose, keeping newe
 
 ### Workflow and Tooling
 
+## 2026-11-18 - Run the CI task set before handing over a backend change
+
+- Type: error
+- Context: Subtask 5 (Google Calendar through the API) added a migration and two required API env variables. Before the developer pushed, only `lint`, `typecheck` and `nx test api` were run.
+- Incorrect behavior: CI failed twice: the `api-database` integration spec hard-coded the migration count, and an unquoted all-digit env value in `ci.yml` was read by YAML as the number `0`, so the API in `api-e2e` failed env validation. The deploy was skipped.
+- Preferred behavior: Before reporting a change as ready, run what CI runs for the affected projects: `npx nx affected -t lint test build e2e` (at least `api-database` tests and `api-e2e` when the API, its env or migrations change). Quote env values in YAML that are digits or could be read as numbers or booleans.
+- Generalized rule: Verify with the same task set as CI, not a subset, before handing a change over for push.
+- Trigger cues: migration, new env variable, ci.yml, api-e2e, integration spec, ready to push, report, deploy skipped
+- Status: active
+
 ## 2026-11-17 - List every API runtime dependency in apps/api/package.json
 
 - Type: error

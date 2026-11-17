@@ -4,6 +4,7 @@ import { PostgreSqlContainer, StartedPostgreSqlContainer } from '@testcontainers
 import { DrizzleSnapshotJSON, generateDrizzleJson, generateMigration } from 'drizzle-kit/api';
 import { sql } from 'drizzle-orm';
 import { execFile } from 'node:child_process';
+import { readdirSync } from 'node:fs';
 import { mkdtemp, readFile, rm } from 'node:fs/promises';
 import { createRequire } from 'node:module';
 import { tmpdir } from 'node:os';
@@ -32,7 +33,7 @@ const CONTAINER_TIMEOUT_MS = 120_000;
 const MIGRATIONS_FOLDER = join(import.meta.dirname, '../../migrations');
 const DRIZZLE_KIT_BIN = join(dirname(createRequire(import.meta.url).resolve('drizzle-kit')), 'bin.cjs');
 // One per SQL file in libs/api/database/migrations.
-const MIGRATION_COUNT = 3;
+const MIGRATION_COUNT = readdirSync(MIGRATIONS_FOLDER).filter((file: string) => file.endsWith('.sql')).length;
 const TABLES = [
   'birthdays',
   'google_calendar_connections',
