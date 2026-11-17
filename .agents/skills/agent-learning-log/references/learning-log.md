@@ -68,6 +68,26 @@ Add new entries under the category that best matches their purpose, keeping newe
 
 ### Workflow and Tooling
 
+## 2026-11-17 - Do not poll SSH logins against a fresh server
+
+- Type: error
+- Context: Waiting for a new droplet to finish `cloud-init` before checking it over SSH. The server runs fail2ban.
+- Incorrect behavior: Retrying `ssh <user>@<host>` in a loop every few seconds while `cloud-init` had not created the user yet. Every attempt was a failed login, fail2ban banned the developer's IP, and the server was unreachable for a while.
+- Preferred behavior: Wait until the port answers without logging in (`bash -c 'echo > /dev/tcp/<host>/22'`, `ssh-keyscan`), wait for `cloud-init` to finish (a few minutes), then make a single login attempt. Stop any background login loop as soon as a login is rejected.
+- Generalized rule: Against a server with fail2ban or similar protection, never repeat failing logins; probe availability without authenticating and log in once.
+- Trigger cues: droplet, VPS, cloud-init, ssh loop, wait for server, fail2ban, Connection timed out, Permission denied (publickey), new server
+- Status: active
+
+## 2026-11-17 - Do not edit files with String.replace and a `$` in the replacement
+
+- Type: error
+- Context: Editing a Markdown runbook with a Node script that called `String.prototype.replace` with plain replacement strings containing shell snippets.
+- Incorrect behavior: The replacement text contained `$` patterns. JavaScript treats `` $` ``, `$'`, `$&` and `$$` as special, so the file got two extra copies of itself, a `$$` became `$`, and a `\` line continuation became a literal `\n`. Prettier then reformatted the damage, so a format check passed.
+- Preferred behavior: Edit files with the Edit or Write tools. When a script is unavoidable, use a literal replacement: a replacer function (`s.replace(a, () => b)`), `split(a).join(b)`, or a tool without pattern semantics. Re-read the result, for example count the headings, before moving on.
+- Generalized rule: Never pass replacement text that may contain `$` to `String.replace` as a string; prefer Edit/Write for file changes.
+- Trigger cues: node -e, String.replace, sed, scripted edit, replace in file, README, shell snippets, dollar sign
+- Status: active
+
 ## 2026-11-12 - Never link node_modules into a temporary git worktree
 
 - Type: error
