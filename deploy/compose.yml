@@ -9,7 +9,8 @@ x-logging: &logging
 
 services:
   api:
-    # `deploy.sh` sets the tag: the commit SHA of the deployed build. API_IMAGE is only overridden to test locally.
+    # `deploy.sh` sets the tags from release.env: the commit SHA each image was built from. The image names are only
+    # overridden to test locally.
     image: ${API_IMAGE:-ghcr.io/enet71/birthday-api}:${API_TAG:?API_TAG is not set}
     env_file: .env
     environment:
@@ -27,6 +28,22 @@ services:
       start_interval: 2s
     logging: *logging
 
+  web:
+    image: ${WEB_IMAGE:-ghcr.io/enet71/birthday-web}:${WEB_TAG:?WEB_TAG is not set}
+    environment:
+      NODE_ENV: production
+      # Caddy sets these headers; Angular SSR ignores proxy headers it is not told to trust.
+      NG_TRUST_PROXY_HEADERS: x-forwarded-for,x-forwarded-host,x-forwarded-proto
+    restart: unless-stopped
+    healthcheck:
+      test: ['CMD-SHELL', 'wget -qO- http://127.0.0.1:4000/robots.txt > /dev/null || exit 1']
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 30s
+      start_interval: 2s
+    logging: *logging
+
   caddy:
     image: caddy:2.11-alpine
     ports:
@@ -39,6 +56,8 @@ services:
       - caddy_config:/config
     depends_on:
       api:
+        condition: service_healthy
+      web:
         condition: service_healthy
     restart: unless-stopped
     logging: *logging

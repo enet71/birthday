@@ -1,132 +1,194 @@
 #!/usr/bin/env sh
 # Runs on the droplet as the `deploy` user. The workflow uploads compose.yml, Caddyfile and this script to
 # /opt/birthdly/incoming and runs the uploaded copy.
-#   deploy.sh <tag>      installs the uploaded files, starts ghcr.io/enet71/birthday-api:<tag>, and returns to the
-#                        running image and files when it does not become healthy
-#   deploy.sh --rollback returns to the image and files deployed before the current ones
+#   deploy.sh COMMIT=<sha> [API_TAG=<tag>] [WEB_TAG=<tag>]
+#                        installs the uploaded files and starts the release: the given image tags, the others as they
+#                        run now. Returns to the running release when it does not become healthy.
+#   deploy.sh --rollback returns to the release deployed before the current one
 #
-# /opt/birthdly: compose.yml, Caddyfile, api.tag     what runs now
-#                previous/                           what ran before it, for --rollback
-#                incoming/                           an upload that is not installed yet
-#                .env, certs/                        secrets, never touched here
+# /opt/birthdly: compose.yml, Caddyfile, release.env   what runs now (release.env: COMMIT, API_TAG, WEB_TAG)
+#                previous/                             what ran before it, for --rollback
+#                incoming/                             an upload that is not installed yet
+#                .env, certs/                          secrets, never touched here
 set -eu
 
 APP_DIR="${APP_DIR:-/opt/birthdly}"
 export API_IMAGE="${API_IMAGE:-ghcr.io/enet71/birthday-api}"
+export WEB_IMAGE="${WEB_IMAGE:-ghcr.io/enet71/birthday-web}"
 HEALTH_TIMEOUT_SECONDS=120
-CONFIG_FILES="compose.yml Caddyfile deploy.sh"
+RELEASE_KEYS="COMMIT API_TAG WEB_TAG"
 
 cd "$APP_DIR"
 
-compose() {
-  API_TAG="$tag" docker compose "$@"
+# Prints the value of $1 in the release file $2, or nothing.
+release_value() {
+  sed -n "s/^$1=//p" "$2" 2>/dev/null | tail -n 1
 }
 
-read_tag() {
-  cat "$1" 2>/dev/null || true
+# Makes the tags of the release file $1 the ones `docker compose` uses.
+use_release() {
+  API_TAG="$(release_value API_TAG "$1")"
+  WEB_TAG="$(release_value WEB_TAG "$1")"
+  export API_TAG WEB_TAG
 }
 
-# Copies the running files and tag into $1.
+# Copies the running configuration and release into $1. This script is not part of a release: a rollback keeps the
+# newest one, which also handles older releases.
 snapshot() {
   rm -rf "$1" && mkdir -p "$1"
-  for file in $CONFIG_FILES api.tag; do
+  for file in compose.yml Caddyfile release.env; do
     if [ -f "$file" ]; then cp "$file" "$1/"; fi
   done
 }
 
-# Puts the files of $1 in place.
-install_files() {
+# Puts the configuration of $1 in place.
+install_config() {
   # The Caddyfile is bind-mounted as a file, which follows its inode, so it is overwritten in place.
   cp "$1/compose.yml" compose.yml || return 1
   cp "$1/Caddyfile" Caddyfile || return 1
+}
+
+# Puts an upload in place, including a new copy of this script.
+install_upload() {
+  install_config "$1" || return 1
   # This script may be the one running, and the shell reads it while running, so it is replaced with a new file.
-  if [ -f "$1/deploy.sh" ]; then
-    cp "$1/deploy.sh" deploy.sh.new && mv deploy.sh.new deploy.sh || return 1
-  fi
+  cp "$1/deploy.sh" deploy.sh.new && mv deploy.sh.new deploy.sh || return 1
 }
 
-# Starts $tag with the installed files and waits until it is healthy. Every step returns on failure explicitly:
-# `set -e` does not apply inside an `if` condition.
+# Starts the release of the file $1 with the installed files and waits until it is healthy. Every step returns on
+# failure explicitly: `set -e` does not apply inside an `if` condition.
 start() {
-  # Images of earlier deployments stay on the server, so a rollback does not depend on the registry.
-  if ! docker image inspect "$API_IMAGE:$tag" > /dev/null 2>&1; then
-    compose pull --quiet api || return 1
-  fi
-  compose run --rm --no-deps --entrypoint caddy caddy validate --config /etc/caddy/Caddyfile --adapter caddyfile > /dev/null || return 1
-  compose up --detach --remove-orphans --wait --wait-timeout "$HEALTH_TIMEOUT_SECONDS" || return 1
+  use_release "$1"
+  # A release from before a service existed has no tag for it; its compose.yml has no such service either.
+  # compose.yml itself rejects a missing tag of a service it defines.
+  services="$(docker compose config --services 2> /dev/null)" || services=""
+  # Images of earlier releases stay on the server, so a rollback does not depend on the registry.
+  for service_image in "api $API_IMAGE:$API_TAG" "web $WEB_IMAGE:$WEB_TAG"; do
+    service="${service_image%% *}"
+    if printf '%s\n' "$services" | grep -qx "$service" && ! docker image inspect "${service_image#* }" > /dev/null 2>&1; then
+      docker compose pull --quiet "$service" || return 1
+    fi
+  done
+  docker compose run --rm --no-deps --entrypoint caddy caddy validate --config /etc/caddy/Caddyfile --adapter caddyfile > /dev/null || return 1
+  # Only containers whose image or configuration changed are recreated.
+  docker compose up --detach --remove-orphans --wait --wait-timeout "$HEALTH_TIMEOUT_SECONDS" || return 1
   # `up` keeps Caddy running when only the mounted Caddyfile changed.
-  compose exec caddy caddy reload --config /etc/caddy/Caddyfile --adapter caddyfile || return 1
+  docker compose exec caddy caddy reload --config /etc/caddy/Caddyfile --adapter caddyfile || return 1
+  # The health check only reads a static file; the home page proves that server-side rendering works.
+  if printf '%s\n' "$services" | grep -qx web; then
+    docker compose exec web wget -q -O /dev/null --header 'Host: birthdly.com' http://127.0.0.1:4000/ || {
+      echo "The web app does not render its home page." >&2
+      return 1
+    }
+  fi
 }
 
-# Starts the image and files saved in $1 again.
+# Starts the files and release saved in $1 again.
 restore() {
-  tag="$(read_tag "$1/api.tag")"
-  if [ -z "$tag" ]; then
+  if [ ! -f "$1/release.env" ]; then
     echo "There is nothing to return to." >&2
     return 1
   fi
-  echo "Returning to $tag" >&2
-  install_files "$1" || return 1
-  start || return 1
-  echo "$tag" > api.tag
+  echo "Returning to $(release_value COMMIT "$1/release.env")" >&2
+  install_config "$1" || return 1
+  start "$1/release.env" || return 1
+  cp "$1/release.env" release.env || return 1
 }
 
-# Keeps the images of the running and the previous deployment and removes the other ones.
+# Keeps the images of the running and the previous release and removes the other ones.
 prune_images() {
-  keep_current="$(read_tag api.tag)"
-  keep_previous="$(read_tag previous/api.tag)"
-  docker image ls "$API_IMAGE" --format '{{.Tag}}' | while read -r image_tag; do
-    if [ "$image_tag" != "$keep_current" ] && [ "$image_tag" != "$keep_previous" ]; then
-      docker image rm "$API_IMAGE:$image_tag" > /dev/null 2>&1 || true
-    fi
+  keep="$(cat release.env previous/release.env 2>/dev/null | sed -nE 's/^(API|WEB)_TAG=//p')"
+  for image in "$API_IMAGE" "$WEB_IMAGE"; do
+    docker image ls "$image" --format '{{.Tag}}' | while read -r image_tag; do
+      if ! printf '%s\n' "$keep" | grep -qx "$image_tag"; then
+        docker image rm "$image:$image_tag" > /dev/null 2>&1 || true
+      fi
+    done
   done
   docker image prune --force > /dev/null
 }
 
-current_tag="$(read_tag api.tag)"
+current_commit="$(release_value COMMIT release.env)"
 
 if [ "${1:-}" = "--rollback" ]; then
-  if [ ! -f previous/api.tag ]; then
-    echo "There is no previous deployment." >&2
+  if [ ! -f previous/release.env ]; then
+    echo "There is no previous release." >&2
     exit 1
   fi
   snapshot .running
   if ! restore previous; then
-    echo "The previous deployment did not become healthy." >&2
+    echo "The previous release did not become healthy." >&2
     restore .running
     rm -rf .running
     exit 1
   fi
-  # A second --rollback returns to the deployment that was just left.
+  # A second --rollback returns to the release that was just left.
   rm -rf previous && mv .running previous
-  echo "Rolled back from $current_tag to $(read_tag api.tag)"
+  echo "Rolled back from $current_commit to $(release_value COMMIT release.env)"
   exit 0
 fi
 
-tag="${1:?Usage: deploy.sh <tag> | --rollback}"
-echo "Deploying $tag (running: ${current_tag:-none})"
+usage() {
+  echo "Usage: deploy.sh COMMIT=<sha> [API_TAG=<tag>] [WEB_TAG=<tag>] | --rollback" >&2
+  exit 1
+}
+
+# A mistyped argument must not silently redeploy the running release.
+commit_given=false
+for argument in "$@"; do
+  case "$argument" in
+    COMMIT=?*) commit_given=true ;;
+    API_TAG=?* | WEB_TAG=?*) ;;
+    *) usage ;;
+  esac
+  case "${argument#*=}" in
+    *[!A-Za-z0-9._-]*)
+      echo "Invalid value: $argument" >&2
+      exit 1
+      ;;
+  esac
+done
+if [ "$commit_given" = "false" ]; then
+  usage
+fi
+
+# The new release: the running one with the given values replaced.
+: > release.env.new
+for key in $RELEASE_KEYS; do
+  value="$(release_value "$key" release.env)"
+  for argument in "$@"; do
+    case "$argument" in
+      "$key="*) value="${argument#*=}" ;;
+    esac
+  done
+  echo "$key=$value" >> release.env.new
+done
+
+echo "Deploying $(tr '\n' ' ' < release.env.new)(running: ${current_commit:-none})"
 
 snapshot .running
 if [ -d incoming ]; then
-  install_files incoming
+  install_upload incoming
 fi
 
-if start; then
-  echo "$tag" > api.tag
-  # A redeployment of the running tag keeps `previous` pointing at the deployment before it.
-  if [ -n "$current_tag" ] && [ "$current_tag" != "$tag" ]; then
+if start release.env.new; then
+  # A redeployment of the running release keeps `previous` pointing at the release before it.
+  if [ -f release.env ] && ! cmp -s release.env release.env.new; then
     rm -rf previous && mv .running previous
+    # The workflow rolls back after a failed smoke test only when this line was printed.
+    echo "Replaced the previous release"
   fi
+  mv release.env.new release.env
   rm -rf .running incoming
   prune_images
-  echo "Deployed $tag"
+  echo "Deployed $(release_value COMMIT release.env)"
   exit 0
 fi
 
-echo "$tag did not become healthy. Its last logs:" >&2
-compose logs --tail 50 api >&2 || true
-rm -rf incoming
-if [ -n "$current_tag" ]; then
+echo "The release did not become healthy. The last logs:" >&2
+docker compose logs --tail 50 api web >&2 || true
+rm -rf incoming release.env.new
+if [ -f .running/release.env ]; then
   restore .running
 fi
 rm -rf .running

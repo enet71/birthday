@@ -1,39 +1,48 @@
 # Production server
 
-The API runs on a DigitalOcean droplet behind Cloudflare. The web app still runs on DO App Platform; it moves here in
-a later step, and then the API is served from `birthdly.com/api`.
+The web app (Angular SSR) and the API run on a DigitalOcean droplet behind Cloudflare. The API is served on the same
+origin as the site, under `birthdly.com/api`; `api.birthdly.com` stays until the web app calls `/api`.
 
 ```
-visitor ──HTTPS──► Cloudflare (proxy) ──HTTPS, Origin CA──► droplet :443 Caddy ──► api:3000 (NestJS)
+visitor ──HTTPS──► Cloudflare (proxy) ──HTTPS, Origin CA──► droplet :443 Caddy ─┬─► web:4000 (Angular SSR)
+                                                                                └─► api:3000 (NestJS, /api/*)
                                                                                      └──► Supabase Postgres (session pooler, TLS)
 ```
 
-| What       | Where                                                                                              |
-| ---------- | -------------------------------------------------------------------------------------------------- |
-| Droplet    | `birthdly-1`, LON1 (next to Supabase `eu-west-1`), `s-1vcpu-2gb`, Ubuntu 24.04                     |
-| Firewall   | DO Cloud Firewall `birthdly-web`: SSH from anywhere, 443 only from Cloudflare                      |
-| Files      | `/opt/birthdly`: `compose.yml`, `Caddyfile`, `deploy.sh`, `api.tag`, `previous/`, `.env`, `certs/` |
-| Users      | `ops` (developer, sudo), `deploy` (CI; runs Docker, so root-equivalent); no root or password login |
-| Image      | `ghcr.io/enet71/birthday-api:<commit SHA>`                                                         |
-| Deployment | `.github/workflows/deploy-api.yml`, after CI passes on `main`, or run by hand                      |
+| What       | Where                                                                                                  |
+| ---------- | ------------------------------------------------------------------------------------------------------ |
+| Droplet    | `birthdly-1`, LON1 (next to Supabase `eu-west-1`), `s-1vcpu-2gb`, Ubuntu 24.04                         |
+| Firewall   | DO Cloud Firewall `birthdly-web`: SSH from anywhere, 443 only from Cloudflare                          |
+| Files      | `/opt/birthdly`: `compose.yml`, `Caddyfile`, `deploy.sh`, `release.env`, `previous/`, `.env`, `certs/` |
+| Users      | `ops` (developer, sudo), `deploy` (CI; runs Docker, so root-equivalent); no root or password login     |
+| Images     | `ghcr.io/enet71/birthday-api:<commit SHA>`, `ghcr.io/enet71/birthday-web:<commit SHA>`                 |
+| Deployment | `.github/workflows/deploy.yml`, after CI passes on `main`, or run by hand                              |
 
 ## Deployments
 
-`Deploy API` runs after every green CI run on `main`. It deploys only when the API or `deploy/` changed since the
-commit in `/opt/birthdly/api.tag`, and never a commit older than the deployed one (CI runs can finish out of order).
-It builds and pushes the image, uploads `compose.yml`, `Caddyfile` and `deploy.sh` to `/opt/birthdly/incoming` and
-runs the uploaded `deploy.sh <sha>`. The script installs the files, waits until the API is healthy, and otherwise
-returns to the image and files that ran before. A smoke test through Cloudflare follows; when it fails, the workflow
-runs `deploy.sh --rollback`, unless it redeployed the commit that was already running.
+A release is `/opt/birthdly/release.env`: the deployed commit (`COMMIT`) and the commit each image was built from
+(`API_TAG`, `WEB_TAG`).
 
-Rollbacks restore both the image and the configuration files, and use images already on the server: the running and
-the previous deployment's images are kept, so a rollback does not depend on the registry.
+`Deploy` runs after every green CI run on `main`. It compares the commit with `COMMIT`, never deploys an older one (CI
+runs can finish out of order), and rebuilds only the images of the projects Nx reports as affected; a change to
+`deploy/` alone redeploys the files with the running images. It pushes the new images, uploads `compose.yml`,
+`Caddyfile` and `deploy.sh` to `/opt/birthdly/incoming` and runs the uploaded `deploy.sh COMMIT=<sha> [API_TAG=<sha>]
+[WEB_TAG=<sha>]`. Docker Compose recreates only the containers whose image or configuration changed, so an API
+release does not restart the web app; the web app is unavailable for a few seconds while its container is replaced.
+The script waits until everything is healthy and otherwise returns to the release and files that ran before. A smoke
+test through Cloudflare follows; when it fails, the workflow runs `deploy.sh --rollback`, unless it redeployed the
+commit that was already running.
+
+Rollbacks restore the images and the configuration files, and use images already on the server: the images of the
+running and the previous release are kept, so a rollback does not depend on the registry. `deploy.sh` itself is not
+rolled back: the newest copy stays, and it also handles older releases. After `up`, it checks that the web app
+renders its home page, because the container health check only reads a static file.
 
 The deploy key is root-equivalent on the server. The workflow writes it to the runner only inside the steps that use
 SSH and removes it before dependencies or build tools run (`.github/scripts/ssh-key.sh`).
 
-To deploy a specific commit, or the same one again: Actions → Deploy API → Run workflow (`force` skips the change and
-order checks).
+To deploy a specific commit, or the same one again: Actions → Deploy → Run workflow (`force` rebuilds both images and
+skips the change and order checks).
 
 ## Operations
 
@@ -41,15 +50,16 @@ order checks).
 ssh ops@<droplet IP>
 cd /opt/birthdly                                                    # ops is in the deploy group
 
-cat api.tag previous/api.tag                                        # deployed and previous commits
-sudo -u deploy API_TAG="$(cat api.tag)" docker compose ps
-sudo -u deploy API_TAG="$(cat api.tag)" docker compose logs -f api  # JSON logs; `clientIp` is the visitor
-sudo -u deploy sh deploy.sh --rollback                              # back to the previous image and files; again to undo
+cat release.env previous/release.env                                # running and previous release
+sudo -u deploy docker compose --env-file release.env ps
+sudo -u deploy docker compose --env-file release.env logs -f api   # JSON logs; `clientIp` is the visitor
+sudo -u deploy docker compose --env-file release.env logs -f web
+sudo -u deploy sh deploy.sh --rollback                              # back to the previous release; again to undo
 sudo sshd -T | grep -Ei 'passwordauth|permitroot|kbdinter'         # all three must be "no"
 ```
 
-Every container keeps at most 5 × 10 MB of logs. A deployment removes API images other than the running and the
-previous one.
+Every container keeps at most 5 × 10 MB of logs. A deployment removes images other than those of the running and the
+previous release.
 
 **Cloudflare IP ranges** (https://www.cloudflare.com/ips) are listed in the `Caddyfile` and in the firewall. When
 Cloudflare changes them, update both: the `Caddyfile` through a commit, the firewall with
@@ -102,11 +112,11 @@ doctl compute firewall create --name birthdly-web --tag-names birthdly \
 
 ### 4. Cloudflare (dashboard, zone `birthdly.com`)
 
-1. **DNS → Records:** `A api <droplet IP>`, Proxied (orange cloud).
+1. **DNS → Records:** `A @`, `A www` and `A api`, each `<droplet IP>` and Proxied (orange cloud).
 2. **SSL/TLS → Origin Server → Create certificate:** RSA or ECC, hostnames `birthdly.com, *.birthdly.com`, 15 years.
    Save the certificate as `origin.pem` and the key as `origin-key.pem`; Cloudflare shows the key only once.
-3. **Rules → Configuration Rules → Create:** when Hostname equals `api.birthdly.com`, set SSL to **Full (strict)**.
-   The rule keeps the zone's SSL mode for the App Platform site unchanged.
+3. **Rules → Configuration Rules → Create:** when Hostname is in `birthdly.com`, `www.birthdly.com`,
+   `api.birthdly.com`, set SSL to **Full (strict)**.
 
 ### 5. Server files
 
@@ -134,8 +144,9 @@ Compare the `ssh-keyscan` fingerprint with the one `ssh ops@<IP>` showed on the 
 
 ### 7. First deployment
 
-Actions → Deploy API → Run workflow. Then check `https://api.birthdly.com/api/health` (200) and
-`https://api.birthdly.com/api/me` (401 without a token). Requests to `https://<droplet IP>` must time out.
+Actions → Deploy → Run workflow. Then check `https://birthdly.com` (200), `https://www.birthdly.com` (301 to
+`birthdly.com`), `https://birthdly.com/api/health` (200) and `https://birthdly.com/api/me` (401 without a token).
+Requests to `https://<droplet IP>` must time out.
 
-The package `birthday-api` may stay private: the server pulls with the workflow's token, and rollbacks use local
-images.
+The packages `birthday-api` and `birthday-web` may stay private: the server pulls with the workflow's token, and
+rollbacks use local images.

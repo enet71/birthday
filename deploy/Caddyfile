@@ -7,16 +7,36 @@
 	}
 }
 
-api.birthdly.com {
+(site) {
 	# Cloudflare Origin CA certificate: Cloudflare trusts it in the Full (strict) SSL mode; browsers never see it.
 	tls /certs/origin.pem /certs/origin-key.pem
-
 	encode zstd gzip
+	log
+}
 
-	reverse_proxy api:3000 {
-		# Only the visitor's address, so the API does not take a Cloudflare address for the client.
+# {args[0]} is the upstream. Only the visitor's address goes on, so the app does not take a Cloudflare address for the
+# client.
+(proxy) {
+	reverse_proxy {args[0]} {
 		header_up X-Forwarded-For {client_ip}
 	}
+}
 
-	log
+# The web app redirects `www` to the main domain itself (apps/web/src/server.ts).
+birthdly.com, www.birthdly.com {
+	import site
+
+	handle /api/* {
+		import proxy api:3000
+	}
+
+	handle {
+		import proxy web:4000
+	}
+}
+
+# Kept until the web app calls the API under birthdly.com/api.
+api.birthdly.com {
+	import site
+	import proxy api:3000
 }

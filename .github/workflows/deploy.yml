@@ -1,4 +1,4 @@
-name: Deploy API
+name: Deploy
 
 on:
   # After CI passes for a push to main.
@@ -12,7 +12,7 @@ on:
         description: Commit, branch or tag to deploy
         default: main
       force:
-        description: Deploy even if neither the API nor deploy/ changed, or the commit is older than the deployed one
+        description: Rebuild and deploy the API and the web app, even if nothing changed or the commit is older than the deployed one
         type: boolean
         default: false
 
@@ -22,12 +22,14 @@ permissions:
 
 # One deployment at a time; a newer one waits instead of cancelling a deployment halfway.
 concurrency:
-  group: deploy-api
+  group: deploy
   cancel-in-progress: false
 
 env:
-  IMAGE: ghcr.io/enet71/birthday-api
+  API_IMAGE: ghcr.io/enet71/birthday-api
+  WEB_IMAGE: ghcr.io/enet71/birthday-web
   API_URL: https://api.birthdly.com
+  SITE_URL: https://birthdly.com
   SERVER_DIR: /opt/birthdly
 
 # The deploy key is root-equivalent on the server (the `deploy` user runs Docker). It exists on the runner only inside
@@ -45,7 +47,7 @@ jobs:
           fetch-depth: 0
           persist-credentials: false
 
-      - name: Read the deployed commit
+      - name: Read the deployed release
         id: server
         env:
           DEPLOY_HOST: ${{ secrets.DEPLOY_HOST }}
@@ -55,8 +57,11 @@ jobs:
           bash .github/scripts/ssh-key.sh install
           trap 'bash .github/scripts/ssh-key.sh remove' EXIT
           # An SSH failure fails the step; only a missing file means that nothing is deployed yet.
-          deployed="$(ssh server "if [ -f $SERVER_DIR/api.tag ]; then cat $SERVER_DIR/api.tag; fi")"
-          echo "deployed=$deployed" >> "$GITHUB_OUTPUT"
+          release="$(ssh server "if [ -f $SERVER_DIR/release.env ]; then cat $SERVER_DIR/release.env; fi")"
+          echo "$release"
+          for key in COMMIT API_TAG WEB_TAG; do
+            echo "$(echo "$key" | tr 'A-Z_' 'a-z_')=$(echo "$release" | sed -n "s/^$key=//p" | tail -n 1)" >> "$GITHUB_OUTPUT"
+          done
 
       - uses: actions/setup-node@v6
         with:
@@ -65,11 +70,13 @@ jobs:
 
       - run: npm ci --no-audit --no-fund
 
-      - name: Decide whether to deploy
+      - name: Decide what to deploy
         id: decide
         env:
           FORCE: ${{ inputs.force }}
-          DEPLOYED: ${{ steps.server.outputs.deployed }}
+          DEPLOYED: ${{ steps.server.outputs.commit }}
+          API_TAG: ${{ steps.server.outputs.api_tag }}
+          WEB_TAG: ${{ steps.server.outputs.web_tag }}
         run: |
           sha="$(git rev-parse HEAD)"
           echo "sha=$sha" >> "$GITHUB_OUTPUT"
@@ -81,67 +88,100 @@ jobs:
             exit 0
           }
 
-          if [ "$FORCE" = "true" ]; then
-            reason="forced"
-          elif [ -z "$DEPLOYED" ] || ! git cat-file -e "$DEPLOYED^{commit}" 2>/dev/null; then
-            reason="first deployment, or the deployed commit is unknown"
+          build_api=false
+          build_web=false
+          files_changed=false
+
+          if [ "$FORCE" = "true" ] || [ -z "$DEPLOYED" ] || ! git cat-file -e "$DEPLOYED^{commit}" 2>/dev/null; then
+            build_api=true
+            build_web=true
           elif [ "$DEPLOYED" = "$sha" ]; then
             skip "$sha is already deployed"
           elif git merge-base --is-ancestor "$sha" "$DEPLOYED"; then
             # CI runs can finish out of order; an older commit must not replace a newer one.
             skip "$sha is older than the deployed $DEPLOYED"
-          elif ! git diff --quiet "$DEPLOYED" "$sha" -- deploy/; then
-            reason="deploy/ changed"
           else
             affected="$(npx nx show projects --affected --base="$DEPLOYED" --head="$sha" --json)"
-            if echo "$affected" | jq -e 'index("api")' > /dev/null; then
-              reason="the API changed"
-            else
-              skip "neither the API nor deploy/ changed since $DEPLOYED"
-            fi
+            if echo "$affected" | jq -e 'index("api")' > /dev/null; then build_api=true; fi
+            if echo "$affected" | jq -e 'index("web")' > /dev/null; then build_web=true; fi
+            if ! git diff --quiet "$DEPLOYED" "$sha" -- deploy/; then files_changed=true; fi
           fi
 
-          echo "deploy=true" >> "$GITHUB_OUTPUT"
-          echo "Deploying: $reason."
+          # A service that has never been deployed is built either way.
+          if [ -z "$API_TAG" ]; then build_api=true; fi
+          if [ -z "$WEB_TAG" ]; then build_web=true; fi
 
-      - name: Build the image
-        if: steps.decide.outputs.deploy == 'true'
+          if [ "$build_api" = "false" ] && [ "$build_web" = "false" ] && [ "$files_changed" = "false" ]; then
+            skip "neither the API, the web app nor deploy/ changed since $DEPLOYED"
+          fi
+
+          {
+            echo "deploy=true"
+            echo "build_api=$build_api"
+            echo "build_web=$build_web"
+          } >> "$GITHUB_OUTPUT"
+          echo "Deploying: API image $build_api, web image $build_web, deploy/ $files_changed."
+
+      - name: Build the API image
+        if: steps.decide.outputs.build_api == 'true'
         env:
           SHA: ${{ steps.decide.outputs.sha }}
         run: |
           npx nx run api:prune
-          docker build -f apps/api/Dockerfile -t "$IMAGE:$SHA" dist/apps/api
+          docker build -f apps/api/Dockerfile -t "$API_IMAGE:$SHA" dist/apps/api
 
-      - name: Push the image
-        if: steps.decide.outputs.deploy == 'true'
+      - name: Build the web image
+        if: steps.decide.outputs.build_web == 'true'
         env:
           SHA: ${{ steps.decide.outputs.sha }}
+        run: |
+          npx nx run web:build
+          docker build -f apps/web/Dockerfile -t "$WEB_IMAGE:$SHA" dist/apps/web
+
+      - name: Push the images
+        if: steps.decide.outputs.build_api == 'true' || steps.decide.outputs.build_web == 'true'
+        env:
+          SHA: ${{ steps.decide.outputs.sha }}
+          BUILD_API: ${{ steps.decide.outputs.build_api }}
+          BUILD_WEB: ${{ steps.decide.outputs.build_web }}
           TOKEN: ${{ secrets.GITHUB_TOKEN }}
           ACTOR: ${{ github.actor }}
         run: |
           echo "$TOKEN" | docker login ghcr.io -u "$ACTOR" --password-stdin
           trap 'docker logout ghcr.io' EXIT
-          docker push "$IMAGE:$SHA"
+          if [ "$BUILD_API" = "true" ]; then docker push "$API_IMAGE:$SHA"; fi
+          if [ "$BUILD_WEB" = "true" ]; then docker push "$WEB_IMAGE:$SHA"; fi
 
       - name: Deploy
+        id: deploy
         if: steps.decide.outputs.deploy == 'true'
         env:
           SHA: ${{ steps.decide.outputs.sha }}
+          BUILD_API: ${{ steps.decide.outputs.build_api }}
+          BUILD_WEB: ${{ steps.decide.outputs.build_web }}
           TOKEN: ${{ secrets.GITHUB_TOKEN }}
           ACTOR: ${{ github.actor }}
           DEPLOY_HOST: ${{ secrets.DEPLOY_HOST }}
           DEPLOY_SSH_KEY: ${{ secrets.DEPLOY_SSH_KEY }}
           DEPLOY_KNOWN_HOSTS: ${{ secrets.DEPLOY_KNOWN_HOSTS }}
         run: |
+          release="COMMIT=$SHA"
+          if [ "$BUILD_API" = "true" ]; then release="$release API_TAG=$SHA"; fi
+          if [ "$BUILD_WEB" = "true" ]; then release="$release WEB_TAG=$SHA"; fi
+
           bash .github/scripts/ssh-key.sh install
           trap 'bash .github/scripts/ssh-key.sh remove' EXIT
           ssh server "rm -rf $SERVER_DIR/incoming && mkdir $SERVER_DIR/incoming"
           scp deploy/compose.yml deploy/Caddyfile deploy/deploy.sh "server:$SERVER_DIR/incoming/"
-          # The job's token lets the server pull a private image; it expires with the job, and the server logs out.
+          # The job's token lets the server pull private images; it expires with the job, and the server logs out.
           echo "$TOKEN" | ssh server "docker login ghcr.io -u '$ACTOR' --password-stdin > /dev/null"
           status=0
-          ssh server "sh $SERVER_DIR/incoming/deploy.sh $SHA" || status=$?
+          ssh server "sh $SERVER_DIR/incoming/deploy.sh $release" | tee deploy.log || status=$?
           ssh server "docker logout ghcr.io > /dev/null"
+          # Only a release that replaced the previous one can be rolled back after a failed smoke test.
+          if grep -qx 'Replaced the previous release' deploy.log; then
+            echo "replaced_previous=true" >> "$GITHUB_OUTPUT"
+          fi
           exit "$status"
 
       - name: Smoke test through Cloudflare
@@ -150,14 +190,16 @@ jobs:
         run: |
           health="$(curl -s -o /dev/null -w '%{http_code}' --retry 5 --retry-delay 3 --retry-all-errors "$API_URL/api/health")"
           me="$(curl -s -o /dev/null -w '%{http_code}' "$API_URL/api/me")"
-          echo "GET /api/health → $health, GET /api/me without a token → $me"
-          [ "$health" = "200" ] && [ "$me" = "401" ]
+          home="$(curl -s -w '\n%{http_code}' --retry 5 --retry-delay 3 --retry-all-errors "$SITE_URL/")"
+          home_status="$(echo "$home" | tail -n 1)"
+          echo "API: /api/health → $health, /api/me without a token → $me. Site: / → $home_status"
+          [ "$health" = "200" ] && [ "$me" = "401" ] && [ "$home_status" = "200" ] && echo "$home" | grep -q '<title>[^<]*Birthdly'
 
-      # deploy.sh already returns to the running deployment when the API does not become healthy. This covers a failure
-      # only visible from outside, such as in Caddy or Cloudflare. A redeployment of the running commit has nothing
-      # newer to leave, so it is not rolled back.
+      # deploy.sh already returns to the running release when it does not become healthy. This covers a failure only
+      # visible from outside, such as in Caddy or Cloudflare. A redeployment of the running release has nothing to
+      # return to, so it is not rolled back.
       - name: Roll back after a failed smoke test
-        if: failure() && steps.smoke.outcome == 'failure' && steps.server.outputs.deployed != steps.decide.outputs.sha
+        if: failure() && steps.smoke.outcome == 'failure' && steps.deploy.outputs.replaced_previous == 'true'
         env:
           DEPLOY_HOST: ${{ secrets.DEPLOY_HOST }}
           DEPLOY_SSH_KEY: ${{ secrets.DEPLOY_SSH_KEY }}
