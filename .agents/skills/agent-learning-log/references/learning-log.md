@@ -68,6 +68,16 @@ Add new entries under the category that best matches their purpose, keeping newe
 
 ### Workflow and Tooling
 
+## 2026-11-18 - Verify recovery paths against existing client state
+
+- Type: error
+- Context: Subtask 6 rotated the VAPID key pair. The plan said that devices subscribed with the old key only had to turn notifications off and on in Settings.
+- Incorrect behavior: Only a fresh subscription on a clean device was tested. On prod the browser still held a subscription with the old key that the API no longer knew, so Settings showed only "Turn on", and `pushManager.subscribe` failed with `InvalidStateError` (different applicationServerKey). The promised recovery path did not exist; a fix (4b4096f) was needed after deploy.
+- Preferred behavior: When a change invalidates state that clients already hold (keys, tokens, cookies, cached subscriptions, stored settings), reproduce that existing state and walk the exact recovery steps the user will take before calling the change ready. Prefer making the client recover by itself.
+- Generalized rule: A claim like "the user only has to do X" must be verified on a client in the old state, not only on a clean one.
+- Trigger cues: key rotation, VAPID, migration, breaking change, re-subscribe, turn off and on, sign in again, reconnect, invalidate tokens, stale client state
+- Status: active
+
 ## 2026-11-18 - Run the CI task set before handing over a backend change
 
 - Type: error

@@ -11,7 +11,6 @@ import { APP_LAYOUT_CONFIG } from '@birthday/web-layout-util';
 import { provideReminders, RemindersApiService, RemindersClient } from '@birthday/web-reminders-data-access';
 import { provideI18n } from '@birthday/web-shared-i18n';
 import { ENVIRONMENT_TOKEN } from '@birthday/web-shared-util';
-import { provideSupabase } from '@birthday/web-supabase';
 import { loadAppTranslation } from './app.i18n';
 import { appRoutes } from './app.routes';
 import { APP_LAYOUT } from './app.constants';
@@ -25,12 +24,11 @@ export const appConfig: ApplicationConfig = {
     provideRouter(appRoutes, withAutoCleanupInjectors()),
     { provide: TitleStrategy, useClass: AppPageMetaStrategy },
     provideHttpClient(withFetch()),
-    provideSupabase(),
     provideI18n({ loadTranslation: loadAppTranslation }),
     // Shows birthday push notifications. It caches no files (see `ngsw-config.json`), so every page comes from the network.
     provideServiceWorker('ngsw-worker.js', { enabled: !isDevMode(), registrationStrategy: 'registerWhenStable:5000' }),
     provideReminders(),
-    // Swap these implementations to move auth and account data to another backend, for example the NestJS API.
+    // The data-access libraries talk to the backend through these abstract clients; the app binds the API implementations.
     { provide: AuthClient, useExisting: AuthApiService },
     { provide: BirthdaysRemoteStorage, useExisting: BirthdaysApiService },
     { provide: GoogleCalendarClient, useExisting: GoogleCalendarApiService },
@@ -46,9 +44,6 @@ export const appConfig: ApplicationConfig = {
         environmentName: isDevMode() ? 'local' : 'production',
         version: '0.0.0',
         baseUrl: '',
-        supabaseUrl: 'https://wpnrneoqvxddhbltmysx.supabase.co',
-        // Publishable keys are meant for the browser; data access is enforced by RLS.
-        supabasePublishableKey: 'sb_publishable_4F1HdGrn9YerAJwVArdDvA_RXDVJvWB',
         // Pairs with `VAPID_PRIVATE_KEY` in the API's environment (`npm run push:vapid-keys`).
         vapidPublicKey: 'BA3CPp15GUmhVEZzfQ00PBKGvPCUIdR5OExo9RXEobdrHUf4kMoZNWqpGgOXK_PgJpt365Ph4WNdD7Xru__LdIo',
         notificationErrorTime: 5000,

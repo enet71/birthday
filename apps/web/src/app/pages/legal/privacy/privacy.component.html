@@ -1,4 +1,4 @@
-<p class="legal__updated">Effective date: November 10, 2026</p>
+<p class="legal__updated">Effective date: November 18, 2026</p>
 
 <section>
   <p>
@@ -14,7 +14,8 @@
     <li><strong>Birthdays you add.</strong> The name and birth date (the birth year is optional) of each person you add to your calendar.</li>
     <li>
       <strong>Google account information.</strong> When you sign in with Google, we receive your Google account ID, email address, name, and profile
-      picture. We use them only to create your Birthdly account and to show who is signed in.
+      picture. We store your account ID, email address, and name to create your Birthdly account and to show who is signed in; the profile picture is
+      not stored.
     </li>
     <li>
       <strong>Google Calendar data.</strong> If you connect Google Calendar, Birthdly reads the birthday events in your primary calendar and creates,
@@ -27,15 +28,22 @@
       contact details, such as phone numbers, email addresses, or addresses, are not read or stored. If you turn on birthday notifications, the names
       of imported contacts can appear in them, as described below.
     </li>
-    <li><strong>Google refresh token.</strong> To keep syncing after you connect, we store a Google refresh token in an encrypted secret store.</li>
+    <li>
+      <strong>Google refresh token.</strong> To keep syncing after you connect, we store a Google refresh token, encrypted, in our database. Only
+      Birthdly's server uses it; it is never sent to your browser.
+    </li>
     <li>
       <strong>Notification settings and device subscriptions.</strong> If you turn on birthday notifications, we store when you want them (the days,
       the time, and your time zone) and, for each device where you turn them on, its push subscription: an address at your browser's push service and
       the keys that encrypt notifications for that device. We also keep, for about a week, the days we already handled your notifications for, so none
       is sent twice.
     </li>
+    <li>
+      <strong>Server logs.</strong> Birthdly's server records technical logs of requests (your IP address, the requested address, your browser's user
+      agent, and the time) for security and troubleshooting. Older logs are overwritten as new ones are written.
+    </li>
   </ul>
-  <p>Birthdly does not use advertising, analytics, or tracking cookies.</p>
+  <p>Birthdly uses a cookie to keep you signed in, a short-lived cookie while you sign in with Google, and a cookie that remembers your language.</p>
 </section>
 
 <section>
@@ -68,10 +76,10 @@
   <ul>
     <li>Google user data is used only to provide the user-facing features described above.</li>
     <li>
-      Google user data is stored and processed only by our infrastructure provider (Supabase) to run Birthdly. It is not shared with any other third
-      parties. If you turn on birthday notifications, the names of imported contacts who have a birthday that day or the next are sent to your own
-      device inside a notification. The notification is encrypted for your device and passes through your browser's push service, which cannot read
-      it.
+      Google user data is stored and processed only on Birthdly's own server, hosted by DigitalOcean, to run Birthdly. Requests to Birthdly pass
+      through Cloudflare, which delivers and protects the website. It is not shared with any other third parties. If you turn on birthday
+      notifications, the names of imported contacts who have a birthday that day or the next are sent to your own device inside a notification. The
+      notification is encrypted for your device and passes through your browser's push service, which cannot read it.
     </li>
     <li>Google user data is not transferred to others, except as needed to provide those features, to comply with the law, or with your consent.</li>
     <li>Google user data is not used for advertising, including personalized, retargeted, or interest-based advertising.</li>
@@ -88,10 +96,10 @@
       When you sign in, they are moved from the browser into your account.
     </li>
     <li>
-      <strong>With an account,</strong> your data is stored in a database hosted by
-      <a href="https://supabase.com" target="_blank" rel="noopener">Supabase</a>. Data is encrypted in transit (HTTPS) and at rest (AES-256), and
-      database access rules restrict each user's data to that user. Google refresh tokens are kept in a separate encrypted secret store and are used
-      only by Birthdly's server functions; they are never sent to your browser.
+      <strong>With an account,</strong> your data is stored in Birthdly's own database on a server hosted by
+      <a href="https://www.digitalocean.com" target="_blank" rel="noopener">DigitalOcean</a> in London, United Kingdom. Data is encrypted in transit
+      (HTTPS), and Birthdly's server checks every request so that each user can reach only their own data. Google refresh tokens are encrypted
+      (AES-256) in the database and are used only by Birthdly's server; they are never sent to your browser.
     </li>
   </ul>
 </section>
@@ -99,8 +107,11 @@
 <section>
   <h2>Service providers</h2>
   <ul>
-    <li><strong>Supabase</strong> — database, authentication, and server functions.</li>
-    <li><strong>DigitalOcean</strong> — website hosting. Like any web host, it processes your IP address and request logs.</li>
+    <li><strong>DigitalOcean</strong> — hosts Birthdly's server and database.</li>
+    <li>
+      <strong>Cloudflare</strong> — delivers and protects the website. Every request to Birthdly passes through it, so it processes your IP address
+      and the requests.
+    </li>
     <li><strong>Google</strong> — sign-in, Google Calendar, and Google Contacts, when you choose to use them.</li>
     <li><strong>Google Fonts</strong> — delivers the icon font, so Google receives your IP address when a page loads.</li>
     <li>

@@ -148,9 +148,7 @@ ssh -t ops@<IP> 'sudo -u deploy nano /opt/birthdly/.env && sudo chmod 600 /opt/b
 Compose interpolates `$` in `.env`, so write a `$` in a value as `$$`. The database itself is created on the first
 deployment: the `postgres` container initialises the `postgres_data` volume, and the API applies the migrations.
 
-Until the app no longer uses Supabase, keep `certs/supabase-ca.crt` and the Supabase `DATABASE_URL` and `SUPABASE_URL`
-in `.env` on a server that ran a release from before the own database and sign-in: a rollback to such a release needs
-them. A release validates its settings on start, so add new variables to `.env` before deploying the release that
+A release validates its settings on start, so add new variables to `.env` before deploying the release that
 needs them; otherwise the deployment returns to the running release.
 
 ### 7. GitHub

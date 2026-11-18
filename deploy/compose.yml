@@ -15,7 +15,7 @@ services:
     env_file: .env
     environment:
       NODE_ENV: production
-      # Replaces DATABASE_URL from .env, which still points to Supabase for releases from before this database.
+      # Built from POSTGRES_PASSWORD, so .env needs no DATABASE_URL.
       DATABASE_URL: postgresql://birthdly:${POSTGRES_PASSWORD:?POSTGRES_PASSWORD is not set}@postgres:5432/birthdly
     depends_on:
       postgres:
