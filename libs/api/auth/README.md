@@ -4,15 +4,19 @@ Sign-in with Google and sessions for `apps/api`.
 
 ## How signing in works
 
-1. The web app sends the browser to `GET /api/auth/google/start?returnTo=<path>`.
-2. The API creates a sign-in flow (random `state`, `nonce` and PKCE verifier), keeps it in the encrypted
-   `__Host-sign-in` cookie for 10 minutes, and redirects to Google's consent page (`openid email profile`).
-3. Google returns the browser to `GET /api/auth/google/callback`. openid-client checks the state, the PKCE verifier and
-   the ID token (signature, issuer, audience, expiry, nonce). The email must be verified by Google.
-4. The API creates or updates the user by Google's `sub`, creates a session, sets the `__Host-session` cookie and
-   redirects to `returnTo`. On any failure, including a cancelled consent, it redirects to `returnTo?signIn=failed`.
+The web app signs in with Google Identity Services in the browser and hands the result to the API:
 
-`returnTo` is reduced to a path on this site, so a crafted link cannot send the user elsewhere after signing in.
+1. `GET /api/auth/google/config` returns `{ clientId, nonce }`. The nonce is kept in the encrypted `__Host-sign-in`
+   cookie for 10 minutes; while that cookie is valid the same nonce is returned, so tabs of one browser share it.
+2. One of two endpoints signs the user in:
+   - `POST /api/auth/google/code { code }`: the authorization code from the sign-in popup. The API exchanges it with
+     the client secret (`redirect_uri=postmessage`) for an ID token.
+   - `POST /api/auth/google/credential { credential }`: the ID token from One Tap. It must carry the nonce from the
+     cookie, so a token issued for another browser is rejected; the cookie is cleared after use.
+3. The ID token is checked with Google's keys (signature, issuer, audience = client id, expiry). The email must be
+   verified by Google.
+4. The API creates or updates the user by Google's `sub`, creates a session and answers 204 with the `__Host-session`
+   cookie. An invalid code or token answers 401, an invalid body 400.
 
 ## Sessions
 
@@ -45,7 +49,7 @@ AuthModule.forRootAsync({
 
 ## Google Cloud Console
 
-The OAuth client must list these authorized redirect URIs:
+The OAuth client must list these authorized JavaScript origins:
 
-- `https://birthdly.com/api/auth/google/callback`
-- `http://localhost:4200/api/auth/google/callback` (the web dev server proxies `/api` to the API)
+- `https://birthdly.com`
+- `http://localhost:4200` (the web dev server proxies `/api` to the API, or to production with `web:serve-prod-api`)

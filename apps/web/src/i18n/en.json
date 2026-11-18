@@ -169,7 +169,6 @@
   "notifications": {
     "auth": {
       "restoreFailed": "Couldn't restore your session",
-      "finishSignInFailed": "Couldn't finish signing in. Please try again",
       "signInFailed": "Couldn't sign in with Google",
       "signOutFailed": "Couldn't sign out"
     },

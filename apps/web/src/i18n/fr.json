@@ -169,7 +169,6 @@
   "notifications": {
     "auth": {
       "restoreFailed": "Impossible de restaurer votre session",
-      "finishSignInFailed": "Impossible de terminer la connexion. Veuillez réessayer",
       "signInFailed": "Impossible de se connecter avec Google",
       "signOutFailed": "Impossible de se déconnecter"
     },

@@ -84,6 +84,17 @@
         "proxyConfig": "apps/web/proxy.conf.json"
       }
     },
+    "serve-prod-api": {
+      "continuous": true,
+      "readyWhen": {
+        "signal": true
+      },
+      "executor": "@angular/build:dev-server",
+      "options": {
+        "buildTarget": "web:build:development",
+        "proxyConfig": "apps/web/proxy.prod.conf.json"
+      }
+    },
     "test": {
       "executor": "@angular/build:unit-test",
       "options": {

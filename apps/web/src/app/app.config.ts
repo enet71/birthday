@@ -4,6 +4,7 @@ import { MAT_ICON_DEFAULT_OPTIONS } from '@angular/material/icon';
 import { provideRouter, TitleStrategy, withAutoCleanupInjectors } from '@angular/router';
 import { provideClientHydration, withEventReplay } from '@angular/platform-browser';
 import { provideServiceWorker } from '@angular/service-worker';
+import { provideAuth } from '@birthday/web-auth-data-access';
 import { APP_LAYOUT_CONFIG } from '@birthday/web-layout-util';
 import { provideReminders } from '@birthday/web-reminders-data-access';
 import { provideI18n } from '@birthday/web-shared-i18n';
@@ -24,6 +25,7 @@ export const appConfig: ApplicationConfig = {
     provideI18n({ loadTranslation: loadAppTranslation }),
     // Shows birthday push notifications. It caches no files (see `ngsw-config.json`), so every page comes from the network.
     provideServiceWorker('ngsw-worker.js', { enabled: !isDevMode(), registrationStrategy: 'registerWhenStable:5000' }),
+    provideAuth(),
     provideReminders(),
     {
       provide: MAT_ICON_DEFAULT_OPTIONS,

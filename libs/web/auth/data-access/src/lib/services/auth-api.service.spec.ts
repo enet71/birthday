@@ -1,5 +1,4 @@
 import type { Mock } from 'vitest';
-import { DOCUMENT, Location } from '@angular/common';
 import { HttpErrorResponse, provideHttpClient } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { PLATFORM_ID } from '@angular/core';
@@ -14,30 +13,16 @@ const ME_URL = `${BASE_URL}/api/me`;
 const USER_DTO: UserDto = { id: 'user-1', email: 'user@example.com', name: 'User' };
 const USER: AuthUser = { id: 'user-1', email: 'user@example.com' };
 
-interface FakeDocument {
-  location: { href: string; pathname: string; search: string; assign: Mock<(url: string) => void> };
-}
-
 describe('AuthApiService', () => {
   let service: AuthApiService;
   let http: HttpTestingController;
-  let document: FakeDocument;
-  const location: { replaceState: Mock<Location['replaceState']>; getState: Mock<Location['getState']> } = {
-    replaceState: vi.fn(),
-    getState: vi.fn(),
-  };
 
-  function setUp(platformId: 'browser' | 'server', href = `${BASE_URL}/people`): void {
-    const url = new URL(href);
-    document = { location: { href, pathname: url.pathname, search: url.search, assign: vi.fn() } };
-
+  function setUp(platformId: 'browser' | 'server'): void {
     TestBed.configureTestingModule({
       providers: [
         provideHttpClient(),
         provideHttpClientTesting(),
         { provide: PLATFORM_ID, useValue: platformId },
-        { provide: DOCUMENT, useValue: document },
-        { provide: Location, useValue: location },
         { provide: ENVIRONMENT_TOKEN, useValue: { baseUrl: BASE_URL } as Environment },
       ],
     });
@@ -48,11 +33,6 @@ describe('AuthApiService', () => {
   function respondWithStatus(status: number): void {
     http.expectOne(ME_URL).flush(null, { status, statusText: 'Error' });
   }
-
-  beforeEach(() => {
-    vi.clearAllMocks();
-    location.getState.mockReturnValue({ navigationId: 1 });
-  });
 
   afterEach(() => {
     http.verify();
@@ -175,62 +155,6 @@ describe('AuthApiService', () => {
 
       expect(emitted).toHaveBeenCalledExactlyOnceWith(USER);
       expect(failed).toHaveBeenCalled();
-    });
-  });
-
-  describe('completeSignIn', () => {
-    it('completes when the page was not opened from a failed sign-in', () => {
-      setUp('browser', `${BASE_URL}/people?x=1`);
-      const completed: Mock<() => void> = vi.fn();
-      const failed: Mock<(error: unknown) => void> = vi.fn();
-
-      service.completeSignIn().subscribe({ complete: completed, error: failed });
-
-      expect(completed).toHaveBeenCalled();
-      expect(failed).not.toHaveBeenCalled();
-      expect(location.replaceState).not.toHaveBeenCalled();
-    });
-
-    it('fails and removes only the sign-in result from the address after a failed sign-in', () => {
-      setUp('browser', `${BASE_URL}/people?x=1&signIn=failed&y=2`);
-      const failed: Mock<(error: unknown) => void> = vi.fn();
-
-      service.completeSignIn().subscribe({ error: failed });
-
-      expect(failed).toHaveBeenCalledExactlyOnceWith(expect.any(Error));
-      expect(location.replaceState).toHaveBeenCalledExactlyOnceWith('/people', 'x=1&y=2', { navigationId: 1 });
-    });
-
-    it('completes on the server even with a failed sign-in in the address', () => {
-      setUp('server', `${BASE_URL}/people?signIn=failed`);
-      const completed: Mock<() => void> = vi.fn();
-
-      service.completeSignIn().subscribe({ complete: completed });
-
-      expect(completed).toHaveBeenCalled();
-      expect(location.replaceState).not.toHaveBeenCalled();
-    });
-  });
-
-  describe('signInWithGoogle', () => {
-    it('sends the browser to the API with the current path and query to return to', () => {
-      setUp('browser', `${BASE_URL}/people/1?x=1&y=a b`);
-      const completed: Mock<() => void> = vi.fn();
-
-      service.signInWithGoogle().subscribe({ complete: completed });
-
-      expect(document.location.assign).toHaveBeenCalledExactlyOnceWith(
-        `${BASE_URL}/api/auth/google/start?returnTo=${encodeURIComponent('/people/1?x=1&y=a%20b')}`,
-      );
-      expect(completed).toHaveBeenCalled();
-    });
-
-    it('does not leave the page before it is subscribed', () => {
-      setUp('browser');
-
-      service.signInWithGoogle();
-
-      expect(document.location.assign).not.toHaveBeenCalled();
     });
   });
 });

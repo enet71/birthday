@@ -123,9 +123,10 @@ doctl compute firewall create --name birthdly-web --tag-names birthdly \
 
 ### 5. Google sign-in
 
-Google Cloud Console → APIs & Services → Credentials → the OAuth client: add
-`https://birthdly.com/api/auth/google/callback` to the authorized redirect URIs, and keep its client ID and secret for
-`.env` (`GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`).
+Google Cloud Console → APIs & Services → Credentials → the OAuth client: add `https://birthdly.com` to the authorized
+JavaScript origins (the web app signs in with Google Identity Services), and keep its client ID and secret for `.env`
+(`GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`). Add `http://localhost:4200` as well to sign in from a local web app that
+runs against production (`npx nx run web:serve-prod-api`).
 
 The Google Calendar sync uses the same client: add `https://birthdly.com/settings/google-calendar` to the authorized
 redirect URIs too, and enable the Google Calendar API and the People API in its project (APIs & Services → Library).

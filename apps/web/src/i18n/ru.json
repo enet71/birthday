@@ -173,7 +173,6 @@
   "notifications": {
     "auth": {
       "restoreFailed": "Не удалось восстановить сеанс",
-      "finishSignInFailed": "Не удалось завершить вход. Попробуйте ещё раз",
       "signInFailed": "Не удалось войти через Google",
       "signOutFailed": "Не удалось выйти"
     },

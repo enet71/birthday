@@ -7,7 +7,7 @@ export function readCookie(request: Request, name: string): string | null {
   return header ? (parse(header)[name] ?? null) : null;
 }
 
-// HttpOnly keeps scripts from reading the cookie; Lax still sends it on the top-level redirect back from Google.
+// HttpOnly keeps scripts from reading the cookie; Lax keeps other sites from sending it with their requests.
 export function secureCookieOptions(maxAgeMs?: number): CookieOptions {
   return { httpOnly: true, secure: true, sameSite: 'lax', path: '/', ...(maxAgeMs !== undefined && { maxAge: maxAgeMs }) };
 }

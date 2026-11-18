@@ -14,6 +14,17 @@ To run the dev server for your app, use:
 npx nx serve web
 ```
 
+It also starts the API, which the dev server reaches at `/api` (`apps/web/proxy.conf.json`). To run only the web app
+against production instead, use:
+
+```sh
+npx nx run web:serve-prod-api
+```
+
+Its proxy (`apps/web/proxy.prod.conf.json`) sends `/api` to `https://birthdly.com` with the production `Origin`, so
+signing in and changes work from `http://localhost:4200`. They change real production data. Signing in needs
+`http://localhost:4200` among the authorized JavaScript origins of the production OAuth client.
+
 To create a production bundle:
 
 ```sh

@@ -1,67 +1,67 @@
-import { Controller, Get, HttpCode, HttpStatus, Inject, Logger, Post, Query, Req, Res } from '@nestjs/common';
+import { Body, Controller, Get, Header, HttpCode, HttpStatus, Logger, Post, Req, Res, UnauthorizedException } from '@nestjs/common';
 import type { Request, Response } from 'express';
-import { MODULE_OPTIONS_TOKEN } from '../auth.module-definition';
-import { SESSION_COOKIE, SIGN_IN_FLOW_COOKIE, SIGN_IN_FLOW_MS } from '../constants';
+import { GoogleSignInConfigDto } from '@birthday/shared-models';
+import { SESSION_COOKIE, SIGN_IN_NONCE_COOKIE, SIGN_IN_NONCE_MS } from '../constants';
 import { Public } from '../decorators';
-import { AuthUsersService, GoogleOidcService, SessionsService, SignInFlowSealer } from '../services';
-import { AuthModuleOptions } from '../types';
-import { readCookie, secureCookieOptions, toSafeReturnTo, withSignInFailed } from '../utils';
+import { GoogleSignInRejectedError } from '../errors';
+import { googleCodeSignInSchema, googleCredentialSignInSchema } from '../schemas';
+import { AuthUsersService, GoogleSignInService, SessionsService, SignInNonceSealer } from '../services';
+import { GoogleProfile } from '../types';
+import { readCookie, secureCookieOptions } from '../utils';
 
-// Sign-in with Google and sign-out. The browser navigates to these endpoints; they answer with redirects, not JSON.
+// Sign-in with Google Identity Services and sign-out. A successful sign-in answers 204 with the session cookie; data
+// from Google that cannot sign anyone in answers 401.
 @Public()
 @Controller('auth')
 export class AuthController {
   private readonly logger: Logger = new Logger(AuthController.name);
 
   constructor(
-    @Inject(MODULE_OPTIONS_TOKEN) private readonly options: AuthModuleOptions,
-    private readonly googleOidc: GoogleOidcService,
-    private readonly flowSealer: SignInFlowSealer,
+    private readonly googleSignIn: GoogleSignInService,
+    private readonly nonceSealer: SignInNonceSealer,
     private readonly authUsers: AuthUsersService,
     private readonly sessionsService: SessionsService,
   ) {}
 
-  // Starts a sign-in: remembers the flow in an encrypted cookie and sends the browser to Google.
-  @Get('google/start')
-  public async startGoogleSignIn(@Query('returnTo') returnTo: unknown, @Res() response: Response): Promise<void> {
-    const flow = this.googleOidc.createFlow(toSafeReturnTo(returnTo));
+  // The nonce stays the same while its cookie is valid, so several tabs of one browser share it.
+  @Get('google/config')
+  @Header('Cache-Control', 'no-store')
+  public async getGoogleConfig(@Req() request: Request, @Res({ passthrough: true }) response: Response): Promise<GoogleSignInConfigDto> {
+    const nonce = (await this.nonceSealer.open(readCookie(request, SIGN_IN_NONCE_COOKIE))) ?? this.nonceSealer.createNonce();
 
-    try {
-      const authorizationUrl = await this.googleOidc.createAuthorizationUrl(flow);
-
-      response.cookie(SIGN_IN_FLOW_COOKIE, await this.flowSealer.seal(flow), secureCookieOptions(SIGN_IN_FLOW_MS));
-      response.redirect(HttpStatus.FOUND, authorizationUrl.href);
-    } catch (error) {
-      this.logger.error({ err: error }, 'Starting a Google sign-in failed');
-      response.redirect(HttpStatus.FOUND, withSignInFailed(flow.returnTo));
-    }
+    response.cookie(SIGN_IN_NONCE_COOKIE, await this.nonceSealer.seal(nonce), secureCookieOptions(SIGN_IN_NONCE_MS));
+    return { clientId: this.googleSignIn.clientId, nonce };
   }
 
-  // Google returns the browser here. On success the user gets a session cookie and goes back to the page where the
-  // sign-in started; otherwise to the same page, marked so the web app reports the failure.
-  @Get('google/callback')
-  public async completeGoogleSignIn(@Req() request: Request, @Res() response: Response): Promise<void> {
-    const flow = await this.flowSealer.open(readCookie(request, SIGN_IN_FLOW_COOKIE));
+  // The authorization code from the sign-in popup.
+  @Post('google/code')
+  @HttpCode(HttpStatus.NO_CONTENT)
+  public async signInWithGoogleCode(@Body() body: unknown, @Res({ passthrough: true }) response: Response): Promise<void> {
+    const { code } = googleCodeSignInSchema.parse(body);
 
-    response.clearCookie(SIGN_IN_FLOW_COOKIE, secureCookieOptions());
-    if (!flow) {
-      // Expired, or the callback was opened without starting a sign-in in this browser.
-      response.redirect(HttpStatus.FOUND, withSignInFailed('/'));
-      return;
+    await this.startSession(response, await this.rejectAsUnauthorized(this.googleSignIn.signInWithCode(code)));
+  }
+
+  // The ID token from One Tap. It must carry the nonce that this browser got from `google/config`.
+  @Post('google/credential')
+  @HttpCode(HttpStatus.NO_CONTENT)
+  public async signInWithGoogleCredential(
+    @Req() request: Request,
+    @Body() body: unknown,
+    @Res({ passthrough: true }) response: Response,
+  ): Promise<void> {
+    const { credential } = googleCredentialSignInSchema.parse(body);
+    const nonce = await this.nonceSealer.open(readCookie(request, SIGN_IN_NONCE_COOKIE));
+
+    if (!nonce) {
+      throw new UnauthorizedException();
     }
 
-    try {
-      // Google answers `error=access_denied` when the user cancels; openid-client rejects that as well.
-      const profile = await this.googleOidc.completeSignIn(new URL(request.originalUrl, this.options.appOrigin), flow);
-      const user = await this.authUsers.upsertGoogleUser(profile);
-      const session = await this.sessionsService.create(user.id);
+    const profile = await this.rejectAsUnauthorized(this.googleSignIn.signInWithCredential(credential, nonce));
 
-      response.cookie(SESSION_COOKIE, session.token, secureCookieOptions(session.expiresAt.getTime() - Date.now()));
-      response.redirect(HttpStatus.FOUND, flow.returnTo);
-    } catch (error) {
-      this.logger.warn({ err: error }, 'A Google sign-in did not complete');
-      response.redirect(HttpStatus.FOUND, withSignInFailed(flow.returnTo));
-    }
+    // The nonce is used up; the next One Tap gets a new one.
+    response.clearCookie(SIGN_IN_NONCE_COOKIE, secureCookieOptions());
+    await this.startSession(response, profile);
   }
 
   // Ends the session of this browser. Answers 204 even without a session, so signing out is always possible.
@@ -74,5 +74,24 @@ export class AuthController {
       await this.sessionsService.delete(token);
     }
     response.clearCookie(SESSION_COOKIE, secureCookieOptions());
+  }
+
+  private async startSession(response: Response, profile: GoogleProfile): Promise<void> {
+    const user = await this.authUsers.upsertGoogleUser(profile);
+    const session = await this.sessionsService.create(user.id);
+
+    response.cookie(SESSION_COOKIE, session.token, secureCookieOptions(session.expiresAt.getTime() - Date.now()));
+  }
+
+  private async rejectAsUnauthorized(signIn: Promise<GoogleProfile>): Promise<GoogleProfile> {
+    try {
+      return await signIn;
+    } catch (error) {
+      if (error instanceof GoogleSignInRejectedError) {
+        this.logger.warn({ err: error }, 'A Google sign-in was rejected');
+        throw new UnauthorizedException();
+      }
+      throw error;
+    }
   }
 }

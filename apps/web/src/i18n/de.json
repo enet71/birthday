@@ -169,7 +169,6 @@
   "notifications": {
     "auth": {
       "restoreFailed": "Deine Sitzung konnte nicht wiederhergestellt werden",
-      "finishSignInFailed": "Die Anmeldung konnte nicht abgeschlossen werden. Bitte versuche es erneut",
       "signInFailed": "Anmeldung mit Google fehlgeschlagen",
       "signOutFailed": "Abmeldung fehlgeschlagen"
     },

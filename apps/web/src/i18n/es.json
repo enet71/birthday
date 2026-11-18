@@ -169,7 +169,6 @@
   "notifications": {
     "auth": {
       "restoreFailed": "No se pudo restaurar tu sesión",
-      "finishSignInFailed": "No se pudo completar el inicio de sesión. Inténtalo de nuevo",
       "signInFailed": "No se pudo iniciar sesión con Google",
       "signOutFailed": "No se pudo cerrar sesión"
     },

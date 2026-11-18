@@ -9,21 +9,12 @@ export interface AuthModuleOptions {
   googleClientSecret: string;
   // The web app's origin, for example `https://birthdly.com`; the API is served under it at `/api`.
   appOrigin: string;
-  // Encrypts the sign-in flow cookie; at least 32 characters.
+  // Encrypts the sign-in nonce cookie; at least 32 characters.
   secret: string;
 }
 
 export interface AuthenticatedRequest extends Request {
   user: AuthUser;
-}
-
-// What one sign-in must remember between the redirect to Google and its callback.
-export interface SignInFlow {
-  state: string;
-  nonce: string;
-  codeVerifier: string;
-  // The page to return to: a path on this site.
-  returnTo: string;
 }
 
 // What the API takes from Google's ID token.

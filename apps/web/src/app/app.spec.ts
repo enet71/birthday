@@ -1,8 +1,8 @@
 import { TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 import { TranslocoTestingModule } from '@jsverse/transloco';
-import { of } from 'rxjs';
-import { AuthApiService } from '@birthday/web-auth-data-access';
+import { NEVER, of } from 'rxjs';
+import { AuthApiService, GoogleIdentityService } from '@birthday/web-auth-data-access';
 import { APP_LAYOUT_CONFIG } from '@birthday/web-layout-util';
 import { App } from './app';
 import { APP_LAYOUT } from './app.constants';
@@ -18,8 +18,12 @@ describe('App', () => {
       providers: [
         provideRouter([]),
         { provide: APP_LAYOUT_CONFIG, useValue: APP_LAYOUT },
-        // The account button in the top bar reads the signed-in user.
-        { provide: AuthApiService, useValue: { userChanges: () => of(null) } },
+        // The account button in the top bar reads the signed-in user; signed out, the app also prepares Google sign-in.
+        {
+          provide: AuthApiService,
+          useValue: { userChanges: () => of(null), getGoogleSignInConfig: () => of({ clientId: 'client-id', nonce: 'nonce' }) },
+        },
+        { provide: GoogleIdentityService, useValue: { load: () => of(undefined), promptOneTap: () => NEVER } },
       ],
     }).compileComponents();
   });

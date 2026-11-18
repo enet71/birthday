@@ -1,20 +1,18 @@
-import { DOCUMENT, isPlatformBrowser, Location } from '@angular/common';
+import { isPlatformBrowser } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
 import { inject, Injectable, PLATFORM_ID } from '@angular/core';
-import { catchError, defer, map, merge, Observable, of, retry, Subject, tap, throwError, timer } from 'rxjs';
-import { SIGN_IN_FAILED, SIGN_IN_RESULT_PARAM, UserDto } from '@birthday/shared-models';
+import { catchError, map, merge, Observable, of, retry, Subject, switchMap, tap, throwError, timer } from 'rxjs';
+import { GoogleCodeSignInRequest, GoogleCredentialSignInRequest, GoogleSignInConfigDto, UserDto } from '@birthday/shared-models';
 import { ApiService } from '@birthday/web-shared-data-access';
 import { AuthUser } from '../types';
 
-// Sign-in through the API: Google signs the user in, and the API keeps the session in an HttpOnly cookie that scripts
-// cannot read. The app learns who is signed in from `GET /api/me`.
+// Sign-in through the API: the page gets a code or an ID token from Google, and the API keeps the session in an
+// HttpOnly cookie that scripts cannot read. The app learns who is signed in from `GET /api/me`.
 @Injectable({ providedIn: 'root' })
 export class AuthApiService extends ApiService {
-  private readonly document: Document = inject(DOCUMENT);
-  private readonly location: Location = inject(Location);
   // The server renders pages without the visitor's cookies, so they render signed out, as before.
   private readonly isBrowser: boolean = isPlatformBrowser(inject(PLATFORM_ID));
-  private readonly signedOut: Subject<void> = new Subject<void>();
+  private readonly userChanged: Subject<AuthUser | null> = new Subject<AuthUser | null>();
 
   // Emits the restored user (or `null`) first, then the user after every sign-in and sign-out.
   public userChanges(): Observable<AuthUser | null> {
@@ -22,42 +20,38 @@ export class AuthApiService extends ApiService {
       return of(null);
     }
 
-    return merge(this.loadUser(), this.signedOut.pipe(map(() => null)));
+    return merge(this.loadUser(), this.userChanged);
   }
 
-  // Completes when the page was not opened from a failed sign-in, also on the server; fails otherwise. The API returns the
-  // browser to the page with `?signIn=failed` when Google sign-in did not complete.
-  public completeSignIn(): Observable<void> {
-    return defer(() => {
-      if (!this.isBrowser) {
-        return of(undefined);
-      }
-
-      const url = new URL(this.document.location.href);
-
-      if (url.searchParams.get(SIGN_IN_RESULT_PARAM) !== SIGN_IN_FAILED) {
-        return of(undefined);
-      }
-
-      // A reload must not report the failure again.
-      url.searchParams.delete(SIGN_IN_RESULT_PARAM);
-      this.location.replaceState(url.pathname, url.searchParams.toString(), this.location.getState());
-      return throwError(() => new Error('The sign-in did not complete'));
-    });
+  public getGoogleSignInConfig(): Observable<GoogleSignInConfigDto> {
+    return this.httpClient.get<GoogleSignInConfigDto>(`${this.baseUrl}/auth/google/config`);
   }
 
-  // Leaves the app; the API sends the browser to Google and back to this page.
-  public signInWithGoogle(): Observable<void> {
-    return defer(() => {
-      const { pathname, search } = this.document.location;
+  // The authorization code from the Google sign-in popup.
+  public signInWithGoogleCode(code: string): Observable<void> {
+    const body: GoogleCodeSignInRequest = { code };
 
-      this.document.location.assign(`${this.baseUrl}/auth/google/start?returnTo=${encodeURIComponent(`${pathname}${search}`)}`);
-      return of(undefined);
-    });
+    return this.signIn(this.httpClient.post<void>(`${this.baseUrl}/auth/google/code`, body));
+  }
+
+  // The ID token from One Tap.
+  public signInWithGoogleCredential(credential: string): Observable<void> {
+    const body: GoogleCredentialSignInRequest = { credential };
+
+    return this.signIn(this.httpClient.post<void>(`${this.baseUrl}/auth/google/credential`, body));
   }
 
   public signOut(): Observable<void> {
-    return this.httpClient.post<void>(`${this.baseUrl}/auth/sign-out`, null).pipe(tap(() => this.signedOut.next()));
+    return this.httpClient.post<void>(`${this.baseUrl}/auth/sign-out`, null).pipe(tap(() => this.userChanged.next(null)));
+  }
+
+  // Completes once the signed-in user is known and passed on, so the view changes straight to signed in.
+  private signIn(request: Observable<void>): Observable<void> {
+    return request.pipe(
+      switchMap(() => this.loadUser()),
+      tap((user: AuthUser | null) => this.userChanged.next(user)),
+      map(() => undefined),
+    );
   }
 
   private loadUser(): Observable<AuthUser | null> {

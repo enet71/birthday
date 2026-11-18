@@ -3,13 +3,13 @@ import { APP_GUARD } from '@nestjs/core';
 import { ConfigurableModuleClass } from './auth.module-definition';
 import { AuthController, MeController } from './controllers';
 import { AuthGuard, OriginGuard } from './guards';
-import { AuthUsersService, GoogleOidcService, SessionsService, SignInFlowSealer } from './services';
+import { AuthUsersService, GoogleSignInService, SessionsService, SignInNonceSealer } from './services';
 
 @Module({
   controllers: [AuthController, MeController],
   providers: [
-    GoogleOidcService,
-    SignInFlowSealer,
+    GoogleSignInService,
+    SignInNonceSealer,
     SessionsService,
     AuthUsersService,
     // Global guards run in this order: a forged request is rejected before its session is even looked up.
