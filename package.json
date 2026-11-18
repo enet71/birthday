@@ -5,7 +5,9 @@
   "scripts": {
     "start": "nx serve web",
     "start:web": "nx serve web --excludeTaskDependencies",
+    "start:web:prod": "nx run web:serve-prod-api",
     "start:api": "nx serve api",
+    "db:start": "docker compose -f docker-compose.dev.yml up -d",
     "build": "nx run-many -t build",
     "test": "nx run-many -t test --exclude=*-e2e",
     "e2e": "nx run-many -t e2e",
