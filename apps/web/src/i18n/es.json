@@ -261,9 +261,16 @@
     "connected": "Conectado",
     "lastSynced": "Última sincronización: {{ date }}",
     "notSynced": "Aún sin sincronizar",
-    "disconnectHint": "Al desconectar se eliminan de Google Calendar los cumpleaños que añadió Birthdly. En Birthdly se conservan.",
+    "disconnectHint": "Al desconectar, eliges si se eliminan de Google Calendar los cumpleaños que añadió Birthdly. En Birthdly se conservan en cualquier caso.",
     "syncNow": "Sincronizar ahora",
     "disconnect": "Desconectar",
+    "disconnectDialog": {
+      "title": "¿Desconectar Google Calendar?",
+      "text": "Birthdly deja de sincronizarse con Google. Tus cumpleaños se quedan en Birthdly.",
+      "removeEvents": "Eliminar también los cumpleaños que Birthdly añadió a Google Calendar",
+      "keepHint": "Se quedan en Google Calendar, pero ya no se actualizan.",
+      "removeHint": "Los cumpleaños de tus contactos de Google se quedan en Google Calendar."
+    },
     "accessLost": "Acceso perdido",
     "accessLostText": "Google ya no permite que Birthdly use tu calendario. Vuelve a conectarlo para reanudar la sincronización.",
     "reconnect": "Volver a conectar"
@@ -419,7 +426,7 @@
       "text32": "Birthdly comprueba los cambios en Google cuando abres el calendario, como mucho una vez por hora. Para comprobarlo al momento, pulsa <strong>Sincronizar ahora</strong> en Ajustes.",
       "text33": "Google no permite otros cambios en los eventos de cumpleaños, como cambiar la fecha en Google Calendar. Haz esos cambios en Birthdly.",
       "text34": "Cómo dejar de sincronizar",
-      "text35": "Abre <strong>Ajustes</strong> y pulsa <strong>Desconectar</strong> en la tarjeta de Google Calendar. Birthdly elimina los eventos de cumpleaños que añadió a Google Calendar y tus cumpleaños se quedan en Birthdly. Puedes volver a conectarlo cuando quieras.",
+      "text35": "Abre <strong>Ajustes</strong> y pulsa <strong>Desconectar</strong> en la tarjeta de Google Calendar. Elige si se eliminan los eventos de cumpleaños que Birthdly añadió a Google Calendar: si los conservas, se quedan ahí, pero ya no se actualizan. Tus cumpleaños se quedan en Birthdly en cualquier caso. Puedes volver a conectarlo cuando quieras.",
       "text36": "Preguntas frecuentes",
       "text37": "¿Necesito una cuenta de Birthdly?",
       "text38": "Puedes añadir cumpleaños sin cuenta. Para sincronizar con Google Calendar, inicia sesión con Google, porque la sincronización funciona para tu cuenta en todos tus dispositivos.",
@@ -527,7 +534,7 @@
       "text26": "¿Puedo importar cumpleaños sin conectar Google Calendar?",
       "text27": "No. La importación forma parte de la conexión con Google Calendar.",
       "text28": "¿Qué pasa con los cumpleaños importados si me desconecto?",
-      "text29": "Se quedan en Birthdly. Desconectar solo elimina los eventos que Birthdly añadió a Google Calendar y detiene la sincronización.",
+      "text29": "Se quedan en Birthdly. Desconectar detiene la sincronización, y tú eliges si también se eliminan los eventos que Birthdly añadió a Google Calendar.",
       "text30": "¿Puedo añadir notas a los cumpleaños importados?",
       "text31": "Sí. Los cumpleaños importados funcionan como cualquier otro: puedes indicar la relación y añadir notas, como ideas de regalo.",
       "openStep": {

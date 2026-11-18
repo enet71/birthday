@@ -1,7 +1,7 @@
-import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Post, Query } from '@nestjs/common';
 import { GoogleCalendarCompleteResponse, GoogleCalendarConnectionDto, GoogleCalendarSyncResponse } from '@birthday/shared-models';
 import { AuthUser, CurrentUser } from '@birthday/api-auth';
-import { completeSchema, syncSchema } from './schemas';
+import { completeSchema, disconnectSchema, syncSchema } from './schemas';
 import { GoogleCalendarService } from './services';
 
 // The signed-in user's Google Calendar connection. Invalid bodies fail zod parsing; the API answers that with 400.
@@ -28,7 +28,7 @@ export class GoogleCalendarController {
 
   @Delete('connection')
   @HttpCode(HttpStatus.NO_CONTENT)
-  public disconnect(@CurrentUser() user: AuthUser): Promise<void> {
-    return this.googleCalendarService.disconnect(user.id);
+  public disconnect(@CurrentUser() user: AuthUser, @Query() query: unknown): Promise<void> {
+    return this.googleCalendarService.disconnect(user.id, disconnectSchema.parse(query).removeEvents);
   }
 }

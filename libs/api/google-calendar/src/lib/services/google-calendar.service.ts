@@ -80,16 +80,19 @@ export class GoogleCalendarService {
     }
   }
 
-  // Stops the sync and removes the birthdays Birthdly created in Google; the birthdays stay in Birthdly. The access is
-  // revoked even when removing them fails, so a disconnect never leaves a usable token behind.
-  public async disconnect(userId: string): Promise<void> {
+  // Stops the sync; the birthdays stay in Birthdly. With `removeEvents`, also removes the birthdays Birthdly created in
+  // Google. Without it they stay there and so do their ids, so connecting the same account again updates them instead of
+  // adding them twice. The access is revoked even when removing fails, so a disconnect never leaves a usable token.
+  public async disconnect(userId: string, removeEvents: boolean): Promise<void> {
     // First, so queued pushes stop while the birthdays are being removed.
     await this.connections.markDisconnected(userId);
 
     const refreshToken = await this.connections.readRefreshToken(userId);
 
     if (refreshToken) {
-      await this.removeBirthdayEvents(userId);
+      if (removeEvents) {
+        await this.removeBirthdayEvents(userId);
+      }
       await this.oauth.revoke(refreshToken);
     }
     await this.connections.forgetRefreshToken(userId);

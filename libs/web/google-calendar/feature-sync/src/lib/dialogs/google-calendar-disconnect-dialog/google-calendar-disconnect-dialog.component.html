@@ -1,0 +1,14 @@
+<h2 mat-dialog-title>{{ 'googleCalendar.disconnectDialog.title' | transloco }}</h2>
+<mat-dialog-content class="content">
+  <p class="text">{{ 'googleCalendar.disconnectDialog.text' | transloco }}</p>
+  <mat-checkbox aria-describedby="google-calendar-disconnect-hint" [checked]="removeEvents()" (change)="removeEvents.set($event.checked)">
+    {{ 'googleCalendar.disconnectDialog.removeEvents' | transloco }}
+  </mat-checkbox>
+  <p class="hint" id="google-calendar-disconnect-hint" aria-live="polite">
+    {{ (removeEvents() ? 'googleCalendar.disconnectDialog.removeHint' : 'googleCalendar.disconnectDialog.keepHint') | transloco }}
+  </p>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button matButton type="button" mat-dialog-close>{{ 'common.cancel' | transloco }}</button>
+  <button matButton="filled" type="button" [mat-dialog-close]="result">{{ 'googleCalendar.disconnect' | transloco }}</button>
+</mat-dialog-actions>

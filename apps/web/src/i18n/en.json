@@ -261,9 +261,16 @@
     "connected": "Connected",
     "lastSynced": "Last synced {{ date }}",
     "notSynced": "Not synced yet",
-    "disconnectHint": "Disconnecting removes the birthdays Birthdly added to Google Calendar. They stay in Birthdly.",
+    "disconnectHint": "When you disconnect, you choose whether to remove the birthdays Birthdly added to Google Calendar. They stay in Birthdly either way.",
     "syncNow": "Sync now",
     "disconnect": "Disconnect",
+    "disconnectDialog": {
+      "title": "Disconnect Google Calendar?",
+      "text": "Birthdly stops syncing with Google. Your birthdays stay in Birthdly.",
+      "removeEvents": "Also remove the birthdays Birthdly added to Google Calendar",
+      "keepHint": "They stay in Google Calendar but are no longer updated.",
+      "removeHint": "The birthdays of your Google contacts stay in Google Calendar."
+    },
     "accessLost": "Access lost",
     "accessLostText": "Google no longer lets Birthdly use your calendar. Connect again to resume syncing.",
     "reconnect": "Reconnect"
@@ -419,7 +426,7 @@
       "text32": "Birthdly checks Google for changes when you open the calendar, at most once an hour. To check right away, press <strong>Sync now</strong> in Settings.",
       "text33": "Google does not allow other edits to birthday events, such as changing the date in Google Calendar. Make those changes in Birthdly instead.",
       "text34": "How to stop syncing",
-      "text35": "Open <strong>Settings</strong> and press <strong>Disconnect</strong> on the Google Calendar card. Birthdly removes the birthday events it added to Google Calendar, and your birthdays stay in Birthdly. You can connect again at any time.",
+      "text35": "Open <strong>Settings</strong> and press <strong>Disconnect</strong> on the Google Calendar card. Choose whether to remove the birthday events Birthdly added to Google Calendar: if you keep them, they stay there but are no longer updated. Your birthdays stay in Birthdly either way. You can connect again at any time.",
       "text36": "Frequently asked questions",
       "text37": "Do I need a Birthdly account?",
       "text38": "You can add birthdays without an account. To sync with Google Calendar, sign in with Google, because the sync runs for your account on every device.",
@@ -527,7 +534,7 @@
       "text26": "Can I import birthdays without connecting Google Calendar?",
       "text27": "No. The import is part of the Google Calendar connection.",
       "text28": "What happens to imported birthdays if I disconnect?",
-      "text29": "They stay in Birthdly. Disconnecting only removes the events Birthdly added to Google Calendar and stops the sync.",
+      "text29": "They stay in Birthdly. Disconnecting stops the sync, and you choose whether to also remove the events Birthdly added to Google Calendar.",
       "text30": "Can I add notes to imported birthdays?",
       "text31": "Yes. Imported birthdays work like any other: you can set the relationship and add notes, such as gift ideas.",
       "openStep": {

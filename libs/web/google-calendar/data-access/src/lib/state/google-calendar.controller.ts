@@ -143,8 +143,8 @@ export class GoogleCalendarController extends StateController {
     }
   }
 
-  public disconnect(): Observable<void> {
-    return this.googleCalendarApi.disconnect().pipe(
+  public disconnect(removeEvents: boolean): Observable<void> {
+    return this.googleCalendarApi.disconnect(removeEvents).pipe(
       tap(() => this.setStatus('disconnected')),
       catchError(() => {
         this.notifications.createErrorNotification(this.translator.translate('notifications.googleCalendar.disconnectFailed'));

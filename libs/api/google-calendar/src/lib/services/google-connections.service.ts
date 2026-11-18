@@ -29,8 +29,10 @@ export class GoogleConnectionsService {
     return connection ? { status: connection.status, lastSyncedAt: connection.lastSyncedAt?.toISOString() ?? null } : null;
   }
 
-  // No birthday points to an event after a disconnect, so there are no deletions to read yet. `lastPulledAt` makes the
-  // automatic sync the app starts right away wait, so it cannot take the lease from the first sync, which ignores it.
+  // Deletions are read only from now on: an event the user deleted while disconnected (its id is kept when a disconnect
+  // leaves the events in Google) is created again by the first sync's reconcile instead of deleting the birthday.
+  // `lastPulledAt` makes the automatic sync the app starts right away wait, so it cannot take the lease from the first
+  // sync, which ignores it.
   // A sync token of an earlier connection, maybe of another Google account, is dropped.
   public async saveConnected(userId: string, refreshToken: string): Promise<void> {
     const now = new Date();

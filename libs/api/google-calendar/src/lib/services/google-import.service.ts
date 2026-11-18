@@ -37,6 +37,12 @@ interface ContactsRead {
   nextSyncToken: string | null;
 }
 
+// Times in milliseconds: up to when deletions were read before, and when the current connection was made.
+interface DeletionsWindow {
+  checkedAt: number;
+  connectedAt: number;
+}
+
 type BirthdayChanges = Partial<Pick<BirthdayRecord, 'name' | 'birthDate' | 'googleContactId' | 'googleContactSnapshot'>>;
 
 const connections = googleCalendarConnections;
@@ -249,14 +255,14 @@ export class GoogleImportService {
   // the others; the import still fails at the end, so `last_synced_at` stays.
   private async importDeletedBirthdayEvents(userId: string, accessToken: string, startedAt: number, summary: ImportSummary): Promise<void> {
     const [connection] = await this.db
-      .select({ deletionsCheckedAt: connections.deletionsCheckedAt })
+      .select({ deletionsCheckedAt: connections.deletionsCheckedAt, connectedAt: connections.connectedAt })
       .from(connections)
       .where(eq(connections.userId, userId));
-    // `-infinity` (right after connecting, when no birthday points to an event yet) parses to NaN.
+    // `-infinity` (right after connecting) parses to NaN.
     const checkedAt = Date.parse(connection?.deletionsCheckedAt ?? '');
 
-    if (Number.isFinite(checkedAt)) {
-      await this.importDeletions(userId, accessToken, checkedAt, summary);
+    if (connection && Number.isFinite(checkedAt)) {
+      await this.importDeletions(userId, accessToken, { checkedAt, connectedAt: connection.connectedAt.getTime() }, summary);
     }
     await this.db
       .update(connections)
@@ -264,8 +270,8 @@ export class GoogleImportService {
       .where(eq(connections.userId, userId));
   }
 
-  private async importDeletions(userId: string, accessToken: string, checkedAt: number, summary: ImportSummary): Promise<void> {
-    const events = await this.events.listBirthdayEvents(accessToken, new Date(checkedAt - DELETION_LOOKBACK_MS));
+  private async importDeletions(userId: string, accessToken: string, window: DeletionsWindow, summary: ImportSummary): Promise<void> {
+    const events = await this.events.listBirthdayEvents(accessToken, new Date(window.checkedAt - DELETION_LOOKBACK_MS));
 
     // Google keeps deleted events only for a while; older ones can no longer be read, so they are given up.
     if (events === null) {
@@ -286,7 +292,7 @@ export class GoogleImportService {
       }
 
       try {
-        await this.importEventDeletion(accessToken, event, record, checkedAt, summary);
+        await this.importEventDeletion(accessToken, event, record, window, summary);
       } catch (error) {
         errors.push(error);
       }
@@ -299,11 +305,13 @@ export class GoogleImportService {
   // The user deleted the birthday's event in Google. Without `updated`, the deletion is known only to be later than
   // `checkedAt`, up to which deletions were read before. If Birthdly changed the birthday later, the birthday stays and
   // gets a new event. Either way no birthday points to the deleted id afterwards, so the deletion is handled once.
+  // A deletion made before the current connection, while a disconnect left the events in Google, does not delete the
+  // birthday either: connecting again brings Birthdly's birthdays back to Google.
   private async importEventDeletion(
     accessToken: string,
     event: GoogleEvent,
     record: BirthdayRecord,
-    checkedAt: number,
+    { checkedAt, connectedAt }: DeletionsWindow,
     summary: ImportSummary,
   ): Promise<void> {
     // Birthdly deletes events itself only after forgetting their ids (disconnect) or replacing them, so a deletion
@@ -315,9 +323,12 @@ export class GoogleImportService {
     }
 
     const eventUpdatedAt = Date.parse(event.updated ?? '');
-    const isGoogleLater = Number.isFinite(eventUpdatedAt) ? eventUpdatedAt > record.updatedAtMs : record.updatedAtMs <= checkedAt;
+    const isKnownTime = Number.isFinite(eventUpdatedAt);
+    // Without `updated`, the deletion may be as old as the start of the read.
+    const isWhileConnected = isKnownTime ? eventUpdatedAt >= connectedAt : checkedAt - DELETION_LOOKBACK_MS >= connectedAt;
+    const isGoogleLater = isKnownTime ? eventUpdatedAt > record.updatedAtMs : record.updatedAtMs <= checkedAt;
 
-    if (isGoogleLater && (await this.deleteBirthday(record.id, record.updatedAt))) {
+    if (isWhileConnected && isGoogleLater && (await this.deleteBirthday(record.id, record.updatedAt))) {
       summary.deleted++;
       return;
     }

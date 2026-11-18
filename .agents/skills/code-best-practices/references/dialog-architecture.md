@@ -66,6 +66,10 @@ For every new dialog, add all of these in the same change:
 
 If the owning state or controller does not exist or cannot be found, do not invent a path. Offer to create the missing state/controller under the appropriate feature `data-access/src/lib/state` boundary, or ask the user to provide the exact path.
 
+### Dialog Results
+
+A bare `mat-dialog-close` attribute (for example on a Cancel button) closes the dialog with `''`, not `undefined`; Escape and the backdrop close it with `undefined`. When `afterClosed()` decides whether the user confirmed, check for the confirming result itself (a truthy result object or an explicit value such as `true`), never `result !== undefined`. Otherwise Cancel runs the confirmed action.
+
 ## Dialog Components
 
 Dialog components should:

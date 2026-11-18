@@ -1,6 +1,11 @@
 import { Injectable } from '@angular/core';
 import { map, Observable } from 'rxjs';
-import { GoogleCalendarCompleteRequest, GoogleCalendarCompleteResponse, GoogleCalendarSyncRequest } from '@birthday/shared-models';
+import {
+  GoogleCalendarCompleteRequest,
+  GoogleCalendarCompleteResponse,
+  GoogleCalendarDisconnectRequest,
+  GoogleCalendarSyncRequest,
+} from '@birthday/shared-models';
 import { ApiService } from '@birthday/web-shared-data-access';
 import { GoogleCalendarConnection, GoogleCalendarConnectResult, GoogleCalendarSyncResult } from '../types';
 
@@ -30,7 +35,10 @@ export class GoogleCalendarApiService extends ApiService {
     return this.httpClient.post<GoogleCalendarSyncResult>(`${this.url}/sync`, body);
   }
 
-  public disconnect(): Observable<void> {
-    return this.httpClient.delete<void>(`${this.url}/connection`);
+  // `removeEvents` also deletes the birthdays Birthdly added to Google Calendar.
+  public disconnect(removeEvents: boolean): Observable<void> {
+    const params: GoogleCalendarDisconnectRequest = { removeEvents };
+
+    return this.httpClient.delete<void>(`${this.url}/connection`, { params: { ...params } });
   }
 }

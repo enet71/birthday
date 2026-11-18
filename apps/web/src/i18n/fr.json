@@ -261,9 +261,16 @@
     "connected": "Connecté",
     "lastSynced": "Dernière synchronisation : {{ date }}",
     "notSynced": "Pas encore synchronisé",
-    "disconnectHint": "La déconnexion supprime les anniversaires que Birthdly a ajoutés à Google Agenda. Ils restent dans Birthdly.",
+    "disconnectHint": "Lors de la déconnexion, vous choisissez de supprimer ou non les anniversaires que Birthdly a ajoutés à Google Agenda. Ils restent dans Birthdly dans tous les cas.",
     "syncNow": "Synchroniser",
     "disconnect": "Déconnecter",
+    "disconnectDialog": {
+      "title": "Déconnecter Google Agenda ?",
+      "text": "Birthdly cesse de se synchroniser avec Google. Vos anniversaires restent dans Birthdly.",
+      "removeEvents": "Supprimer aussi les anniversaires que Birthdly a ajoutés à Google Agenda",
+      "keepHint": "Ils restent dans Google Agenda, mais ne sont plus mis à jour.",
+      "removeHint": "Les anniversaires de vos contacts Google restent dans Google Agenda."
+    },
     "accessLost": "Accès perdu",
     "accessLostText": "Google n'autorise plus Birthdly à utiliser votre agenda. Reconnectez-le pour reprendre la synchronisation.",
     "reconnect": "Reconnecter"
@@ -419,7 +426,7 @@
       "text32": "Birthdly vérifie les modifications dans Google quand vous ouvrez le calendrier, au plus une fois par heure. Pour vérifier tout de suite, appuyez sur <strong>Synchroniser</strong> dans les paramètres.",
       "text33": "Google n'autorise pas d'autres modifications des événements d'anniversaire, comme changer la date dans Google Agenda. Faites ces modifications dans Birthdly.",
       "text34": "Comment arrêter la synchronisation",
-      "text35": "Ouvrez les <strong>Paramètres</strong> et appuyez sur <strong>Déconnecter</strong> sur la carte Google Agenda. Birthdly supprime les événements d'anniversaire qu'il a ajoutés à Google Agenda, et vos anniversaires restent dans Birthdly. Vous pouvez le reconnecter à tout moment.",
+      "text35": "Ouvrez les <strong>Paramètres</strong> et appuyez sur <strong>Déconnecter</strong> sur la carte Google Agenda. Choisissez de supprimer ou non les événements d'anniversaire que Birthdly a ajoutés à Google Agenda : si vous les gardez, ils y restent, mais ne sont plus mis à jour. Vos anniversaires restent dans Birthdly dans tous les cas. Vous pouvez le reconnecter à tout moment.",
       "text36": "Questions fréquentes",
       "text37": "Ai-je besoin d'un compte Birthdly ?",
       "text38": "Vous pouvez ajouter des anniversaires sans compte. Pour synchroniser avec Google Agenda, connectez-vous avec Google, car la synchronisation fonctionne pour votre compte sur tous vos appareils.",
@@ -527,7 +534,7 @@
       "text26": "Puis-je importer des anniversaires sans connecter Google Agenda ?",
       "text27": "Non. L'importation fait partie de la connexion à Google Agenda.",
       "text28": "Que deviennent les anniversaires importés si je me déconnecte ?",
-      "text29": "Ils restent dans Birthdly. La déconnexion supprime seulement les événements que Birthdly a ajoutés à Google Agenda et arrête la synchronisation.",
+      "text29": "Ils restent dans Birthdly. La déconnexion arrête la synchronisation, et vous choisissez de supprimer ou non les événements que Birthdly a ajoutés à Google Agenda.",
       "text30": "Puis-je ajouter des notes aux anniversaires importés ?",
       "text31": "Oui. Les anniversaires importés fonctionnent comme les autres : vous pouvez indiquer la relation et ajouter des notes, comme des idées de cadeaux.",
       "openStep": {

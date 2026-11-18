@@ -42,7 +42,7 @@ export class GoogleCalendarSectionComponent {
   }
 
   protected disconnect(): void {
-    this.sectionController.disconnect();
+    this.sectionController.openDisconnectDialog();
   }
 
   protected reloadConnection(): void {

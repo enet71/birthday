@@ -61,7 +61,8 @@
   <ul>
     <li>
       <strong>See, create, change, and delete events on Google calendars you own</strong> (<code>calendar.events.owned</code>): to add your Birthdly
-      birthdays to your primary Google Calendar, keep them up to date, remove them when you disconnect, and read existing birthday events.
+      birthdays to your primary Google Calendar, keep them up to date, remove them when you disconnect if you choose to, and read existing birthday
+      events.
     </li>
     <li>
       <strong>See and download your contacts</strong> (<code>contacts.readonly</code>): to import the names and birthdays of your Google contacts.
@@ -126,9 +127,11 @@
   <ul>
     <li>We keep your data while your account exists. You can delete any birthday in the app at any time.</li>
     <li>
-      Disconnecting Google Calendar in <a routerLink="/settings">Settings</a> revokes Birthdly's access to your Google account, deletes the stored
-      Google token and the stored IDs of Google Calendar events, and attempts to remove the birthday events Birthdly added to your Google Calendar. If
-      removing them fails, they stay in your Google Calendar, where you can delete them yourself.
+      Disconnecting Google Calendar in <a routerLink="/settings">Settings</a> revokes Birthdly's access to your Google account and deletes the stored
+      Google token. When you disconnect, you choose whether Birthdly also removes the birthday events it added to your Google Calendar. If you choose
+      to remove them, Birthdly deletes the stored IDs of those events and attempts to remove the events; if removing them fails, they stay in your
+      Google Calendar, where you can delete them yourself. If you keep them, they stay in your Google Calendar without further updates, and Birthdly
+      keeps their IDs with your birthdays, so that connecting the same Google account again updates these events instead of adding them twice.
     </li>
     <li>
       Turning off birthday notifications for a device in <a routerLink="/settings">Settings</a> deletes its push subscription. When you sign out on a

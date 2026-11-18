@@ -3,12 +3,12 @@
 Two-way sync of the signed-in user's birthdays with Google: Birthdly's birthdays become birthday events in the user's
 primary Google calendar, and the birthdays of the user's Google contacts come into Birthdly.
 
-| Request                                  | Body         | Answer                                                                                      |
-| ---------------------------------------- | ------------ | ------------------------------------------------------------------------------------------- |
-| `GET /api/google-calendar/connection`    |              | `GoogleCalendarConnectionDto` or `null`                                                     |
-| `POST /api/google-calendar/complete`     | `{ code }`   | `{ result: 'connected' \| 'denied' }`; 400 for a rejected code, 409 without a refresh token |
-| `POST /api/google-calendar/sync`         | `{ manual }` | `GoogleCalendarSyncResponse`                                                                |
-| `DELETE /api/google-calendar/connection` |              | 204                                                                                         |
+| Request                                  | Body                                         | Answer                                                                                      |
+| ---------------------------------------- | -------------------------------------------- | ------------------------------------------------------------------------------------------- |
+| `GET /api/google-calendar/connection`    |                                              | `GoogleCalendarConnectionDto` or `null`                                                     |
+| `POST /api/google-calendar/complete`     | `{ code }`                                   | `{ result: 'connected' \| 'denied' }`; 400 for a rejected code, 409 without a refresh token |
+| `POST /api/google-calendar/sync`         | `{ manual }`                                 | `GoogleCalendarSyncResponse`                                                                |
+| `DELETE /api/google-calendar/connection` | `?removeEvents=true\|false` (default `true`) | 204                                                                                         |
 
 ## How it works
 
@@ -32,8 +32,10 @@ primary Google calendar, and the birthdays of the user's Google contacts come in
     minutes;
   - on "Sync now" (`manual`) and as the first sync after connecting: these read every contact and reconcile every
     event.
-- **Disconnecting** forgets and deletes Birthdly's events in Google, revokes the access and drops the token; the
-  birthdays stay.
+- **Disconnecting** revokes the access and drops the token; the birthdays stay. The user chooses in the app whether
+  Birthdly's events in Google go too (`removeEvents`): then they are forgotten and deleted. Otherwise they stay in Google
+  without updates and keep their ids, so connecting the same account again updates them instead of adding them twice;
+  events whose birthday was deleted meanwhile are removed by that connection's reconcile.
 
 Google Cloud: the OAuth client is the one used for signing in (its authorized JavaScript origins), and the project
 must have the Google Calendar API and the People API enabled. Scopes: `calendar.events.owned`,

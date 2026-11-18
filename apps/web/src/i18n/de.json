@@ -261,9 +261,16 @@
     "connected": "Verbunden",
     "lastSynced": "Zuletzt synchronisiert: {{ date }}",
     "notSynced": "Noch nicht synchronisiert",
-    "disconnectHint": "Beim Trennen werden die Geburtstage entfernt, die Birthdly zu Google Kalender hinzugefügt hat. In Birthdly bleiben sie erhalten.",
+    "disconnectHint": "Beim Trennen wählst du, ob die Geburtstage, die Birthdly zu Google Kalender hinzugefügt hat, entfernt werden. In Birthdly bleiben sie in jedem Fall erhalten.",
     "syncNow": "Jetzt synchronisieren",
     "disconnect": "Trennen",
+    "disconnectDialog": {
+      "title": "Google Kalender trennen?",
+      "text": "Birthdly synchronisiert nicht mehr mit Google. Deine Geburtstage bleiben in Birthdly.",
+      "removeEvents": "Auch die Geburtstage entfernen, die Birthdly zu Google Kalender hinzugefügt hat",
+      "keepHint": "Sie bleiben in Google Kalender, werden aber nicht mehr aktualisiert.",
+      "removeHint": "Die Geburtstage deiner Google-Kontakte bleiben in Google Kalender."
+    },
     "accessLost": "Zugriff verloren",
     "accessLostText": "Google erlaubt Birthdly nicht mehr, deinen Kalender zu nutzen. Verbinde ihn erneut, um die Synchronisierung fortzusetzen.",
     "reconnect": "Erneut verbinden"
@@ -419,7 +426,7 @@
       "text32": "Birthdly prüft Google auf Änderungen, wenn du den Kalender öffnest, höchstens einmal pro Stunde. Um sofort zu prüfen, tippe in den Einstellungen auf <strong>Jetzt synchronisieren</strong>.",
       "text33": "Google erlaubt keine anderen Änderungen an Geburtstagsterminen, etwa das Datum in Google Kalender zu ändern. Nimm solche Änderungen in Birthdly vor.",
       "text34": "So beendest du die Synchronisierung",
-      "text35": "Öffne die <strong>Einstellungen</strong> und tippe auf der Karte Google Kalender auf <strong>Trennen</strong>. Birthdly entfernt die Geburtstagstermine, die es zu Google Kalender hinzugefügt hat, und deine Geburtstage bleiben in Birthdly. Du kannst jederzeit wieder verbinden.",
+      "text35": "Öffne die <strong>Einstellungen</strong> und tippe auf der Karte Google Kalender auf <strong>Trennen</strong>. Wähle, ob die Geburtstagstermine, die Birthdly zu Google Kalender hinzugefügt hat, entfernt werden: Behältst du sie, bleiben sie dort, werden aber nicht mehr aktualisiert. Deine Geburtstage bleiben in jedem Fall in Birthdly. Du kannst jederzeit wieder verbinden.",
       "text36": "Häufige Fragen",
       "text37": "Brauche ich ein Birthdly-Konto?",
       "text38": "Du kannst Geburtstage ohne Konto hinzufügen. Für die Synchronisierung mit Google Kalender melde dich mit Google an, denn die Synchronisierung läuft für dein Konto auf jedem Gerät.",
@@ -527,7 +534,7 @@
       "text26": "Kann ich Geburtstage importieren, ohne Google Kalender zu verbinden?",
       "text27": "Nein. Der Import ist Teil der Verbindung mit Google Kalender.",
       "text28": "Was passiert mit importierten Geburtstagen, wenn ich die Verbindung trenne?",
-      "text29": "Sie bleiben in Birthdly. Das Trennen entfernt nur die Termine, die Birthdly zu Google Kalender hinzugefügt hat, und beendet die Synchronisierung.",
+      "text29": "Sie bleiben in Birthdly. Das Trennen beendet die Synchronisierung, und du wählst, ob auch die Termine entfernt werden, die Birthdly zu Google Kalender hinzugefügt hat.",
       "text30": "Kann ich importierten Geburtstagen Notizen hinzufügen?",
       "text31": "Ja. Importierte Geburtstage funktionieren wie alle anderen: Du kannst die Beziehung festlegen und Notizen wie Geschenkideen hinzufügen.",
       "openStep": {
