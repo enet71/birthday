@@ -5,6 +5,7 @@ import { AuthModule } from '@birthday/api-auth';
 import { BirthdaysModule } from '@birthday/api-birthdays';
 import { GoogleCalendarModule } from '@birthday/api-google-calendar';
 import { JobsModule } from '@birthday/api-jobs';
+import { NotificationsModule } from '@birthday/api-notifications';
 import { RemindersModule } from '@birthday/api-reminders';
 import { DatabaseModule } from '@birthday/api-database';
 import type { Request } from 'express';
@@ -67,6 +68,14 @@ import { HealthModule } from './health/health.module';
         appOrigin: config.get('APP_ORIGIN', { infer: true }),
         tokenEncryptionKey: config.get('GOOGLE_TOKEN_ENCRYPTION_KEY', { infer: true }),
         oauthStateSecret: config.get('GOOGLE_OAUTH_STATE_SECRET', { infer: true }),
+      }),
+    }),
+    NotificationsModule.forRootAsync({
+      inject: [ConfigService],
+      useFactory: (config: ConfigService<Env, true>) => ({
+        vapidPublicKey: config.get('VAPID_PUBLIC_KEY', { infer: true }),
+        vapidPrivateKey: config.get('VAPID_PRIVATE_KEY', { infer: true }),
+        vapidSubject: config.get('VAPID_SUBJECT', { infer: true }),
       }),
     }),
     HealthModule,

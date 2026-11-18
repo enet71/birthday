@@ -19,6 +19,12 @@ export const envSchema = z.object({
   GOOGLE_TOKEN_ENCRYPTION_KEY: z.string().regex(/^[0-9a-f]{64}$/i, { message: 'Must be 64 hex characters: openssl rand -hex 32' }),
   // Signs the Google Calendar connect request. Generate it with `openssl rand -hex 32`.
   GOOGLE_OAUTH_STATE_SECRET: z.string().min(32),
+  // The VAPID key pair that signs birthday push notifications, from `npm run push:vapid-keys`. The public key must equal
+  // `vapidPublicKey` in the web app; a new pair makes every existing browser subscription stop working.
+  VAPID_PUBLIC_KEY: z.string().regex(/^[A-Za-z0-9_-]{87}$/, { message: 'Must be the base64url public key from npm run push:vapid-keys' }),
+  VAPID_PRIVATE_KEY: z.string().regex(/^[A-Za-z0-9_-]{43}$/, { message: 'Must be the base64url private key from npm run push:vapid-keys' }),
+  // How push services can reach the sender, for example `mailto:hello@birthdly.com`.
+  VAPID_SUBJECT: z.string().regex(/^(mailto:|https:\/\/)/, { message: 'Must be a mailto: or https: URL' }),
   LOG_LEVEL: z.enum(['fatal', 'error', 'warn', 'info', 'debug', 'trace']).default('info'),
 });
 

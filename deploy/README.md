@@ -130,6 +130,11 @@ Google Cloud Console → APIs & Services → Credentials → the OAuth client: a
 The Google Calendar sync uses the same client: add `https://birthdly.com/settings/google-calendar` to the authorized
 redirect URIs too, and enable the Google Calendar API and the People API in its project (APIs & Services → Library).
 
+Birthday push notifications need the VAPID pair whose public key is `vapidPublicKey` in
+`apps/web/src/app/app.config.ts` (`VAPID_PUBLIC_KEY`, `VAPID_PRIVATE_KEY`, see `libs/api/notifications`), and a
+`VAPID_SUBJECT` such as `mailto:hello@birthdly.com`. Check that `VAPID_PUBLIC_KEY` equals `vapidPublicKey` before
+deploying: with another public key push services reject every message, and the first run deletes every subscription.
+
 ### 6. Server files
 
 ```bash

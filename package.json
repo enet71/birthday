@@ -56,6 +56,7 @@
     "pino-http": "11.0.0",
     "reflect-metadata": "^0.2.0",
     "rxjs": "~7.8.0",
+    "web-push": "3.6.7",
     "zod": "4.6.7"
   },
   "devDependencies": {
@@ -91,6 +92,7 @@
     "@types/jest": "~30.0.0",
     "@types/node": "^22.0.0",
     "@types/pg": "8.23.1",
+    "@types/web-push": "3.6.4",
     "@typescript-eslint/utils": "^8.58.0",
     "@vitest/coverage-v8": "^4.0.0",
     "angular-eslint": "^22.5.0",

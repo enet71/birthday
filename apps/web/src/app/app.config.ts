@@ -49,8 +49,8 @@ export const appConfig: ApplicationConfig = {
         supabaseUrl: 'https://wpnrneoqvxddhbltmysx.supabase.co',
         // Publishable keys are meant for the browser; data access is enforced by RLS.
         supabasePublishableKey: 'sb_publishable_4F1HdGrn9YerAJwVArdDvA_RXDVJvWB',
-        // Pairs with the private key in the `VAPID_KEYS` Edge Function secret.
-        vapidPublicKey: 'BOV_Vh3KueF0knJwOQk6i7dl-7mtB6-VpzP5UccpfDO8tY5tEf6yHLSDfcirUzV6rYhJrSeX69v-DcpCfnD83LE',
+        // Pairs with `VAPID_PRIVATE_KEY` in the API's environment (`npm run push:vapid-keys`).
+        vapidPublicKey: 'BA3CPp15GUmhVEZzfQ00PBKGvPCUIdR5OExo9RXEobdrHUf4kMoZNWqpGgOXK_PgJpt365Ph4WNdD7Xru__LdIo',
         notificationErrorTime: 5000,
         notificationSuccessTime: 3000,
       },
