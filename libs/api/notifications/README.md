@@ -21,6 +21,6 @@ Sends the daily birthday push notifications. The settings and the devices' push 
 `npm run push:vapid-keys` prints a new pair. `VAPID_PUBLIC_KEY` and `VAPID_PRIVATE_KEY` go to the API's environment,
 and the public key also to `vapidPublicKey` in `apps/web/src/app/app.config.ts`. A new pair makes every existing
 browser subscription stop working: push services reject it with 403, the subscription is deleted, and the user has to
-turn notifications off and on again. The API refuses to start when the keys are malformed or the private key does not
+turn notifications on again in Settings, which replaces the browser's old subscription. The API refuses to start when the keys are malformed or the private key does not
 belong to the public key. It cannot check that the public key equals the web app's `vapidPublicKey`: compare them when
 deploying, because a mismatch makes push services reject every message and the first run deletes every subscription.

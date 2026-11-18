@@ -45,6 +45,9 @@ export class DevicePushService {
         return this.getRegistration();
       }),
       switchMap((registration: ServiceWorkerRegistration) =>
+        this.dropSubscriptionWithOtherKey(registration, this.decodeBase64Url(applicationServerKey)).pipe(map(() => registration)),
+      ),
+      switchMap((registration: ServiceWorkerRegistration) =>
         registration.pushManager.subscribe({ userVisibleOnly: true, applicationServerKey: this.decodeBase64Url(applicationServerKey) }),
       ),
       map((subscription: PushSubscription) => this.toDeviceSubscription(subscription)),
@@ -57,6 +60,27 @@ export class DevicePushService {
       switchMap((registration: ServiceWorkerRegistration) => registration.pushManager.getSubscription()),
       switchMap((subscription: PushSubscription | null) => (subscription ? subscription.unsubscribe() : of(false))),
       map(() => undefined),
+    );
+  }
+
+  // The browser refuses to subscribe with a new key while a subscription with another key exists, for example after the
+  // VAPID keys changed. The backend no longer accepts that old subscription anyway, so it is replaced.
+  private dropSubscriptionWithOtherKey(registration: ServiceWorkerRegistration, applicationServerKey: Uint8Array): Observable<void> {
+    return defer(() => registration.pushManager.getSubscription()).pipe(
+      switchMap((subscription: PushSubscription | null) =>
+        subscription && !this.hasKey(subscription, applicationServerKey) ? subscription.unsubscribe() : of(false),
+      ),
+      map(() => undefined),
+    );
+  }
+
+  private hasKey(subscription: PushSubscription, applicationServerKey: Uint8Array): boolean {
+    const current: ArrayBuffer | null = subscription.options.applicationServerKey;
+
+    return (
+      current !== null &&
+      current.byteLength === applicationServerKey.length &&
+      new Uint8Array(current).every((byte: number, index: number) => byte === applicationServerKey[index])
     );
   }
 
