@@ -21,10 +21,17 @@ primary Google calendar, and the birthdays of the user's Google contacts come in
 - **Export.** `BirthdaysService` reports every change to `BirthdayChangesListener`; this module provides it and queues
   the change in pg-boss (`google-calendar-push`), when the user is connected. The worker reads the current row, so
   changes arriving out of order do no harm, and retries failures with growing pauses.
-- **Import** (`sync`, and the first sync): contact birthdays are added or linked (same name and date), later Google
-  changes win over earlier Birthdly edits, and a deletion of a Birthdly event in Google deletes the birthday unless it
-  was changed in Birthdly later. A lease on the connection row keeps two syncs of one user apart; an automatic sync runs
-  at most once an hour, "Sync now" (`manual`) also reconciles every event.
+- **Import**: contact birthdays are added or linked (same name and date), later Google changes win over earlier
+  Birthdly edits, a contact deleted in Google or left without a birthday stays in Birthdly and gets its own event, and a
+  deletion of a Birthdly event in Google deletes the birthday unless it was changed in Birthdly later. A lease on the
+  connection row keeps two syncs of one user apart. Contacts are read with a People API sync token, so a sync reads
+  only what changed since the last one; an expired or rejected token reads every contact again. Syncs run:
+  - when the app opens the calendar (`sync`), at most once a minute since the last sync of any kind;
+  - in the background, so reminders get Google's changes for users who do not open the app: every minute
+    `google-calendar-poll` queues a `google-calendar-background-sync` job for each connected user not synced for 15
+    minutes;
+  - on "Sync now" (`manual`) and as the first sync after connecting: these read every contact and reconcile every
+    event.
 - **Disconnecting** forgets and deletes Birthdly's events in Google, revokes the access and drops the token; the
   birthdays stay.
 

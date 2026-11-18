@@ -1,0 +1,1 @@
+ALTER TABLE "google_calendar_connections" ADD COLUMN "contacts_sync_token" text;

@@ -1,5 +1,5 @@
 import { Inject, Injectable, Logger } from '@nestjs/common';
-import { and, eq } from 'drizzle-orm';
+import { and, asc, eq, lt, lte } from 'drizzle-orm';
 import { GoogleCalendarConnectionDto } from '@birthday/shared-models';
 import { DATABASE, Database, googleCalendarConnections } from '@birthday/api-database';
 import { GoogleAccessRevokedError } from '../errors';
@@ -31,6 +31,7 @@ export class GoogleConnectionsService {
 
   // No birthday points to an event after a disconnect, so there are no deletions to read yet. `lastPulledAt` makes the
   // automatic sync the app starts right away wait, so it cannot take the lease from the first sync, which ignores it.
+  // A sync token of an earlier connection, maybe of another Google account, is dropped.
   public async saveConnected(userId: string, refreshToken: string): Promise<void> {
     const now = new Date();
     const values = {
@@ -38,6 +39,7 @@ export class GoogleConnectionsService {
       connectedAt: now,
       lastPulledAt: now.toISOString(),
       deletionsCheckedAt: '-infinity',
+      contactsSyncToken: null,
       refreshTokenEncrypted: this.cipher.encrypt(refreshToken),
     };
 
@@ -51,6 +53,43 @@ export class GoogleConnectionsService {
     const [connection] = await this.db.select({ status: connections.status }).from(connections).where(eq(connections.userId, userId));
 
     return connection?.status === 'connected';
+  }
+
+  // Up to `limit` connected users whose last sync started before `pulledBefore` and none is running now, longest waiting
+  // first. The limit spreads a backlog, such as every user right after a deploy, over several passes.
+  public async findDueForSync(pulledBefore: Date, limit: number): Promise<string[]> {
+    const rows = await this.db
+      .select({ userId: connections.userId })
+      .from(connections)
+      .where(
+        and(
+          eq(connections.status, 'connected'),
+          lte(connections.lastPulledAt, pulledBefore.toISOString()),
+          lt(connections.syncRunningUntil, new Date().toISOString()),
+        ),
+      )
+      .orderBy(asc(connections.lastPulledAt))
+      .limit(limit);
+
+    return rows.map((row) => row.userId);
+  }
+
+  // The token together with the connection it belongs to, for `saveContactsSyncToken`.
+  public async readContactsSyncToken(userId: string): Promise<{ syncToken: string | null; connectedAt: Date } | null> {
+    const [connection] = await this.db
+      .select({ syncToken: connections.contactsSyncToken, connectedAt: connections.connectedAt })
+      .from(connections)
+      .where(eq(connections.userId, userId));
+
+    return connection ?? null;
+  }
+
+  // Saved only while the connection is the one the token was read for: after a reconnect it may be another account.
+  public async saveContactsSyncToken(userId: string, connectedAt: Date, syncToken: string | null): Promise<void> {
+    await this.db
+      .update(connections)
+      .set({ contactsSyncToken: syncToken })
+      .where(and(eq(connections.userId, userId), eq(connections.connectedAt, connectedAt)));
   }
 
   public async markDisconnected(userId: string): Promise<void> {

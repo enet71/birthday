@@ -28,7 +28,7 @@ export class CalendarController extends StateController {
     if (isPlatformBrowser(inject(PLATFORM_ID))) {
       this.openAddBirthdayDialogFromLinks();
     }
-    // Brings changes from Google once the connection is known; the server limits it to once an hour.
+    // Brings changes from Google once the connection is known; the server limits it to once a minute.
     effect(() => {
       if (this.googleCalendarState.isConnected()) {
         untracked(() => this.importFromGoogle());

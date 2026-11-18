@@ -56,3 +56,7 @@ export interface GoogleEvent {
 export interface FirstSyncJob {
   userId: string;
 }
+
+export interface BackgroundSyncJob {
+  userId: string;
+}

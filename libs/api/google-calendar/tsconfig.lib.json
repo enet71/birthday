@@ -13,5 +13,6 @@
     "forceConsistentCasingInFileNames": true,
     "noFallthroughCasesInSwitch": true
   },
-  "include": ["src/**/*.ts"]
+  "include": ["src/**/*.ts"],
+  "exclude": ["vitest.config.mts", "src/**/*.test.ts", "src/**/*.spec.ts"]
 }

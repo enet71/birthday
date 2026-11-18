@@ -25,13 +25,23 @@ interface GooglePerson {
   resourceName: string;
   names?: { displayName?: string; metadata?: FieldMetadata }[];
   birthdays?: { date?: GoogleDate; metadata?: FieldMetadata }[];
-  metadata?: { sources?: { type?: string; id?: string; updateTime?: string }[] };
+  metadata?: { sources?: { type?: string; id?: string; updateTime?: string }[]; deleted?: boolean };
+}
+
+// One contacts read. A full read lists every contact with a birthday; an incremental one lists only the contacts
+// changed since the last read, and `removedContactIds` those deleted or without a birthday now.
+interface ContactsRead {
+  isFull: boolean;
+  contacts: ContactBirthday[];
+  removedContactIds: string[];
+  nextSyncToken: string | null;
 }
 
 type BirthdayChanges = Partial<Pick<BirthdayRecord, 'name' | 'birthDate' | 'googleContactId' | 'googleContactSnapshot'>>;
 
 const connections = googleCalendarConnections;
 const PEOPLE_CONNECTIONS_URL = 'https://people.googleapis.com/v1/people/me/connections';
+const PERSON_FIELDS = 'names,birthdays,metadata';
 // The database limit for a birthday name.
 const MAX_NAME_LENGTH = 200;
 // A crashed sync releases the user after this long.
@@ -53,9 +63,10 @@ export class GoogleImportService {
     private readonly pushQueue: GoogleCalendarPushQueue,
   ) {}
 
-  // Imports from Google, then makes Birthdly's birthdays in Google match Birthdly when `reconcile` is set. Skips, and
-  // returns `null`, while another sync of the user runs or when the last one started less than `minIntervalMs` ago.
-  public async runSync(userId: string, options: { minIntervalMs: number; reconcile: boolean }): Promise<ImportSummary | null> {
+  // Imports from Google. `full` reads every contact instead of the changes since the last read, and then makes
+  // Birthdly's birthdays in Google match Birthdly, which repairs whatever went wrong before. Skips, and returns `null`,
+  // while another sync of the user runs or when the last one started less than `minIntervalMs` ago.
+  public async runSync(userId: string, options: { minIntervalMs: number; full: boolean }): Promise<ImportSummary | null> {
     const now = Date.now();
     const claimed = await this.db
       .update(connections)
@@ -75,7 +86,7 @@ export class GoogleImportService {
     }
 
     try {
-      return await this.syncWithGoogle(userId, options.reconcile, now);
+      return await this.syncWithGoogle(userId, options.full, now);
     } finally {
       await this.db
         .update(connections)
@@ -86,14 +97,18 @@ export class GoogleImportService {
   }
 
   // `startedAt` is when this sync claimed the user. Sets `last_synced_at` on success.
-  private async syncWithGoogle(userId: string, reconcile: boolean, startedAt: number): Promise<ImportSummary> {
+  private async syncWithGoogle(userId: string, full: boolean, startedAt: number): Promise<ImportSummary> {
+    // Before the access token: a reconnect in between must not store this account's sync token on the new connection.
+    const savedSyncToken = await this.connections.readContactsSyncToken(userId);
     const accessToken = await this.connections.getAccessToken(userId);
     const summary: ImportSummary = { added: 0, updated: 0, deleted: 0 };
 
-    await this.importContactBirthdays(userId, await this.listContactBirthdays(accessToken), summary);
+    if (savedSyncToken) {
+      await this.importContacts(userId, accessToken, full ? { ...savedSyncToken, syncToken: null } : savedSyncToken, summary);
+    }
     await this.importDeletedBirthdayEvents(userId, accessToken, startedAt, summary);
 
-    if (reconcile) {
+    if (full) {
       await this.events.reconcile(userId, accessToken);
     } else {
       await this.connections.markSynced(userId);
@@ -101,17 +116,35 @@ export class GoogleImportService {
     return summary;
   }
 
+  // The sync token moves on only after the read was imported, so a failed import reads the same changes again.
+  // A `null` sync token reads every contact.
+  private async importContacts(
+    userId: string,
+    accessToken: string,
+    saved: { syncToken: string | null; connectedAt: Date },
+    summary: ImportSummary,
+  ): Promise<void> {
+    const read = await this.readContacts(accessToken, saved.syncToken);
+
+    await this.importContactBirthdays(userId, read, summary);
+    await this.connections.saveContactsSyncToken(userId, saved.connectedAt, read.nextSyncToken);
+  }
+
   // Brings in the birthdays of the user's Google contacts. A contact's birthday is applied only when it changed in
   // Google since the last import and that change is later than the last edit in Birthdly. Birthdly never changes
   // contacts.
-  private async importContactBirthdays(userId: string, contacts: ContactBirthday[], summary: ImportSummary): Promise<void> {
+  private async importContactBirthdays(userId: string, read: ContactsRead, summary: ImportSummary): Promise<void> {
     const records = await readBirthdayRecords(this.db, userId);
+    const contacts = read.contacts;
     const contactIds = new Set(contacts.map((contact) => contact.contactId));
+    const removedContactIds = new Set(read.removedContactIds);
+    // A full read lists every contact, so a missing one is gone; an incremental read names the removed ones.
+    const isRemoved = (contactId: string): boolean => (read.isFull ? !contactIds.has(contactId) : removedContactIds.has(contactId));
 
     // The birthday is gone from Google Contacts: Birthdly keeps it and starts exporting it to Google Calendar. This comes
     // first, so a contact recreated with a new id links to it instead of adding the person twice.
     for (const record of records) {
-      if (record.googleContactId && !contactIds.has(record.googleContactId)) {
+      if (record.googleContactId && isRemoved(record.googleContactId)) {
         await this.updateBirthday(record.id, { googleContactId: null, googleContactSnapshot: null });
         await this.pushQueue.birthdayChanged({ userId, birthdayId: record.id, deletedGoogleEventId: null });
         record.googleContactId = null;
@@ -172,25 +205,41 @@ export class GoogleImportService {
     }
   }
 
-  private async listContactBirthdays(accessToken: string): Promise<ContactBirthday[]> {
-    const contacts: ContactBirthday[] = [];
+  // With `syncToken`, reads only the contacts changed since that token was issued. Google rejects a token that expired
+  // (7 days after the full read) or belongs to another account; then every contact is read again.
+  private async readContacts(accessToken: string, syncToken: string | null): Promise<ContactsRead> {
+    const read: ContactsRead = { isFull: !syncToken, contacts: [], removedContactIds: [], nextSyncToken: null };
     let pageToken: string | undefined;
 
     do {
-      const params = new URLSearchParams({ personFields: 'names,birthdays,metadata', pageSize: '1000', ...(pageToken ? { pageToken } : {}) });
-      const page = await this.api.request(accessToken, 'GET', `${PEOPLE_CONNECTIONS_URL}?${params}`);
+      // Every page repeats the parameters of the first request, as Google requires.
+      const params = new URLSearchParams({
+        personFields: PERSON_FIELDS,
+        pageSize: '1000',
+        requestSyncToken: 'true',
+        ...(syncToken ? { syncToken } : {}),
+        ...(pageToken ? { pageToken } : {}),
+      });
+      const page = await this.api.request(accessToken, 'GET', `${PEOPLE_CONNECTIONS_URL}?${params}`, undefined, syncToken ? [400, 410] : []);
 
+      if (page === null) {
+        this.logger.warn('Google rejected the contacts sync token; all contacts are read again');
+        return this.readContacts(accessToken, null);
+      }
       for (const person of (page.connections ?? []) as GooglePerson[]) {
-        const contact = toContactBirthday(person);
+        const contact = person.metadata?.deleted ? null : toContactBirthday(person);
 
         if (contact) {
-          contacts.push(contact);
+          read.contacts.push(contact);
+        } else {
+          read.removedContactIds.push(person.resourceName);
         }
       }
       pageToken = page.nextPageToken;
+      read.nextSyncToken = page.nextSyncToken ?? null;
     } while (pageToken);
 
-    return contacts;
+    return read;
   }
 
   // Brings in deletions the user made to Birthdly's birthdays in Google; Google allows no other change to birthday

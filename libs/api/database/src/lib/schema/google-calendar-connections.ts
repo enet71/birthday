@@ -13,6 +13,8 @@ export const googleCalendarConnections = pgTable(
     lastSyncedAt: timestamp('last_synced_at', { withTimezone: true }),
     // Google's refresh token, encrypted by the API (AES-256-GCM); `null` after a disconnect.
     refreshTokenEncrypted: text('refresh_token_encrypted'),
+    // The People API sync token: the next contacts read returns only what changed since; `null` reads all contacts.
+    contactsSyncToken: text('contacts_sync_token'),
     // These default to `-infinity`, which a JavaScript `Date` cannot hold, so they are read as strings.
     lastPulledAt: timestamp('last_pulled_at', { withTimezone: true, mode: 'string' })
       .notNull()

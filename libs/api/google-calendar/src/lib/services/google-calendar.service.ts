@@ -5,6 +5,7 @@ import {
   GoogleCalendarConnectionDto,
   GoogleCalendarSyncResponse,
 } from '@birthday/shared-models';
+import { AUTOMATIC_SYNC_INTERVAL_MS } from '../constants';
 import { GoogleAccessRevokedError } from '../errors';
 import { GoogleCalendarEventsService } from './google-calendar-events.service';
 import { GoogleCalendarJobsService } from './google-calendar-jobs.service';
@@ -12,10 +13,9 @@ import { GoogleConnectionsService } from './google-connections.service';
 import { GoogleImportService } from './google-import.service';
 import { GoogleOAuthService } from './google-oauth.service';
 
-// An automatic import runs at most once an hour across all of the user's devices; "Sync now" only skips a repeated
-// click.
-const AUTOMATIC_INTERVAL_MS = 60 * 60 * 1000;
-const MANUAL_INTERVAL_MS = 30 * 1000;
+// "Sync now" waits only for a sync that is running: the automatic and background syncs started recently do not read
+// every contact or reconcile, so they cannot stand in for it. The button is disabled while its request runs.
+const MANUAL_INTERVAL_MS = 0;
 // A push that read the connection before the disconnect may still create an event; a second pass removes it.
 const SECOND_PASS_DELAY_MS = 3000;
 
@@ -61,13 +61,14 @@ export class GoogleCalendarService {
     return { result: 'connected' };
   }
 
-  // `manual` (the "Sync now" button) also makes Birthdly's birthdays in Google match Birthdly again, which repairs
-  // exports that failed earlier.
+  // `manual` (the "Sync now" button) reads every contact and makes Birthdly's birthdays in Google match Birthdly again,
+  // which repairs whatever failed earlier. The automatic sync shares its interval with the background one: whichever
+  // ran last counts, on any device.
   public async sync(userId: string, manual: boolean): Promise<GoogleCalendarSyncResponse> {
     try {
       const summary = await this.importService.runSync(userId, {
-        minIntervalMs: manual ? MANUAL_INTERVAL_MS : AUTOMATIC_INTERVAL_MS,
-        reconcile: manual,
+        minIntervalMs: manual ? MANUAL_INTERVAL_MS : AUTOMATIC_SYNC_INTERVAL_MS,
+        full: manual,
       });
 
       return summary ? { skipped: false, revoked: false, ...summary } : { skipped: true, revoked: false, added: 0, updated: 0, deleted: 0 };
