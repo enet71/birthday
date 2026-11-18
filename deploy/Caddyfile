@@ -34,9 +34,3 @@ birthdly.com, www.birthdly.com {
 		import proxy web:4000
 	}
 }
-
-# Kept until the web app calls the API under birthdly.com/api.
-api.birthdly.com {
-	import site
-	import proxy api:3000
-}

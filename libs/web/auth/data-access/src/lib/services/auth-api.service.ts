@@ -5,18 +5,18 @@ import { catchError, defer, map, merge, Observable, of, retry, Subject, tap, thr
 import { SIGN_IN_FAILED, SIGN_IN_RESULT_PARAM, UserDto } from '@birthday/shared-models';
 import { ApiService } from '@birthday/web-shared-data-access';
 import { AuthUser } from '../types';
-import { AuthClient } from './auth.client';
 
 // Sign-in through the API: Google signs the user in, and the API keeps the session in an HttpOnly cookie that scripts
 // cannot read. The app learns who is signed in from `GET /api/me`.
 @Injectable({ providedIn: 'root' })
-export class AuthApiService extends ApiService implements AuthClient {
+export class AuthApiService extends ApiService {
   private readonly document: Document = inject(DOCUMENT);
   private readonly location: Location = inject(Location);
   // The server renders pages without the visitor's cookies, so they render signed out, as before.
   private readonly isBrowser: boolean = isPlatformBrowser(inject(PLATFORM_ID));
   private readonly signedOut: Subject<void> = new Subject<void>();
 
+  // Emits the restored user (or `null`) first, then the user after every sign-in and sign-out.
   public userChanges(): Observable<AuthUser | null> {
     if (!this.isBrowser) {
       return of(null);
@@ -25,7 +25,8 @@ export class AuthApiService extends ApiService implements AuthClient {
     return merge(this.loadUser(), this.signedOut.pipe(map(() => null)));
   }
 
-  // The API returns the browser to the page with `?signIn=failed` when Google sign-in did not complete.
+  // Completes when the page was not opened from a failed sign-in, also on the server; fails otherwise. The API returns the
+  // browser to the page with `?signIn=failed` when Google sign-in did not complete.
   public completeSignIn(): Observable<void> {
     return defer(() => {
       if (!this.isBrowser) {

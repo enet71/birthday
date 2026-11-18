@@ -4,13 +4,13 @@ import { map, Observable, of, switchMap } from 'rxjs';
 import { AuthState } from '@birthday/web-auth-data-access';
 import { injectState, ReadonlyState, State } from '@birthday/web-shared-data-access';
 import { PlatformService } from '@birthday/web-shared-util';
-import { DevicePushService, RemindersClient } from '../services';
+import { DevicePushService, RemindersApiService } from '../services';
 import { DevicePushSubscription, PushSupport, ReminderSettings } from '../types';
 
 @Injectable({ providedIn: 'root' })
 export class RemindersState extends State {
   private readonly authState: ReadonlyState<AuthState> = injectState(AuthState);
-  private readonly remindersClient: RemindersClient = inject(RemindersClient);
+  private readonly remindersApi: RemindersApiService = inject(RemindersApiService);
   private readonly devicePush: DevicePushService = inject(DevicePushService);
   private readonly platform: PlatformService = inject(PlatformService);
 
@@ -24,7 +24,7 @@ export class RemindersState extends State {
   // Both load only for a signed-in user and again after every change of user.
   public readonly settingsResource: ResourceRef<ReminderSettings | null | undefined> = rxResource({
     params: () => this.authState.user()?.id,
-    stream: () => this.remindersClient.getSettings(),
+    stream: () => this.remindersApi.getSettings(),
   });
   // This browser's subscription when the signed-in user gets notifications on it, otherwise `null`.
   public readonly deviceSubscriptionResource: ResourceRef<DevicePushSubscription | null | undefined> = rxResource({
@@ -58,7 +58,7 @@ export class RemindersState extends State {
       .pipe(
         switchMap((subscription: DevicePushSubscription | null) =>
           subscription
-            ? this.remindersClient.hasDeviceSubscription(subscription.endpoint).pipe(map((isSaved: boolean) => (isSaved ? subscription : null)))
+            ? this.remindersApi.hasDeviceSubscription(subscription.endpoint).pipe(map((isSaved: boolean) => (isSaved ? subscription : null)))
             : of(null),
         ),
       );

@@ -1,10 +1,10 @@
 import { TestBed } from '@angular/core/testing';
 import { of } from 'rxjs';
-import { AuthClient } from '@birthday/web-auth-data-access';
+import { AuthApiService } from '@birthday/web-auth-data-access';
 import { AppTranslateService } from '@birthday/web-shared-i18n';
 import { NotificationsService } from '@birthday/web-shared-util';
 import { Birthday, UpcomingBirthday } from '@birthday/web-birthdays-util';
-import { BirthdaysDataService, BirthdaysLocalStorageService, BirthdaysRemoteStorage } from '../services';
+import { BirthdaysDataService, BirthdaysApiService, BirthdaysLocalStorageService } from '../services';
 import { BirthdayInput } from '../types';
 import { BirthdaysController } from './birthdays.controller';
 import { BirthdaysState } from './birthdays.state';
@@ -23,9 +23,9 @@ describe('BirthdaysController', () => {
 
     TestBed.configureTestingModule({
       providers: [
-        { provide: AuthClient, useValue: { userChanges: () => of(null) } },
+        { provide: AuthApiService, useValue: { userChanges: () => of(null) } },
         // Signed out, so the account storage is never called.
-        { provide: BirthdaysRemoteStorage, useValue: {} },
+        { provide: BirthdaysApiService, useValue: {} },
         BirthdaysState,
         BirthdaysController,
         {

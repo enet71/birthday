@@ -4,14 +4,14 @@ import { BirthdayDto, CreateBirthdayRequest, UpdateBirthdayRequest } from '@birt
 import { AuthState } from '@birthday/web-auth-data-access';
 import { injectState, ReadonlyState } from '@birthday/web-shared-data-access';
 import { BirthdaysLocalStorageService } from './birthdays-local-storage.service';
-import { BirthdaysRemoteStorage } from './birthdays-remote.storage';
+import { BirthdaysApiService } from './birthdays-api.service';
 import { BirthdaysStorage } from './birthdays.storage';
 
 // Sends each call to the account storage for a signed-in user and to local storage otherwise.
 @Injectable({ providedIn: 'root' })
 export class BirthdaysDataService implements BirthdaysStorage {
   private readonly authState: ReadonlyState<AuthState> = injectState(AuthState);
-  private readonly remoteStorage: BirthdaysRemoteStorage = inject(BirthdaysRemoteStorage);
+  private readonly remoteStorage: BirthdaysApiService = inject(BirthdaysApiService);
   private readonly localStorage: BirthdaysLocalStorageService = inject(BirthdaysLocalStorageService);
 
   private get storage(): BirthdaysStorage {

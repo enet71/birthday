@@ -4,14 +4,14 @@ import { catchError, EMPTY, map, Observable, Subject, switchMap, tap } from 'rxj
 import { injectState, ReadonlyState, StateController } from '@birthday/web-shared-data-access';
 import { AppLocale, AppTranslateService, LocaleState } from '@birthday/web-shared-i18n';
 import { Environment, ENVIRONMENT_TOKEN, NotificationsService } from '@birthday/web-shared-util';
-import { DevicePushService, RemindersClient } from '../services';
+import { DevicePushService, RemindersApiService } from '../services';
 import { DevicePushSubscription, ReminderSettings } from '../types';
 import { RemindersState } from './reminders.state';
 
 @Injectable({ providedIn: 'root' })
 export class RemindersController extends StateController {
   private readonly remindersState: RemindersState = inject(RemindersState);
-  private readonly remindersClient: RemindersClient = inject(RemindersClient);
+  private readonly remindersApi: RemindersApiService = inject(RemindersApiService);
   private readonly devicePush: DevicePushService = inject(DevicePushService);
   private readonly environment: Environment = inject(ENVIRONMENT_TOKEN);
   private readonly notifications: NotificationsService = inject(NotificationsService);
@@ -44,7 +44,7 @@ export class RemindersController extends StateController {
     this.localeSaves
       .pipe(
         switchMap((locale: AppLocale) =>
-          this.remindersClient.saveLocale(locale).pipe(
+          this.remindersApi.saveLocale(locale).pipe(
             map(() => locale),
             catchError(() => EMPTY),
           ),
@@ -81,8 +81,8 @@ export class RemindersController extends StateController {
         return EMPTY;
       }),
       switchMap((subscription: DevicePushSubscription) =>
-        this.remindersClient.saveDevicePreferences({ timeZone: this.getTimeZone(), locale: this.localeState.locale() }).pipe(
-          switchMap((settings: ReminderSettings) => this.remindersClient.saveDeviceSubscription(subscription).pipe(map(() => settings))),
+        this.remindersApi.saveDevicePreferences({ timeZone: this.getTimeZone(), locale: this.localeState.locale() }).pipe(
+          switchMap((settings: ReminderSettings) => this.remindersApi.saveDeviceSubscription(subscription).pipe(map(() => settings))),
           tap((settings: ReminderSettings) => {
             this.setSettings(settings);
             this.setDeviceSubscription(subscription);
@@ -106,7 +106,7 @@ export class RemindersController extends StateController {
       return EMPTY;
     }
 
-    return this.remindersClient.deleteDeviceSubscription(subscription.endpoint).pipe(
+    return this.remindersApi.deleteDeviceSubscription(subscription.endpoint).pipe(
       tap(() => {
         this.setDeviceSubscription(null);
         this.notifications.createSuccessNotification(this.translator.translate('notifications.reminders.turnedOff'));
@@ -128,7 +128,7 @@ export class RemindersController extends StateController {
 
     const settings: ReminderSettings = { ...current, ...changes, timeZone: this.getTimeZone(), locale: this.localeState.locale() };
 
-    return this.remindersClient.saveSettings(settings).pipe(
+    return this.remindersApi.saveSettings(settings).pipe(
       tap(() => {
         this.setSettings(settings);
         this.notifications.createSuccessNotification(this.translator.translate('notifications.reminders.saved'));

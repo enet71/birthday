@@ -2,10 +2,10 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { BirthdayDto, CreateBirthdayRequest, UpdateBirthdayRequest } from '@birthday/shared-models';
 import { ApiService } from '@birthday/web-shared-data-access';
-import { BirthdaysRemoteStorage } from './birthdays-remote.storage';
+import { BirthdaysStorage } from './birthdays.storage';
 
 @Injectable({ providedIn: 'root' })
-export class BirthdaysApiService extends ApiService implements BirthdaysRemoteStorage {
+export class BirthdaysApiService extends ApiService implements BirthdaysStorage {
   private readonly birthdaysUrl = `${this.baseUrl}/birthdays`;
 
   public getAll(): Observable<BirthdayDto[]> {

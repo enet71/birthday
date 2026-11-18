@@ -6,7 +6,7 @@ import { AuthState } from '@birthday/web-auth-data-access';
 import { injectState, ReadonlyState, StateController } from '@birthday/web-shared-data-access';
 import { NotificationsService } from '@birthday/web-shared-util';
 import { Birthday, toBirthDate } from '@birthday/web-birthdays-util';
-import { BirthdaysDataService, BirthdaysLocalStorageService, BirthdaysRemoteStorage } from '../services';
+import { BirthdaysDataService, BirthdaysApiService, BirthdaysLocalStorageService } from '../services';
 import { BirthdayInput } from '../types';
 import { BirthdaysState } from './birthdays.state';
 import { AppTranslateService } from '@birthday/web-shared-i18n';
@@ -17,7 +17,7 @@ export class BirthdaysController extends StateController {
   private readonly authState: ReadonlyState<AuthState> = injectState(AuthState);
   private readonly birthdaysData: BirthdaysDataService = inject(BirthdaysDataService);
   private readonly localStorage: BirthdaysLocalStorageService = inject(BirthdaysLocalStorageService);
-  private readonly remoteStorage: BirthdaysRemoteStorage = inject(BirthdaysRemoteStorage);
+  private readonly birthdaysApi: BirthdaysApiService = inject(BirthdaysApiService);
   private readonly notifications: NotificationsService = inject(NotificationsService);
   private readonly translator: AppTranslateService = inject(AppTranslateService);
   private readonly isListLoading$: Observable<boolean> = toObservable(this.birthdaysState.birthdaysResource.isLoading);
@@ -100,7 +100,7 @@ export class BirthdaysController extends StateController {
         switchMap((birthdays: BirthdayDto[]) =>
           from(birthdays).pipe(
             concatMap(({ id, ...request }: BirthdayDto) =>
-              this.remoteStorage.create(request).pipe(
+              this.birthdaysApi.create(request).pipe(
                 concatMap(() => this.localStorage.delete(id)),
                 map(() => true),
                 catchError(() => of(false)),

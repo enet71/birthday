@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 import { TranslocoTestingModule } from '@jsverse/transloco';
 import { of } from 'rxjs';
-import { AuthClient } from '@birthday/web-auth-data-access';
+import { AuthApiService } from '@birthday/web-auth-data-access';
 import { APP_LAYOUT_CONFIG } from '@birthday/web-layout-util';
 import { App } from './app';
 import { APP_LAYOUT } from './app.constants';
@@ -19,7 +19,7 @@ describe('App', () => {
         provideRouter([]),
         { provide: APP_LAYOUT_CONFIG, useValue: APP_LAYOUT },
         // The account button in the top bar reads the signed-in user.
-        { provide: AuthClient, useValue: { userChanges: () => of(null) } },
+        { provide: AuthApiService, useValue: { userChanges: () => of(null) } },
       ],
     }).compileComponents();
   });

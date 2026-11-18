@@ -4,11 +4,8 @@ import { MAT_ICON_DEFAULT_OPTIONS } from '@angular/material/icon';
 import { provideRouter, TitleStrategy, withAutoCleanupInjectors } from '@angular/router';
 import { provideClientHydration, withEventReplay } from '@angular/platform-browser';
 import { provideServiceWorker } from '@angular/service-worker';
-import { AuthApiService, AuthClient } from '@birthday/web-auth-data-access';
-import { BirthdaysApiService, BirthdaysRemoteStorage } from '@birthday/web-birthdays-data-access';
-import { GoogleCalendarApiService, GoogleCalendarClient } from '@birthday/web-google-calendar-data-access';
 import { APP_LAYOUT_CONFIG } from '@birthday/web-layout-util';
-import { provideReminders, RemindersApiService, RemindersClient } from '@birthday/web-reminders-data-access';
+import { provideReminders } from '@birthday/web-reminders-data-access';
 import { provideI18n } from '@birthday/web-shared-i18n';
 import { ENVIRONMENT_TOKEN } from '@birthday/web-shared-util';
 import { loadAppTranslation } from './app.i18n';
@@ -28,11 +25,6 @@ export const appConfig: ApplicationConfig = {
     // Shows birthday push notifications. It caches no files (see `ngsw-config.json`), so every page comes from the network.
     provideServiceWorker('ngsw-worker.js', { enabled: !isDevMode(), registrationStrategy: 'registerWhenStable:5000' }),
     provideReminders(),
-    // The data-access libraries talk to the backend through these abstract clients; the app binds the API implementations.
-    { provide: AuthClient, useExisting: AuthApiService },
-    { provide: BirthdaysRemoteStorage, useExisting: BirthdaysApiService },
-    { provide: GoogleCalendarClient, useExisting: GoogleCalendarApiService },
-    { provide: RemindersClient, useExisting: RemindersApiService },
     {
       provide: MAT_ICON_DEFAULT_OPTIONS,
       useValue: { fontSet: 'material-symbols-outlined' },

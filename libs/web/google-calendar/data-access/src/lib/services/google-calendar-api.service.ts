@@ -10,22 +10,23 @@ import {
 import { ApiService } from '@birthday/web-shared-data-access';
 import { BrowserStorageService } from '@birthday/web-shared-util';
 import { GoogleCalendarConnection, GoogleCalendarConnectResult, GoogleCalendarSyncResult } from '../types';
-import { GoogleCalendarClient } from './google-calendar.client';
 
 // Ties the Google redirect to the browser tab that started connecting.
 const CONNECT_NONCE_KEY = 'googleCalendarConnectNonce';
 
 // The Google Calendar sync through the API.
 @Injectable({ providedIn: 'root' })
-export class GoogleCalendarApiService extends ApiService implements GoogleCalendarClient {
+export class GoogleCalendarApiService extends ApiService {
   private readonly document: Document = inject(DOCUMENT);
   private readonly browserStorage: BrowserStorageService = inject(BrowserStorageService);
   private readonly url = `${this.baseUrl}/google-calendar`;
 
+  // Emits `null` when the user has never connected Google Calendar.
   public getConnection(): Observable<GoogleCalendarConnection | null> {
     return this.httpClient.get<GoogleCalendarConnection | null>(`${this.url}/connection`).pipe(map((connection) => connection ?? null));
   }
 
+  // Leaves the app for Google's consent page. Google returns the user to `redirectUri` with `code` and `state`.
   public connect(redirectUri: string): Observable<void> {
     const body: GoogleCalendarConnectRequest = { redirectUri, nonce: this.createNonce() };
 
@@ -35,6 +36,7 @@ export class GoogleCalendarApiService extends ApiService implements GoogleCalend
       .pipe(map((response: GoogleCalendarConnectResponse) => this.document.location.assign(response.url)));
   }
 
+  // Finishes connecting with the `code` and `state` Google added to the redirect URI.
   public completeConnect(code: string, state: string): Observable<GoogleCalendarConnectResult> {
     const body: GoogleCalendarCompleteRequest = { code, state, nonce: this.browserStorage.sessionStorage?.getItem(CONNECT_NONCE_KEY) ?? '' };
 
@@ -44,6 +46,7 @@ export class GoogleCalendarApiService extends ApiService implements GoogleCalend
       .pipe(map((response: GoogleCalendarCompleteResponse) => response.result));
   }
 
+  // Imports changes from Google. A `manual` sync also repairs Birthdly's birthdays in Google and is limited less often.
   public sync(manual: boolean): Observable<GoogleCalendarSyncResult> {
     const body: GoogleCalendarSyncRequest = { manual };
 

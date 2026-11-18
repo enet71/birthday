@@ -1,7 +1,7 @@
 # Production server
 
 The web app (Angular SSR) and the API run on a DigitalOcean droplet behind Cloudflare. The API is served on the same
-origin as the site, under `birthdly.com/api`; `api.birthdly.com` stays until the web app calls `/api`.
+origin as the site, under `birthdly.com/api`.
 
 ```
 visitor ──HTTPS──► Cloudflare (proxy) ──HTTPS, Origin CA──► droplet :443 Caddy ─┬─► web:4000 (Angular SSR)
@@ -113,7 +113,7 @@ doctl compute firewall create --name birthdly-web --tag-names birthdly \
 
 ### 4. Cloudflare (dashboard, zone `birthdly.com`)
 
-1. **DNS → Records:** `A @`, `A www` and `A api`, each `<droplet IP>` and Proxied (orange cloud).
+1. **DNS → Records:** `A @` and `A www`, each `<droplet IP>` and Proxied (orange cloud).
 2. **SSL/TLS → Origin Server → Create certificate:** RSA or ECC, hostnames `birthdly.com, *.birthdly.com`, 15 years.
    Save the certificate as `origin.pem` and the key as `origin-key.pem`; Cloudflare shows the key only once.
 3. **SSL/TLS → Overview → Configure:** **Full (Strict)**, not Automatic: Cloudflare then always validates the Origin

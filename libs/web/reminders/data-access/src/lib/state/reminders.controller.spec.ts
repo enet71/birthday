@@ -2,10 +2,10 @@ import type { Mock } from 'vitest';
 import { signal } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { Observable, of, Subject, throwError } from 'rxjs';
-import { AuthClient } from '@birthday/web-auth-data-access';
+import { AuthApiService } from '@birthday/web-auth-data-access';
 import { AppLocale, AppTranslateService, LocaleState } from '@birthday/web-shared-i18n';
 import { Environment, ENVIRONMENT_TOKEN, NotificationsService, PlatformService } from '@birthday/web-shared-util';
-import { DevicePushService, RemindersClient } from '../services';
+import { DevicePushService, RemindersApiService } from '../services';
 import { DevicePushSubscription, ReminderSettings } from '../types';
 import { RemindersController } from './reminders.controller';
 import { RemindersState } from './reminders.state';
@@ -17,11 +17,11 @@ describe('RemindersController', () => {
   let controller: RemindersController;
   let state: RemindersState;
   let localeState: LocaleState;
-  const remindersClient: {
-    saveLocale: Mock<RemindersClient['saveLocale']>;
-    saveSettings: Mock<RemindersClient['saveSettings']>;
-    saveDevicePreferences: Mock<RemindersClient['saveDevicePreferences']>;
-    saveDeviceSubscription: Mock<RemindersClient['saveDeviceSubscription']>;
+  const remindersApi: {
+    saveLocale: Mock<RemindersApiService['saveLocale']>;
+    saveSettings: Mock<RemindersApiService['saveSettings']>;
+    saveDevicePreferences: Mock<RemindersApiService['saveDevicePreferences']>;
+    saveDeviceSubscription: Mock<RemindersApiService['saveDeviceSubscription']>;
   } = {
     saveLocale: vi.fn(),
     saveSettings: vi.fn(),
@@ -58,16 +58,16 @@ describe('RemindersController', () => {
 
   beforeEach(() => {
     vi.clearAllMocks();
-    remindersClient.saveLocale.mockReturnValue(of(undefined));
-    remindersClient.saveSettings.mockReturnValue(of(undefined));
+    remindersApi.saveLocale.mockReturnValue(of(undefined));
+    remindersApi.saveSettings.mockReturnValue(of(undefined));
     devicePush.getPermission.mockReturnValue('granted');
     devicePush.getSupport.mockReturnValue('unsupported');
 
     TestBed.configureTestingModule({
       providers: [
         // Signed out, so the State does not load anything by itself.
-        { provide: AuthClient, useValue: { userChanges: (): Observable<null> => of(null) } },
-        { provide: RemindersClient, useValue: remindersClient },
+        { provide: AuthApiService, useValue: { userChanges: (): Observable<null> => of(null) } },
+        { provide: RemindersApiService, useValue: remindersApi },
         { provide: DevicePushService, useValue: devicePush },
         { provide: NotificationsService, useValue: notifications },
         { provide: PlatformService, useValue: { isRendered: signal(false) } },
@@ -86,19 +86,19 @@ describe('RemindersController', () => {
     it('does not save the language when the stored one matches the app language', () => {
       loadSettings(SETTINGS);
 
-      expect(remindersClient.saveLocale).not.toHaveBeenCalled();
+      expect(remindersApi.saveLocale).not.toHaveBeenCalled();
     });
 
     it('does not save the language without settings', () => {
       switchLocale('de');
 
-      expect(remindersClient.saveLocale).not.toHaveBeenCalled();
+      expect(remindersApi.saveLocale).not.toHaveBeenCalled();
     });
 
     it('saves the app language when the loaded settings hold another one', () => {
       loadSettings({ ...SETTINGS, locale: 'ru' });
 
-      expect(remindersClient.saveLocale).toHaveBeenCalledWith('en');
+      expect(remindersApi.saveLocale).toHaveBeenCalledWith('en');
       expect(state.settings()).toEqual(SETTINGS);
     });
 
@@ -107,12 +107,12 @@ describe('RemindersController', () => {
 
       switchLocale('de');
 
-      expect(remindersClient.saveLocale).toHaveBeenCalledExactlyOnceWith('de');
+      expect(remindersApi.saveLocale).toHaveBeenCalledExactlyOnceWith('de');
       expect(state.settings()).toEqual({ ...SETTINGS, locale: 'de' });
     });
 
     it('stays silent and keeps the stored language when the save fails', () => {
-      remindersClient.saveLocale.mockReturnValue(throwError(() => new Error('offline')));
+      remindersApi.saveLocale.mockReturnValue(throwError(() => new Error('offline')));
       loadSettings(SETTINGS);
 
       switchLocale('de');
@@ -122,19 +122,19 @@ describe('RemindersController', () => {
     });
 
     it('tries again on the next switch after a failed save', () => {
-      remindersClient.saveLocale.mockReturnValueOnce(throwError(() => new Error('offline')));
+      remindersApi.saveLocale.mockReturnValueOnce(throwError(() => new Error('offline')));
       loadSettings(SETTINGS);
       switchLocale('de');
 
       switchLocale('fr');
 
-      expect(remindersClient.saveLocale).toHaveBeenLastCalledWith('fr');
+      expect(remindersApi.saveLocale).toHaveBeenLastCalledWith('fr');
       expect(state.settings()).toEqual({ ...SETTINGS, locale: 'fr' });
     });
 
     it('keeps only the latest language when saves overlap', () => {
       const deSave: Subject<void> = new Subject<void>();
-      remindersClient.saveLocale.mockImplementation((locale: AppLocale) => (locale === 'de' ? deSave : of(undefined)));
+      remindersApi.saveLocale.mockImplementation((locale: AppLocale) => (locale === 'de' ? deSave : of(undefined)));
       loadSettings(SETTINGS);
 
       switchLocale('de');
@@ -146,7 +146,7 @@ describe('RemindersController', () => {
 
     it('patches the current settings, so a settings save made meanwhile is not undone', () => {
       const localeSave: Subject<void> = new Subject<void>();
-      remindersClient.saveLocale.mockReturnValue(localeSave);
+      remindersApi.saveLocale.mockReturnValue(localeSave);
       loadSettings(SETTINGS);
       switchLocale('de');
 
@@ -164,7 +164,7 @@ describe('RemindersController', () => {
 
       controller.saveSettings({ days: 'onDay' }).subscribe();
 
-      expect(remindersClient.saveSettings).toHaveBeenCalledWith({ ...SETTINGS, days: 'onDay', timeZone: expect.any(String), locale: 'uk' });
+      expect(remindersApi.saveSettings).toHaveBeenCalledWith({ ...SETTINGS, days: 'onDay', timeZone: expect.any(String), locale: 'uk' });
       expect(state.settings()).toEqual({ ...SETTINGS, days: 'onDay', timeZone: expect.any(String), locale: 'uk' });
     });
   });
@@ -173,13 +173,13 @@ describe('RemindersController', () => {
     it('saves the app language with the device preferences', () => {
       const stored: ReminderSettings = { ...SETTINGS, locale: 'es' };
       devicePush.subscribe.mockReturnValue(of(SUBSCRIPTION));
-      remindersClient.saveDevicePreferences.mockReturnValue(of(stored));
-      remindersClient.saveDeviceSubscription.mockReturnValue(of(undefined));
+      remindersApi.saveDevicePreferences.mockReturnValue(of(stored));
+      remindersApi.saveDeviceSubscription.mockReturnValue(of(undefined));
       localeState.locale.set('es');
 
       controller.enableOnDevice().subscribe();
 
-      expect(remindersClient.saveDevicePreferences).toHaveBeenCalledWith({ timeZone: expect.any(String), locale: 'es' });
+      expect(remindersApi.saveDevicePreferences).toHaveBeenCalledWith({ timeZone: expect.any(String), locale: 'es' });
       expect(state.settings()).toEqual(stored);
     });
   });

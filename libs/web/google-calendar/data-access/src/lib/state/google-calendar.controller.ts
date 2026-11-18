@@ -2,7 +2,7 @@ import { effect, inject, Injectable, untracked } from '@angular/core';
 import { catchError, EMPTY, map, Observable, tap } from 'rxjs';
 import { StateController } from '@birthday/web-shared-data-access';
 import { NotificationsService } from '@birthday/web-shared-util';
-import { GoogleCalendarClient } from '../services';
+import { GoogleCalendarApiService } from '../services';
 import { GoogleCalendarConnectResult, GoogleCalendarStatus, GoogleCalendarSyncResult } from '../types';
 import { GoogleCalendarState } from './google-calendar.state';
 import { AppTranslateService } from '@birthday/web-shared-i18n';
@@ -10,7 +10,7 @@ import { AppTranslateService } from '@birthday/web-shared-i18n';
 @Injectable({ providedIn: 'root' })
 export class GoogleCalendarController extends StateController {
   private readonly googleCalendarState: GoogleCalendarState = inject(GoogleCalendarState);
-  private readonly googleCalendarClient: GoogleCalendarClient = inject(GoogleCalendarClient);
+  private readonly googleCalendarApi: GoogleCalendarApiService = inject(GoogleCalendarApiService);
   private readonly notifications: NotificationsService = inject(NotificationsService);
   private readonly translator: AppTranslateService = inject(AppTranslateService);
 
@@ -31,7 +31,7 @@ export class GoogleCalendarController extends StateController {
 
   // The methods below complete without emitting when the request fails.
   public connect(redirectUri: string): Observable<void> {
-    return this.googleCalendarClient.connect(redirectUri).pipe(
+    return this.googleCalendarApi.connect(redirectUri).pipe(
       catchError(() => {
         this.notifications.createErrorNotification(this.translator.translate('notifications.googleCalendar.connectFailed'));
         return EMPTY;
@@ -40,7 +40,7 @@ export class GoogleCalendarController extends StateController {
   }
 
   public completeConnect(code: string, state: string): Observable<void> {
-    return this.googleCalendarClient.completeConnect(code, state).pipe(
+    return this.googleCalendarApi.completeConnect(code, state).pipe(
       tap((result: GoogleCalendarConnectResult) => {
         if (result === 'connected') {
           this.notifications.createSuccessNotification(this.translator.translate('notifications.googleCalendar.connected'));
@@ -59,7 +59,7 @@ export class GoogleCalendarController extends StateController {
 
   // "Sync now": always reports the outcome. Emits once when the sync finished.
   public syncNow(): Observable<void> {
-    return this.googleCalendarClient.sync(true).pipe(
+    return this.googleCalendarApi.sync(true).pipe(
       tap((result: GoogleCalendarSyncResult) => {
         if (result.revoked) {
           this.reportRevoked();
@@ -82,7 +82,7 @@ export class GoogleCalendarController extends StateController {
 
   // The automatic import on opening the app reports only changes and problems. Emits `true` when birthdays changed.
   public syncAutomatically(): Observable<boolean> {
-    return this.googleCalendarClient.sync(false).pipe(
+    return this.googleCalendarApi.sync(false).pipe(
       map((result: GoogleCalendarSyncResult) => {
         const changes: string | null = this.describeChanges(result);
 
@@ -141,7 +141,7 @@ export class GoogleCalendarController extends StateController {
   }
 
   public disconnect(): Observable<void> {
-    return this.googleCalendarClient.disconnect().pipe(
+    return this.googleCalendarApi.disconnect().pipe(
       tap(() => this.setStatus('disconnected')),
       catchError(() => {
         this.notifications.createErrorNotification(this.translator.translate('notifications.googleCalendar.disconnectFailed'));
