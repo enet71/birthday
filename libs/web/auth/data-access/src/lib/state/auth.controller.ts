@@ -11,6 +11,7 @@ import {
   merge,
   NEVER,
   Observable,
+  of,
   repeat,
   Subject,
   Subscription,
@@ -23,11 +24,14 @@ import { GoogleSignInConfigDto } from '@birthday/shared-models';
 import { StateController } from '@birthday/web-shared-data-access';
 import { AppTranslateService } from '@birthday/web-shared-i18n';
 import { NotificationsService } from '@birthday/web-shared-util';
+import { GoogleConsentDeniedError } from '../errors';
 import { AuthApiService, GoogleIdentityService } from '../services';
+import { GoogleCodeRequestOptions } from '../types';
 import { AuthState } from './auth.state';
 
 // Shorter than the API's 10-minute nonce cookie: asking again keeps the same nonce valid while One Tap stays open.
 const NONCE_REFRESH_MS = 5 * 60 * 1000;
+const SIGN_IN_SCOPES = 'openid email profile';
 
 // `provideAuth` creates it with the app, so One Tap is offered on every page.
 @Injectable({ providedIn: 'root' })
@@ -50,12 +54,12 @@ export class AuthController extends StateController {
         untracked(() => this.notifications.createErrorNotification(this.translator.translate('notifications.auth.restoreFailed')));
       }
     });
-    // One Tap is offered while signed out; signing in removes the config, which hides it.
+    // One Tap is offered while signed out; signing in hides it. It reads its own nonce, so only the client id counts here.
     effect((onCleanup) => {
-      const config = this.authState.googleSignInConfig();
+      const clientId = this.authState.googleClientId();
 
-      if (config) {
-        const subscription = untracked(() => this.offerOneTap(config));
+      if (clientId && this.authState.status() === 'signedOut') {
+        const subscription = untracked(() => this.offerOneTap());
 
         onCleanup(() => subscription.unsubscribe());
       }
@@ -68,19 +72,29 @@ export class AuthController extends StateController {
   public signInWithGoogle(): Observable<void> {
     const done = new Subject<void>();
 
-    this.settledGoogleSignInConfig
+    this.requestGoogleCode({ scope: SIGN_IN_SCOPES })
       .pipe(
-        filter((config: GoogleSignInConfigDto | null | undefined) => config !== undefined),
-        take(1),
-        switchMap((config: GoogleSignInConfigDto | null) => (config ? this.googleIdentity.requestCode(config.clientId) : this.failToPrepare())),
         exhaustMap((code: string) => this.authApi.signInWithGoogleCode(code).pipe(tap(() => this.recoverUser()))),
-        catchError(() => this.reportSignInFailed()),
+        // Denying the consent cancels the sign-in like closing the popup.
+        catchError((error: unknown) => (error instanceof GoogleConsentDeniedError ? EMPTY : this.reportSignInFailed())),
         finalize(() => done.complete()),
         takeUntilDestroyed(this.destroyRef),
       )
       .subscribe();
 
     return done.asObservable();
+  }
+
+  // Opens the Google popup for `options` and emits the authorization code; see `GoogleIdentityService.requestCode`.
+  // Subscribe while handling the click. Fails when Google's script or the config could not be loaded.
+  public requestGoogleCode(options: GoogleCodeRequestOptions): Observable<string> {
+    return this.settledGoogleSignInConfig.pipe(
+      filter((config: GoogleSignInConfigDto | null | undefined) => config !== undefined),
+      take(1),
+      switchMap((config: GoogleSignInConfigDto | null) =>
+        config ? this.googleIdentity.requestCode(config.clientId, options) : this.failToPrepare(),
+      ),
+    );
   }
 
   public signOut(): Observable<void> {
@@ -93,34 +107,38 @@ export class AuthController extends StateController {
     );
   }
 
-  // Google closes One Tap once an account is picked, so a failed sign-in shows it again. A successful one waits until
-  // the signed-in user removes the config.
-  private offerOneTap(config: GoogleSignInConfigDto): Subscription {
-    const oneTap = defer(() => this.googleIdentity.promptOneTap(config).pipe(take(1))).pipe(
+  // The loaded config may hold a nonce that a sign-in used up or that expired while the user was signed in, so every
+  // offer asks for the current one and prompts with it. Google closes One Tap once an account is picked: a failed
+  // sign-in starts a new offer, a successful one waits until the signed-in status hides it.
+  private offerOneTap(): Subscription {
+    const oneTap = defer(() => this.currentGoogleSignInConfig()).pipe(
+      switchMap((config: GoogleSignInConfigDto) => this.googleIdentity.promptOneTap(config).pipe(take(1))),
       exhaustMap((credential: string) =>
         this.authApi.signInWithGoogleCredential(credential).pipe(
           tap(() => this.recoverUser()),
           switchMap(() => NEVER),
-          catchError(() => {
-            // A used or expired nonce gets replaced, which offers One Tap with the new one.
-            this.reportSignInFailed();
-            return this.refreshGoogleSignInConfig();
-          }),
+          catchError(() => this.reportSignInFailed()),
         ),
       ),
       repeat(),
     );
-    const nonceRefresh = interval(NONCE_REFRESH_MS).pipe(exhaustMap(() => this.refreshGoogleSignInConfig()));
+    // Asking again keeps the nonce cookie, and with it the open prompt's nonce, valid.
+    const nonceRefresh = interval(NONCE_REFRESH_MS).pipe(
+      exhaustMap(() => this.authApi.getGoogleSignInConfig().pipe(catchError(() => EMPTY))),
+      switchMap(() => EMPTY),
+    );
 
     return merge(oneTap, nonceRefresh).subscribe();
   }
 
-  // Keeps the last config when the request fails: its client id still opens the popup.
-  private refreshGoogleSignInConfig(): Observable<never> {
+  // Falls back to the loaded config when the request fails.
+  private currentGoogleSignInConfig(): Observable<GoogleSignInConfigDto> {
     return this.authApi.getGoogleSignInConfig().pipe(
-      tap((config: GoogleSignInConfigDto) => this.authState.googleSignInResource.set(config)),
-      switchMap(() => EMPTY),
-      catchError(() => EMPTY),
+      catchError(() => {
+        const config = this.authState.googleSignInConfig();
+
+        return config ? of(config) : EMPTY;
+      }),
     );
   }
 

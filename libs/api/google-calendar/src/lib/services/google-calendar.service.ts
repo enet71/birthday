@@ -1,22 +1,16 @@
-import { BadRequestException, ForbiddenException, Inject, Injectable, Logger } from '@nestjs/common';
+import { ConflictException, Injectable, Logger } from '@nestjs/common';
 import {
   GoogleCalendarCompleteRequest,
   GoogleCalendarCompleteResponse,
   GoogleCalendarConnectionDto,
-  GoogleCalendarConnectRequest,
-  GoogleCalendarConnectResponse,
   GoogleCalendarSyncResponse,
 } from '@birthday/shared-models';
-import { AuthUser } from '@birthday/api-auth';
 import { GoogleAccessRevokedError } from '../errors';
-import { MODULE_OPTIONS_TOKEN } from '../google-calendar.module-definition';
-import { GoogleCalendarModuleOptions } from '../types';
 import { GoogleCalendarEventsService } from './google-calendar-events.service';
 import { GoogleCalendarJobsService } from './google-calendar-jobs.service';
 import { GoogleConnectionsService } from './google-connections.service';
 import { GoogleImportService } from './google-import.service';
 import { GoogleOAuthService } from './google-oauth.service';
-import { OAuthStateService } from './oauth-state.service';
 
 // An automatic import runs at most once an hour across all of the user's devices; "Sync now" only skips a repeated
 // click.
@@ -31,10 +25,8 @@ export class GoogleCalendarService {
   private readonly logger = new Logger(GoogleCalendarService.name);
 
   constructor(
-    @Inject(MODULE_OPTIONS_TOKEN) private readonly options: GoogleCalendarModuleOptions,
     private readonly connections: GoogleConnectionsService,
     private readonly oauth: GoogleOAuthService,
-    private readonly oauthState: OAuthStateService,
     private readonly events: GoogleCalendarEventsService,
     private readonly importService: GoogleImportService,
     private readonly jobs: GoogleCalendarJobsService,
@@ -44,37 +36,23 @@ export class GoogleCalendarService {
     return this.connections.find(userId);
   }
 
-  // Google returns the browser to `redirectUri` in the app, which then calls `complete`.
-  public connect(user: AuthUser, request: GoogleCalendarConnectRequest): GoogleCalendarConnectResponse {
-    if (new URL(request.redirectUri).origin !== this.options.appOrigin) {
-      throw new BadRequestException('The redirect URI is not allowed');
-    }
-
-    const state = this.oauthState.create(user.id, request.redirectUri, request.nonce);
-
-    return { url: this.oauth.buildConsentUrl(request.redirectUri, state, user.email) };
-  }
-
-  // Requires the session of the user who started connecting and the nonce of their browser tab, so a consent link sent
-  // to someone else cannot attach their Google account.
+  // `code` comes from the Google popup on the user's page; `OriginGuard` keeps other sites from sending one.
   public async complete(userId: string, request: GoogleCalendarCompleteRequest): Promise<GoogleCalendarCompleteResponse> {
-    const state = this.oauthState.read(request.state);
-
-    if (!state) {
-      throw new BadRequestException('The connect request is invalid or expired');
-    }
-    if (state.userId !== userId || state.nonceHash !== this.oauthState.hashNonce(request.nonce)) {
-      throw new ForbiddenException('The connect request was started elsewhere');
-    }
-
-    const tokens = await this.oauth.exchangeCode(request.code, state.redirectUri);
+    const tokens = await this.oauth.exchangeCode(request.code);
 
     if (!this.oauth.hasRequiredScopes(tokens.scope)) {
       await this.oauth.revoke(tokens.accessToken);
       return { result: 'denied' };
     }
+    // Google gives a refresh token only with a new consent, and the popup cannot ask for one. A user who is connected
+    // already (a second tab, a repeated click) keeps the saved token: revoking would cut the working sync.
     if (!tokens.refreshToken) {
-      throw new Error('Google returned no refresh token');
+      if (await this.connections.isConnected(userId)) {
+        return { result: 'connected' };
+      }
+      // Revoking the access makes the next attempt show the consent page again.
+      await this.revokeQuietly(tokens.accessToken);
+      throw new ConflictException('Google returned no refresh token');
     }
 
     await this.connections.saveConnected(userId, tokens.refreshToken);
@@ -114,6 +92,15 @@ export class GoogleCalendarService {
       await this.oauth.revoke(refreshToken);
     }
     await this.connections.forgetRefreshToken(userId);
+  }
+
+  // A failed revocation must not hide the real answer; the log tells why the next attempt fails again.
+  private async revokeQuietly(accessToken: string): Promise<void> {
+    try {
+      await this.oauth.revoke(accessToken);
+    } catch (error) {
+      this.logger.error({ err: error }, 'Revoking a Google Calendar access without a refresh token failed');
+    }
   }
 
   private async removeBirthdayEvents(userId: string): Promise<void> {

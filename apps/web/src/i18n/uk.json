@@ -189,7 +189,6 @@
     },
     "googleCalendar": {
       "statusFailed": "Не вдалося завантажити стан Google Календаря",
-      "connectFailed": "Не вдалося підключити Google Календар",
       "connected": "Google Календар підключено",
       "connectRetry": "Не вдалося підключити Google Календар. Спробуйте ще раз",
       "syncedRecently": "Google Календар щойно синхронізовано",

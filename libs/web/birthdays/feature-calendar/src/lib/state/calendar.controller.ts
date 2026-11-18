@@ -1,11 +1,11 @@
-import { DOCUMENT, effect, inject, Injectable, PLATFORM_ID, untracked } from '@angular/core';
+import { effect, inject, Injectable, PLATFORM_ID, untracked } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Event as RouterEvent, NavigationEnd, Router } from '@angular/router';
 import { filter, finalize, Observable } from 'rxjs';
 import { addMonths, addYears, parseISO, startOfMonth } from 'date-fns';
 import { AuthController } from '@birthday/web-auth-data-access';
-import { GOOGLE_CALENDAR_REDIRECT_PATH, GoogleCalendarController, GoogleCalendarState } from '@birthday/web-google-calendar-data-access';
+import { GoogleCalendarController, GoogleCalendarState } from '@birthday/web-google-calendar-data-access';
 import { injectState, ReadonlyState, StateController } from '@birthday/web-shared-data-access';
 import { BirthdayInput, BirthdaysController } from '@birthday/web-birthdays-data-access';
 import { Birthday, CALENDAR_ADD_BIRTHDAY_QUERY_PARAM } from '@birthday/web-birthdays-util';
@@ -20,7 +20,6 @@ export class CalendarController extends StateController {
   private readonly googleCalendarController: GoogleCalendarController = inject(GoogleCalendarController);
   private readonly authController: AuthController = inject(AuthController);
   private readonly router: Router = inject(Router);
-  private readonly document: Document = inject(DOCUMENT);
 
   constructor() {
     super();
@@ -103,11 +102,11 @@ export class CalendarController extends StateController {
       .subscribe();
   }
 
-  // Google returns the user to the Settings page, which finishes connecting.
+  // Call it while handling the click: it opens the Google popup.
   public connectGoogleCalendar(): void {
     this.calendarState.isConnectingGoogleCalendar.set(true);
     this.googleCalendarController
-      .connect(`${this.document.location.origin}${GOOGLE_CALENDAR_REDIRECT_PATH}`)
+      .connect()
       .pipe(
         finalize(() => this.calendarState.isConnectingGoogleCalendar.set(false)),
         takeUntilDestroyed(this.destroyRef),

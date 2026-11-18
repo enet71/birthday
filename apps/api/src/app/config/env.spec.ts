@@ -8,7 +8,6 @@ describe('validateEnv', () => {
     GOOGLE_CLIENT_SECRET: 'client-secret',
     AUTH_SECRET: 'a'.repeat(32),
     GOOGLE_TOKEN_ENCRYPTION_KEY: 'b'.repeat(64),
-    GOOGLE_OAUTH_STATE_SECRET: 'c'.repeat(32),
     VAPID_PUBLIC_KEY: 'B'.repeat(87),
     VAPID_PRIVATE_KEY: 'd'.repeat(43),
     VAPID_SUBJECT: 'mailto:test@example.com',

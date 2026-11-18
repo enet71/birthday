@@ -1,12 +1,8 @@
 export interface GoogleCalendarModuleOptions {
   googleClientId: string;
   googleClientSecret: string;
-  // The web app's origin; Google may return the user only to a page of it.
-  appOrigin: string;
   // 64 hex characters (32 bytes); encrypts the saved Google refresh tokens.
   tokenEncryptionKey: string;
-  // Signs the state that travels through Google's consent page.
-  oauthStateSecret: string;
 }
 
 // A birthday as the sync sees it.
@@ -40,14 +36,6 @@ export interface ContactBirthday {
   birthDate: string;
   // When Google last changed the source the birthday came from.
   updatedAt: number;
-}
-
-// Carries the connect request through Google's consent page. It shows up in URLs, so it holds just the nonce hash.
-export interface OAuthState {
-  userId: string;
-  redirectUri: string;
-  nonceHash: string;
-  expiresAt: number;
 }
 
 export interface GoogleTokens {

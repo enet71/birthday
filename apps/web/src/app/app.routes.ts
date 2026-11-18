@@ -28,11 +28,9 @@ export const appRoutes: Route[] = [
     loadComponent: () => import('./pages/settings/settings.component').then((m) => m.SettingsComponent),
   },
   {
-    // Google Calendar consent returns here; the settings page finishes connecting and moves back to `/settings`.
+    // Google Calendar consent used to return here; a link from before the popup still lands in Settings.
     path: 'settings/google-calendar',
-    title: 'routes.settings.title',
-    data: { [APP_NOINDEX_DATA_KEY]: true },
-    loadComponent: () => import('./pages/settings/settings.component').then((m) => m.SettingsComponent),
+    redirectTo: 'settings',
   },
   {
     path: 'about',

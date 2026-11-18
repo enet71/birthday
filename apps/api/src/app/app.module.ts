@@ -65,9 +65,7 @@ import { HealthModule } from './health/health.module';
       useFactory: (config: ConfigService<Env, true>) => ({
         googleClientId: config.get('GOOGLE_CLIENT_ID', { infer: true }),
         googleClientSecret: config.get('GOOGLE_CLIENT_SECRET', { infer: true }),
-        appOrigin: config.get('APP_ORIGIN', { infer: true }),
         tokenEncryptionKey: config.get('GOOGLE_TOKEN_ENCRYPTION_KEY', { infer: true }),
-        oauthStateSecret: config.get('GOOGLE_OAUTH_STATE_SECRET', { infer: true }),
       }),
     }),
     NotificationsModule.forRootAsync({

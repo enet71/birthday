@@ -1,5 +1,8 @@
 import { effect, inject, Injectable, untracked } from '@angular/core';
-import { catchError, EMPTY, map, Observable, tap } from 'rxjs';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { catchError, EMPTY, exhaustMap, finalize, map, Observable, Subject, tap } from 'rxjs';
+import { GOOGLE_CALENDAR_SCOPES } from '@birthday/shared-models';
+import { AuthController, AuthState, GoogleConsentDeniedError } from '@birthday/web-auth-data-access';
 import { StateController } from '@birthday/web-shared-data-access';
 import { NotificationsService } from '@birthday/web-shared-util';
 import { GoogleCalendarApiService } from '../services';
@@ -11,6 +14,8 @@ import { AppTranslateService } from '@birthday/web-shared-i18n';
 export class GoogleCalendarController extends StateController {
   private readonly googleCalendarState: GoogleCalendarState = inject(GoogleCalendarState);
   private readonly googleCalendarApi: GoogleCalendarApiService = inject(GoogleCalendarApiService);
+  private readonly authController: AuthController = inject(AuthController);
+  private readonly authState: AuthState = inject(AuthState);
   private readonly notifications: NotificationsService = inject(NotificationsService);
   private readonly translator: AppTranslateService = inject(AppTranslateService);
 
@@ -29,34 +34,41 @@ export class GoogleCalendarController extends StateController {
     this.googleCalendarState.connectionResource.reload();
   }
 
+  // Opens the Google popup right away, so call it while handling the click: browsers block popups opened later.
+  // Connecting runs with the app, so it finishes even when the caller is destroyed; the returned Observable completes
+  // when it ends and never fails. Closing the popup ends it without a message.
+  public connect(): Observable<void> {
+    const done = new Subject<void>();
+
+    this.authController
+      .requestGoogleCode({ scope: GOOGLE_CALENDAR_SCOPES.join(' '), loginHint: this.authState.user()?.email ?? undefined })
+      .pipe(
+        exhaustMap((code: string) => this.googleCalendarApi.complete(code)),
+        tap((result: GoogleCalendarConnectResult) => {
+          if (result === 'connected') {
+            this.notifications.createSuccessNotification(this.translator.translate('notifications.googleCalendar.connected'));
+            this.setStatus('connected');
+          } else {
+            this.reportConnectDenied();
+          }
+        }),
+        catchError((error: unknown) => {
+          if (error instanceof GoogleConsentDeniedError) {
+            this.reportConnectDenied();
+          } else {
+            this.notifications.createErrorNotification(this.translator.translate('notifications.googleCalendar.connectRetry'));
+          }
+          return EMPTY;
+        }),
+        finalize(() => done.complete()),
+        takeUntilDestroyed(this.destroyRef),
+      )
+      .subscribe();
+
+    return done.asObservable();
+  }
+
   // The methods below complete without emitting when the request fails.
-  public connect(redirectUri: string): Observable<void> {
-    return this.googleCalendarApi.connect(redirectUri).pipe(
-      catchError(() => {
-        this.notifications.createErrorNotification(this.translator.translate('notifications.googleCalendar.connectFailed'));
-        return EMPTY;
-      }),
-    );
-  }
-
-  public completeConnect(code: string, state: string): Observable<void> {
-    return this.googleCalendarApi.completeConnect(code, state).pipe(
-      tap((result: GoogleCalendarConnectResult) => {
-        if (result === 'connected') {
-          this.notifications.createSuccessNotification(this.translator.translate('notifications.googleCalendar.connected'));
-          this.setStatus('connected');
-        } else {
-          this.reportConnectDenied();
-        }
-      }),
-      map(() => undefined),
-      catchError(() => {
-        this.notifications.createErrorNotification(this.translator.translate('notifications.googleCalendar.connectRetry'));
-        return EMPTY;
-      }),
-    );
-  }
-
   // "Sync now": always reports the outcome. Emits once when the sync finished.
   public syncNow(): Observable<void> {
     return this.googleCalendarApi.sync(true).pipe(
@@ -99,15 +111,6 @@ export class GoogleCalendarController extends StateController {
       // A background import that failed is retried on the next opening; it must not interrupt the user.
       catchError(() => EMPTY),
     );
-  }
-
-  // `error` is the error code Google added to the redirect page.
-  public reportConsentError(error: string): void {
-    if (error === 'access_denied') {
-      this.reportConnectDenied();
-    } else {
-      this.notifications.createErrorNotification(this.translator.translate('notifications.googleCalendar.connectRetry'));
-    }
   }
 
   private reportConnectDenied(): void {

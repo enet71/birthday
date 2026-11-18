@@ -183,7 +183,6 @@
     },
     "googleCalendar": {
       "statusFailed": "Couldn't load the Google Calendar status",
-      "connectFailed": "Couldn't connect Google Calendar",
       "connected": "Google Calendar connected",
       "connectRetry": "Couldn't connect Google Calendar. Please try again",
       "syncedRecently": "Google Calendar was synced a moment ago",

@@ -183,7 +183,6 @@
     },
     "googleCalendar": {
       "statusFailed": "Impossible de charger l'état de Google Agenda",
-      "connectFailed": "Impossible de connecter Google Agenda",
       "connected": "Google Agenda connecté",
       "connectRetry": "Impossible de connecter Google Agenda. Veuillez réessayer",
       "syncedRecently": "Google Agenda vient d'être synchronisé",

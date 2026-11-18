@@ -2,12 +2,12 @@ import { DOCUMENT } from '@angular/common';
 import { inject, Injectable } from '@angular/core';
 import { map, Observable, shareReplay } from 'rxjs';
 import { GoogleSignInConfigDto } from '@birthday/shared-models';
-import { GoogleAccounts, GoogleCodeClientError, GoogleCodeResponse, GoogleCredentialResponse } from '../types';
+import { GoogleConsentDeniedError } from '../errors';
+import { GoogleAccounts, GoogleCodeClientError, GoogleCodeRequestOptions, GoogleCodeResponse, GoogleCredentialResponse } from '../types';
 
 const SCRIPT_URL = 'https://accounts.google.com/gsi/client';
-const SCOPES = 'openid email profile';
 
-// Google Identity Services in the browser: the sign-in popup and One Tap. Use it only in the browser.
+// Google Identity Services in the browser: the authorization popup and One Tap. Use it only in the browser.
 @Injectable({ providedIn: 'root' })
 export class GoogleIdentityService {
   private readonly document: Document = inject(DOCUMENT);
@@ -18,28 +18,34 @@ export class GoogleIdentityService {
     return this.loadScript().pipe(map(() => undefined));
   }
 
-  // Opens the sign-in popup. Emits the authorization code, or completes without emitting when the user closes the popup
-  // or denies the consent. Call it while handling a click: browsers block popups opened later.
-  public requestCode(clientId: string): Observable<string> {
+  // Opens the Google popup for `options.scope`. Emits the authorization code, completes without emitting when the user
+  // closes the popup, and fails with `GoogleConsentDeniedError` when the user denies the consent. Call it while handling
+  // a click: browsers block popups opened later.
+  public requestCode(clientId: string, options: GoogleCodeRequestOptions): Observable<string> {
     return new Observable<string>((subscriber) => {
       const accounts = this.loaded();
 
       accounts.oauth2
         .initCodeClient({
           client_id: clientId,
-          scope: SCOPES,
+          scope: options.scope,
           ux_mode: 'popup',
+          ...(options.loginHint && { login_hint: options.loginHint }),
           callback: (response: GoogleCodeResponse) => {
             if (response.code) {
               subscriber.next(response.code);
+              subscriber.complete();
+            } else if (response.error === 'access_denied') {
+              subscriber.error(new GoogleConsentDeniedError());
+            } else {
+              subscriber.error(new Error(`Google returned no code: ${response.error ?? 'unknown'}`));
             }
-            subscriber.complete();
           },
           error_callback: (error: GoogleCodeClientError) => {
             if (error.type === 'popup_closed') {
               subscriber.complete();
             } else {
-              subscriber.error(new Error(`The Google sign-in popup failed: ${error.type}`));
+              subscriber.error(new Error(`The Google popup failed: ${error.type}`));
             }
           },
         })

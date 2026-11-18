@@ -27,14 +27,14 @@ export class AuthState extends State {
   });
   public readonly isAuthenticated: Signal<boolean> = computed(() => this.status() === 'signedIn');
 
-  // Loaded in advance while signed out: the sign-in popup must open right in the click handler, or browsers block it.
+  // Loaded in advance once the session is known: the Google popups for signing in and for connecting Google Calendar
+  // must open right in the click handler, or browsers block them.
   public readonly googleSignInResource: ResourceRef<GoogleSignInConfigDto | undefined> = rxResource({
-    params: () => (this.isBrowser && this.status() === 'signedOut' ? true : undefined),
+    params: () => (this.isBrowser && this.status() !== 'unknown' ? true : undefined),
     stream: () => this.googleIdentity.load().pipe(switchMap(() => this.authApi.getGoogleSignInConfig())),
   });
-  // Equal while the client id and nonce stay the same, so refreshing the nonce cookie does not restart One Tap.
-  public readonly googleSignInConfig: Signal<GoogleSignInConfigDto | null> = computed(
-    () => (this.googleSignInResource.hasValue() ? (this.googleSignInResource.value() ?? null) : null),
-    { equal: (a: GoogleSignInConfigDto | null, b: GoogleSignInConfigDto | null) => a?.clientId === b?.clientId && a?.nonce === b?.nonce },
+  public readonly googleSignInConfig: Signal<GoogleSignInConfigDto | null> = computed(() =>
+    this.googleSignInResource.hasValue() ? (this.googleSignInResource.value() ?? null) : null,
   );
+  public readonly googleClientId: Signal<string | null> = computed(() => this.googleSignInConfig()?.clientId ?? null);
 }

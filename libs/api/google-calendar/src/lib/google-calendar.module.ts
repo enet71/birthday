@@ -11,7 +11,6 @@ import {
   GoogleConnectionsService,
   GoogleImportService,
   GoogleOAuthService,
-  OAuthStateService,
   TokenCipher,
 } from './services';
 
@@ -22,7 +21,6 @@ import {
   controllers: [GoogleCalendarController],
   providers: [
     TokenCipher,
-    OAuthStateService,
     GoogleOAuthService,
     GoogleApiClient,
     GoogleConnectionsService,

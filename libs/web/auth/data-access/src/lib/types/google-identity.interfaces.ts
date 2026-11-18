@@ -33,6 +33,7 @@ export interface GoogleCodeClientConfiguration {
   client_id: string;
   scope: string;
   ux_mode: 'popup';
+  login_hint?: string;
   callback: (response: GoogleCodeResponse) => void;
   error_callback: (error: GoogleCodeClientError) => void;
 }
@@ -49,4 +50,11 @@ export interface GoogleCodeResponse {
 
 export interface GoogleCodeClientError {
   type: 'popup_failed_to_open' | 'popup_closed' | 'unknown';
+}
+
+export interface GoogleCodeRequestOptions {
+  // Scopes separated by spaces.
+  scope: string;
+  // The email of the account to preselect.
+  loginHint?: string;
 }

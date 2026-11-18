@@ -128,8 +128,8 @@ JavaScript origins (the web app signs in with Google Identity Services), and kee
 (`GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`). Add `http://localhost:4200` as well to sign in from a local web app that
 runs against production (`npx nx run web:serve-prod-api`).
 
-The Google Calendar sync uses the same client: add `https://birthdly.com/settings/google-calendar` to the authorized
-redirect URIs too, and enable the Google Calendar API and the People API in its project (APIs & Services → Library).
+The Google Calendar sync uses the same client and needs no redirect URI: enable the Google Calendar API and the People
+API in its project (APIs & Services → Library).
 
 Birthday push notifications need the VAPID pair whose public key is `vapidPublicKey` in
 `apps/web/src/app/app.config.ts` (`VAPID_PUBLIC_KEY`, `VAPID_PRIVATE_KEY`, see `libs/api/notifications`), and a

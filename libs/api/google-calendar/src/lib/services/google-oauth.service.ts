@@ -1,10 +1,11 @@
-import { Inject, Injectable } from '@nestjs/common';
-import { GOOGLE_CALENDAR_SCOPES } from '../constants';
+import { BadRequestException, Inject, Injectable } from '@nestjs/common';
+import { GOOGLE_CALENDAR_SCOPES } from '@birthday/shared-models';
 import { MODULE_OPTIONS_TOKEN } from '../google-calendar.module-definition';
 import { GoogleCalendarModuleOptions, GoogleTokens } from '../types';
 
 const TOKEN_URL = 'https://oauth2.googleapis.com/token';
 const REQUEST_TIMEOUT_MS = 30 * 1000;
+const POPUP_REDIRECT_URI = 'postmessage';
 
 interface GoogleTokenResponse {
   access_token: string;
@@ -17,33 +18,21 @@ interface GoogleTokenResponse {
 export class GoogleOAuthService {
   constructor(@Inject(MODULE_OPTIONS_TOKEN) private readonly options: GoogleCalendarModuleOptions) {}
 
-  // Google returns the user to `redirectUri`, an app page that must be listed in the OAuth client.
-  public buildConsentUrl(redirectUri: string, state: string, loginHint: string): string {
-    const url = new URL('https://accounts.google.com/o/oauth2/v2/auth');
+  // `code` comes from the Google Identity Services popup, so its redirect URI is `postmessage`.
+  public async exchangeCode(code: string): Promise<GoogleTokens> {
+    const response = await this.requestToken({ code, redirect_uri: POPUP_REDIRECT_URI, grant_type: 'authorization_code' });
 
-    url.search = new URLSearchParams({
-      client_id: this.options.googleClientId,
-      redirect_uri: redirectUri,
-      response_type: 'code',
-      scope: GOOGLE_CALENDAR_SCOPES.join(' '),
-      // `offline` with `consent` makes Google return a refresh token every time, also when reconnecting.
-      access_type: 'offline',
-      prompt: 'consent',
-      include_granted_scopes: 'true',
-      state,
-      login_hint: loginHint,
-    }).toString();
-
-    return url.toString();
-  }
-
-  public async exchangeCode(code: string, redirectUri: string): Promise<GoogleTokens> {
-    const response = await this.requestToken({ code, redirect_uri: redirectUri, grant_type: 'authorization_code' });
-
-    if (!response.ok) {
-      throw new Error(`Google code exchange failed: ${response.status} ${await response.text()}`);
+    if (response.ok) {
+      return this.toTokens(await response.json());
     }
-    return this.toTokens(await response.json());
+
+    const body = await response.text();
+
+    // `invalid_grant` is an invalid, used or expired code; other errors are the API's or Google's and get logged.
+    if (response.status === 400 && body.includes('invalid_grant')) {
+      throw new BadRequestException('Google rejected the code');
+    }
+    throw new Error(`Google code exchange failed: ${response.status} ${body}`);
   }
 
   // `null` when Google no longer accepts the refresh token: the user revoked the access, or it expired.
