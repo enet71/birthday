@@ -47,6 +47,27 @@ html {
       outlined-container-shape: 0.75rem,
     )
   );
+  // White dropdown panels instead of the tinted surface-container.
+  @include mat.select-overrides(
+    (
+      panel-background-color: var(--mat-sys-surface-container-lowest),
+    )
+  );
+  @include mat.menu-overrides(
+    (
+      container-color: var(--mat-sys-surface-container-lowest),
+    )
+  );
+  @include mat.autocomplete-overrides(
+    (
+      background-color: var(--mat-sys-surface-container-lowest),
+    )
+  );
+  @include mat.datepicker-overrides(
+    (
+      calendar-container-background-color: var(--mat-sys-surface-container-lowest),
+    )
+  );
   @include mat.dialog-overrides(
     (
       container-shape: 1.25rem,
