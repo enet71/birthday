@@ -10,6 +10,9 @@ import en from '../i18n/en.json';
 
 describe('App', () => {
   beforeEach(async () => {
+    // jsdom has no `matchMedia`; the theme controller watches the system color scheme through it.
+    vi.stubGlobal('matchMedia', (query: string) => ({ matches: false, media: query, addEventListener: vi.fn(), removeEventListener: vi.fn() }));
+
     await TestBed.configureTestingModule({
       imports: [
         App,
@@ -26,6 +29,10 @@ describe('App', () => {
         { provide: GoogleIdentityService, useValue: { load: () => of(undefined), promptOneTap: () => NEVER } },
       ],
     }).compileComponents();
+  });
+
+  afterEach(() => {
+    vi.unstubAllGlobals();
   });
 
   it('should render the app layout with the menu', async () => {
