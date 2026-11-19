@@ -1,0 +1,10 @@
+<h2 class="heading">
+  <mat-icon class="heading__icon" aria-hidden="true">{{ icon() }}</mat-icon>
+  {{ heading() }}
+</h2>
+<mat-card class="card" appearance="outlined">
+  <!-- Every row draws a top separator; the negative margin hides the first one under the card edge. -->
+  <div class="rows">
+    <ng-content />
+  </div>
+</mat-card>

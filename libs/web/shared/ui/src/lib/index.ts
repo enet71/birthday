@@ -4,3 +4,4 @@ export * from './directives';
 export * from './expandable-text';
 export * from './form';
 export * from './list';
+export * from './settings';

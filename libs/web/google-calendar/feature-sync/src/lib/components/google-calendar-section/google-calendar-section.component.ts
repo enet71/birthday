@@ -1,9 +1,9 @@
 import { ChangeDetectionStrategy, Component, inject, Signal } from '@angular/core';
 import { MatButton } from '@angular/material/button';
-import { MatCard, MatCardContent, MatCardHeader, MatCardTitle } from '@angular/material/card';
 import { MatIcon } from '@angular/material/icon';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { injectState, ReadonlyState } from '@birthday/web-shared-data-access';
+import { SettingsRowComponent, SettingsSectionComponent } from '@birthday/web-shared-ui';
 import { GoogleCalendarSectionController, GoogleCalendarSectionState } from '../../state';
 import { GoogleCalendarSectionView } from '../../types';
 import { LocaleDatePipe } from '@birthday/web-shared-i18n';
@@ -11,7 +11,7 @@ import { TranslocoPipe } from '@jsverse/transloco';
 
 @Component({
   selector: 'ui-google-calendar-section',
-  imports: [TranslocoPipe, LocaleDatePipe, MatButton, MatCard, MatCardContent, MatCardHeader, MatCardTitle, MatIcon, MatProgressSpinner],
+  imports: [TranslocoPipe, LocaleDatePipe, MatButton, MatIcon, MatProgressSpinner, SettingsRowComponent, SettingsSectionComponent],
   providers: [GoogleCalendarSectionState, GoogleCalendarSectionController],
   templateUrl: './google-calendar-section.component.html',
   styleUrl: './google-calendar-section.component.scss',

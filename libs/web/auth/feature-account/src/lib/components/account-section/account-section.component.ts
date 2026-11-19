@@ -1,15 +1,15 @@
 import { ChangeDetectionStrategy, Component, inject, Signal } from '@angular/core';
 import { MatButton } from '@angular/material/button';
-import { MatCard, MatCardContent, MatCardHeader, MatCardTitle } from '@angular/material/card';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { injectState, ReadonlyState } from '@birthday/web-shared-data-access';
+import { SettingsRowComponent, SettingsSectionComponent } from '@birthday/web-shared-ui';
 import { AccountController, AccountState } from '../../state';
 import { AccountView } from '../../types';
 import { TranslocoPipe } from '@jsverse/transloco';
 
 @Component({
   selector: 'ui-account-section',
-  imports: [TranslocoPipe, MatButton, MatCard, MatCardContent, MatCardHeader, MatCardTitle, MatProgressSpinner],
+  imports: [TranslocoPipe, MatButton, MatProgressSpinner, SettingsRowComponent, SettingsSectionComponent],
   providers: [AccountState, AccountController],
   templateUrl: './account-section.component.html',
   styleUrl: './account-section.component.scss',

@@ -1,29 +1,25 @@
-<mat-card appearance="outlined">
-  <mat-card-header>
-    <h2 mat-card-title>{{ 'account.title' | transloco }}</h2>
-  </mat-card-header>
-  <mat-card-content>
-    <div class="content">
-      @if (view() === 'loading') {
-        <mat-progress-spinner class="spinner" mode="indeterminate" diameter="32" [attr.aria-label]="'account.loading' | transloco" />
-      } @else {
-        <p class="description" aria-live="polite">
-          @if (view() === 'signedIn') {
-            {{ 'account.signedInAs' | transloco }} <strong class="email">{{ email() }}</strong>
-          } @else {
-            {{ 'account.signedOutDescription' | transloco }}
-          }
-        </p>
-        <!-- One button for both views keeps keyboard focus in place when signing in or out switches the view. -->
-        <button matButton="outlined" type="button" disabledInteractive [disabled]="isPending()" (click)="runAccountAction()">
-          @if (view() === 'signedIn') {
-            {{ 'account.signOut' | transloco }}
-          } @else {
-            <img class="google-logo" src="/assets/images/google-logo.svg" alt="" width="18" height="18" />
-            {{ 'account.signIn' | transloco }}
-          }
-        </button>
-      }
-    </div>
-  </mat-card-content>
-</mat-card>
+<ui-settings-section [heading]="'account.title' | transloco" icon="person">
+  @if (view() === 'loading') {
+    <mat-progress-spinner class="spinner" mode="indeterminate" diameter="32" [attr.aria-label]="'account.loading' | transloco" />
+  } @else {
+    <ui-settings-row icon="account_circle">
+      <p class="text" aria-live="polite">
+        @if (view() === 'signedIn') {
+          <span class="caption">{{ 'account.signedInAs' | transloco }}</span>
+          <strong class="email">{{ email() }}</strong>
+        } @else {
+          <span class="caption">{{ 'account.signedOutDescription' | transloco }}</span>
+        }
+      </p>
+      <!-- One button for both views keeps keyboard focus in place when signing in or out switches the view. -->
+      <button uiSettingsRowAction matButton="outlined" type="button" disabledInteractive [disabled]="isPending()" (click)="runAccountAction()">
+        @if (view() === 'signedIn') {
+          {{ 'account.signOut' | transloco }}
+        } @else {
+          <img class="google-logo" src="/assets/images/google-logo.svg" alt="" width="18" height="18" />
+          {{ 'account.signIn' | transloco }}
+        }
+      </button>
+    </ui-settings-row>
+  }
+</ui-settings-section>

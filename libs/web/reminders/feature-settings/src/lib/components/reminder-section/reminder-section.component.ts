@@ -2,14 +2,14 @@ import { afterRenderEffect, ChangeDetectionStrategy, Component, ElementRef, inje
 import { DOCUMENT } from '@angular/common';
 import { FieldTree, FormField } from '@angular/forms/signals';
 import { MatButton } from '@angular/material/button';
-import { MatCard, MatCardContent, MatCardHeader, MatCardTitle } from '@angular/material/card';
-import { MatFormField, MatLabel } from '@angular/material/form-field';
+import { MatFormField } from '@angular/material/form-field';
 import { MatIcon } from '@angular/material/icon';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { MatRadioButton, MatRadioChange, MatRadioGroup } from '@angular/material/radio';
 import { MatOption, MatSelect, MatSelectChange } from '@angular/material/select';
 import { ReminderSettings } from '@birthday/web-reminders-data-access';
 import { injectState, ReadonlyState } from '@birthday/web-shared-data-access';
+import { SettingsRowComponent, SettingsSectionComponent } from '@birthday/web-shared-ui';
 import { REMINDER_DAY_OPTIONS, REMINDER_HOUR_OPTIONS } from '../../constants';
 import { ReminderSectionController, ReminderSectionState } from '../../state';
 import { ReminderDayOption, ReminderHourOption, ReminderSectionView, ReminderSettingsModel } from '../../types';
@@ -23,18 +23,15 @@ import { TranslocoPipe } from '@jsverse/transloco';
     LocaleDatePipe,
     FormField,
     MatButton,
-    MatCard,
-    MatCardContent,
-    MatCardHeader,
-    MatCardTitle,
     MatFormField,
     MatIcon,
-    MatLabel,
     MatOption,
     MatProgressSpinner,
     MatRadioButton,
     MatRadioGroup,
     MatSelect,
+    SettingsRowComponent,
+    SettingsSectionComponent,
   ],
   providers: [ReminderSectionState, ReminderSectionController],
   templateUrl: './reminder-section.component.html',

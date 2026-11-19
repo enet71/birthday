@@ -1,14 +1,14 @@
 import { ChangeDetectionStrategy, Component, inject, Signal } from '@angular/core';
-import { MatCard, MatCardContent, MatCardHeader, MatCardTitle } from '@angular/material/card';
-import { MatFormField, MatLabel } from '@angular/material/form-field';
+import { MatFormField } from '@angular/material/form-field';
 import { MatOption, MatSelect } from '@angular/material/select';
 import { TranslocoPipe } from '@jsverse/transloco';
 import { injectState, ReadonlyState } from '@birthday/web-shared-data-access';
+import { SettingsRowComponent, SettingsSectionComponent } from '@birthday/web-shared-ui';
 import { APP_LOCALE_NAMES, APP_LOCALES, AppLocale, LocaleController, LocaleState } from '@birthday/web-shared-i18n';
 
 @Component({
   selector: 'app-language-section',
-  imports: [MatCard, MatCardContent, MatCardHeader, MatCardTitle, MatFormField, MatLabel, MatOption, MatSelect, TranslocoPipe],
+  imports: [MatFormField, MatOption, MatSelect, SettingsRowComponent, SettingsSectionComponent, TranslocoPipe],
   templateUrl: './language-section.component.html',
   styleUrl: './language-section.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

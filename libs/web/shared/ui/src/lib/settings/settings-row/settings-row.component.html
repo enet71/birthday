@@ -1,0 +1,17 @@
+<div class="main">
+  @if (icon(); as icon) {
+    <mat-icon class="icon" aria-hidden="true">{{ icon }}</mat-icon>
+  }
+  <div class="content">
+    @if (label(); as label) {
+      <p class="label">{{ label }}</p>
+    }
+    @if (description(); as description) {
+      <p class="description">{{ description }}</p>
+    }
+    <ng-content />
+  </div>
+</div>
+<div class="action">
+  <ng-content select="[uiSettingsRowAction]" />
+</div>

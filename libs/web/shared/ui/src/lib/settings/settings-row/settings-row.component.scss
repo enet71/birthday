@@ -1,0 +1,70 @@
+:host {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem 1.5rem;
+  padding: 1rem 1.25rem;
+  border-top: 0.0625rem solid var(--mat-sys-outline-variant);
+}
+
+// The action keeps the icon-column indent instead of a gap, so when it wraps it lines up with the text.
+:host([data-has-icon]) {
+  column-gap: 0;
+
+  .action {
+    padding-left: 2.5rem;
+  }
+}
+
+:host([data-tone='positive']) {
+  --settings-row-accent: var(--mat-sys-primary);
+}
+
+:host([data-tone='negative']) {
+  --settings-row-accent: var(--mat-sys-error);
+}
+
+.main {
+  display: flex;
+  flex: 1 1 16rem;
+  align-items: flex-start;
+  gap: 1rem;
+  min-width: 0;
+}
+
+.icon {
+  flex-shrink: 0;
+  color: var(--settings-row-accent, var(--mat-sys-on-surface-variant));
+}
+
+.content {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.25rem;
+  min-width: 0;
+}
+
+.label {
+  margin: 0;
+  color: var(--settings-row-accent, var(--mat-sys-on-surface));
+  font: var(--mat-sys-body-large);
+}
+
+.description {
+  margin: 0;
+  color: var(--mat-sys-on-surface-variant);
+  font: var(--mat-sys-body-medium);
+}
+
+.action {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+
+  &:empty {
+    display: none;
+  }
+}
