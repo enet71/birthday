@@ -48,9 +48,6 @@
     </div>
   }
   <div class="people__content" [attr.aria-busy]="isLoading()">
-    @if (isLoading()) {
-      <mat-progress-bar class="people__progress" mode="indeterminate" [attr.aria-label]="'people.loading' | transloco"></mat-progress-bar>
-    }
     @if (visiblePeople().length) {
       <table
         mat-table

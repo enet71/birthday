@@ -6,6 +6,7 @@ import { filter, finalize, Observable } from 'rxjs';
 import { addMonths, addYears, parseISO, startOfMonth } from 'date-fns';
 import { AuthController } from '@birthday/web-auth-data-access';
 import { GoogleCalendarController, GoogleCalendarState } from '@birthday/web-google-calendar-data-access';
+import { AppLayoutController } from '@birthday/web-layout-data-access';
 import { injectState, ReadonlyState, StateController } from '@birthday/web-shared-data-access';
 import { BirthdayInput, BirthdaysController } from '@birthday/web-birthdays-data-access';
 import { Birthday, CALENDAR_ADD_BIRTHDAY_QUERY_PARAM } from '@birthday/web-birthdays-util';
@@ -19,11 +20,13 @@ export class CalendarController extends StateController {
   private readonly googleCalendarState: ReadonlyState<GoogleCalendarState> = injectState(GoogleCalendarState);
   private readonly googleCalendarController: GoogleCalendarController = inject(GoogleCalendarController);
   private readonly authController: AuthController = inject(AuthController);
+  private readonly appLayoutController: AppLayoutController = inject(AppLayoutController);
   private readonly router: Router = inject(Router);
 
   constructor() {
     super();
     this.birthdaysController.reloadBirthdays();
+    this.appLayoutController.trackLoading(this.calendarState.isLoading, this.destroyRef);
     // Dialogs open only in the browser, so the server render of a link to the dialog shows the plain calendar.
     if (isPlatformBrowser(inject(PLATFORM_ID))) {
       this.openAddBirthdayDialogFromLinks();

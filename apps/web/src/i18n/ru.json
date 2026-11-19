@@ -29,7 +29,8 @@
     "siteLinks": "Ссылки сайта",
     "collapseMenu": "Свернуть меню",
     "expandMenu": "Развернуть меню",
-    "closeSearch": "Закрыть поиск"
+    "closeSearch": "Закрыть поиск",
+    "loading": "Загрузка"
   },
   "routes": {
     "calendar": {
@@ -100,7 +101,6 @@
   },
   "calendar": {
     "label": "Календарь",
-    "loadingBirthdays": "Загрузка дней рождения",
     "upcomingBirthdays": "Ближайшие дни рождения",
     "addBirthday": "Добавить день рождения",
     "today": "Сегодня",
@@ -235,7 +235,6 @@
     "relationshipFilter": "Фильтр «Кем приходится»",
     "allRelationships": "Все",
     "noRelationship": "Не указано",
-    "loading": "Загрузка списка людей",
     "columns": {
       "name": "Имя",
       "relationship": "Кем приходится",
@@ -251,7 +250,6 @@
   "person": {
     "label": "Сведения о человеке",
     "back": "Назад к списку",
-    "loading": "Загрузка",
     "birthday": "День рождения",
     "age": "Возраст",
     "nextBirthday": "Ближайший день рождения",

@@ -1,4 +1,4 @@
-import { effect, inject, Injectable, TemplateRef } from '@angular/core';
+import { DestroyRef, effect, EffectRef, inject, Injectable, Injector, Signal, TemplateRef } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRouteSnapshot, Event as RouterEvent, NavigationEnd, Router } from '@angular/router';
 import { filter } from 'rxjs';
@@ -13,6 +13,7 @@ export class AppLayoutController extends StateController {
   private readonly router: Router = inject(Router);
   private readonly platform: PlatformService = inject(PlatformService);
   private readonly browserStorage: BrowserStorageService = inject(BrowserStorageService);
+  private readonly injector: Injector = inject(Injector);
 
   constructor() {
     super();
@@ -50,6 +51,35 @@ export class AppLayoutController extends StateController {
     if (this.appLayoutState.actions() === actions) {
       this.appLayoutState.actions.set(null);
     }
+  }
+
+  /** Shows the header loader while `isLoading` is `true`, until `destroyRef` (usually the caller's own) is destroyed. */
+  public trackLoading(isLoading: Signal<boolean>, destroyRef: DestroyRef): void {
+    const source: object = {};
+    const effectRef: EffectRef = effect(() => this.setLoading(source, isLoading()), { injector: this.injector });
+
+    destroyRef.onDestroy(() => {
+      effectRef.destroy();
+      this.setLoading(source, false);
+    });
+  }
+
+  private setLoading(source: object, isLoading: boolean): void {
+    this.appLayoutState.loadingSources.update((sources: ReadonlySet<object>) => {
+      if (sources.has(source) === isLoading) {
+        return sources;
+      }
+
+      const next: Set<object> = new Set(sources);
+
+      if (isLoading) {
+        next.add(source);
+      } else {
+        next.delete(source);
+      }
+
+      return next;
+    });
   }
 
   private applyRoute(): void {

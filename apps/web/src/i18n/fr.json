@@ -29,7 +29,8 @@
     "siteLinks": "Liens du site",
     "collapseMenu": "Réduire le menu",
     "expandMenu": "Développer le menu",
-    "closeSearch": "Fermer la recherche"
+    "closeSearch": "Fermer la recherche",
+    "loading": "Chargement"
   },
   "routes": {
     "calendar": {
@@ -100,7 +101,6 @@
   },
   "calendar": {
     "label": "Calendrier",
-    "loadingBirthdays": "Chargement des anniversaires",
     "upcomingBirthdays": "Anniversaires à venir",
     "addBirthday": "Ajouter un anniversaire",
     "today": "Aujourd'hui",
@@ -223,7 +223,6 @@
     "relationshipFilter": "Filtrer par relation",
     "allRelationships": "Toutes les relations",
     "noRelationship": "Sans relation",
-    "loading": "Chargement des personnes",
     "columns": {
       "name": "Nom",
       "relationship": "Relation",
@@ -239,7 +238,6 @@
   "person": {
     "label": "Détails de la personne",
     "back": "Retour aux personnes",
-    "loading": "Chargement de la personne",
     "birthday": "Anniversaire",
     "age": "Âge",
     "nextBirthday": "Prochain anniversaire",

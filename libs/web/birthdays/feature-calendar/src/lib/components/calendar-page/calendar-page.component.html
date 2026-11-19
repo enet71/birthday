@@ -1,7 +1,4 @@
 <section class="calendar" [attr.aria-label]="'calendar.label' | transloco" [attr.aria-busy]="isLoading()">
-  @if (isLoading()) {
-    <mat-progress-bar class="calendar__progress" mode="indeterminate" [attr.aria-label]="'calendar.loadingBirthdays' | transloco"></mat-progress-bar>
-  }
   <ui-calendar-toolbar></ui-calendar-toolbar>
   @if (view() === 'year') {
     <ui-calendar-year></ui-calendar-year>

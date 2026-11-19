@@ -29,7 +29,8 @@
     "siteLinks": "Site links",
     "collapseMenu": "Collapse menu",
     "expandMenu": "Expand menu",
-    "closeSearch": "Close search"
+    "closeSearch": "Close search",
+    "loading": "Loading"
   },
   "routes": {
     "calendar": {
@@ -100,7 +101,6 @@
   },
   "calendar": {
     "label": "Calendar",
-    "loadingBirthdays": "Loading birthdays",
     "upcomingBirthdays": "Upcoming birthdays",
     "addBirthday": "Add birthday",
     "today": "Today",
@@ -223,7 +223,6 @@
     "relationshipFilter": "Filter by relationship",
     "allRelationships": "All relationships",
     "noRelationship": "No relationship",
-    "loading": "Loading people",
     "columns": {
       "name": "Name",
       "relationship": "Relationship",
@@ -239,7 +238,6 @@
   "person": {
     "label": "Person details",
     "back": "Back to people",
-    "loading": "Loading person",
     "birthday": "Birthday",
     "age": "Age",
     "nextBirthday": "Next birthday",

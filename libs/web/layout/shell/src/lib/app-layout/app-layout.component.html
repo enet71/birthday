@@ -5,6 +5,9 @@
       <ng-content select="[uiAppLayoutTopBarEnd]" />
     </ui-app-layout-top-bar>
   </div>
+  @if (isLoading()) {
+    <mat-progress-bar class="header__progress" mode="indeterminate" [attr.aria-label]="'layout.loading' | transloco"></mat-progress-bar>
+  }
 </header>
 <main class="main">
   <div class="main__scroll">

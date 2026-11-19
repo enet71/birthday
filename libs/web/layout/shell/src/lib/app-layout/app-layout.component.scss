@@ -14,8 +14,17 @@
 
 .header {
   grid-area: header;
+  position: relative;
   min-width: 0;
   border-bottom: 0.0625rem solid color-mix(in srgb, var(--mat-sys-outline-variant) 20%, transparent);
+
+  // Lies over the bottom border, so showing it never shifts the page.
+  &__progress {
+    position: absolute;
+    right: 0;
+    bottom: -0.0625rem;
+    left: 0;
+  }
 }
 
 .main {

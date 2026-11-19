@@ -4,9 +4,6 @@
     {{ 'person.back' | transloco }}
   </a>
   <div class="person-page__content" [attr.aria-busy]="isLoading()">
-    @if (isLoading()) {
-      <mat-progress-bar class="person-page__progress" mode="indeterminate" [attr.aria-label]="'person.loading' | transloco"></mat-progress-bar>
-    }
     @if (person(); as person) {
       <article class="card">
         <header class="card__header">

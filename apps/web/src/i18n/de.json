@@ -29,7 +29,8 @@
     "siteLinks": "Website-Links",
     "collapseMenu": "Menü einklappen",
     "expandMenu": "Menü ausklappen",
-    "closeSearch": "Suche schließen"
+    "closeSearch": "Suche schließen",
+    "loading": "Wird geladen"
   },
   "routes": {
     "calendar": {
@@ -100,7 +101,6 @@
   },
   "calendar": {
     "label": "Kalender",
-    "loadingBirthdays": "Geburtstage werden geladen",
     "upcomingBirthdays": "Kommende Geburtstage",
     "addBirthday": "Geburtstag hinzufügen",
     "today": "Heute",
@@ -223,7 +223,6 @@
     "relationshipFilter": "Nach Beziehung filtern",
     "allRelationships": "Alle Beziehungen",
     "noRelationship": "Ohne Beziehung",
-    "loading": "Personen werden geladen",
     "columns": {
       "name": "Name",
       "relationship": "Beziehung",
@@ -239,7 +238,6 @@
   "person": {
     "label": "Personendetails",
     "back": "Zurück zu Personen",
-    "loading": "Person wird geladen",
     "birthday": "Geburtstag",
     "age": "Alter",
     "nextBirthday": "Nächster Geburtstag",

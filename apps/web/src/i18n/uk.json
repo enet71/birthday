@@ -29,7 +29,8 @@
     "siteLinks": "Посилання сайту",
     "collapseMenu": "Згорнути меню",
     "expandMenu": "Розгорнути меню",
-    "closeSearch": "Закрити пошук"
+    "closeSearch": "Закрити пошук",
+    "loading": "Завантаження"
   },
   "routes": {
     "calendar": {
@@ -100,7 +101,6 @@
   },
   "calendar": {
     "label": "Календар",
-    "loadingBirthdays": "Завантаження днів народження",
     "upcomingBirthdays": "Найближчі дні народження",
     "addBirthday": "Додати день народження",
     "today": "Сьогодні",
@@ -235,7 +235,6 @@
     "relationshipFilter": "Фільтр «Ким доводиться»",
     "allRelationships": "Усі",
     "noRelationship": "Не вказано",
-    "loading": "Завантаження списку людей",
     "columns": {
       "name": "Ім'я",
       "relationship": "Ким доводиться",
@@ -251,7 +250,6 @@
   "person": {
     "label": "Відомості про людину",
     "back": "Назад до списку",
-    "loading": "Завантаження",
     "birthday": "День народження",
     "age": "Вік",
     "nextBirthday": "Найближчий день народження",

@@ -1,7 +1,6 @@
 import { ChangeDetectionStrategy, Component, inject, Signal } from '@angular/core';
 import { MatButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
-import { MatProgressBar } from '@angular/material/progress-bar';
 import { RouterLink } from '@angular/router';
 import { TranslocoPipe } from '@jsverse/transloco';
 import { BirthdayAvatarComponent, RelationshipDotComponent } from '@birthday/web-birthdays-ui';
@@ -12,7 +11,7 @@ import { PersonRow } from '../../types';
 
 @Component({
   selector: 'ui-person-page',
-  imports: [TranslocoPipe, LocaleDatePipe, MatButton, MatIcon, MatProgressBar, RouterLink, BirthdayAvatarComponent, RelationshipDotComponent],
+  imports: [TranslocoPipe, LocaleDatePipe, MatButton, MatIcon, RouterLink, BirthdayAvatarComponent, RelationshipDotComponent],
   templateUrl: './person-page.component.html',
   styleUrl: './person-page.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

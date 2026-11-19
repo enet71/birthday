@@ -17,7 +17,8 @@ export const PEOPLE_ROUTES: Route[] = [
     providers: [
       PersonState,
       PersonController,
-      // The page has no commands, so nothing else creates the controller that refreshes the birthdays list on entry.
+      // The page has no commands, so nothing else creates the controller that refreshes the birthdays list and shows the
+      // header loader on entry.
       provideEnvironmentInitializer(() => inject(PersonController)),
     ],
   },

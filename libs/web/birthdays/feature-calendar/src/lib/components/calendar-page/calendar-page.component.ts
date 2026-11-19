@@ -1,7 +1,6 @@
 import { ChangeDetectionStrategy, Component, inject, Signal } from '@angular/core';
 import { MatFabButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
-import { MatProgressBar } from '@angular/material/progress-bar';
 import { AppLayoutFooterComponent } from '@birthday/web-layout-ui';
 import { injectState, ReadonlyState } from '@birthday/web-shared-data-access';
 import { CalendarController, CalendarState } from '../../state';
@@ -20,7 +19,6 @@ import { TranslocoPipe } from '@jsverse/transloco';
     TranslocoPipe,
     MatFabButton,
     MatIcon,
-    MatProgressBar,
     AppLayoutFooterComponent,
     CalendarMonthComponent,
     CalendarToolbarComponent,
