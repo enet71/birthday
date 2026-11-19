@@ -61,7 +61,7 @@ export class AuthApiService extends ApiService {
         count: ME_RETRY_DELAYS_MS.length,
         delay: (error: unknown, attempt: number) => (isTransient(error) ? timer(ME_RETRY_DELAYS_MS[attempt - 1]) : throwError(() => error)),
       }),
-      map((user: UserDto): AuthUser => ({ id: user.id, email: user.email })),
+      map((user: UserDto): AuthUser => ({ id: user.id, email: user.email, picture: user.picture })),
       // 401: nobody is signed in in this browser.
       catchError((error: unknown) => (error instanceof HttpErrorResponse && error.status === 401 ? of(null) : throwError(() => error))),
     );

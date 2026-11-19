@@ -3,4 +3,6 @@ export interface UserDto {
   id: string;
   email: string;
   name: string | null;
+  // The address of the Google profile picture.
+  picture: string | null;
 }

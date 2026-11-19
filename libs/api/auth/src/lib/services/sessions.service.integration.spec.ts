@@ -51,7 +51,7 @@ describe('SessionsService and AuthUsersService with a real Postgres', () => {
 
   // Every test works with its own user, so the tests do not depend on each other's rows.
   async function createUser(): Promise<string> {
-    const user = await authUsers.upsertGoogleUser({ sub: randomUUID(), email: 'person@example.com', name: 'Person' });
+    const user = await authUsers.upsertGoogleUser({ sub: randomUUID(), email: 'person@example.com', name: 'Person', picture: null });
 
     return user.id;
   }
@@ -125,7 +125,7 @@ describe('SessionsService and AuthUsersService with a real Postgres', () => {
       const session = await sessionsService.authenticate(created.token);
 
       expect(session).toEqual({
-        user: { id: userId, email: 'person@example.com', name: 'Person' },
+        user: { id: userId, email: 'person@example.com', name: 'Person', picture: null },
         expiresAt: created.expiresAt,
         extended: false,
       });
@@ -194,14 +194,14 @@ describe('SessionsService and AuthUsersService with a real Postgres', () => {
     it('creates the user on the first sign-in and updates the email and name on later ones', async () => {
       const sub = randomUUID();
 
-      const created = await authUsers.upsertGoogleUser({ sub, email: 'old@example.com', name: 'Old' });
-      const updated = await authUsers.upsertGoogleUser({ sub, email: 'new@example.com', name: null });
+      const created = await authUsers.upsertGoogleUser({ sub, email: 'old@example.com', name: 'Old', picture: 'https://example.com/old.png' });
+      const updated = await authUsers.upsertGoogleUser({ sub, email: 'new@example.com', name: null, picture: null });
       const rows = await db.select().from(users).where(eq(users.googleSub, sub));
 
-      expect(created).toEqual({ id: expect.any(String), email: 'old@example.com', name: 'Old' });
-      expect(updated).toEqual({ id: created.id, email: 'new@example.com', name: null });
+      expect(created).toEqual({ id: expect.any(String), email: 'old@example.com', name: 'Old', picture: 'https://example.com/old.png' });
+      expect(updated).toEqual({ id: created.id, email: 'new@example.com', name: null, picture: null });
       expect(rows).toHaveLength(1);
-      expect(rows[0]).toMatchObject({ id: created.id, email: 'new@example.com', name: null });
+      expect(rows[0]).toMatchObject({ id: created.id, email: 'new@example.com', name: null, picture: null });
     });
   });
 });

@@ -70,7 +70,12 @@ export class GoogleSignInService {
       throw new GoogleSignInRejectedError('The Google ID token has no verified email');
     }
 
-    return { sub: claims.sub, email: claims['email'], name: typeof claims['name'] === 'string' ? claims['name'] : null };
+    return {
+      sub: claims.sub,
+      email: claims['email'],
+      name: typeof claims['name'] === 'string' ? claims['name'] : null,
+      picture: typeof claims['picture'] === 'string' ? claims['picture'] : null,
+    };
   }
 
   private async verifySignature(idToken: string): Promise<JWTPayload> {

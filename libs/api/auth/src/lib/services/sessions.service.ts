@@ -37,7 +37,7 @@ export class SessionsService {
         sessionId: sessions.id,
         expiresAt: sessions.expiresAt,
         stale: sql<boolean>`${sessions.lastUsedAt} <= now() - ${interval(SESSION_EXTEND_AFTER_MS)}`,
-        user: { id: users.id, email: users.email, name: users.name },
+        user: { id: users.id, email: users.email, name: users.name, picture: users.picture },
       })
       .from(sessions)
       .innerJoin(users, eq(users.id, sessions.userId))

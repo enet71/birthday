@@ -8,7 +8,7 @@ import { SessionsService } from '../services';
 import { AuthUser } from '../types';
 import { AuthGuard } from './auth.guard';
 
-const USER: AuthUser = { id: 'user-1', email: 'user@example.com', name: 'User' };
+const USER: AuthUser = { id: 'user-1', email: 'user@example.com', name: 'User', picture: null };
 const NOW = new Date('2026-11-17T10:00:00Z');
 const DAY_MS = 24 * 60 * 60 * 1000;
 const SECURE_OPTIONS = { httpOnly: true, secure: true, sameSite: 'lax', path: '/' };

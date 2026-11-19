@@ -22,6 +22,7 @@ export interface GoogleProfile {
   sub: string;
   email: string;
   name: string | null;
+  picture: string | null;
 }
 
 export interface CreatedSession {

@@ -1,5 +1,7 @@
 <a class="avatar" routerLink="/settings" [attr.aria-label]="label()" [attr.title]="label()">
-  @if (initial(); as initial) {
+  @if (picture(); as picture) {
+    <img class="avatar__picture" alt="" referrerpolicy="no-referrer" [src]="picture" (error)="onPictureError(picture)" />
+  } @else if (initial(); as initial) {
     <span aria-hidden="true">{{ initial }}</span>
   } @else {
     <mat-icon aria-hidden="true">person</mat-icon>
