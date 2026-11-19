@@ -11,7 +11,7 @@
     color-mix(in srgb, var(--mat-sys-primary) 15%, transparent),
     color-mix(in srgb, var(--mat-sys-primary-container) 60%, transparent)
   );
-  box-shadow: 0 0.0625rem 0.1875rem color-mix(in srgb, var(--mat-sys-on-surface) 6%, transparent);
+  box-shadow: 0 0.0625rem 0.1875rem color-mix(in srgb, var(--mat-sys-shadow) 6%, transparent);
   color: var(--mat-sys-primary);
   font-size: 1rem;
   font-weight: 700;
@@ -25,7 +25,7 @@
   }
 
   &:hover {
-    box-shadow: 0 0.25rem 0.75rem color-mix(in srgb, var(--mat-sys-primary) 20%, transparent);
+    box-shadow: 0 0.25rem 0.75rem color-mix(in srgb, var(--app-shadow-tint) 20%, transparent);
   }
 
   &:focus-visible {

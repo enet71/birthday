@@ -1,6 +1,7 @@
 import { CALENDAR_ADD_BIRTHDAY_QUERY_PARAM } from '@birthday/web-birthdays-util';
 import { AppLayoutConfig } from '@birthday/web-layout-util';
 import { AppLocale } from '@birthday/web-shared-i18n';
+import { AppTheme, AppThemePreference } from './app.interfaces';
 
 export const APP_SITE_URL = 'https://birthdly.com';
 
@@ -67,4 +68,15 @@ export const APP_LAYOUT: AppLayoutConfig = {
       { label: 'footer.terms', path: '/terms' },
     ],
   },
+};
+
+// Also used by the inline script in `index.html`.
+export const APP_DARK_SCHEME_QUERY = '(prefers-color-scheme: dark)';
+
+export const APP_THEME_PREFERENCES: readonly AppThemePreference[] = ['system', 'light', 'dark'];
+
+// Browser UI color per theme: the canvas color. The inline script in `index.html` repeats these values.
+export const APP_THEME_COLORS: Record<AppTheme, string> = {
+  light: '#fdf8ff',
+  dark: '#0c0e1b',
 };

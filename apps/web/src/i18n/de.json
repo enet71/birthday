@@ -6,6 +6,13 @@
     "language": {
       "title": "Sprache",
       "label": "Sprache der Website"
+    },
+    "theme": {
+      "title": "Design",
+      "label": "Erscheinungsbild",
+      "system": "System",
+      "light": "Hell",
+      "dark": "Dunkel"
     }
   },
   "app": {
@@ -549,5 +556,9 @@
     "related": "Verwandte Anleitungen",
     "aboutAndFaq": "Über Birthdly und häufige Fragen",
     "lastUpdated": "Zuletzt aktualisiert: {{ date }}"
+  },
+  "theme": {
+    "switchToDark": "Zum dunklen Design wechseln",
+    "switchToLight": "Zum hellen Design wechseln"
   }
 }

@@ -55,7 +55,7 @@
   overflow: hidden;
   border-radius: 2rem;
   background: linear-gradient(135deg, var(--mat-sys-primary), color-mix(in srgb, var(--mat-sys-tertiary) 80%, var(--mat-sys-primary)));
-  box-shadow: 0 1.5rem 3rem color-mix(in srgb, var(--mat-sys-primary) 30%, transparent);
+  box-shadow: 0 1.5rem 3rem color-mix(in srgb, var(--app-shadow-tint) 30%, transparent);
   color: var(--mat-sys-on-primary);
 
   &__label {

@@ -1,0 +1,18 @@
+.icon {
+  width: 1.125rem;
+  height: 1.125rem;
+  margin-right: 0.25rem;
+  font-size: 1.125rem;
+  vertical-align: middle;
+}
+
+// Three labelled options do not fit next to each other on a phone; the icons stay, with the label as their name.
+@media (max-width: 30rem) {
+  .icon {
+    margin-right: 0;
+  }
+
+  .label {
+    display: none;
+  }
+}

@@ -1,0 +1,19 @@
+<ui-settings-section [heading]="'settings.theme.title' | transloco" icon="palette">
+  <ui-settings-row icon="dark_mode" [label]="'settings.theme.label' | transloco">
+    <mat-button-toggle-group
+      uiSettingsRowAction
+      hideSingleSelectionIndicator
+      [aria-label]="'settings.theme.label' | transloco"
+      [value]="preference()"
+      (change)="changePreference($event.value)"
+    >
+      @for (option of preferences; track option) {
+        @let optionLabel = 'settings.theme.' + option | transloco;
+        <mat-button-toggle [value]="option" [aria-label]="optionLabel" [attr.title]="optionLabel">
+          <mat-icon class="icon" aria-hidden="true">{{ icons[option] }}</mat-icon>
+          <span class="label">{{ optionLabel }}</span>
+        </mat-button-toggle>
+      }
+    </mat-button-toggle-group>
+  </ui-settings-row>
+</ui-settings-section>

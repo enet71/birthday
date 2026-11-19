@@ -70,11 +70,11 @@
   gap: 1rem;
   width: 18rem;
   padding: 0 1.5rem 1.5rem;
-  border-right: 0.0625rem solid color-mix(in srgb, var(--mat-sys-surface-container-lowest) 55%, transparent);
-  background: color-mix(in srgb, var(--mat-sys-surface-container-lowest) 42%, transparent);
+  border-right: 0.0625rem solid var(--app-glass-edge);
+  background: var(--app-glass);
   box-shadow:
-    0.25rem 0 1.875rem color-mix(in srgb, var(--mat-sys-primary) 4%, transparent),
-    0.0625rem 0 0 color-mix(in srgb, var(--mat-sys-primary) 6%, transparent);
+    0.25rem 0 1.875rem color-mix(in srgb, var(--app-shadow-tint) 4%, transparent),
+    0.0625rem 0 0 color-mix(in srgb, var(--app-shadow-tint) 6%, transparent);
   backdrop-filter: blur(1.75rem) saturate(180%);
 }
 
@@ -130,7 +130,7 @@
   padding: 0;
   border: 0.0625rem solid color-mix(in srgb, var(--mat-sys-outline-variant) 60%, transparent);
   background: var(--mat-sys-surface-container-lowest);
-  box-shadow: 0 0.125rem 0.5rem color-mix(in srgb, var(--mat-sys-primary) 12%, transparent);
+  box-shadow: 0 0.125rem 0.5rem color-mix(in srgb, var(--app-shadow-tint) 12%, transparent);
   transform: translateY(-50%);
   transition:
     color 150ms ease,
@@ -144,7 +144,7 @@
 
   &:hover {
     color: var(--mat-sys-primary);
-    box-shadow: 0 0.25rem 0.75rem color-mix(in srgb, var(--mat-sys-primary) 20%, transparent);
+    box-shadow: 0 0.25rem 0.75rem color-mix(in srgb, var(--app-shadow-tint) 20%, transparent);
   }
 }
 

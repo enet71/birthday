@@ -9,7 +9,9 @@
   border: 0.0625rem solid color-mix(in srgb, var(--birthday-chip-tone) 18%, transparent);
   border-radius: 0.75rem;
   background: color-mix(in srgb, var(--birthday-chip-tone-container) 75%, transparent);
-  box-shadow: 0 0.0625rem 0.1875rem color-mix(in srgb, var(--birthday-chip-tone) 8%, transparent);
+  // The tone is a light ink in the dark theme, so the shadow there is plain.
+  box-shadow: 0 0.0625rem 0.1875rem
+    light-dark(color-mix(in srgb, var(--birthday-chip-tone) 8%, transparent), color-mix(in srgb, var(--mat-sys-shadow) 8%, transparent));
   color: var(--birthday-chip-tone);
   font-size: 0.75rem;
   font-weight: 700;

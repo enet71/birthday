@@ -1,4 +1,4 @@
-import { ApplicationConfig, isDevMode, provideBrowserGlobalErrorListeners } from '@angular/core';
+import { ApplicationConfig, inject, isDevMode, provideAppInitializer, provideBrowserGlobalErrorListeners } from '@angular/core';
 import { provideHttpClient, withFetch } from '@angular/common/http';
 import { MAT_ICON_DEFAULT_OPTIONS } from '@angular/material/icon';
 import { provideRouter, TitleStrategy, withAutoCleanupInjectors } from '@angular/router';
@@ -13,6 +13,7 @@ import { loadAppTranslation } from './app.i18n';
 import { appRoutes } from './app.routes';
 import { APP_LAYOUT } from './app.constants';
 import { AppPageMetaStrategy } from './app-page-meta.strategy';
+import { ThemeController } from './state';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -27,6 +28,10 @@ export const appConfig: ApplicationConfig = {
     provideServiceWorker('ngsw-worker.js', { enabled: !isDevMode(), registrationStrategy: 'registerWhenStable:5000' }),
     provideAuth(),
     provideReminders(),
+    // Applies the saved or system theme and keeps it in sync while the app runs.
+    provideAppInitializer(() => {
+      inject(ThemeController);
+    }),
     {
       provide: MAT_ICON_DEFAULT_OPTIONS,
       useValue: { fontSet: 'material-symbols-outlined' },

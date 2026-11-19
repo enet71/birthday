@@ -1,0 +1,23 @@
+@use '@angular/material' as mat;
+
+// An outlined circle, the same size as the account button next to it.
+.toggle {
+  @include mat.icon-button-overrides(
+    (
+      state-layer-size: 2.5rem,
+      icon-color: var(--mat-sys-on-surface-variant),
+    )
+  );
+
+  border: 0.0625rem solid var(--mat-sys-outline-variant);
+  // Centres the icon inside the border: (size - border on both sides - icon) / 2.
+  padding: calc((2.5rem - 0.125rem - 1.25rem) / 2);
+
+  mat-icon {
+    width: 1.25rem;
+    height: 1.25rem;
+    font-size: 1.25rem;
+    // Without it the inline icon sits on the text baseline, below the centre.
+    vertical-align: top;
+  }
+}

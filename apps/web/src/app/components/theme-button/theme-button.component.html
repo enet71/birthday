@@ -1,0 +1,4 @@
+@let label = (theme() === 'dark' ? 'theme.switchToLight' : 'theme.switchToDark') | transloco;
+<button matIconButton type="button" class="toggle" [attr.aria-label]="label" [attr.title]="label" (click)="toggle()">
+  <mat-icon aria-hidden="true">{{ theme() === 'dark' ? 'light_mode' : 'dark_mode' }}</mat-icon>
+</button>

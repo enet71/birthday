@@ -6,6 +6,13 @@
     "language": {
       "title": "Language",
       "label": "Site language"
+    },
+    "theme": {
+      "title": "Theme",
+      "label": "Appearance",
+      "system": "System",
+      "light": "Light",
+      "dark": "Dark"
     }
   },
   "app": {
@@ -549,5 +556,9 @@
     "related": "Related guides",
     "aboutAndFaq": "About Birthdly and FAQ",
     "lastUpdated": "Last updated {{ date }}"
+  },
+  "theme": {
+    "switchToDark": "Switch to dark theme",
+    "switchToLight": "Switch to light theme"
   }
 }

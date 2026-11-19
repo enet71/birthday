@@ -1,31 +1,83 @@
 @use '@angular/material' as mat;
 @use 'theme-colors';
 
+// Follows the system theme; `data-theme` (set from the user's choice before the first paint) pins one.
 html {
-  color-scheme: light;
+  color-scheme: light dark;
+
+  &[data-theme='light'] {
+    color-scheme: light;
+  }
+
+  &[data-theme='dark'] {
+    color-scheme: dark;
+  }
 
   @include mat.theme(
     (
       color: (
         primary: theme-colors.$primary-palette,
         tertiary: theme-colors.$tertiary-palette,
+        // Emits every system color as `light-dark()`, so `color-scheme` picks the theme.
+        theme-type: color-scheme,
       ),
       typography: 'Manrope',
       density: 0,
     )
   );
 
+  // Cards and sheets use `surface-container-lowest` as plain white; in the dark theme they sit slightly above the canvas
+  // (a cool slate that matches the navy canvas) instead of sinking below it.
+  @include mat.theme-overrides(
+    (
+      surface-container-lowest: light-dark(#ffffff, #1a1d2c),
+    )
+  );
+
+  // The page canvas: cool porcelain with sky and lavender glows in the light theme; a near-black navy with faint indigo
+  // glows in the dark one.
+  --app-canvas-from: light-dark(color-mix(in srgb, var(--app-tone-sky) 30%, var(--mat-sys-surface)), #0c0e1b);
+  --app-canvas-to: light-dark(color-mix(in srgb, var(--app-tone-sky) 40%, var(--mat-sys-surface)), #0a0c17);
+  --app-canvas-glow-top: light-dark(
+    color-mix(in srgb, var(--app-tone-sky) 70%, transparent),
+    color-mix(in srgb, var(--mat-sys-primary) 6%, transparent)
+  );
+  --app-canvas-glow-start: light-dark(
+    color-mix(in srgb, var(--mat-sys-primary-container) 60%, transparent),
+    color-mix(in srgb, var(--mat-sys-primary-container) 18%, transparent)
+  );
+  --app-canvas-glow-end: light-dark(
+    color-mix(in srgb, var(--app-tone-sky) 60%, transparent),
+    color-mix(in srgb, var(--mat-sys-primary) 5%, transparent)
+  );
+
+  // Frosted glass panels: a white veil with a bright edge in the light theme; in the dark theme a deep navy veil, darker
+  // than the canvas, with a faint light edge.
+  --app-glass: light-dark(color-mix(in srgb, var(--mat-sys-surface-container-lowest) 42%, transparent), color-mix(in srgb, #070912 70%, transparent));
+  --app-glass-edge: light-dark(
+    color-mix(in srgb, var(--mat-sys-surface-container-lowest) 55%, transparent),
+    color-mix(in srgb, var(--mat-sys-on-surface) 6%, transparent)
+  );
+
+  // The solid accent of filled buttons, the selected toggle and the today badge. In the dark theme Material's light
+  // lavender primary looks washed out, so the accent is the saturated brand indigo with white text.
+  --app-accent: light-dark(var(--mat-sys-primary), #5e5ce6);
+  --app-on-accent: light-dark(var(--mat-sys-on-primary), #ffffff);
+
+  // Shadows: tinted with the primary color in the light theme; plain in the dark one, where a light tint glows.
+  --app-shadow-tint: light-dark(var(--mat-sys-primary), var(--mat-sys-shadow));
+
   // Pastel tones that tell people apart in chips and avatars: a soft fill and a readable ink.
-  --app-tone-violet: #ebe7fb;
-  --app-tone-violet-ink: #5a50a0;
-  --app-tone-rose: #fbe4ec;
-  --app-tone-rose-ink: #9a4c68;
-  --app-tone-sky: #e0ecfa;
-  --app-tone-sky-ink: #3e6896;
-  --app-tone-peach: #fce8d9;
-  --app-tone-peach-ink: #96592f;
-  --app-tone-mint: #ddf2e5;
-  --app-tone-mint-ink: #3b7657;
+  --app-tone-violet: light-dark(#ebe7fb, #2e2a4f);
+  --app-tone-violet-ink: light-dark(#5a50a0, #c8c0ff);
+  --app-tone-rose: light-dark(#fbe4ec, #472739);
+  --app-tone-rose-ink: light-dark(#9a4c68, #f4b4cb);
+  --app-tone-sky: light-dark(#e0ecfa, #1d2d48);
+  --app-tone-sky-ink: light-dark(#3e6896, #a9cbf2);
+  --app-tone-peach: light-dark(#fce8d9, #45301f);
+  --app-tone-peach-ink: light-dark(#96592f, #f2c29d);
+  --app-tone-mint: light-dark(#ddf2e5, #1c3a2b);
+  --app-tone-mint-ink: light-dark(#3b7657, #9edcb8);
 
   // Pill-shaped buttons to match the rounded cards and chips.
   @include mat.button-overrides(
@@ -35,6 +87,8 @@ html {
       tonal-container-shape: 999rem,
       text-container-shape: 999rem,
       outlined-outline-color: var(--mat-sys-outline-variant),
+      filled-container-color: var(--app-accent),
+      filled-label-text-color: var(--app-on-accent),
     )
   );
   @include mat.button-toggle-overrides(

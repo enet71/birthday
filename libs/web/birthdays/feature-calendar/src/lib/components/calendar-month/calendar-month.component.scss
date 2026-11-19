@@ -96,9 +96,9 @@
   &__today {
     padding: 0.125rem 0.5rem;
     border-radius: 999rem;
-    background: var(--mat-sys-primary);
-    box-shadow: 0 0.0625rem 0.1875rem color-mix(in srgb, var(--mat-sys-primary) 30%, transparent);
-    color: var(--mat-sys-on-primary);
+    background: var(--app-accent);
+    box-shadow: 0 0.0625rem 0.1875rem color-mix(in srgb, var(--app-shadow-tint) 30%, transparent);
+    color: var(--app-on-accent);
     font-size: 0.625rem;
     font-weight: 700;
     line-height: 0.875rem;
@@ -173,7 +173,7 @@
   &_birthday {
     border-color: color-mix(in srgb, var(--mat-sys-surface-container-lowest) 25%, transparent);
     background: color-mix(in srgb, var(--mat-sys-surface-container-lowest) 45%, transparent);
-    box-shadow: 0 0.5rem 1.5rem color-mix(in srgb, var(--mat-sys-primary) 5%, transparent);
+    box-shadow: 0 0.5rem 1.5rem color-mix(in srgb, var(--app-shadow-tint) 5%, transparent);
     backdrop-filter: blur(1rem);
 
     .day__number {
@@ -183,7 +183,7 @@
 
     &:hover {
       background: color-mix(in srgb, var(--mat-sys-surface-container-lowest) 60%, transparent);
-      box-shadow: 0 0.75rem 2rem color-mix(in srgb, var(--mat-sys-primary) 9%, transparent);
+      box-shadow: 0 0.75rem 2rem color-mix(in srgb, var(--app-shadow-tint) 9%, transparent);
     }
   }
 
@@ -193,9 +193,9 @@
 
   &_today,
   &_today:hover {
-    border: 0.125rem solid color-mix(in srgb, var(--mat-sys-primary) 50%, transparent);
-    background: color-mix(in srgb, var(--mat-sys-primary) 8%, transparent);
-    box-shadow: 0 0.25rem 1.25rem color-mix(in srgb, var(--mat-sys-primary) 20%, transparent);
+    border: 0.125rem solid color-mix(in srgb, var(--app-accent) 50%, transparent);
+    background: color-mix(in srgb, var(--app-accent) 8%, transparent);
+    box-shadow: 0 0.25rem 1.25rem color-mix(in srgb, var(--app-shadow-tint) 20%, transparent);
     backdrop-filter: blur(0.75rem);
 
     .day__number {
@@ -269,8 +269,8 @@
       backdrop-filter: none;
 
       .day__number {
-        background: var(--mat-sys-primary);
-        color: var(--mat-sys-on-primary);
+        background: var(--app-accent);
+        color: var(--app-on-accent);
       }
     }
   }

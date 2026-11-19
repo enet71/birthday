@@ -100,8 +100,8 @@
       divider-color: transparent,
       background-color: transparent,
       text-color: var(--mat-sys-outline),
-      selected-state-background-color: var(--mat-sys-primary),
-      selected-state-text-color: var(--mat-sys-on-primary),
+      selected-state-background-color: var(--app-accent),
+      selected-state-text-color: var(--app-on-accent),
       label-text-size: 0.75rem,
       label-text-weight: 700,
     )
@@ -114,7 +114,7 @@
   border-radius: 0.5rem;
 
   &.mat-button-toggle-checked {
-    box-shadow: 0 0.125rem 0.5rem color-mix(in srgb, var(--mat-sys-primary) 35%, transparent);
+    box-shadow: 0 0.125rem 0.5rem color-mix(in srgb, var(--app-shadow-tint) 35%, transparent);
   }
 }
 

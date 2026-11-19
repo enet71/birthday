@@ -73,12 +73,12 @@
   }
 
   &_today {
-    background: var(--mat-sys-primary);
-    color: var(--mat-sys-on-primary);
+    background: var(--app-accent);
+    color: var(--app-on-accent);
     font-weight: 700;
 
     &:hover {
-      background: var(--mat-sys-primary);
+      background: var(--app-accent);
     }
   }
 

@@ -6,6 +6,13 @@
     "language": {
       "title": "Мова",
       "label": "Мова сайту"
+    },
+    "theme": {
+      "title": "Тема",
+      "label": "Оформлення",
+      "system": "Системна",
+      "light": "Світла",
+      "dark": "Темна"
     }
   },
   "app": {
@@ -563,5 +570,9 @@
     "related": "Схожі посібники",
     "aboutAndFaq": "Про Birthdly і часті запитання",
     "lastUpdated": "Оновлено {{ date }}"
+  },
+  "theme": {
+    "switchToDark": "Увімкнути темну тему",
+    "switchToLight": "Увімкнути світлу тему"
   }
 }

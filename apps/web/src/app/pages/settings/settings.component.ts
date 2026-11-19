@@ -5,10 +5,11 @@ import { GoogleCalendarSectionComponent } from '@birthday/web-google-calendar-fe
 import { ReminderSectionComponent } from '@birthday/web-reminders-feature-settings';
 import { injectState, ReadonlyState } from '@birthday/web-shared-data-access';
 import { LanguageSectionComponent } from '../../components/language-section';
+import { ThemeSectionComponent } from '../../components/theme-section';
 
 @Component({
   selector: 'app-settings',
-  imports: [AccountSectionComponent, GoogleCalendarSectionComponent, LanguageSectionComponent, ReminderSectionComponent],
+  imports: [AccountSectionComponent, GoogleCalendarSectionComponent, LanguageSectionComponent, ReminderSectionComponent, ThemeSectionComponent],
   templateUrl: './settings.component.html',
   styleUrl: './settings.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

@@ -10,6 +10,18 @@
       content="See whose birthday is this month and what's coming up next. A birthday calendar with reminders for friends and family, so you never miss a celebration."
     />
     <meta name="theme-color" content="#fdf8ff" />
+    <!-- Applies the saved or system theme before the first paint; ThemeController keeps it in sync afterwards. -->
+    <script>
+      try {
+        var theme = localStorage.getItem('theme');
+        if (theme === 'light' || theme === 'dark') {
+          document.documentElement.setAttribute('data-theme', theme);
+        }
+        if (theme === 'dark' || (theme !== 'light' && matchMedia('(prefers-color-scheme: dark)').matches)) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0c0e1b');
+        }
+      } catch (e) {}
+    </script>
     <link rel="icon" type="image/x-icon" href="favicon.ico" />
     <link rel="icon" type="image/svg+xml" href="logo-small.svg" />
     <link rel="apple-touch-icon" href="apple-touch-icon.png" />
