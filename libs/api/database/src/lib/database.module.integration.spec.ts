@@ -25,9 +25,13 @@ interface SnapshotIndex {
 }
 
 interface SnapshotTable {
+  columns: Record<string, { default?: unknown }>;
   checkConstraints: Record<string, unknown>;
   indexes: Record<string, SnapshotIndex>;
 }
+
+// `drizzle-kit pull` 0.31 reads an empty array default as an array of one empty string.
+const PULLED_EMPTY_ARRAY_DEFAULT = `'{""}'`;
 
 const CONTAINER_TIMEOUT_MS = 120_000;
 const MIGRATIONS_FOLDER = join(import.meta.dirname, '../../migrations');
@@ -114,7 +118,8 @@ describe('DatabaseModule with a real Postgres', () => {
 
   // `pushSchema` from `drizzle-kit/api` 0.31 drops query parameters and fails on the composite primary key of
   // `notification_deliveries`, so the database is introspected with `drizzle-kit pull` instead. Postgres rewrites
-  // check expressions and index predicates, so those are compared by name and shape and everything else exactly.
+  // check expressions and index predicates, so those are compared by name and shape and everything else exactly. It also
+  // misreads empty array defaults, which are compared after its reading is corrected.
   it('leaves no difference between the Drizzle schema and the migrated database', async () => {
     await bootstrapDatabase();
     const declared = generateDrizzleJson(schema);
@@ -131,6 +136,12 @@ describe('DatabaseModule with a real Postgres', () => {
 
       liveTable.checkConstraints = declaredTable.checkConstraints;
       liveTable.indexes = declaredTable.indexes;
+
+      for (const column of Object.values(liveTable.columns)) {
+        if (column.default === PULLED_EMPTY_ARRAY_DEFAULT) {
+          column.default = `'{}'`;
+        }
+      }
     }
 
     expect(await generateMigration(live, declared)).toEqual([]);

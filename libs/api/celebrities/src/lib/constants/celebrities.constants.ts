@@ -2,7 +2,12 @@ import { APP_LOCALES, AppLocale, CelebrityOccupation } from '@birthday/shared-mo
 import { CelebritySegment } from '../types';
 
 // The people the import covers: one segment per country and field. A new entry is imported after the next deployment.
-export const CELEBRITY_SEGMENTS: readonly CelebritySegment[] = [{ key: 'US-film', countryItem: 'Q30', country: 'US', occupation: 'film' }];
+export const CELEBRITY_SEGMENTS: readonly CelebritySegment[] = [
+  { key: 'US-film', countryItem: 'Q30', country: 'US', occupation: 'film' },
+  { key: 'US-music', countryItem: 'Q30', country: 'US', occupation: 'music' },
+  { key: 'UA-film', countryItem: 'Q212', country: 'UA', occupation: 'film' },
+  { key: 'UA-music', countryItem: 'Q212', country: 'UA', occupation: 'music' },
+];
 
 // Wikidata occupations (P106) of every field. An occupation listed here belongs to its field directly.
 export const CELEBRITY_OCCUPATION_ITEMS: Record<CelebrityOccupation, readonly string[]> = {

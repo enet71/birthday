@@ -50,6 +50,13 @@
       "when": 1795115742379,
       "tag": "0006_celebrities",
       "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1795169860535,
+      "tag": "0007_celebrity-segments",
+      "breakpoints": true
     }
   ]
 }

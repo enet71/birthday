@@ -21,6 +21,8 @@ export const celebrities = pgTable(
     occupation: text('occupation'),
     // ISO 3166-1 alpha-2 codes of every citizenship.
     countries: text('countries').array().notNull(),
+    // Keys of the segments whose query found the person (`US-film`, ...); the person is removed when none does.
+    segments: text('segments').array().notNull().default([]),
     names: jsonb('names').$type<CelebrityTexts>().notNull().default({}),
     // Wikipedia article titles per language code.
     wikipediaTitles: jsonb('wikipedia_titles').$type<CelebrityTexts>().notNull().default({}),

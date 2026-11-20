@@ -18,7 +18,9 @@ for example `US-film`); a new one is imported after the next deployment.
 
 1. **Segment job.** One SPARQL query to QLever (the Wikidata Query Service when QLever fails) finds everyone of the
    country with an occupation of the field, a day-precise birth date and at least `CELEBRITY_MIN_SITELINKS` sitelinks.
-   People the query no longer finds are removed from the segment.
+   Each person keeps the keys of the segments that found them (`segments`); a segment that no longer finds a person
+   takes its key off, and the person is removed once no key is left. A person found by one field may be shown in
+   another, because the field comes from the details (step 2).
 2. **Details jobs**, 50 people each, one at a time: names, Wikipedia titles, death date, and the person's field. The
    field is that of the first occupation in Wikidata's order that has one: listed in `CELEBRITY_OCCUPATION_ITEMS`, or a
    subclass of one of `CELEBRITY_OCCUPATION_ROOTS`. People whose field puts them outside every segment are removed.

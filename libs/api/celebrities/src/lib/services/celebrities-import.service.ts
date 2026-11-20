@@ -69,6 +69,7 @@ export class CelebritiesImportService {
           birthDay: Number(candidate.birthDate.slice(8, 10)),
           countries: candidate.countries,
           sitelinks: candidate.sitelinks,
+          segments: [segment.key],
         }));
 
         await this.db
@@ -82,6 +83,8 @@ export class CelebritiesImportService {
               birthDay: sql`excluded.birth_day`,
               countries: sql`excluded.countries`,
               sitelinks: sql`excluded.sitelinks`,
+              // In one statement, so that segments imported at the same time do not overwrite each other's key.
+              segments: sql`case when ${segment.key} = any(${celebrities.segments}) then ${celebrities.segments} else array_append(${celebrities.segments}, ${segment.key}) end`,
             },
           });
       }
@@ -146,17 +149,24 @@ export class CelebritiesImportService {
     return kept;
   }
 
-  // Removes the segment's people the query no longer finds: their sitelinks, citizenship, birth date or occupation changed,
-  // or the item was deleted. Other segments' people stay.
+  // Takes the segment off the people its query no longer finds: their sitelinks, citizenship, birth date or occupation
+  // changed, or the item was deleted. A person is removed once no segment finds them; the segments are matched by the
+  // query's occupations, not by the field the details assign, so a person may be found by one field and shown in another.
   private async removeLeftSegment(segment: CelebritySegment, candidateIds: ReadonlySet<string>): Promise<void> {
     const rows = await this.db
       .select({ id: celebrities.id })
       .from(celebrities)
-      .where(and(eq(celebrities.occupation, segment.occupation), arrayContains(celebrities.countries, [segment.country])));
+      .where(arrayContains(celebrities.segments, [segment.key]));
     const left: string[] = rows.map(({ id }) => id).filter((id: string) => !candidateIds.has(id));
 
     for (let index = 0; index < left.length; index += ROWS_PER_INSERT) {
-      await this.db.delete(celebrities).where(inArray(celebrities.id, left.slice(index, index + ROWS_PER_INSERT)));
+      const ids: string[] = left.slice(index, index + ROWS_PER_INSERT);
+
+      await this.db
+        .update(celebrities)
+        .set({ segments: sql`array_remove(${celebrities.segments}, ${segment.key})` })
+        .where(inArray(celebrities.id, ids));
+      await this.db.delete(celebrities).where(and(inArray(celebrities.id, ids), eq(sql`cardinality(${celebrities.segments})`, 0)));
     }
   }
 

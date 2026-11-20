@@ -68,6 +68,15 @@ Add new entries under the category that best matches their purpose, keeping newe
 
 ### Workflow and Tooling
 
+## 2026-11-20 - Do not run e2e tests for now
+
+- Type: preference
+- Context: Running `nx run api-e2e:e2e` locally to verify a migration change closed the developer's IDE.
+- Preferred behavior: Do not run any e2e target (`api-e2e`, `web-e2e`, `-t e2e`) locally until the developer lifts this. Run `lint`, `typecheck`, `test` and `build` only, and say in the report that e2e was not run and is left to CI.
+- Generalized rule: Skip local e2e runs; this overrides the e2e part of "Run the CI task set before handing over a backend change".
+- Trigger cues: e2e, api-e2e, web-e2e, nx affected -t e2e, verify, CI task set, migration
+- Status: active
+
 ## 2026-11-18 - Verify recovery paths against existing client state
 
 - Type: error
@@ -83,7 +92,7 @@ Add new entries under the category that best matches their purpose, keeping newe
 - Type: error
 - Context: Subtask 5 (Google Calendar through the API) added a migration and two required API env variables. Before the developer pushed, only `lint`, `typecheck` and `nx test api` were run.
 - Incorrect behavior: CI failed twice: the `api-database` integration spec hard-coded the migration count, and an unquoted all-digit env value in `ci.yml` was read by YAML as the number `0`, so the API in `api-e2e` failed env validation. The deploy was skipped.
-- Preferred behavior: Before reporting a change as ready, run what CI runs for the affected projects: `npx nx affected -t lint test build e2e` (at least `api-database` tests and `api-e2e` when the API, its env or migrations change). Quote env values in YAML that are digits or could be read as numbers or booleans.
+- Preferred behavior: Before reporting a change as ready, run what CI runs for the affected projects: `npx nx affected -t lint test build e2e` (at least `api-database` tests and `api-e2e` when the API, its env or migrations change; e2e is paused locally, see "Do not run e2e tests for now"). Quote env values in YAML that are digits or could be read as numbers or booleans.
 - Generalized rule: Verify with the same task set as CI, not a subset, before handing a change over for push.
 - Trigger cues: migration, new env variable, ci.yml, api-e2e, integration spec, ready to push, report, deploy skipped
 - Status: active
