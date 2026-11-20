@@ -5,13 +5,13 @@ import { BIRTHDAY_RELATIONSHIPS, CreateBirthdayRequest, UpdateBirthdayRequest } 
 const NAME_MAX = 200;
 const NOTES_MAX = 500;
 
-const name = z
+export const birthdayNameSchema = z
   .string()
   .transform((value: string) => value.trim())
   .refine((value: string) => value.length > 0 && [...value].length <= NAME_MAX, `Must have 1–${NAME_MAX} characters`);
 
 // `yyyy-MM-dd`; the year 0004 marks an unknown birth year, so 0004-02-29 is valid.
-const birthDate = z
+export const birthDateSchema = z
   .string()
   .regex(/^\d{4}-\d{2}-\d{2}$/, 'Must be a date in the yyyy-MM-dd format')
   .refine(isCalendarDate, 'Must be a date that exists');
@@ -25,16 +25,16 @@ const notes = z
 
 // Strict: fields the client may not set, such as the Google links, are rejected rather than ignored.
 export const createBirthdaySchema = z.strictObject({
-  name,
-  birthDate,
+  name: birthdayNameSchema,
+  birthDate: birthDateSchema,
   relationship: relationship.default(null),
   notes: notes.default(null),
 }) satisfies z.ZodType<CreateBirthdayRequest>;
 
 export const updateBirthdaySchema = z
   .strictObject({
-    name: name.optional(),
-    birthDate: birthDate.optional(),
+    name: birthdayNameSchema.optional(),
+    birthDate: birthDateSchema.optional(),
     relationship: relationship.optional(),
     notes: notes.optional(),
   })

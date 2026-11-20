@@ -43,6 +43,8 @@ const TABLES = [
   'celebrities',
   'celebrity_imports',
   'google_calendar_connections',
+  'invite_links',
+  'invite_submissions',
   'notification_deliveries',
   'notification_settings',
   'push_subscriptions',

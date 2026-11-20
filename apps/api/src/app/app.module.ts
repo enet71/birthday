@@ -5,6 +5,7 @@ import { AuthModule } from '@birthday/api-auth';
 import { BirthdaysModule } from '@birthday/api-birthdays';
 import { CelebritiesModule } from '@birthday/api-celebrities';
 import { GoogleCalendarModule } from '@birthday/api-google-calendar';
+import { InvitesModule } from '@birthday/api-invites';
 import { JobsModule } from '@birthday/api-jobs';
 import { NotificationsModule } from '@birthday/api-notifications';
 import { RemindersModule } from '@birthday/api-reminders';
@@ -81,6 +82,7 @@ import { HealthModule } from './health/health.module';
     CelebritiesModule,
     HealthModule,
     BirthdaysModule,
+    InvitesModule,
     RemindersModule,
   ],
   providers: [{ provide: APP_FILTER, useClass: ZodExceptionFilter }],
