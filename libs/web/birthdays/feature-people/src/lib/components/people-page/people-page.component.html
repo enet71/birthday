@@ -1,4 +1,5 @@
 <section class="people" [attr.aria-label]="'people.label' | transloco">
+  <ui-invite-submissions></ui-invite-submissions>
   <!-- Kept while a query or filter is set, so it stays visible and can be cleared. -->
   @if (people().length || searchQuery() || relationshipFilter() !== 'all') {
     <div class="toolbar">
@@ -45,6 +46,10 @@
           <mat-option value="none">{{ 'people.noRelationship' | transloco }}</mat-option>
         </mat-select>
       </mat-form-field>
+      <button class="toolbar__invite" matButton="tonal" type="button" (click)="openInviteDialog()">
+        <mat-icon>group_add</mat-icon>
+        {{ 'invites.invite' | transloco }}
+      </button>
     </div>
   }
   <div class="people__content" [attr.aria-busy]="isLoading()">
@@ -118,10 +123,16 @@
       <div class="empty">
         <h2 class="empty__title">{{ 'people.emptyTitle' | transloco }}</h2>
         <p class="empty__text">{{ 'people.emptyText' | transloco }}</p>
-        <a matButton="filled" routerLink="/" [queryParams]="addBirthdayQueryParams">
-          <mat-icon>add</mat-icon>
-          {{ 'calendar.addBirthday' | transloco }}
-        </a>
+        <div class="empty__actions">
+          <a matButton="filled" routerLink="/" [queryParams]="addBirthdayQueryParams">
+            <mat-icon>add</mat-icon>
+            {{ 'calendar.addBirthday' | transloco }}
+          </a>
+          <button matButton="outlined" type="button" (click)="openInviteDialog()">
+            <mat-icon>group_add</mat-icon>
+            {{ 'invites.invite' | transloco }}
+          </button>
+        </div>
       </div>
     }
   </div>

@@ -2,13 +2,14 @@ import { inject, provideEnvironmentInitializer } from '@angular/core';
 import { Route } from '@angular/router';
 import { PeoplePageComponent, PersonPageComponent } from './components';
 import { PEOPLE_PERSON_ID_PARAM } from './constants';
-import { PeopleController, PeopleState, PersonController, PersonState } from './state';
+import { provideInviteDialog } from './people.dialogs';
+import { InvitesController, InvitesState, PeopleController, PeopleState, PersonController, PersonState } from './state';
 
 export const PEOPLE_ROUTES: Route[] = [
   {
     path: '',
     component: PeoplePageComponent,
-    providers: [PeopleState, PeopleController],
+    providers: [PeopleState, PeopleController, InvitesState, InvitesController, provideInviteDialog()],
   },
   {
     path: `:${PEOPLE_PERSON_ID_PARAM}`,

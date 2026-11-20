@@ -231,6 +231,16 @@
     },
     "born": {
       "loadMoreFailed": "Weitere Personen konnten nicht geladen werden."
+    },
+    "invites": {
+      "loadFailed": "Geburtstagsanfragen konnten nicht geladen werden",
+      "saveFailed": "Der Einladungslink konnte nicht gespeichert werden",
+      "reissued": "Neuer Link erstellt. Der alte funktioniert nicht mehr",
+      "copied": "Link kopiert",
+      "copyFailed": "Der Link konnte nicht kopiert werden",
+      "approved": "Zu deinem Kalender hinzugefügt: {{ name }}",
+      "approveFailed": "Der Geburtstag konnte nicht hinzugefügt werden",
+      "rejectFailed": "Die Anfrage konnte nicht abgelehnt werden"
     }
   },
   "people": {
@@ -252,6 +262,38 @@
     "noRelationshipQueryMatches": "Keine Personen mit dieser Beziehung passen zu „{{ query }}“",
     "emptyTitle": "Noch keine Personen",
     "emptyText": "Füge im Kalender einen Geburtstag hinzu, dann erscheint hier jeder, den du hinzufügst."
+  },
+  "invites": {
+    "invite": "Einladen",
+    "shareTitle": "Trag deinen Geburtstag in meinen Kalender ein",
+    "dialog": {
+      "title": "Leute einladen",
+      "subtitle": "Teile einen Link, damit alle ihren Geburtstag selbst eintragen",
+      "signInText": "Melde dich an, um einen Link zu bekommen. Alle, die ihn öffnen, schicken dir ihren Geburtstag, und du entscheidest, welche du hinzufügst.",
+      "loading": "Link wird geladen",
+      "loadFailed": "Dein Einladungslink konnte nicht geladen werden",
+      "link": "Einladungslink",
+      "copy": "Link kopieren",
+      "share": "Teilen",
+      "createText": "Erstelle einen Link und schick ihn in einen Chat. Alle, die ihn öffnen, schicken dir ihren Geburtstag, und du entscheidest, welche du hinzufügst.",
+      "displayName": "Dein Name",
+      "displayNameHint": "Wird auf der Einladungsseite angezeigt",
+      "create": "Link erstellen",
+      "enabled": "Geburtstage über den Link annehmen",
+      "enabledHint": "Alle mit dem Link können dir ihren Geburtstag schicken",
+      "disabledHint": "Der Link ist deaktiviert: Wer ihn öffnet, kann nichts senden",
+      "reissue": "Neuen Link erstellen",
+      "reissueHint": "Der aktuelle Link funktioniert dann nicht mehr"
+    },
+    "errors": {
+      "nameRequired": "Gib deinen Namen ein",
+      "nameTooLong": "Der Name darf höchstens {{ max }} Zeichen haben"
+    },
+    "submissions": {
+      "title": "Geburtstagsanfragen",
+      "approve": "Hinzufügen",
+      "reject": "Ablehnen"
+    }
   },
   "person": {
     "label": "Personendetails",

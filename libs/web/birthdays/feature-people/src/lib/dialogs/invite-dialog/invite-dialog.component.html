@@ -1,0 +1,79 @@
+<ui-dialog-header class="header">
+  <div class="heading" dialog-header="title">
+    <h2 class="heading__title" mat-dialog-title>{{ 'invites.dialog.title' | transloco }}</h2>
+    <p class="heading__subtitle">{{ 'invites.dialog.subtitle' | transloco }}</p>
+  </div>
+  <!-- `mat-dialog-close` sets `aria-label` from its own input, which overrides an `attr.aria-label` binding. -->
+  <button matIconButton type="button" [aria-label]="'common.close' | transloco" dialog-header="buttons" mat-dialog-close>
+    <mat-icon>close</mat-icon>
+  </button>
+</ui-dialog-header>
+<mat-dialog-content class="content">
+  @if (!isAuthenticated()) {
+    <p class="text">{{ 'invites.dialog.signInText' | transloco }}</p>
+    <button class="sign-in" matButton="outlined" type="button" disabledInteractive [disabled]="isSigningIn()" (click)="signInWithGoogle()">
+      <img class="google-logo" src="/assets/images/google-logo.svg" alt="" width="18" height="18" />
+      {{ 'account.signIn' | transloco }}
+    </button>
+  } @else if (isLinkLoading() && !link()) {
+    <div class="loader">
+      <mat-progress-spinner mode="indeterminate" diameter="32" [attr.aria-label]="'invites.dialog.loading' | transloco"></mat-progress-spinner>
+    </div>
+  } @else if (hasLinkLoadFailed()) {
+    <p class="text">{{ 'invites.dialog.loadFailed' | transloco }}</p>
+    <button class="retry" matButton="outlined" type="button" (click)="reloadLink()">{{ 'common.tryAgain' | transloco }}</button>
+  } @else {
+    @if (inviteUrl(); as url) {
+      <mat-form-field appearance="outline" subscriptSizing="dynamic">
+        <mat-label>{{ 'invites.dialog.link' | transloco }}</mat-label>
+        <mat-icon matPrefix>link</mat-icon>
+        <input matInput readonly [value]="url" />
+        <button matSuffix matIconButton type="button" [attr.aria-label]="'invites.dialog.copy' | transloco" (click)="copyLink()">
+          <mat-icon>content_copy</mat-icon>
+        </button>
+      </mat-form-field>
+      @if (canShare) {
+        <button class="share" matButton="filled" type="button" [disabled]="!link()?.enabled" (click)="shareLink()">
+          <mat-icon>share</mat-icon>
+          {{ 'invites.dialog.share' | transloco }}
+        </button>
+      }
+    } @else {
+      <p class="text">{{ 'invites.dialog.createText' | transloco }}</p>
+    }
+
+    <form class="name" novalidate (submit)="saveDisplayName($event)">
+      <mat-form-field class="name__field" appearance="outline">
+        <mat-label>{{ 'invites.dialog.displayName' | transloco }}</mat-label>
+        <mat-icon matPrefix>person</mat-icon>
+        <input matInput autocomplete="name" [formField]="linkForm.displayName" />
+        <mat-hint>{{ 'invites.dialog.displayNameHint' | transloco }}</mat-hint>
+        @for (error of linkForm.displayName().errors(); track error.kind) {
+          <mat-error>{{ error.message ?? '' | transloco: { max: displayNameMaxLength } }}</mat-error>
+        }
+      </mat-form-field>
+      @if (!link()) {
+        <button matButton="filled" type="submit" disabledInteractive [disabled]="isSavingLink()">
+          <mat-icon>add_link</mat-icon>
+          {{ 'invites.dialog.create' | transloco }}
+        </button>
+      } @else if (isNameChanged()) {
+        <button matButton="tonal" type="submit" disabledInteractive [disabled]="isSavingLink()">{{ 'common.save' | transloco }}</button>
+      }
+    </form>
+
+    @if (link(); as savedLink) {
+      <mat-slide-toggle [checked]="savedLink.enabled" [disabled]="isSavingLink()" (change)="setLinkEnabled($event)">
+        {{ 'invites.dialog.enabled' | transloco }}
+      </mat-slide-toggle>
+      <p class="hint">{{ (savedLink.enabled ? 'invites.dialog.enabledHint' : 'invites.dialog.disabledHint') | transloco }}</p>
+      <div class="reissue">
+        <button matButton type="button" disabledInteractive [disabled]="isSavingLink()" (click)="reissueLink()">
+          <mat-icon>autorenew</mat-icon>
+          {{ 'invites.dialog.reissue' | transloco }}
+        </button>
+        <p class="hint">{{ 'invites.dialog.reissueHint' | transloco }}</p>
+      </div>
+    }
+  }
+</mat-dialog-content>

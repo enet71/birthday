@@ -231,6 +231,16 @@
     },
     "born": {
       "loadMoreFailed": "Couldn't load more people."
+    },
+    "invites": {
+      "loadFailed": "Couldn't load birthday requests",
+      "saveFailed": "Couldn't save the invite link",
+      "reissued": "New link created. The old one no longer works",
+      "copied": "Link copied",
+      "copyFailed": "Couldn't copy the link",
+      "approved": "Added to your calendar: {{ name }}",
+      "approveFailed": "Couldn't add the birthday",
+      "rejectFailed": "Couldn't reject the request"
     }
   },
   "people": {
@@ -252,6 +262,38 @@
     "noRelationshipQueryMatches": "No people with this relationship match \"{{ query }}\"",
     "emptyTitle": "No people yet",
     "emptyText": "Add a birthday in the calendar, and everyone you add shows up here."
+  },
+  "invites": {
+    "invite": "Invite",
+    "shareTitle": "Add your birthday to my calendar",
+    "dialog": {
+      "title": "Invite people",
+      "subtitle": "Share a link so people add their own birthdays",
+      "signInText": "Sign in to get a link. People who open it send you their birthdays, and you choose which ones to add.",
+      "loading": "Loading the link",
+      "loadFailed": "Couldn't load your invite link",
+      "link": "Invite link",
+      "copy": "Copy link",
+      "share": "Share",
+      "createText": "Create a link and send it to a chat. People who open it send you their birthdays, and you choose which ones to add.",
+      "displayName": "Your name",
+      "displayNameHint": "People see it on the invite page",
+      "create": "Create link",
+      "enabled": "Accept birthdays through the link",
+      "enabledHint": "Anyone with the link can send you their birthday",
+      "disabledHint": "The link is off: people who open it can't send anything",
+      "reissue": "Create a new link",
+      "reissueHint": "The current link will stop working"
+    },
+    "errors": {
+      "nameRequired": "Enter your name",
+      "nameTooLong": "The name can be up to {{ max }} characters"
+    },
+    "submissions": {
+      "title": "Birthday requests",
+      "approve": "Add",
+      "reject": "Reject"
+    }
   },
   "person": {
     "label": "Person details",

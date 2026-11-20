@@ -231,6 +231,16 @@
     },
     "born": {
       "loadMoreFailed": "No se pudieron cargar más personas."
+    },
+    "invites": {
+      "loadFailed": "No se pudieron cargar las solicitudes de cumpleaños",
+      "saveFailed": "No se pudo guardar el enlace de invitación",
+      "reissued": "Enlace nuevo creado. El anterior ya no funciona",
+      "copied": "Enlace copiado",
+      "copyFailed": "No se pudo copiar el enlace",
+      "approved": "Añadido a tu calendario: {{ name }}",
+      "approveFailed": "No se pudo añadir el cumpleaños",
+      "rejectFailed": "No se pudo rechazar la solicitud"
     }
   },
   "people": {
@@ -252,6 +262,38 @@
     "noRelationshipQueryMatches": "Ninguna persona con esta relación coincide con «{{ query }}»",
     "emptyTitle": "Aún no hay personas",
     "emptyText": "Añade un cumpleaños en el calendario y todas las personas que añadas aparecerán aquí."
+  },
+  "invites": {
+    "invite": "Invitar",
+    "shareTitle": "Añade tu cumpleaños a mi calendario",
+    "dialog": {
+      "title": "Invitar a personas",
+      "subtitle": "Comparte un enlace para que cada persona añada su cumpleaños",
+      "signInText": "Inicia sesión para obtener un enlace. Quienes lo abran te enviarán su cumpleaños y tú eliges cuáles añadir.",
+      "loading": "Cargando el enlace",
+      "loadFailed": "No se pudo cargar tu enlace de invitación",
+      "link": "Enlace de invitación",
+      "copy": "Copiar enlace",
+      "share": "Compartir",
+      "createText": "Crea un enlace y envíalo a un chat. Quienes lo abran te enviarán su cumpleaños y tú eliges cuáles añadir.",
+      "displayName": "Tu nombre",
+      "displayNameHint": "Se muestra en la página de invitación",
+      "create": "Crear enlace",
+      "enabled": "Recibir cumpleaños por el enlace",
+      "enabledHint": "Cualquiera con el enlace puede enviarte su cumpleaños",
+      "disabledHint": "El enlace está desactivado: quienes lo abran no pueden enviar nada",
+      "reissue": "Crear un enlace nuevo",
+      "reissueHint": "El enlace actual dejará de funcionar"
+    },
+    "errors": {
+      "nameRequired": "Escribe tu nombre",
+      "nameTooLong": "El nombre puede tener hasta {{ max }} caracteres"
+    },
+    "submissions": {
+      "title": "Solicitudes de cumpleaños",
+      "approve": "Añadir",
+      "reject": "Rechazar"
+    }
   },
   "person": {
     "label": "Detalles de la persona",

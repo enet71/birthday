@@ -47,7 +47,8 @@
       "@birthday/api-celebrities": ["./libs/api/celebrities/src/index.ts"],
       "@birthday/web-admin-data-access": ["./libs/web/admin/data-access/src/index.ts"],
       "@birthday/web-admin-feature-imports": ["./libs/web/admin/feature-imports/src/index.ts"],
-      "@birthday/api-invites": ["./libs/api/invites/src/index.ts"]
+      "@birthday/api-invites": ["./libs/api/invites/src/index.ts"],
+      "@birthday/web-invites-data-access": ["./libs/web/invites/data-access/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

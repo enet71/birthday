@@ -231,6 +231,16 @@
     },
     "born": {
       "loadMoreFailed": "Impossible de charger plus de personnes."
+    },
+    "invites": {
+      "loadFailed": "Impossible de charger les demandes d'anniversaire",
+      "saveFailed": "Impossible d'enregistrer le lien d'invitation",
+      "reissued": "Nouveau lien créé. L'ancien ne fonctionne plus",
+      "copied": "Lien copié",
+      "copyFailed": "Impossible de copier le lien",
+      "approved": "Ajouté à votre calendrier : {{ name }}",
+      "approveFailed": "Impossible d'ajouter l'anniversaire",
+      "rejectFailed": "Impossible de refuser la demande"
     }
   },
   "people": {
@@ -252,6 +262,38 @@
     "noRelationshipQueryMatches": "Aucune personne avec cette relation ne correspond à « {{ query }} »",
     "emptyTitle": "Aucune personne pour l'instant",
     "emptyText": "Ajoutez un anniversaire dans le calendrier : chaque personne ajoutée apparaîtra ici."
+  },
+  "invites": {
+    "invite": "Inviter",
+    "shareTitle": "Ajoutez votre anniversaire à mon calendrier",
+    "dialog": {
+      "title": "Inviter des personnes",
+      "subtitle": "Partagez un lien pour que chaque personne ajoute son anniversaire",
+      "signInText": "Connectez-vous pour obtenir un lien. Les personnes qui l'ouvrent vous envoient leur anniversaire, et vous choisissez lesquels ajouter.",
+      "loading": "Chargement du lien",
+      "loadFailed": "Impossible de charger votre lien d'invitation",
+      "link": "Lien d'invitation",
+      "copy": "Copier le lien",
+      "share": "Partager",
+      "createText": "Créez un lien et envoyez-le dans une discussion. Les personnes qui l'ouvrent vous envoient leur anniversaire, et vous choisissez lesquels ajouter.",
+      "displayName": "Votre nom",
+      "displayNameHint": "Affiché sur la page d'invitation",
+      "create": "Créer le lien",
+      "enabled": "Recevoir des anniversaires via le lien",
+      "enabledHint": "Toute personne disposant du lien peut vous envoyer son anniversaire",
+      "disabledHint": "Le lien est désactivé : les personnes qui l'ouvrent ne peuvent rien envoyer",
+      "reissue": "Créer un nouveau lien",
+      "reissueHint": "Le lien actuel cessera de fonctionner"
+    },
+    "errors": {
+      "nameRequired": "Saisissez votre nom",
+      "nameTooLong": "Le nom peut contenir jusqu'à {{ max }} caractères"
+    },
+    "submissions": {
+      "title": "Demandes d'anniversaire",
+      "approve": "Ajouter",
+      "reject": "Refuser"
+    }
   },
   "person": {
     "label": "Détails de la personne",

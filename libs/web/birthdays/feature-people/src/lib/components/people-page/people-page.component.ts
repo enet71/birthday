@@ -22,7 +22,8 @@ import { CALENDAR_ADD_BIRTHDAY_QUERY_PARAM, RELATIONSHIP_OPTIONS, RelationshipOp
 import { BirthdayAvatarComponent, RelationshipDotComponent } from '@birthday/web-birthdays-ui';
 import { injectState, ReadonlyState } from '@birthday/web-shared-data-access';
 import { AppTranslateService, LocaleDatePipe } from '@birthday/web-shared-i18n';
-import { PeopleController, PeopleState } from '../../state';
+import { InvitesController, PeopleController, PeopleState } from '../../state';
+import { InviteSubmissionsComponent } from '../invite-submissions';
 import { PeopleSortColumn, PersonRow, RelationshipFilter } from '../../types';
 import { TranslocoPipe } from '@jsverse/transloco';
 
@@ -54,6 +55,7 @@ import { TranslocoPipe } from '@jsverse/transloco';
     MatTable,
     RouterLink,
     BirthdayAvatarComponent,
+    InviteSubmissionsComponent,
     RelationshipDotComponent,
   ],
   templateUrl: './people-page.component.html',
@@ -67,6 +69,7 @@ export class PeoplePageComponent {
 
   private readonly peopleState: ReadonlyState<PeopleState> = injectState(PeopleState);
   private readonly peopleController: PeopleController = inject(PeopleController);
+  private readonly invitesController: InvitesController = inject(InvitesController);
   private readonly translator: AppTranslateService = inject(AppTranslateService);
 
   protected get people(): Signal<PersonRow[]> {
@@ -107,6 +110,10 @@ export class PeoplePageComponent {
 
   protected sortPeople(sort: Sort): void {
     this.peopleController.sortPeople(sort);
+  }
+
+  protected openInviteDialog(): void {
+    this.invitesController.openInviteDialog();
   }
 
   protected getDaysUntilLabel(daysUntil: number): string {

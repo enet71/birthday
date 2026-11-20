@@ -1,4 +1,4 @@
-import { BirthdayRelationship } from '@birthday/shared-models';
+import { BirthdayRelationship, InviteSubmissionDto } from '@birthday/shared-models';
 import { Birthday } from '@birthday/web-birthdays-util';
 
 export interface PersonRow {
@@ -18,3 +18,19 @@ export type PeopleSortColumn = 'name' | 'relationship' | 'birthday' | 'nextBirth
 
 // `none` keeps only people without a relationship.
 export type RelationshipFilter = 'all' | 'none' | BirthdayRelationship;
+
+export interface InviteSubmissionRow {
+  submission: InviteSubmissionDto;
+  // Parsed in the local time zone, so it shows the sent day.
+  birthDate: Date;
+  hasBirthYear: boolean;
+  // An add or reject of it is in flight.
+  isPending: boolean;
+}
+
+export interface InviteLinkFormModel {
+  displayName: string;
+}
+
+// `gone`: the submission was already added or rejected elsewhere.
+export type SubmissionChangeResult = 'done' | 'gone' | 'failed';

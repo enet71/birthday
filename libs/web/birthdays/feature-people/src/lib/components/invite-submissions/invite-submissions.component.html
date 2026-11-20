@@ -1,0 +1,45 @@
+@if (rows().length) {
+  <section class="submissions" aria-labelledby="invite-submissions-title">
+    <h2 class="submissions__title" id="invite-submissions-title">
+      {{ 'invites.submissions.title' | transloco }}
+      <span class="submissions__count">{{ rows().length }}</span>
+    </h2>
+    <ul class="list">
+      @for (row of rows(); track row.submission.id) {
+        <li class="item">
+          <ui-birthday-avatar class="item__avatar" [name]="row.submission.name"></ui-birthday-avatar>
+          <div class="item__text">
+            <span class="item__name" [id]="'invite-submission-' + row.submission.id">{{ row.submission.name }}</span>
+            <span class="item__date">{{
+              row.birthDate | localeDate: ((row.hasBirthYear ? 'dates.monthDayYear' : 'dates.monthDay') | transloco)
+            }}</span>
+          </div>
+          <div class="item__actions">
+            <!-- The name describes each button, so a screen reader says whose request it adds or rejects. -->
+            <button
+              matButton
+              type="button"
+              disabledInteractive
+              [disabled]="row.isPending"
+              [attr.aria-describedby]="'invite-submission-' + row.submission.id"
+              (click)="reject(row)"
+            >
+              {{ 'invites.submissions.reject' | transloco }}
+            </button>
+            <button
+              matButton="filled"
+              type="button"
+              disabledInteractive
+              [disabled]="row.isPending"
+              [attr.aria-describedby]="'invite-submission-' + row.submission.id"
+              (click)="approve(row)"
+            >
+              <mat-icon>person_add</mat-icon>
+              {{ 'invites.submissions.approve' | transloco }}
+            </button>
+          </div>
+        </li>
+      }
+    </ul>
+  </section>
+}
