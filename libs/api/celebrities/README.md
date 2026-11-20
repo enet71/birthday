@@ -34,3 +34,6 @@ docker exec <api-container> node main.js celebrities:import [US-film]
 ```
 
 The command fails when an import of the segment is already waiting.
+
+The admin page `/admin/imports` shows each segment's status, the progress of details and page views, the job counts
+and the latest errors (`GET /api/admin/celebrity-imports`, only for `ADMIN_EMAILS`).

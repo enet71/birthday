@@ -41,6 +41,9 @@
     "loading": "Cargando"
   },
   "routes": {
+    "adminImports": {
+      "title": "Celebrity imports"
+    },
     "calendar": {
       "title": "Calendario",
       "documentTitle": "Calendario y recordatorios de cumpleaños · Birthdly",

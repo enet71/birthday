@@ -1,0 +1,130 @@
+@if (isNotFound()) {
+  <div class="state">
+    <mat-icon class="state__icon" aria-hidden="true">search_off</mat-icon>
+    <p class="state__text">Page not found</p>
+  </div>
+} @else if (hasLoadError()) {
+  <div class="state" role="alert">
+    <mat-icon class="state__icon" aria-hidden="true">cloud_off</mat-icon>
+    <p class="state__text">Could not load the import status.</p>
+    <button matButton="outlined" type="button" disabledInteractive [disabled]="isRefreshing()" (click)="refresh()">Try again</button>
+  </div>
+} @else if (isLoading()) {
+  <div class="state">
+    <mat-progress-spinner mode="indeterminate" diameter="40" aria-label="Loading the import status"></mat-progress-spinner>
+  </div>
+} @else if (status(); as status) {
+  <section class="imports" [attr.aria-busy]="isRefreshing()">
+    <header class="toolbar">
+      <span class="badge" [class.badge--active]="isImportRunning()">
+        <mat-icon aria-hidden="true">{{ isImportRunning() ? 'sync' : 'check_circle' }}</mat-icon>
+        {{ isImportRunning() ? 'Import in progress' : 'Nothing in progress' }}
+      </span>
+      <span class="toolbar__checked">Checked {{ status.checkedAt | date: dateFormat }} · refreshes every 10 s</span>
+      <button matButton="tonal" type="button" disabledInteractive [disabled]="isRefreshing()" (click)="refresh()">
+        <mat-icon>refresh</mat-icon>
+        Refresh
+      </button>
+    </header>
+
+    <section class="block" aria-labelledby="segments-title">
+      <h2 class="block__title" id="segments-title">Segments</h2>
+      <div class="table-wrap">
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">Segment</th>
+              <th scope="col">Status</th>
+              <th scope="col">Started</th>
+              <th scope="col">Finished</th>
+              <th scope="col" class="table__number">People</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (segment of status.segments; track segment.segment) {
+              <tr>
+                <th scope="row">{{ segment.segment }}</th>
+                <td>
+                  <span class="status" [class]="'status--' + segment.status">{{ statusLabels[segment.status] }}</span>
+                </td>
+                <td>{{ (segment.startedAt | date: dateFormat) ?? '—' }}</td>
+                <td>{{ (segment.finishedAt | date: dateFormat) ?? '—' }}</td>
+                <td class="table__number">{{ segment.people ?? '—' }}</td>
+              </tr>
+              @if (segment.error) {
+                <tr class="table__error-row">
+                  <td colspan="5">
+                    <pre class="error">{{ segment.error }}</pre>
+                  </td>
+                </tr>
+              }
+            }
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="block" aria-labelledby="progress-title">
+      <h2 class="block__title" id="progress-title">Progress · {{ status.progress.people }} people</h2>
+      @for (stage of stages(); track stage.label) {
+        <div class="stage">
+          <div class="stage__head">
+            <span>{{ stage.label }}</span>
+            <span class="stage__count">{{ stage.done }} / {{ stage.total }} · {{ stage.percent }}%</span>
+          </div>
+          <mat-progress-bar mode="determinate" [value]="stage.percent" [attr.aria-label]="stage.label"></mat-progress-bar>
+        </div>
+      }
+    </section>
+
+    <section class="block" aria-labelledby="queue-title">
+      <h2 class="block__title" id="queue-title">Queue</h2>
+      <div class="table-wrap">
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">Queue</th>
+              @for (column of jobStateColumns; track column.state) {
+                <th scope="col" class="table__number">{{ column.label }}</th>
+              }
+            </tr>
+          </thead>
+          <tbody>
+            @for (queue of status.queues; track queue.queue) {
+              <tr>
+                <th scope="row">{{ queue.queue }}</th>
+                @for (column of jobStateColumns; track column.state) {
+                  <td class="table__number" [class.table__alert]="column.state === 'failed' && queue.counts.failed > 0">
+                    {{ queue.counts[column.state] }}
+                  </td>
+                }
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="block" aria-labelledby="failures-title">
+      <h2 class="block__title" id="failures-title">Latest errors</h2>
+      @if (status.failures.length) {
+        <ol class="failures">
+          @for (failure of status.failures; track $index) {
+            <li class="failure">
+              <div class="failure__head">
+                <span class="status" [class]="failure.state === 'failed' ? 'status--failed' : 'status--running'">
+                  {{ failure.state === 'failed' ? 'Failed' : 'Will retry' }}
+                </span>
+                <span>{{ failure.queue }}</span>
+                <span class="failure__time">{{ failure.at | date: dateFormat }}</span>
+              </div>
+              <pre class="error">{{ failure.error }}</pre>
+            </li>
+          }
+        </ol>
+      } @else {
+        <p class="empty">No errors.</p>
+      }
+    </section>
+  </section>
+}

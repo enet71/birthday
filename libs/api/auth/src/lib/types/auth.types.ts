@@ -11,6 +11,8 @@ export interface AuthModuleOptions {
   appOrigin: string;
   // Encrypts the sign-in nonce cookie; at least 32 characters.
   secret: string;
+  // The emails of the users who may use `@AdminOnly()` endpoints, compared case-insensitively; empty means none.
+  adminEmails: string[];
 }
 
 export interface AuthenticatedRequest extends Request {

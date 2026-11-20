@@ -41,6 +41,9 @@
     "loading": "Loading"
   },
   "routes": {
+    "adminImports": {
+      "title": "Celebrity imports"
+    },
     "calendar": {
       "title": "Calendar",
       "documentTitle": "Birthday Calendar & Reminders · Birthdly",

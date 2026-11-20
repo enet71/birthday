@@ -61,6 +61,14 @@ export const appRoutes: Route[] = [
   },
   { path: 'calendar', redirectTo: '' },
   {
+    // Only for the admins listed in the API's `ADMIN_EMAILS`; everyone else sees "Page not found". Not in the menu; the
+    // page itself is English only.
+    path: 'admin/imports',
+    title: 'routes.adminImports.title',
+    data: { [APP_NOINDEX_DATA_KEY]: true },
+    loadChildren: () => import('@birthday/web-admin-feature-imports').then((m) => m.ADMIN_IMPORTS_ROUTES),
+  },
+  {
     // Indexed; the date pages are listed in `sitemap-born.xml`, and filtered URLs point to the date page as canonical.
     path: 'born',
     loadChildren: () => import('@birthday/web-celebrities-feature-born').then((m) => m.BORN_ROUTES),

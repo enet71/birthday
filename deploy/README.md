@@ -59,6 +59,10 @@ sudo -u deploy sh deploy.sh --rollback                              # back to th
 sudo sshd -T | grep -Ei 'passwordauth|permitroot|kbdinter'         # all three must be "no"
 ```
 
+**Celebrity import status:** https://birthdly.com/admin/imports, for the Google accounts listed in `ADMIN_EMAILS` in
+`.env` (everyone else sees "Page not found"). After changing `.env`, recreate the API:
+`sudo -u deploy docker compose --env-file .env --env-file release.env up -d api`.
+
 **Database client (WebStorm, DBeaver, psql):** Postgres listens on the droplet's `127.0.0.1:5432` only, so connect
 through an SSH tunnel as `ops`:
 

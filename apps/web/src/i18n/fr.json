@@ -41,6 +41,9 @@
     "loading": "Chargement"
   },
   "routes": {
+    "adminImports": {
+      "title": "Celebrity imports"
+    },
     "calendar": {
       "title": "Calendrier",
       "documentTitle": "Calendrier et rappels d'anniversaires · Birthdly",

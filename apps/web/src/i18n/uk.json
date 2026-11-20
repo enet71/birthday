@@ -41,6 +41,9 @@
     "loading": "Завантаження"
   },
   "routes": {
+    "adminImports": {
+      "title": "Celebrity imports"
+    },
     "calendar": {
       "title": "Календар",
       "documentTitle": "Календар і нагадування про дні народження · Birthdly",

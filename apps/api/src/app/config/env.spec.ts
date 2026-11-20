@@ -20,16 +20,20 @@ describe('validateEnv', () => {
       PORT: 3000,
       DATABASE_URL: databaseUrl,
       ...auth,
+      ADMIN_EMAILS: [],
       LOG_LEVEL: 'info',
     });
   });
 
   it('returns the provided values', () => {
-    expect(validateEnv({ ...required, NODE_ENV: 'production', PORT: 8080, LOG_LEVEL: 'debug' })).toEqual({
+    expect(
+      validateEnv({ ...required, NODE_ENV: 'production', PORT: 8080, ADMIN_EMAILS: ' Me@Example.com, you@example.com ', LOG_LEVEL: 'debug' }),
+    ).toEqual({
       NODE_ENV: 'production',
       PORT: 8080,
       DATABASE_URL: databaseUrl,
       ...auth,
+      ADMIN_EMAILS: ['me@example.com', 'you@example.com'],
       LOG_LEVEL: 'debug',
     });
   });

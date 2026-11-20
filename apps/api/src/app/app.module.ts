@@ -55,6 +55,7 @@ import { HealthModule } from './health/health.module';
         googleClientSecret: config.get('GOOGLE_CLIENT_SECRET', { infer: true }),
         appOrigin: config.get('APP_ORIGIN', { infer: true }),
         secret: config.get('AUTH_SECRET', { infer: true }),
+        adminEmails: config.get('ADMIN_EMAILS', { infer: true }),
       }),
     }),
     JobsModule.forRootAsync({

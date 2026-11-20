@@ -23,6 +23,18 @@ export const envSchema = z.object({
   VAPID_PRIVATE_KEY: z.string().regex(/^[A-Za-z0-9_-]{43}$/, { message: 'Must be the base64url private key from npm run push:vapid-keys' }),
   // How push services can reach the sender, for example `mailto:hello@birthdly.com`.
   VAPID_SUBJECT: z.string().regex(/^(mailto:|https:\/\/)/, { message: 'Must be a mailto: or https: URL' }),
+  // Comma-separated emails of the users who see the admin pages, for example `me@example.com,you@example.com`; empty or
+  // unset means nobody.
+  ADMIN_EMAILS: z
+    .string()
+    .default('')
+    .transform((value: string) =>
+      value
+        .split(',')
+        .map((email: string) => email.trim().toLowerCase())
+        .filter(Boolean),
+    )
+    .pipe(z.array(z.email())),
   LOG_LEVEL: z.enum(['fatal', 'error', 'warn', 'info', 'debug', 'trace']).default('info'),
 });
 

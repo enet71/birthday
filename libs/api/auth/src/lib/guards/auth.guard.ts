@@ -1,10 +1,10 @@
-import { CanActivate, ExecutionContext, Injectable, UnauthorizedException } from '@nestjs/common';
+import { CanActivate, ExecutionContext, Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import type { Response } from 'express';
 import { IS_PUBLIC_KEY, SESSION_COOKIE } from '../constants';
 import { SessionsService } from '../services';
 import { AuthenticatedRequest } from '../types';
-import { readCookie, secureCookieOptions } from '../utils';
+import { isAdminOnly, readCookie, secureCookieOptions } from '../utils';
 
 // Requires a signed-in user on every endpoint that is not `@Public()`.
 @Injectable()
@@ -29,7 +29,8 @@ export class AuthGuard implements CanActivate {
       if (token) {
         response.clearCookie(SESSION_COOKIE, secureCookieOptions());
       }
-      throw new UnauthorizedException();
+      // An admin endpoint does not reveal itself to signed-out visitors either.
+      throw isAdminOnly(this.reflector, context) ? new NotFoundException() : new UnauthorizedException();
     }
     if (session.extended) {
       response.cookie(SESSION_COOKIE, token, secureCookieOptions(session.expiresAt.getTime() - Date.now()));

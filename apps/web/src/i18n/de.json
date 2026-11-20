@@ -41,6 +41,9 @@
     "loading": "Wird geladen"
   },
   "routes": {
+    "adminImports": {
+      "title": "Celebrity imports"
+    },
     "calendar": {
       "title": "Kalender",
       "documentTitle": "Geburtstagskalender & Erinnerungen · Birthdly",

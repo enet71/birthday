@@ -1,5 +1,6 @@
 export * from './celebrities.controller';
 export * from './celebrities.module';
+export * from './celebrity-imports-admin.controller';
 export * from './commands';
 export * from './constants';
 export * from './helpers';
