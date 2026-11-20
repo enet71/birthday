@@ -3,6 +3,8 @@ import { ActivatedRouteSnapshot } from '@angular/router';
 // The part of the app's translation service that route texts use; declared here because the i18n library depends on this one.
 export interface AppRouteTranslator {
   translate(key: string, params?: Record<string, unknown>): string;
+  // Picks the plural form of `key` for `count`, which is available in the text as `{{ count }}`.
+  translatePlural(key: string, count: number, params?: Record<string, unknown>): string;
   // `formatKey` is a translation key with an Angular date format.
   formatDate(value: Date | string | number, formatKey: string): string;
 }

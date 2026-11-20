@@ -26,5 +26,8 @@ export const BORN_DECADE_QUERY_PARAM = 'decade';
 export const BORN_STATUS_QUERY_PARAM = 'status';
 export const BORN_SORT_QUERY_PARAM = 'sort';
 
-// Route `data` key with the people the resolver loaded; the page's SEO tags read them.
+// Route `data` key with the first page of people the resolver loaded and their total; the page's SEO tags read them.
 export const BORN_CELEBRITIES_DATA_KEY = 'celebrities';
+
+// How many names the meta description lists.
+export const BORN_DESCRIPTION_NAME_COUNT = 3;

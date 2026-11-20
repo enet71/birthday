@@ -577,6 +577,11 @@
       "heading": "Who was born on {{ date }}",
       "documentTitle": "Famous People Born on {{ date }} · Birthdly",
       "description": "Celebrities born on {{ date }}: actors, musicians, athletes, writers and more, with their age. Keep the birthdays of your own people in Birthdly.",
+      "descriptionNames": "Born on {{ date }}: {{ names }}. Famous people with their occupation and age.",
+      "descriptionNamesMore": {
+        "one": "Born on {{ date }}: {{ names }} and {{ count }} more famous person — actors, musicians, athletes, with their age.",
+        "other": "Born on {{ date }}: {{ names }} and {{ count }} more famous people — actors, musicians, athletes, with their age."
+      },
       "navigation": "Dates",
       "pickDate": "Choose a date",
       "today": "Today",

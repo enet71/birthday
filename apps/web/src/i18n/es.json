@@ -577,6 +577,11 @@
       "heading": "Quién nació el {{ date }}",
       "documentTitle": "Famosos nacidos el {{ date }} · Birthdly",
       "description": "Famosos nacidos el {{ date }}: actores, músicos, deportistas, escritores y más, con su edad. Guarda los cumpleaños de tu gente en Birthdly.",
+      "descriptionNames": "Nacidos el {{ date }}: {{ names }}. Famosos con su profesión y edad.",
+      "descriptionNamesMore": {
+        "one": "Nacidos el {{ date }}: {{ names }} y {{ count }} famoso más: actores, músicos, deportistas, con su edad.",
+        "other": "Nacidos el {{ date }}: {{ names }} y {{ count }} famosos más: actores, músicos, deportistas, con su edad."
+      },
       "navigation": "Fechas",
       "pickDate": "Elegir una fecha",
       "today": "Hoy",

@@ -577,6 +577,11 @@
       "heading": "Wer am {{ date }} geboren ist",
       "documentTitle": "Berühmte Personen, geboren am {{ date }} · Birthdly",
       "description": "Prominente, die am {{ date }} geboren sind: Schauspieler, Musiker, Sportler, Autoren und mehr, mit ihrem Alter. Behalte die Geburtstage deiner Liebsten in Birthdly.",
+      "descriptionNames": "Am {{ date }} geboren: {{ names }}. Prominente mit Beruf und Alter.",
+      "descriptionNamesMore": {
+        "one": "Am {{ date }} geboren: {{ names }} und {{ count }} weitere berühmte Person – Schauspieler, Musiker, Sportler, mit ihrem Alter.",
+        "other": "Am {{ date }} geboren: {{ names }} und {{ count }} weitere berühmte Personen – Schauspieler, Musiker, Sportler, mit ihrem Alter."
+      },
       "navigation": "Daten",
       "pickDate": "Datum wählen",
       "today": "Heute",

@@ -577,6 +577,11 @@
       "heading": "Qui est né le {{ date }}",
       "documentTitle": "Célébrités nées le {{ date }} · Birthdly",
       "description": "Célébrités nées le {{ date }} : acteurs, musiciens, sportifs, écrivains et plus, avec leur âge. Gardez les anniversaires de vos proches dans Birthdly.",
+      "descriptionNames": "Nés le {{ date }} : {{ names }}. Célébrités avec leur métier et leur âge.",
+      "descriptionNamesMore": {
+        "one": "Nés le {{ date }} : {{ names }} et {{ count }} autre célébrité — acteurs, musiciens, sportifs, avec leur âge.",
+        "other": "Nés le {{ date }} : {{ names }} et {{ count }} autres célébrités — acteurs, musiciens, sportifs, avec leur âge."
+      },
       "navigation": "Dates",
       "pickDate": "Choisir une date",
       "today": "Aujourd'hui",

@@ -1,8 +1,8 @@
-import { effect, inject, Injectable, untracked } from '@angular/core';
+import { effect, inject, Injectable, RESPONSE_INIT, untracked } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { DateAdapter } from '@angular/material/core';
 import { Router, UrlTree } from '@angular/router';
-import { catchError, EMPTY, finalize, map, Observable, of, Subscription, tap } from 'rxjs';
+import { catchError, EMPTY, finalize, Observable, of, Subscription, tap } from 'rxjs';
 import { AppLocale, CelebritiesResponse, CelebrityDto } from '@birthday/shared-models';
 import { CelebritiesApiService } from '@birthday/web-celebrities-data-access';
 import { AppLayoutController } from '@birthday/web-layout-data-access';
@@ -31,6 +31,8 @@ export class BornDayController extends StateController {
   private readonly localeState: ReadonlyState<LocaleState> = injectState(LocaleState);
   private readonly notifications: NotificationsService = inject(NotificationsService);
   private readonly translator: AppTranslateService = inject(AppTranslateService);
+  // Only on the server.
+  private readonly responseInit: ResponseInit | null = inject(RESPONSE_INIT, { optional: true });
   // The next page being loaded; replacing the people cancels it.
   private nextPage: Subscription | null = null;
 
@@ -49,7 +51,7 @@ export class BornDayController extends StateController {
 
   // The resolver calls it on every navigation; a new date or new filters, a new language, or a failed load loads the
   // first page again.
-  public openDay(date: BornDate, filters: BornFilters): Observable<CelebrityDto[]> {
+  public openDay(date: BornDate, filters: BornFilters): Observable<CelebritiesResponse> {
     const shown: BornDate | null = this.bornDayState.date();
     const isShown: boolean =
       !!shown &&
@@ -58,7 +60,7 @@ export class BornDayController extends StateController {
       this.bornDayState.locale() === this.localeState.locale() &&
       !this.bornDayState.hasLoadError();
 
-    return isShown ? of(this.bornDayState.celebrities()) : this.loadFirstPage(date, filters);
+    return isShown ? of({ celebrities: this.bornDayState.celebrities(), total: this.bornDayState.total() }) : this.loadFirstPage(date, filters);
   }
 
   public retry(): void {
@@ -138,21 +140,25 @@ export class BornDayController extends StateController {
 
   // The date and filters change together with the people, so the page never shows a new date's navigation above the
   // old date's people. A failed load does not cancel the navigation: the page opens with the error state and a retry
-  // button.
-  private loadFirstPage(date: BornDate, filters: BornFilters): Observable<CelebrityDto[]> {
+  // button. On the server the page answers 503, so search engines come back later instead of indexing the error.
+  private loadFirstPage(date: BornDate, filters: BornFilters): Observable<CelebritiesResponse> {
     const locale: AppLocale = this.localeState.locale();
+    const empty: CelebritiesResponse = { celebrities: [], total: 0 };
 
     this.bornDayState.isLoading.set(true);
     this.bornDayState.hasLoadError.set(false);
 
     return this.celebritiesApi.getByDate(toCelebritiesRequest(date, filters, locale, 0)).pipe(
       tap((response: CelebritiesResponse) => this.show(date, filters, locale, response)),
-      map((response: CelebritiesResponse) => response.celebrities),
       catchError(() => {
-        this.show(date, filters, locale, { celebrities: [], total: 0 });
+        this.show(date, filters, locale, empty);
         this.bornDayState.hasLoadError.set(true);
 
-        return of([]);
+        if (this.responseInit) {
+          this.responseInit.status = 503;
+        }
+
+        return of(empty);
       }),
       finalize(() => this.bornDayState.isLoading.set(false)),
     );
