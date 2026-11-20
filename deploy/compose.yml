@@ -31,10 +31,13 @@ services:
       start_interval: 2s
     logging: *logging
 
-  # Reachable only on the stack's network. The data lives on the postgres_data volume, which deployments and
+  # The stack reaches it on its own network. The data lives on the postgres_data volume, which deployments and
   # rollbacks never remove.
   postgres:
     image: postgres:17-alpine
+    # Only on the droplet's loopback, for an SSH tunnel from a database client (see README); never reachable from outside.
+    ports:
+      - '127.0.0.1:5432:5432'
     environment:
       POSTGRES_USER: birthdly
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?POSTGRES_PASSWORD is not set}

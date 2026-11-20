@@ -59,6 +59,17 @@ sudo -u deploy sh deploy.sh --rollback                              # back to th
 sudo sshd -T | grep -Ei 'passwordauth|permitroot|kbdinter'         # all three must be "no"
 ```
 
+**Database client (WebStorm, DBeaver, psql):** Postgres listens on the droplet's `127.0.0.1:5432` only, so connect
+through an SSH tunnel as `ops`:
+
+```bash
+ssh -N -L 5433:localhost:5432 ops@<droplet IP>   # keep it open; then connect to localhost:5433
+sudo -u deploy grep POSTGRES_PASSWORD /opt/birthdly/.env   # on the droplet: the password
+```
+
+Database `birthdly`, user `birthdly`. Clients with a built-in SSH tunnel (WebStorm: Data Source → SSH/SSL) take
+`ops@<droplet IP>` with your key and host `localhost`, port `5432`. It is production: prefer read-only queries.
+
 Every container keeps at most 5 × 10 MB of logs. A deployment removes images other than those of the running and the
 previous release.
 
