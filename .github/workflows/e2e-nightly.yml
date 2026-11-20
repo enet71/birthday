@@ -1,0 +1,59 @@
+name: E2E nightly
+
+# The e2e tests run once a night against main instead of on every push: they are slow, and the unit tests in CI cover
+# most of the logic. A failure here does not stop deployments; GitHub emails a failed scheduled run to whoever last
+# changed the schedule below.
+on:
+  schedule:
+    # 01:00 UTC: 03:00 in Kyiv in winter, 04:00 in summer.
+    - cron: '0 1 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  e2e:
+    runs-on: ubuntu-latest
+    # The database the API e2e tests start the API against.
+    services:
+      postgres:
+        image: postgres:17-alpine
+        env:
+          POSTGRES_PASSWORD: postgres
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+    # The same settings as in ci.yml: the API requires them to start.
+    env:
+      DATABASE_URL: postgresql://postgres:postgres@localhost:5432/postgres
+      # The e2e tests never complete a Google sign-in, so the client is fake.
+      APP_ORIGIN: http://localhost:4200
+      GOOGLE_CLIENT_ID: e2e-client.apps.googleusercontent.com
+      GOOGLE_CLIENT_SECRET: e2e-client-secret
+      AUTH_SECRET: e2e-auth-secret-that-is-at-least-32-characters
+      # Quoted: YAML would read the digits as the number 0.
+      GOOGLE_TOKEN_ENCRYPTION_KEY: '0000000000000000000000000000000000000000000000000000000000000000'
+      # A throwaway pair used only by CI (the API checks that the keys belong together); the e2e tests never send a
+      # notification.
+      VAPID_PUBLIC_KEY: 'BNcCr1mIJ8JlZiRApyL5EC3V53R-zE7V88j-NAnTV0Lt99DOvQcVOt7CDcZiAPb5GXcM18Lk05cWuKV5ZxNSBxg'
+      VAPID_PRIVATE_KEY: 'IxnVgDnpNpqdt4hIlN5ktIe6gy2lHJ-itSKeGxE0zH8'
+      VAPID_SUBJECT: 'mailto:e2e@example.com'
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 24
+          cache: 'npm'
+
+      - run: npm ci
+      # Every browser in apps/web-e2e/playwright.config.mts.
+      - run: npx playwright install --with-deps
+
+      # Builds the API and the web app first: the e2e targets depend on their servers.
+      - run: npx nx run-many -t e2e

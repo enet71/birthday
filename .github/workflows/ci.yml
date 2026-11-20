@@ -60,7 +60,6 @@ jobs:
           cache: 'npm'
 
       - run: npm ci
-      - run: npx playwright install --with-deps
 
       # The schema and its migrations must agree, and the journal must stay in order: Drizzle applies only migrations
       # newer than the newest applied one (libs/api/database/README.md).
@@ -85,8 +84,9 @@ jobs:
 
       # Prepend any command with "nx record --" to record its logs to Nx Cloud
       # - run: npx nx record -- echo Hello World
-      # When you enable task distribution, run the e2e-ci task instead of e2e
-      - run: npx nx run-many -t lint test build e2e
+      # The e2e tests run nightly instead (.github/workflows/e2e-nightly.yml), so a failure there does not hold back a
+      # deployment.
+      - run: npx nx run-many -t lint test build
       # Builds the images without publishing them, so a broken Dockerfile fails the PR.
       - run: npx nx run-many -t docker-build -p api web
       # The image installs only the dependencies listed in apps/api/package.json, so it must start on its own: a missing
