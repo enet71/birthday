@@ -1,13 +1,14 @@
 import { ChangeDetectionStrategy, Component, computed, inject, Signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { MatButton } from '@angular/material/button';
+import { MatButton, MatIconButton } from '@angular/material/button';
 import { MatDatepicker, MatDatepickerInput, MatDatepickerInputEvent } from '@angular/material/datepicker';
 import { MatIcon } from '@angular/material/icon';
 import { TranslocoPipe } from '@jsverse/transloco';
 import { injectState, ReadonlyState } from '@birthday/web-shared-data-access';
 import { AppTranslateService, LocaleDatePipe } from '@birthday/web-shared-i18n';
 import { BornDayController, BornDayState } from '../../state';
-import { CelebrityCard } from '../../types';
+import { splitBornTitle } from '../../helpers';
+import { BornTitlePart, CelebrityCard } from '../../types';
 import { BornFiltersComponent } from '../born-filters/born-filters.component';
 import { CelebrityCardComponent } from '../celebrity-card/celebrity-card.component';
 
@@ -18,6 +19,7 @@ import { CelebrityCardComponent } from '../celebrity-card/celebrity-card.compone
     LocaleDatePipe,
     RouterLink,
     MatButton,
+    MatIconButton,
     MatDatepicker,
     MatDatepickerInput,
     MatIcon,
@@ -33,6 +35,7 @@ export class BornDayPageComponent {
   private readonly bornDayController: BornDayController = inject(BornDayController);
   private readonly translator: AppTranslateService = inject(AppTranslateService);
 
+  protected readonly titleParts: Signal<BornTitlePart[]> = computed(() => this.getTitleParts());
   protected readonly summary: Signal<string> = computed(() => this.translator.translatePlural('born.day.count', this.bornDayState.total()));
 
   protected get cards(): Signal<CelebrityCard[]> {
@@ -49,6 +52,14 @@ export class BornDayPageComponent {
 
   protected get isLoading(): Signal<boolean> {
     return this.bornDayState.isLoading;
+  }
+
+  protected get todayPath(): string {
+    return this.bornDayState.todayPath;
+  }
+
+  protected get isToday(): Signal<boolean> {
+    return this.bornDayState.isToday;
   }
 
   protected get pickerDate(): Signal<Date | null> {
@@ -95,5 +106,11 @@ export class BornDayPageComponent {
 
   protected retry(): void {
     this.bornDayController.retry();
+  }
+
+  private getTitleParts(): BornTitlePart[] {
+    const date: Date | null = this.bornDayState.referenceDate();
+
+    return date ? splitBornTitle(this.translator.formatDate(date, 'dates.longMonthDay')) : [];
   }
 }

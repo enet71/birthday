@@ -1,3 +1,5 @@
+@use '@angular/material' as mat;
+
 :host {
   flex: 1;
   display: block;
@@ -11,15 +13,100 @@
   min-width: 0;
 }
 
-.day-nav {
+// The title and the trays follow the toolbar of the calendar page.
+.toolbar {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
-  gap: 0.5rem;
+  gap: 1rem;
+  padding-top: 0.5rem;
+}
 
-  &__picker {
-    position: relative;
+.title {
+  margin: 0;
+  font-size: 2.625rem;
+  font-weight: 800;
+  line-height: 3rem;
+  letter-spacing: -0.025em;
+  color: var(--mat-sys-on-surface-variant);
+
+  // Like the year in the calendar title.
+  &__day {
+    font-size: 1.5rem;
+    font-weight: 400;
+    line-height: 2rem;
+    letter-spacing: -0.015em;
+    color: var(--mat-sys-outline);
   }
+}
+
+.controls {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+// A tinted tray that groups related controls.
+.segment {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.375rem;
+  border: 0.0625rem solid color-mix(in srgb, var(--mat-sys-outline-variant) 20%, transparent);
+  border-radius: 0.75rem;
+  background: color-mix(in srgb, var(--mat-sys-surface-container) 70%, transparent);
+  backdrop-filter: blur(0.75rem);
+
+  &__icon {
+    @include mat.icon-button-overrides(
+      (
+        state-layer-size: 2.25rem,
+        container-shape: 0.5rem,
+        icon-size: 1.25rem,
+        icon-color: var(--mat-sys-on-surface-variant),
+      )
+    );
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+
+    mat-icon {
+      width: 1.25rem;
+      height: 1.25rem;
+      font-size: 1.25rem;
+    }
+  }
+
+  &__today {
+    @include mat.button-overrides(
+      (
+        text-container-height: 2.25rem,
+        text-container-shape: 0.5rem,
+        text-horizontal-padding: 1rem,
+        text-label-text-color: var(--mat-sys-primary),
+        text-label-text-size: 0.75rem,
+        text-label-text-weight: 700,
+      )
+    );
+
+    min-width: 0;
+  }
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 0.0625rem;
+  height: 0.0625rem;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.picker {
+  position: relative;
 
   // Zero-size anchor for the datepicker popup, under the button.
   &__input {
@@ -84,20 +171,16 @@
     padding-top: 1rem;
   }
 
-  // The date picker gets its own row above the two dates, so long dates fit on narrow phones.
-  .day-nav {
-    flex-wrap: wrap;
+  // Centered like the calendar toolbar on phones.
+  .toolbar {
+    justify-content: center;
+    padding-top: 0;
+  }
 
-    &__picker {
-      display: flex;
-      flex-basis: 100%;
-      justify-content: center;
-      order: -1;
-    }
-
-    &__link {
-      min-width: 0;
-      padding-inline: 0.5rem;
-    }
+  .title {
+    width: 100%;
+    font-size: 1.75rem;
+    line-height: 2.25rem;
+    text-align: center;
   }
 }

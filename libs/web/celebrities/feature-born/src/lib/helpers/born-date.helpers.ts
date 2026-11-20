@@ -1,7 +1,7 @@
 import { ActivatedRouteSnapshot } from '@angular/router';
 import { addDays } from 'date-fns';
 import { BORN_BASE_PATH, BORN_DAY_PARAM, BORN_MONTH_PARAM, BORN_MONTH_SLUGS } from '../constants';
-import { BornDate } from '../types';
+import { BornDate, BornTitlePart } from '../types';
 
 // A leap year, so February 29 exists.
 const REFERENCE_YEAR = 2000;
@@ -39,6 +39,15 @@ export function shiftBornDate(date: BornDate, days: number): BornDate {
 
 export function isSameBornDate(first: BornDate, second: BornDate): boolean {
   return first.month === second.month && first.day === second.day;
+}
+
+// Splits a formatted date such as "March 3", "3 марта" or "3 de marzo" around the day number, keeping the order and the
+// words of the language.
+export function splitBornTitle(formatted: string): BornTitlePart[] {
+  return formatted
+    .split(/(\d+)/)
+    .filter((text: string) => text.trim())
+    .map((text: string) => ({ text, isDay: /^\d+$/.test(text) }));
 }
 
 export function getBornDayPath({ month, day }: BornDate): string {

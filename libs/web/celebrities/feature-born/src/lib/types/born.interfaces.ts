@@ -16,6 +16,12 @@ export interface BornFilters {
   sort: CelebritySort;
 }
 
+// A piece of the formatted date in the page title; the day number gets its own style.
+export interface BornTitlePart {
+  text: string;
+  isDay: boolean;
+}
+
 export interface BornCountryOption {
   code: string;
   // In the current language.

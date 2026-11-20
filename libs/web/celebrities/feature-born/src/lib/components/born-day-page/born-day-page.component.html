@@ -1,35 +1,57 @@
 @let dateFormat = 'dates.longMonthDay' | transloco;
 <section class="day" [attr.aria-busy]="isLoading()">
-  <nav class="day-nav" [attr.aria-label]="'born.day.navigation' | transloco">
-    @if (previousPath(); as path) {
-      <a class="day-nav__link" matButton queryParamsHandling="preserve" [routerLink]="path">
-        <mat-icon>chevron_left</mat-icon>
-        {{ previousDate() | localeDate: dateFormat }}
-      </a>
+  <header class="toolbar">
+    @if (titleParts().length) {
+      <h2 class="title">
+        @for (part of titleParts(); track $index) {
+          <span [class.title__day]="part.isDay">{{ part.text }}</span>
+        }
+      </h2>
     }
-    <span class="day-nav__picker">
-      <!-- The datepicker needs an input; the visible control is the button next to it. -->
-      <input
-        class="day-nav__input"
-        tabindex="-1"
-        aria-hidden="true"
-        [matDatepicker]="picker"
-        [value]="pickerDate()"
-        (dateChange)="openDate($event)"
-      />
-      <mat-datepicker #picker></mat-datepicker>
-      <button matButton="tonal" type="button" (click)="picker.open()">
-        <mat-icon>calendar_month</mat-icon>
-        {{ 'born.day.pickDate' | transloco }}
-      </button>
-    </span>
-    @if (nextPath(); as path) {
-      <a class="day-nav__link" matButton queryParamsHandling="preserve" [routerLink]="path">
-        {{ nextDate() | localeDate: dateFormat }}
-        <mat-icon iconPositionEnd>chevron_right</mat-icon>
-      </a>
-    }
-  </nav>
+    <nav class="controls" [attr.aria-label]="'born.day.navigation' | transloco">
+      <div class="segment">
+        @if (previousPath(); as path) {
+          <a class="segment__icon" matIconButton queryParamsHandling="preserve" [routerLink]="path">
+            <mat-icon aria-hidden="true">chevron_left</mat-icon>
+            <!-- Link text for screen readers and crawlers; the icon ligature is not a name. -->
+            <span class="visually-hidden">{{ 'born.day.previousDay' | transloco: { date: previousDate() | localeDate: dateFormat } }}</span>
+          </a>
+        }
+        <!-- Today keeps its place in the tray when today is open, but does nothing. -->
+        <a
+          class="segment__today"
+          matButton
+          queryParamsHandling="preserve"
+          [routerLink]="todayPath"
+          [disabled]="isToday()"
+          [attr.aria-current]="isToday() ? 'date' : null"
+        >
+          {{ 'born.day.today' | transloco }}
+        </a>
+        @if (nextPath(); as path) {
+          <a class="segment__icon" matIconButton queryParamsHandling="preserve" [routerLink]="path">
+            <mat-icon aria-hidden="true">chevron_right</mat-icon>
+            <span class="visually-hidden">{{ 'born.day.nextDay' | transloco: { date: nextDate() | localeDate: dateFormat } }}</span>
+          </a>
+        }
+      </div>
+      <div class="segment picker">
+        <!-- The datepicker needs an input; the visible control is the button next to it. -->
+        <input
+          class="picker__input"
+          tabindex="-1"
+          aria-hidden="true"
+          [matDatepicker]="picker"
+          [value]="pickerDate()"
+          (dateChange)="openDate($event)"
+        />
+        <mat-datepicker #picker></mat-datepicker>
+        <button class="segment__icon" matIconButton type="button" [attr.aria-label]="'born.day.pickDate' | transloco" (click)="picker.open()">
+          <mat-icon>calendar_month</mat-icon>
+        </button>
+      </div>
+    </nav>
+  </header>
 
   @if (hasLoadError()) {
     <div class="state" role="alert">

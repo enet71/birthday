@@ -2,12 +2,13 @@ import { computed, Injectable, Signal, signal, WritableSignal } from '@angular/c
 import { AppLocale, CELEBRITY_COUNTRIES, CelebrityDto } from '@birthday/shared-models';
 import { injectState, ReadonlyState, State } from '@birthday/web-shared-data-access';
 import { LocaleState } from '@birthday/web-shared-i18n';
-import { BORN_DEFAULT_FILTERS, countActiveBornFilters, getBornDayPath, shiftBornDate, toReferenceDate } from '../helpers';
+import { BORN_DEFAULT_FILTERS, countActiveBornFilters, getBornDayPath, isSameBornDate, shiftBornDate, toBornDate, toReferenceDate } from '../helpers';
 import { BornCountryOption, BornDate, BornFilters, CelebrityCard } from '../types';
 
 @Injectable()
 export class BornDayState extends State {
   private readonly currentYear: number = new Date().getFullYear();
+  private readonly today: BornDate = toBornDate(new Date());
   private readonly localeState: ReadonlyState<LocaleState> = injectState(LocaleState);
   // Country names in the current language.
   private readonly countryNames: Signal<Intl.DisplayNames> = computed(() => new Intl.DisplayNames([this.localeState.locale()], { type: 'region' }));
@@ -32,6 +33,8 @@ export class BornDayState extends State {
   public readonly nextDate: Signal<Date | null> = computed(() => this.toDate(this.shiftDate(1)));
   public readonly previousPath: Signal<string | null> = computed(() => this.toPath(this.shiftDate(-1)));
   public readonly nextPath: Signal<string | null> = computed(() => this.toPath(this.shiftDate(1)));
+  public readonly todayPath: string = getBornDayPath(this.today);
+  public readonly isToday: Signal<boolean> = computed(() => this.isTodayShown());
   public readonly activeFilterCount: Signal<number> = computed(() => countActiveBornFilters(this.filters()));
   public readonly countryOptions: Signal<BornCountryOption[]> = computed(() => this.getCountryOptions());
   public readonly cards: Signal<CelebrityCard[]> = computed(() => this.celebrities().map((celebrity: CelebrityDto) => this.toCard(celebrity)));
@@ -47,6 +50,12 @@ export class BornDayState extends State {
     const picker: Date = new Date(this.currentYear, date.month - 1, date.day);
 
     return picker.getMonth() === date.month - 1 ? picker : toReferenceDate(date);
+  }
+
+  private isTodayShown(): boolean {
+    const date: BornDate | null = this.date();
+
+    return !!date && isSameBornDate(date, this.today);
   }
 
   private shiftDate(days: number): BornDate | null {
