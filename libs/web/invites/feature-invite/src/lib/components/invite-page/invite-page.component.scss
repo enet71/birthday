@@ -1,0 +1,113 @@
+@use '@angular/material' as mat;
+
+:host {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 32rem;
+  margin-inline: auto;
+  padding-block: 0.5rem 2rem;
+}
+
+.invite {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 1.25rem;
+  border-radius: 1rem;
+  background: var(--mat-sys-surface-container-lowest);
+  box-shadow: 0 0.25rem 1rem color-mix(in srgb, var(--app-shadow-tint) 8%, transparent);
+  container-type: inline-size;
+  @include mat.form-field-overrides(
+    (
+      outlined-outline-color: var(--mat-sys-outline-variant),
+    )
+  );
+
+  &_message,
+  &_promo {
+    align-items: flex-start;
+  }
+
+  &_promo {
+    background: color-mix(in srgb, var(--mat-sys-primary) 8%, var(--mat-sys-surface-container-lowest));
+  }
+
+  &__icon {
+    width: 2.5rem;
+    height: 2.5rem;
+    font-size: 2.5rem;
+    color: var(--mat-sys-on-surface-variant);
+
+    &_success {
+      color: var(--mat-sys-primary);
+    }
+  }
+
+  &__title {
+    margin: 0;
+    font-size: 1.125rem;
+    font-weight: 700;
+    line-height: 1.625rem;
+    color: var(--mat-sys-on-surface);
+
+    &_large {
+      font-size: 1.375rem;
+      line-height: 1.875rem;
+    }
+  }
+
+  &__text,
+  &__note {
+    margin: 0;
+    font: var(--mat-sys-body-medium);
+    color: var(--mat-sys-on-surface-variant);
+  }
+
+  &__note {
+    font: var(--mat-sys-body-small);
+  }
+
+  &__error {
+    margin: 0;
+    font: var(--mat-sys-body-medium);
+    color: var(--mat-sys-error);
+  }
+
+  &__submit {
+    align-self: flex-start;
+  }
+}
+
+.date {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0 0.75rem;
+
+  &__month {
+    grid-column: 1 / -1;
+  }
+
+  @container (min-width: 26rem) {
+    grid-template-columns: minmax(0, 1fr) 6rem 6.5rem;
+
+    &__month {
+      grid-column: auto;
+    }
+  }
+}
+
+// Off-screen rather than `display: none`, which some bots skip.
+.honeypot {
+  position: absolute;
+  left: -100rem;
+  width: 0.0625rem;
+  height: 0.0625rem;
+  overflow: hidden;
+}

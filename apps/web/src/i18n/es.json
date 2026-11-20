@@ -82,6 +82,9 @@
     },
     "born": {
       "title": "Famosos"
+    },
+    "invite": {
+      "title": "Invitación"
     }
   },
   "notFound": {
@@ -293,6 +296,37 @@
       "title": "Solicitudes de cumpleaños",
       "approve": "Añadir",
       "reject": "Rechazar"
+    },
+    "guest": {
+      "label": "Invitación",
+      "documentTitle": "{{ name }} está recopilando cumpleaños · Birthdly",
+      "description": "Añade tu cumpleaños al calendario de {{ name }} para que nunca se olvide. Solo lleva unos segundos y no hace falta iniciar sesión.",
+      "invalidDocumentTitle": "Invitación no encontrada · Birthdly",
+      "invalidDescription": "Este enlace de invitación ya no funciona.",
+      "failedDocumentTitle": "Invitación · Birthdly",
+      "heading": "{{ name }} está recopilando cumpleaños",
+      "text": "Añade tu cumpleaños para que {{ name }} nunca lo olvide. No hace falta iniciar sesión.",
+      "name": "Tu nombre",
+      "note": "Solo {{ name }} verá tu nombre y tu cumpleaños.",
+      "send": "Enviar mi cumpleaños",
+      "sentTitle": "¡Gracias!",
+      "sentText": "{{ name }} verá tu cumpleaños pronto.",
+      "sendAnother": "Enviar de nuevo",
+      "promoTitle": "Que no se te pase ningún cumpleaños",
+      "promoText": "Birthdly reúne los cumpleaños de tus amigos en un calendario y te avisa a tiempo.",
+      "promoButton": "Crear tu calendario de cumpleaños",
+      "invalidTitle": "Este enlace ya no funciona",
+      "invalidText": "Pide uno nuevo a quien lo compartió.",
+      "openApp": "Abrir Birthdly",
+      "loadFailedTitle": "No se pudo cargar la invitación",
+      "loadFailedText": "Comprueba tu conexión e inténtalo de nuevo.",
+      "errors": {
+        "nameRequired": "Escribe tu nombre",
+        "nameTooLong": "El nombre puede tener hasta {{ max }} caracteres",
+        "full": "Hay demasiadas solicitudes esperando respuesta. Inténtalo más tarde.",
+        "tooMany": "Demasiados intentos. Inténtalo más tarde.",
+        "failed": "No se pudo enviar tu cumpleaños. Comprueba tu conexión e inténtalo de nuevo."
+      }
     }
   },
   "person": {

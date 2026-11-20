@@ -82,6 +82,9 @@
     },
     "born": {
       "title": "Celebrities"
+    },
+    "invite": {
+      "title": "Invitation"
     }
   },
   "notFound": {
@@ -293,6 +296,37 @@
       "title": "Birthday requests",
       "approve": "Add",
       "reject": "Reject"
+    },
+    "guest": {
+      "label": "Invitation",
+      "documentTitle": "{{ name }} is collecting birthdays · Birthdly",
+      "description": "Add your birthday to {{ name }}'s calendar so it's never forgotten. It takes a few seconds, with no sign-in.",
+      "invalidDocumentTitle": "Invitation not found · Birthdly",
+      "invalidDescription": "This invite link no longer works.",
+      "failedDocumentTitle": "Invitation · Birthdly",
+      "heading": "{{ name }} is collecting birthdays",
+      "text": "Add your birthday so {{ name }} never forgets it. No sign-in needed.",
+      "name": "Your name",
+      "note": "Only {{ name }} will see your name and birthday.",
+      "send": "Send my birthday",
+      "sentTitle": "Thank you!",
+      "sentText": "{{ name }} will see your birthday soon.",
+      "sendAnother": "Send again",
+      "promoTitle": "Never miss a birthday yourself",
+      "promoText": "Birthdly keeps your friends' birthdays in one calendar and reminds you in time.",
+      "promoButton": "Create your birthday calendar",
+      "invalidTitle": "This link no longer works",
+      "invalidText": "Ask the person who shared it for a new one.",
+      "openApp": "Open Birthdly",
+      "loadFailedTitle": "Couldn't load the invitation",
+      "loadFailedText": "Check your connection and try again.",
+      "errors": {
+        "nameRequired": "Enter your name",
+        "nameTooLong": "The name can be up to {{ max }} characters",
+        "full": "Too many requests are waiting for an answer. Try again later.",
+        "tooMany": "Too many attempts. Try again later.",
+        "failed": "Couldn't send your birthday. Check your connection and try again."
+      }
     }
   },
   "person": {

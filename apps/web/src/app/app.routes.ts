@@ -78,6 +78,11 @@ export const appRoutes: Route[] = [
     loadChildren: () => import('./pages/guides/guides.routes').then((m) => m.GUIDES_ROUTES),
   },
   {
+    // Guests open `/invite/<token>` from a link someone shared; not indexed.
+    path: 'invite',
+    loadChildren: () => import('@birthday/web-invites-feature-invite').then((m) => m.INVITE_ROUTES),
+  },
+  {
     path: '**',
     title: 'routes.notFound.title',
     data: { [APP_NOINDEX_DATA_KEY]: true },

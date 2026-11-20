@@ -82,6 +82,9 @@
     },
     "born": {
       "title": "Prominente"
+    },
+    "invite": {
+      "title": "Einladung"
     }
   },
   "notFound": {
@@ -293,6 +296,37 @@
       "title": "Geburtstagsanfragen",
       "approve": "Hinzufügen",
       "reject": "Ablehnen"
+    },
+    "guest": {
+      "label": "Einladung",
+      "documentTitle": "{{ name }} sammelt Geburtstage · Birthdly",
+      "description": "Trag deinen Geburtstag in den Kalender von {{ name }} ein, damit er nie vergessen wird. Dauert nur ein paar Sekunden, ohne Anmeldung.",
+      "invalidDocumentTitle": "Einladung nicht gefunden · Birthdly",
+      "invalidDescription": "Dieser Einladungslink funktioniert nicht mehr.",
+      "failedDocumentTitle": "Einladung · Birthdly",
+      "heading": "{{ name }} sammelt Geburtstage",
+      "text": "Trag deinen Geburtstag ein, damit {{ name }} ihn nie vergisst. Ohne Anmeldung.",
+      "name": "Dein Name",
+      "note": "Nur {{ name }} sieht deinen Namen und deinen Geburtstag.",
+      "send": "Meinen Geburtstag senden",
+      "sentTitle": "Danke!",
+      "sentText": "{{ name }} sieht deinen Geburtstag bald.",
+      "sendAnother": "Erneut senden",
+      "promoTitle": "Verpass selbst keinen Geburtstag mehr",
+      "promoText": "Birthdly sammelt die Geburtstage deiner Freunde in einem Kalender und erinnert dich rechtzeitig.",
+      "promoButton": "Eigenen Geburtstagskalender erstellen",
+      "invalidTitle": "Dieser Link funktioniert nicht mehr",
+      "invalidText": "Bitte die Person, die ihn geteilt hat, um einen neuen.",
+      "openApp": "Birthdly öffnen",
+      "loadFailedTitle": "Die Einladung konnte nicht geladen werden",
+      "loadFailedText": "Prüfe deine Verbindung und versuche es erneut.",
+      "errors": {
+        "nameRequired": "Gib deinen Namen ein",
+        "nameTooLong": "Der Name darf höchstens {{ max }} Zeichen haben",
+        "full": "Zu viele Anfragen warten auf eine Antwort. Versuche es später erneut.",
+        "tooMany": "Zu viele Versuche. Versuche es später erneut.",
+        "failed": "Dein Geburtstag konnte nicht gesendet werden. Prüfe deine Verbindung und versuche es erneut."
+      }
     }
   },
   "person": {

@@ -1,0 +1,97 @@
+<section class="invite" [attr.aria-label]="'invites.guest.label' | transloco">
+  @switch (loadResult()?.status) {
+    @case ('invalid') {
+      <div class="card card_message">
+        <mat-icon class="card__icon" aria-hidden="true">link_off</mat-icon>
+        <h2 #cardTitle tabindex="-1" class="card__title">{{ 'invites.guest.invalidTitle' | transloco }}</h2>
+        <p class="card__text">{{ 'invites.guest.invalidText' | transloco }}</p>
+        <a matButton="outlined" routerLink="/">{{ 'invites.guest.openApp' | transloco }}</a>
+      </div>
+    }
+    @case ('failed') {
+      <div class="card card_message">
+        <mat-icon class="card__icon" aria-hidden="true">cloud_off</mat-icon>
+        <h2 #cardTitle tabindex="-1" class="card__title">{{ 'invites.guest.loadFailedTitle' | transloco }}</h2>
+        <p class="card__text">{{ 'invites.guest.loadFailedText' | transloco }}</p>
+        <button matButton="outlined" type="button" disabledInteractive [disabled]="isRetrying()" (click)="retry()">
+          {{ 'common.tryAgain' | transloco }}
+        </button>
+      </div>
+    }
+    @case ('ready') {
+      @if (isSent()) {
+        <div class="card card_message" role="status">
+          <mat-icon class="card__icon card__icon_success" aria-hidden="true">check_circle</mat-icon>
+          <h2 #cardTitle tabindex="-1" class="card__title">{{ 'invites.guest.sentTitle' | transloco }}</h2>
+          <p class="card__text">{{ 'invites.guest.sentText' | transloco: { name: displayName() } }}</p>
+          <button matButton type="button" (click)="sendAnother()">{{ 'invites.guest.sendAnother' | transloco }}</button>
+        </div>
+        @if (!isAuthenticated()) {
+          <div class="card card_promo">
+            <h2 #cardTitle tabindex="-1" class="card__title">{{ 'invites.guest.promoTitle' | transloco }}</h2>
+            <p class="card__text">{{ 'invites.guest.promoText' | transloco }}</p>
+            <a matButton="filled" routerLink="/">
+              <mat-icon>cake</mat-icon>
+              {{ 'invites.guest.promoButton' | transloco }}
+            </a>
+          </div>
+        }
+      } @else {
+        <form class="card" novalidate (submit)="send($event)">
+          <h2 #cardTitle tabindex="-1" class="card__title card__title_large">{{ 'invites.guest.heading' | transloco: { name: displayName() } }}</h2>
+          <p class="card__text">{{ 'invites.guest.text' | transloco: { name: displayName() } }}</p>
+          <mat-form-field appearance="outline">
+            <mat-label>{{ 'invites.guest.name' | transloco }}</mat-label>
+            <mat-icon matPrefix>person</mat-icon>
+            <input matInput autocomplete="name" [formField]="inviteForm.name" />
+            @for (error of inviteForm.name().errors(); track error.kind) {
+              <mat-error>{{ error.message ?? '' | transloco: { max: nameMaxLength } }}</mat-error>
+            }
+          </mat-form-field>
+          <div class="date">
+            <mat-form-field class="date__month" appearance="outline">
+              <mat-label>{{ 'birthdayDialog.month' | transloco }}</mat-label>
+              <mat-select [formField]="inviteForm.month">
+                @for (month of months; track $index) {
+                  <mat-option [value]="$index + 1">{{ month | localeDate: 'LLLL' }}</mat-option>
+                }
+              </mat-select>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+              <mat-label>{{ 'birthdayDialog.day' | transloco }}</mat-label>
+              <mat-select [formField]="inviteForm.day">
+                @for (day of days(); track day) {
+                  <mat-option [value]="day">{{ day }}</mat-option>
+                }
+              </mat-select>
+              @for (error of inviteForm.day().errors(); track error.kind) {
+                <mat-error>{{ error.message ?? '' | transloco }}</mat-error>
+              }
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+              <mat-label>{{ 'birthdayDialog.year' | transloco }}</mat-label>
+              <input matInput inputmode="numeric" autocomplete="bday-year" [formField]="inviteForm.year" />
+              <mat-hint>{{ 'birthdayDialog.optional' | transloco }}</mat-hint>
+              @for (error of inviteForm.year().errors(); track error.kind) {
+                <mat-error>{{ error.message ?? '' | transloco }}</mat-error>
+              }
+            </mat-form-field>
+          </div>
+          <!-- A honeypot: hidden from people and screen readers, so only bots fill it in. -->
+          <div class="honeypot" aria-hidden="true">
+            <label for="invite-website">Website</label>
+            <input id="invite-website" type="text" tabindex="-1" autocomplete="off" [formField]="inviteForm.website" />
+          </div>
+          @if (submitError(); as error) {
+            <p class="card__error" role="alert">{{ 'invites.guest.errors.' + error | transloco: { name: displayName() } }}</p>
+          }
+          <p class="card__note">{{ 'invites.guest.note' | transloco: { name: displayName() } }}</p>
+          <button class="card__submit" matButton="filled" type="submit" disabledInteractive [disabled]="isSending()">
+            <mat-icon>send</mat-icon>
+            {{ 'invites.guest.send' | transloco }}
+          </button>
+        </form>
+      }
+    }
+  }
+</section>

@@ -26,6 +26,8 @@ export const serverRoutes: ServerRoute[] = [
   { path: 'guides/google-calendar-birthdays', renderMode: RenderMode.Server },
   { path: 'guides/birthday-reminders', renderMode: RenderMode.Server },
   { path: 'guides/import-birthdays-from-google-contacts', renderMode: RenderMode.Server },
+  // A dead link renders 404 and an unreachable API 503; `InviteController` sets the status.
+  { path: 'invite/:token', renderMode: RenderMode.Server },
   {
     // Unknown URLs render the not-found page with a real 404, so search engines drop them instead of treating them as the home page.
     path: '**',

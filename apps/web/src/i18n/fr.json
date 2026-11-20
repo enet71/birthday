@@ -82,6 +82,9 @@
     },
     "born": {
       "title": "Célébrités"
+    },
+    "invite": {
+      "title": "Invitation"
     }
   },
   "notFound": {
@@ -293,6 +296,37 @@
       "title": "Demandes d'anniversaire",
       "approve": "Ajouter",
       "reject": "Refuser"
+    },
+    "guest": {
+      "label": "Invitation",
+      "documentTitle": "{{ name }} rassemble les anniversaires · Birthdly",
+      "description": "Ajoutez votre anniversaire au calendrier de {{ name }} pour qu'il ne soit jamais oublié. Cela prend quelques secondes, sans connexion.",
+      "invalidDocumentTitle": "Invitation introuvable · Birthdly",
+      "invalidDescription": "Ce lien d'invitation ne fonctionne plus.",
+      "failedDocumentTitle": "Invitation · Birthdly",
+      "heading": "{{ name }} rassemble les anniversaires",
+      "text": "Ajoutez votre anniversaire pour que {{ name }} ne l'oublie jamais. Aucune connexion nécessaire.",
+      "name": "Votre nom",
+      "note": "Votre nom et votre anniversaire ne seront visibles que par {{ name }}.",
+      "send": "Envoyer mon anniversaire",
+      "sentTitle": "Merci !",
+      "sentText": "{{ name }} verra bientôt votre anniversaire.",
+      "sendAnother": "Envoyer à nouveau",
+      "promoTitle": "Ne manquez plus aucun anniversaire",
+      "promoText": "Birthdly rassemble les anniversaires de vos proches dans un calendrier et vous les rappelle à temps.",
+      "promoButton": "Créer votre calendrier d'anniversaires",
+      "invalidTitle": "Ce lien ne fonctionne plus",
+      "invalidText": "Demandez-en un nouveau à la personne qui l'a partagé.",
+      "openApp": "Ouvrir Birthdly",
+      "loadFailedTitle": "Impossible de charger l'invitation",
+      "loadFailedText": "Vérifiez votre connexion et réessayez.",
+      "errors": {
+        "nameRequired": "Saisissez votre nom",
+        "nameTooLong": "Le nom peut contenir jusqu'à {{ max }} caractères",
+        "full": "Trop de demandes attendent une réponse. Réessayez plus tard.",
+        "tooMany": "Trop de tentatives. Réessayez plus tard.",
+        "failed": "Impossible d'envoyer votre anniversaire. Vérifiez votre connexion et réessayez."
+      }
     }
   },
   "person": {
