@@ -7,6 +7,12 @@ export const CELEBRITY_SEGMENTS: readonly CelebritySegment[] = [
   { key: 'US-music', countryItem: 'Q30', country: 'US', occupation: 'music' },
   { key: 'UA-film', countryItem: 'Q212', country: 'UA', occupation: 'film' },
   { key: 'UA-music', countryItem: 'Q212', country: 'UA', occupation: 'music' },
+  { key: 'UA-sports', countryItem: 'Q212', country: 'UA', occupation: 'sports' },
+  { key: 'UA-literature', countryItem: 'Q212', country: 'UA', occupation: 'literature' },
+  { key: 'UA-politics', countryItem: 'Q212', country: 'UA', occupation: 'politics' },
+  { key: 'UA-science', countryItem: 'Q212', country: 'UA', occupation: 'science' },
+  { key: 'UA-art', countryItem: 'Q212', country: 'UA', occupation: 'art' },
+  { key: 'UA-business', countryItem: 'Q212', country: 'UA', occupation: 'business' },
 ];
 
 // Wikidata occupations (P106) of every field. An occupation listed here belongs to its field directly.
