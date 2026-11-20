@@ -16,7 +16,9 @@ import { CelebritiesImportService } from './celebrities-import.service';
 // with growing pauses (10 min, 20 min, ...), which outlasts a QLever or Wikidata outage.
 const SEGMENT_QUEUE_OPTIONS = { policy: 'stately', retryLimit: 4, retryDelay: 10 * 60, retryBackoff: true, expireInSeconds: 15 * 60 } as const;
 const DETAILS_QUEUE_OPTIONS = { retryLimit: 6, retryDelay: 60, retryBackoff: true, expireInSeconds: 5 * 60 };
-const PAGEVIEWS_QUEUE_OPTIONS = { retryLimit: 6, retryDelay: 2 * 60, retryBackoff: true, expireInSeconds: 30 * 60 };
+// Page views run into Wikimedia's rate limit on large imports: more retries, but at most 30 min apart, outlast a few hours
+// of throttling.
+const PAGEVIEWS_QUEUE_OPTIONS = { retryLimit: 10, retryDelay: 2 * 60, retryDelayMax: 30 * 60, retryBackoff: true, expireInSeconds: 30 * 60 };
 // One details request at a time with a pause after it keeps the import gentle on Wikidata; it has no deadline.
 const DETAILS_PAUSE_MS = 1000;
 

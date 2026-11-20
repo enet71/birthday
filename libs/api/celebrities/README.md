@@ -24,7 +24,7 @@ for example `US-film`); a new one is imported after the next deployment.
 2. **Details jobs**, 50 people each, one at a time: names, Wikipedia titles, death date, and the person's field. The
    field is that of the first occupation in Wikidata's order that has one: listed in `CELEBRITY_OCCUPATION_ITEMS`, or a
    subclass of one of `CELEBRITY_OCCUPATION_ROOTS`. People whose field puts them outside every segment are removed.
-3. **Page view jobs**: views of the English articles in the last 12 full months, a few requests per second.
+3. **Page view jobs**: views of the English articles in the last 12 full months, under two requests per second.
 
 Failed jobs retry with growing pauses. `celebrity_imports` keeps every segment's last start, end and error. Requests
 send `WIKIMEDIA_USER_AGENT`, as Wikimedia asks.

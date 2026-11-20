@@ -18,8 +18,8 @@ import { WikimediaClient } from './wikimedia.client';
 
 // Postgres limits a statement to 65,535 parameters; also the batch size of deletes.
 const ROWS_PER_INSERT = 1000;
-// Spreads the page view requests out, well below Wikimedia's rate limit.
-const PAGEVIEWS_REQUEST_PAUSE_MS = 200;
+// Spreads the page view requests out, well below Wikimedia's rate limit; 200 ms ran into it on a large import.
+const PAGEVIEWS_REQUEST_PAUSE_MS = 500;
 
 // The steps of a celebrity import: the segment's people, then their details, then the page views of their articles.
 @Injectable()

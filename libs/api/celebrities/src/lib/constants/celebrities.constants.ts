@@ -5,6 +5,12 @@ import { CelebritySegment } from '../types';
 export const CELEBRITY_SEGMENTS: readonly CelebritySegment[] = [
   { key: 'US-film', countryItem: 'Q30', country: 'US', occupation: 'film' },
   { key: 'US-music', countryItem: 'Q30', country: 'US', occupation: 'music' },
+  { key: 'US-sports', countryItem: 'Q30', country: 'US', occupation: 'sports' },
+  { key: 'US-literature', countryItem: 'Q30', country: 'US', occupation: 'literature' },
+  { key: 'US-politics', countryItem: 'Q30', country: 'US', occupation: 'politics' },
+  { key: 'US-science', countryItem: 'Q30', country: 'US', occupation: 'science' },
+  { key: 'US-art', countryItem: 'Q30', country: 'US', occupation: 'art' },
+  { key: 'US-business', countryItem: 'Q30', country: 'US', occupation: 'business' },
   { key: 'UA-film', countryItem: 'Q212', country: 'UA', occupation: 'film' },
   { key: 'UA-music', countryItem: 'Q212', country: 'UA', occupation: 'music' },
   { key: 'UA-sports', countryItem: 'Q212', country: 'UA', occupation: 'sports' },
