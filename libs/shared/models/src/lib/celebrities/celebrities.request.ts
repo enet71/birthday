@@ -30,8 +30,9 @@ export const CELEBRITY_SORTS = ['popularity', 'youngest', 'oldest'] as const;
 
 export type CelebritySort = (typeof CELEBRITY_SORTS)[number];
 
-// People per page of `GET /api/celebrities`.
-export const CELEBRITIES_PAGE_SIZE = 50;
+// People per page of `GET /api/celebrities`. Divisible by 4, 3 and 2, so every page fills the last row of the card
+// grid on the born page at any column count.
+export const CELEBRITIES_PAGE_SIZE = 48;
 
 // `GET /api/celebrities`. Build its query with `toCelebritiesQueryParams`: the lists travel comma-separated
 // (`countries=US,UA`). Every field except `month` and `day` is optional in the URL; empty lists do not filter.

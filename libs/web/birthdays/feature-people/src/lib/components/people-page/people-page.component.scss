@@ -3,6 +3,9 @@
 :host {
   display: flex;
   flex-direction: column;
+  width: 100%;
+  max-width: 72rem;
+  margin-inline: auto;
   padding-bottom: 2rem;
 }
 
