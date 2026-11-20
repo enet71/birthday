@@ -2,3 +2,4 @@ User-agent: *
 Allow: /
 
 Sitemap: https://birthdly.com/sitemap.xml
+Sitemap: https://birthdly.com/sitemap-born.xml

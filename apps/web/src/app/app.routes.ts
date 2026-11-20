@@ -61,9 +61,8 @@ export const appRoutes: Route[] = [
   },
   { path: 'calendar', redirectTo: '' },
   {
+    // Indexed; the date pages are listed in `sitemap-born.xml`, and filtered URLs point to the date page as canonical.
     path: 'born',
-    // Until the people come from Wikidata, the pages show made-up test data and stay out of search results.
-    data: { [APP_NOINDEX_DATA_KEY]: true },
     loadChildren: () => import('@birthday/web-celebrities-feature-born').then((m) => m.BORN_ROUTES),
   },
   {
