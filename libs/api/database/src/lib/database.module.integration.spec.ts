@@ -36,6 +36,8 @@ const DRIZZLE_KIT_BIN = join(dirname(createRequire(import.meta.url).resolve('dri
 const MIGRATION_COUNT = readdirSync(MIGRATIONS_FOLDER).filter((file: string) => file.endsWith('.sql')).length;
 const TABLES = [
   'birthdays',
+  'celebrities',
+  'celebrity_imports',
   'google_calendar_connections',
   'notification_deliveries',
   'notification_settings',

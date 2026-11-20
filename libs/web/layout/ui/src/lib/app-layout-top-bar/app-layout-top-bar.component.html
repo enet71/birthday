@@ -1,7 +1,7 @@
 <a class="logo" [routerLink]="config.homePath">
   <img [alt]="config.appName" priority [ngSrc]="config.logoSmall.src" [width]="config.logoSmall.width" [height]="config.logoSmall.height" />
 </a>
-<h1 class="title">{{ pageTitle() | transloco }}</h1>
+<h1 class="title">{{ pageTitle() }}</h1>
 @if (search(); as search) {
   <mat-form-field class="search" appearance="outline" subscriptSizing="dynamic">
     <mat-icon matPrefix aria-hidden="true">search</mat-icon>

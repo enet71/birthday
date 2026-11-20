@@ -21,6 +21,7 @@
   "nav": {
     "calendar": "Calendario",
     "people": "Personas",
+    "celebrities": "Famosos",
     "settings": "Ajustes",
     "addBirthday": "Añadir cumpleaños"
   },
@@ -75,6 +76,9 @@
     },
     "notFound": {
       "title": "Página no encontrada"
+    },
+    "born": {
+      "title": "Famosos"
     }
   },
   "notFound": {
@@ -104,7 +108,8 @@
     "monthDay": "d MMM",
     "monthDayYear": "d MMM y",
     "weekdayMonthDay": "EEEE, d 'de' MMMM",
-    "longDate": "d 'de' MMMM 'de' y"
+    "longDate": "d 'de' MMMM 'de' y",
+    "longMonthDay": "d 'de' MMMM"
   },
   "calendar": {
     "label": "Calendario",
@@ -220,6 +225,9 @@
       "turnOffFailed": "No se pudieron desactivar las notificaciones",
       "saved": "Ajustes de notificaciones guardados",
       "saveFailed": "No se pudieron guardar los ajustes de notificaciones"
+    },
+    "born": {
+      "loadMoreFailed": "No se pudieron cargar más personas."
     }
   },
   "people": {
@@ -560,5 +568,71 @@
   "theme": {
     "switchToDark": "Cambiar al tema oscuro",
     "switchToLight": "Cambiar al tema claro"
+  },
+  "born": {
+    "day": {
+      "heading": "Quién nació el {{ date }}",
+      "documentTitle": "Famosos nacidos el {{ date }} · Birthdly",
+      "description": "Famosos nacidos el {{ date }}: actores, músicos, deportistas, escritores y más, con su edad. Guarda los cumpleaños de tu gente en Birthdly.",
+      "navigation": "Fechas",
+      "pickDate": "Elegir una fecha",
+      "loadError": "No se pudieron cargar las personas nacidas este día.",
+      "empty": "Todavía no hay famosos para esta fecha.",
+      "emptyFiltered": "Nadie coincide con estos filtros este día.",
+      "count": {
+        "one": "{{ count }} persona famosa nació este día",
+        "other": "{{ count }} personas famosas nacieron este día"
+      },
+      "showMore": "Mostrar más"
+    },
+    "filters": {
+      "label": "Filtros",
+      "toggle": "Filtros",
+      "reset": "Restablecer filtros",
+      "country": "País",
+      "occupation": "Ámbito",
+      "decade": "Década",
+      "status": "Estado",
+      "sort": "Orden",
+      "decades": {
+        "1900": "Años 1900",
+        "1910": "Años 1910",
+        "1920": "Años 1920",
+        "1930": "Años 1930",
+        "1940": "Años 1940",
+        "1950": "Años 1950",
+        "1960": "Años 1960",
+        "1970": "Años 1970",
+        "1980": "Años 1980",
+        "1990": "Años 1990",
+        "2000": "Años 2000",
+        "2010": "Años 2010",
+        "2020": "Años 2020",
+        "before-1900": "Antes de 1900"
+      },
+      "statuses": {
+        "all": "Cualquier estado",
+        "living": "Vivos",
+        "deceased": "Fallecidos"
+      },
+      "sorts": {
+        "popularity": "Más populares",
+        "youngest": "Más jóvenes primero",
+        "oldest": "Mayores primero"
+      }
+    },
+    "occupations": {
+      "film": "Cine y TV",
+      "music": "Música",
+      "sports": "Deporte",
+      "literature": "Literatura",
+      "politics": "Política",
+      "science": "Ciencia",
+      "art": "Arte",
+      "business": "Negocios"
+    },
+    "card": {
+      "turns": "Cumple {{ age }}"
+    }
   }
 }

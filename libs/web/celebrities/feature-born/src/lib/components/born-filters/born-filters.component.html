@@ -1,0 +1,103 @@
+@let current = filters();
+@let count = activeFilterCount();
+<div class="filters" role="group" [attr.aria-label]="'born.filters.label' | transloco">
+  <button
+    class="toggle"
+    matButton="tonal"
+    type="button"
+    aria-controls="born-filters-panel"
+    [attr.aria-expanded]="isPanelOpen()"
+    (click)="togglePanel()"
+  >
+    <mat-icon>tune</mat-icon>
+    {{ 'born.filters.toggle' | transloco }}
+    @if (count) {
+      ({{ count }})
+    }
+  </button>
+
+  <div id="born-filters-panel" class="panel" [class.panel_open]="isPanelOpen()">
+    <mat-form-field class="field" appearance="outline" subscriptSizing="dynamic">
+      <mat-select
+        multiple
+        [placeholder]="'born.filters.country' | transloco"
+        [aria-label]="'born.filters.country' | transloco"
+        [value]="current.countries"
+        (selectionChange)="changeCountries($event)"
+      >
+        <mat-select-trigger>
+          {{ getCountryName(current.countries[0]) }}
+          @if (current.countries.length > 1) {
+            +{{ current.countries.length - 1 }}
+          }
+        </mat-select-trigger>
+        @for (option of countryOptions(); track option.code) {
+          <mat-option [value]="option.code">{{ option.name }}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field class="field" appearance="outline" subscriptSizing="dynamic">
+      <mat-select
+        multiple
+        [placeholder]="'born.filters.occupation' | transloco"
+        [aria-label]="'born.filters.occupation' | transloco"
+        [value]="current.occupations"
+        (selectionChange)="changeOccupations($event)"
+      >
+        <mat-select-trigger>
+          {{ 'born.occupations.' + current.occupations[0] | transloco }}
+          @if (current.occupations.length > 1) {
+            +{{ current.occupations.length - 1 }}
+          }
+        </mat-select-trigger>
+        @for (occupation of occupations; track occupation) {
+          <mat-option [value]="occupation">{{ 'born.occupations.' + occupation | transloco }}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field class="field" appearance="outline" subscriptSizing="dynamic">
+      <mat-select
+        multiple
+        [placeholder]="'born.filters.decade' | transloco"
+        [aria-label]="'born.filters.decade' | transloco"
+        [value]="current.decades"
+        (selectionChange)="changeDecades($event)"
+      >
+        <mat-select-trigger>
+          {{ 'born.filters.decades.' + current.decades[0] | transloco }}
+          @if (current.decades.length > 1) {
+            +{{ current.decades.length - 1 }}
+          }
+        </mat-select-trigger>
+        @for (decade of decades; track decade) {
+          <mat-option [value]="decade">{{ 'born.filters.decades.' + decade | transloco }}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field class="field" appearance="outline" subscriptSizing="dynamic">
+      <mat-select [aria-label]="'born.filters.status' | transloco" [value]="current.status" (selectionChange)="changeStatus($event)">
+        @for (status of statuses; track status) {
+          <mat-option [value]="status">{{ 'born.filters.statuses.' + status | transloco }}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field class="field field_sort" appearance="outline" subscriptSizing="dynamic">
+      <mat-select [aria-label]="'born.filters.sort' | transloco" [value]="current.sort" (selectionChange)="changeSort($event)">
+        @for (sort of sorts; track sort) {
+          <mat-option [value]="sort">{{ 'born.filters.sorts.' + sort | transloco }}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+  @if (count) {
+    <button class="reset" matButton type="button" (click)="resetFilters()">
+      <mat-icon>close</mat-icon>
+      {{ 'born.filters.reset' | transloco }}
+    </button>
+  }
+</div>

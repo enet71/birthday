@@ -2,7 +2,7 @@ import { DestroyRef, effect, EffectRef, inject, Injectable, Injector, Signal, Te
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRouteSnapshot, Event as RouterEvent, NavigationEnd, Router } from '@angular/router';
 import { filter } from 'rxjs';
-import { APP_LAYOUT_HEADING_DATA_KEY, APP_LAYOUT_SEARCH_DATA_KEY, AppLayoutSearch } from '@birthday/web-layout-util';
+import { APP_LAYOUT_HEADING_DATA_KEY, APP_LAYOUT_SEARCH_DATA_KEY, AppLayoutHeading, AppLayoutSearch } from '@birthday/web-layout-util';
 import { StateController } from '@birthday/web-shared-data-access';
 import { BrowserStorageService, LocalStorageKey, PlatformService } from '@birthday/web-shared-util';
 import { AppLayoutState } from './app-layout.state';
@@ -83,17 +83,19 @@ export class AppLayoutController extends StateController {
   }
 
   private applyRoute(): void {
-    let title = '';
+    let heading: AppLayoutHeading | null = null;
     let search: AppLayoutSearch | null = null;
     let snapshot: ActivatedRouteSnapshot | null = this.router.routerState.snapshot.root;
 
     while (snapshot) {
-      title = snapshot.data[APP_LAYOUT_HEADING_DATA_KEY] ?? snapshot.title ?? title;
+      const text: AppLayoutHeading['text'] | undefined = snapshot.data[APP_LAYOUT_HEADING_DATA_KEY] ?? snapshot.title;
+
+      heading = text ? { text, route: snapshot } : heading;
       search = snapshot.data[APP_LAYOUT_SEARCH_DATA_KEY] ?? search;
       snapshot = snapshot.firstChild;
     }
 
-    this.appLayoutState.pageTitle.set(title);
+    this.appLayoutState.pageHeading.set(heading);
     this.appLayoutState.search.set(search);
     this.appLayoutState.searchQuery.set('');
   }

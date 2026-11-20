@@ -1,5 +1,5 @@
 import { Route } from '@angular/router';
-import { APP_DESCRIPTION_DATA_KEY, APP_DOCUMENT_TITLE_DATA_KEY } from '../../app.constants';
+import { APP_DESCRIPTION_DATA_KEY, APP_DOCUMENT_TITLE_DATA_KEY } from '@birthday/web-shared-util';
 import { BIRTHDAY_REMINDERS_GUIDE, GOOGLE_CALENDAR_BIRTHDAYS_GUIDE, IMPORT_FROM_GOOGLE_CONTACTS_GUIDE } from './guides.constants';
 import { buildGuideRoute } from './guides.helpers';
 

@@ -1,4 +1,5 @@
 export * from './birthdays';
+export * from './celebrities';
 export * from './google-calendar-connections';
 export * from './notification-deliveries';
 export * from './notification-settings';

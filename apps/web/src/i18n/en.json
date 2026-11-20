@@ -21,6 +21,7 @@
   "nav": {
     "calendar": "Calendar",
     "people": "People",
+    "celebrities": "Celebrities",
     "settings": "Settings",
     "addBirthday": "Add birthday"
   },
@@ -75,6 +76,9 @@
     },
     "notFound": {
       "title": "Page not found"
+    },
+    "born": {
+      "title": "Celebrities"
     }
   },
   "notFound": {
@@ -104,7 +108,8 @@
     "monthDay": "MMM d",
     "monthDayYear": "MMM d, y",
     "weekdayMonthDay": "EEEE, MMMM d",
-    "longDate": "MMMM d, y"
+    "longDate": "MMMM d, y",
+    "longMonthDay": "MMMM d"
   },
   "calendar": {
     "label": "Calendar",
@@ -220,6 +225,9 @@
       "turnOffFailed": "Couldn't turn off notifications",
       "saved": "Notification settings saved",
       "saveFailed": "Couldn't save the notification settings"
+    },
+    "born": {
+      "loadMoreFailed": "Couldn't load more people."
     }
   },
   "people": {
@@ -560,5 +568,71 @@
   "theme": {
     "switchToDark": "Switch to dark theme",
     "switchToLight": "Switch to light theme"
+  },
+  "born": {
+    "day": {
+      "heading": "Who was born on {{ date }}",
+      "documentTitle": "Famous People Born on {{ date }} · Birthdly",
+      "description": "Celebrities born on {{ date }}: actors, musicians, athletes, writers and more, with their age. Keep the birthdays of your own people in Birthdly.",
+      "navigation": "Dates",
+      "pickDate": "Choose a date",
+      "loadError": "Couldn't load the people born on this day.",
+      "empty": "No famous people found for this date yet.",
+      "emptyFiltered": "Nobody matches these filters on this day.",
+      "count": {
+        "one": "{{ count }} famous person was born on this day",
+        "other": "{{ count }} famous people were born on this day"
+      },
+      "showMore": "Show more"
+    },
+    "filters": {
+      "label": "Filters",
+      "toggle": "Filters",
+      "reset": "Reset filters",
+      "country": "Country",
+      "occupation": "Field",
+      "decade": "Decade",
+      "status": "Status",
+      "sort": "Sort",
+      "decades": {
+        "1900": "1900s",
+        "1910": "1910s",
+        "1920": "1920s",
+        "1930": "1930s",
+        "1940": "1940s",
+        "1950": "1950s",
+        "1960": "1960s",
+        "1970": "1970s",
+        "1980": "1980s",
+        "1990": "1990s",
+        "2000": "2000s",
+        "2010": "2010s",
+        "2020": "2020s",
+        "before-1900": "Before 1900"
+      },
+      "statuses": {
+        "all": "Any status",
+        "living": "Living",
+        "deceased": "Deceased"
+      },
+      "sorts": {
+        "popularity": "Most popular",
+        "youngest": "Youngest first",
+        "oldest": "Oldest first"
+      }
+    },
+    "occupations": {
+      "film": "Film & TV",
+      "music": "Music",
+      "sports": "Sports",
+      "literature": "Literature",
+      "politics": "Politics",
+      "science": "Science",
+      "art": "Art",
+      "business": "Business"
+    },
+    "card": {
+      "turns": "Turns {{ age }}"
+    }
   }
 }

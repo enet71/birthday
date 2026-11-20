@@ -1,9 +1,9 @@
-import { AppTranslateService } from '@birthday/web-shared-i18n';
+import { AppRouteTranslator } from '@birthday/web-shared-util';
 import { ABOUT_FAQ } from './about.constants';
 import { AboutFaqItem } from './about.interfaces';
 
 // schema.org FAQPage built from the same items as the page, so the markup always matches the visible answers.
-export function buildAboutFaqStructuredData(translator: AppTranslateService): object {
+export function buildAboutFaqStructuredData(translator: AppRouteTranslator): object {
   return {
     '@context': 'https://schema.org',
     '@type': 'FAQPage',

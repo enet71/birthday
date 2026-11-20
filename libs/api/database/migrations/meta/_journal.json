@@ -43,6 +43,13 @@
       "when": 1795085994867,
       "tag": "0005_user-picture",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1795115742379,
+      "tag": "0006_celebrities",
+      "breakpoints": true
     }
   ]
 }

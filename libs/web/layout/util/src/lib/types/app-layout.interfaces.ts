@@ -1,3 +1,6 @@
+import { ActivatedRouteSnapshot } from '@angular/router';
+import { AppRouteText } from '@birthday/web-shared-util';
+
 // Every `label`, `tagline`, and `placeholder` here is a translation key; the layout translates it.
 export interface AppLayoutMenuItem {
   label: string;
@@ -40,6 +43,12 @@ export interface AppLayoutConfig {
   menu: AppLayoutMenuItem[];
   primaryAction?: AppLayoutPrimaryAction;
   footer?: AppLayoutFooter;
+}
+
+// The top bar heading and the route that declares it, so a heading factory can read the route's params and data.
+export interface AppLayoutHeading {
+  text: AppRouteText;
+  route: ActivatedRouteSnapshot;
 }
 
 export interface AppLayoutSearch {

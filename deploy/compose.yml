@@ -58,6 +58,8 @@ services:
       NODE_ENV: production
       # Caddy sets these headers; Angular SSR ignores proxy headers it is not told to trust.
       NG_TRUST_PROXY_HEADERS: x-forwarded-for,x-forwarded-host,x-forwarded-proto
+      # Server rendering calls the API on the private Docker network rather than through the public domain.
+      API_INTERNAL_URL: http://api:3000
     restart: unless-stopped
     healthcheck:
       test: ['CMD-SHELL', 'wget -qO- http://127.0.0.1:4000/robots.txt > /dev/null || exit 1']

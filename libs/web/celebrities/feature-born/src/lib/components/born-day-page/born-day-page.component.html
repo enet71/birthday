@@ -1,0 +1,67 @@
+@let dateFormat = 'dates.longMonthDay' | transloco;
+<section class="day" [attr.aria-busy]="isLoading()">
+  <nav class="day-nav" [attr.aria-label]="'born.day.navigation' | transloco">
+    @if (previousPath(); as path) {
+      <a class="day-nav__link" matButton queryParamsHandling="preserve" [routerLink]="path">
+        <mat-icon>chevron_left</mat-icon>
+        {{ previousDate() | localeDate: dateFormat }}
+      </a>
+    }
+    <span class="day-nav__picker">
+      <!-- The datepicker needs an input; the visible control is the button next to it. -->
+      <input
+        class="day-nav__input"
+        tabindex="-1"
+        aria-hidden="true"
+        [matDatepicker]="picker"
+        [value]="pickerDate()"
+        (dateChange)="openDate($event)"
+      />
+      <mat-datepicker #picker></mat-datepicker>
+      <button matButton="tonal" type="button" (click)="picker.open()">
+        <mat-icon>calendar_month</mat-icon>
+        {{ 'born.day.pickDate' | transloco }}
+      </button>
+    </span>
+    @if (nextPath(); as path) {
+      <a class="day-nav__link" matButton queryParamsHandling="preserve" [routerLink]="path">
+        {{ nextDate() | localeDate: dateFormat }}
+        <mat-icon iconPositionEnd>chevron_right</mat-icon>
+      </a>
+    }
+  </nav>
+
+  @if (hasLoadError()) {
+    <div class="state" role="alert">
+      <mat-icon class="state__icon" aria-hidden="true">cloud_off</mat-icon>
+      <p class="state__text">{{ 'born.day.loadError' | transloco }}</p>
+      <button matButton="outlined" type="button" disabledInteractive [disabled]="isLoading()" (click)="retry()">
+        {{ 'common.tryAgain' | transloco }}
+      </button>
+    </div>
+  } @else {
+    <ui-born-filters></ui-born-filters>
+
+    @if (cards().length) {
+      <h2 class="summary">{{ summary() }}</h2>
+      <ol class="list">
+        @for (card of cards(); track card.id) {
+          <li><ui-celebrity-card [celebrity]="card"></ui-celebrity-card></li>
+        }
+      </ol>
+      @if (hasMore()) {
+        <button class="more" matButton="tonal" type="button" disabledInteractive [disabled]="isLoadingMore()" (click)="showMore()">
+          {{ 'born.day.showMore' | transloco }}
+        </button>
+      }
+    } @else if (!isLoading()) {
+      <div class="state">
+        <mat-icon class="state__icon" aria-hidden="true">person_search</mat-icon>
+        <p class="state__text">{{ (activeFilterCount() ? 'born.day.emptyFiltered' : 'born.day.empty') | transloco }}</p>
+        @if (activeFilterCount()) {
+          <button matButton="outlined" type="button" (click)="resetFilters()">{{ 'born.filters.reset' | transloco }}</button>
+        }
+      </div>
+    }
+  }
+</section>

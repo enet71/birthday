@@ -1,6 +1,6 @@
 import { Route } from '@angular/router';
 import { APP_LAYOUT_HEADING_DATA_KEY } from '@birthday/web-layout-util';
-import { APP_DESCRIPTION_DATA_KEY, APP_DOCUMENT_TITLE_DATA_KEY, APP_NOINDEX_DATA_KEY, APP_STRUCTURED_DATA_DATA_KEY } from './app.constants';
+import { APP_DESCRIPTION_DATA_KEY, APP_DOCUMENT_TITLE_DATA_KEY, APP_NOINDEX_DATA_KEY, APP_STRUCTURED_DATA_DATA_KEY } from '@birthday/web-shared-util';
 import { buildAboutFaqStructuredData } from './pages/about/about.helpers';
 
 // Titles, headings, and descriptions are translation keys; `AppPageMetaStrategy` and the layout translate them.
@@ -60,6 +60,12 @@ export const appRoutes: Route[] = [
     loadComponent: () => import('./pages/legal/terms/terms.component').then((m) => m.TermsComponent),
   },
   { path: 'calendar', redirectTo: '' },
+  {
+    path: 'born',
+    // Until the people come from Wikidata, the pages show made-up test data and stay out of search results.
+    data: { [APP_NOINDEX_DATA_KEY]: true },
+    loadChildren: () => import('@birthday/web-celebrities-feature-born').then((m) => m.BORN_ROUTES),
+  },
   {
     path: 'guides',
     loadChildren: () => import('./pages/guides/guides.routes').then((m) => m.GUIDES_ROUTES),

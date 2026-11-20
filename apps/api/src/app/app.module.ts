@@ -3,6 +3,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { APP_FILTER } from '@nestjs/core';
 import { AuthModule } from '@birthday/api-auth';
 import { BirthdaysModule } from '@birthday/api-birthdays';
+import { CelebritiesModule } from '@birthday/api-celebrities';
 import { GoogleCalendarModule } from '@birthday/api-google-calendar';
 import { JobsModule } from '@birthday/api-jobs';
 import { NotificationsModule } from '@birthday/api-notifications';
@@ -76,6 +77,7 @@ import { HealthModule } from './health/health.module';
         vapidSubject: config.get('VAPID_SUBJECT', { infer: true }),
       }),
     }),
+    CelebritiesModule,
     HealthModule,
     BirthdaysModule,
     RemindersModule,

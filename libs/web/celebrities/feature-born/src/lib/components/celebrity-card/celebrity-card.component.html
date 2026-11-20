@@ -1,0 +1,27 @@
+@let person = celebrity();
+<ui-birthday-avatar class="avatar" [name]="person.name"></ui-birthday-avatar>
+<div class="body">
+  <h3 class="name">
+    @if (person.wikipediaUrl) {
+      <a class="name__link" target="_blank" rel="noopener" [href]="person.wikipediaUrl">{{ person.name }}</a>
+    } @else {
+      {{ person.name }}
+    }
+  </h3>
+  <p class="details">
+    @if (person.occupation) {
+      <span>{{ 'born.occupations.' + person.occupation | transloco }}</span>
+    }
+    @if (person.deathYear === null) {
+      <span>{{ person.birthYear }}</span>
+    } @else {
+      <span>{{ person.birthYear }}–{{ person.deathYear }}</span>
+    }
+  </p>
+  @if (person.countries) {
+    <p class="countries">{{ person.countries }}</p>
+  }
+</div>
+@if (person.age !== null) {
+  <span class="age">{{ 'born.card.turns' | transloco: { age: person.age } }}</span>
+}

@@ -2,6 +2,7 @@ import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { Logger } from 'nestjs-pino';
+import { CELEBRITIES_IMPORT_COMMAND, runCelebritiesImportCommand } from '@birthday/api-celebrities';
 import { AppModule } from './app/app.module';
 import { Env } from './app/config';
 
@@ -33,4 +34,21 @@ async function bootstrap(): Promise<void> {
   logger.log(`The API is listening on http://localhost:${port}/api`);
 }
 
-bootstrap();
+// `node main.js celebrities:import [segment]` queues a celebrity import for the running API instead of starting a server.
+if (process.argv[2] === CELEBRITIES_IMPORT_COMMAND) {
+  const connectionString: string | undefined = process.env['DATABASE_URL'];
+
+  if (!connectionString) {
+    throw new Error('DATABASE_URL is not set');
+  }
+
+  runCelebritiesImportCommand(connectionString, process.argv[3]).then(
+    () => console.log('The celebrity import was queued'),
+    (error: unknown) => {
+      console.error(error);
+      process.exitCode = 1;
+    },
+  );
+} else {
+  bootstrap();
+}

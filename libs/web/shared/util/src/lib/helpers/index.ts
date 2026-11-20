@@ -4,6 +4,7 @@ export * from './date.helpers';
 export * from './file.helpers';
 export * from './form.helpers';
 export * from './helpers';
+export * from './route-meta.helpers';
 export * from './route.helpers';
 export * from './string.helpers';
 export * from './type.helpers';

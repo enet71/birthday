@@ -21,6 +21,7 @@
   "nav": {
     "calendar": "Kalender",
     "people": "Personen",
+    "celebrities": "Prominente",
     "settings": "Einstellungen",
     "addBirthday": "Geburtstag hinzufügen"
   },
@@ -75,6 +76,9 @@
     },
     "notFound": {
       "title": "Seite nicht gefunden"
+    },
+    "born": {
+      "title": "Prominente"
     }
   },
   "notFound": {
@@ -104,7 +108,8 @@
     "monthDay": "d. MMM",
     "monthDayYear": "d. MMM y",
     "weekdayMonthDay": "EEEE, d. MMMM",
-    "longDate": "d. MMMM y"
+    "longDate": "d. MMMM y",
+    "longMonthDay": "d. MMMM"
   },
   "calendar": {
     "label": "Kalender",
@@ -220,6 +225,9 @@
       "turnOffFailed": "Benachrichtigungen konnten nicht deaktiviert werden",
       "saved": "Benachrichtigungseinstellungen gespeichert",
       "saveFailed": "Die Benachrichtigungseinstellungen konnten nicht gespeichert werden"
+    },
+    "born": {
+      "loadMoreFailed": "Weitere Personen konnten nicht geladen werden."
     }
   },
   "people": {
@@ -560,5 +568,71 @@
   "theme": {
     "switchToDark": "Zum dunklen Design wechseln",
     "switchToLight": "Zum hellen Design wechseln"
+  },
+  "born": {
+    "day": {
+      "heading": "Wer am {{ date }} geboren ist",
+      "documentTitle": "Berühmte Personen, geboren am {{ date }} · Birthdly",
+      "description": "Prominente, die am {{ date }} geboren sind: Schauspieler, Musiker, Sportler, Autoren und mehr, mit ihrem Alter. Behalte die Geburtstage deiner Liebsten in Birthdly.",
+      "navigation": "Daten",
+      "pickDate": "Datum wählen",
+      "loadError": "Die an diesem Tag geborenen Personen konnten nicht geladen werden.",
+      "empty": "Für dieses Datum wurde noch niemand gefunden.",
+      "emptyFiltered": "An diesem Tag passt niemand zu diesen Filtern.",
+      "count": {
+        "one": "{{ count }} berühmte Person wurde an diesem Tag geboren",
+        "other": "{{ count }} berühmte Personen wurden an diesem Tag geboren"
+      },
+      "showMore": "Mehr anzeigen"
+    },
+    "filters": {
+      "label": "Filter",
+      "toggle": "Filter",
+      "reset": "Filter zurücksetzen",
+      "country": "Land",
+      "occupation": "Bereich",
+      "decade": "Jahrzehnt",
+      "status": "Status",
+      "sort": "Sortierung",
+      "decades": {
+        "1900": "1900er",
+        "1910": "1910er",
+        "1920": "1920er",
+        "1930": "1930er",
+        "1940": "1940er",
+        "1950": "1950er",
+        "1960": "1960er",
+        "1970": "1970er",
+        "1980": "1980er",
+        "1990": "1990er",
+        "2000": "2000er",
+        "2010": "2010er",
+        "2020": "2020er",
+        "before-1900": "Vor 1900"
+      },
+      "statuses": {
+        "all": "Jeder Status",
+        "living": "Lebend",
+        "deceased": "Verstorben"
+      },
+      "sorts": {
+        "popularity": "Am beliebtesten",
+        "youngest": "Jüngste zuerst",
+        "oldest": "Älteste zuerst"
+      }
+    },
+    "occupations": {
+      "film": "Film & TV",
+      "music": "Musik",
+      "sports": "Sport",
+      "literature": "Literatur",
+      "politics": "Politik",
+      "science": "Wissenschaft",
+      "art": "Kunst",
+      "business": "Wirtschaft"
+    },
+    "card": {
+      "turns": "Wird {{ age }}"
+    }
   }
 }

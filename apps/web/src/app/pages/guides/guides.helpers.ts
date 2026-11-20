@@ -1,6 +1,6 @@
 import { Route } from '@angular/router';
-import { AppTranslateService } from '@birthday/web-shared-i18n';
-import { APP_DESCRIPTION_DATA_KEY, APP_LAYOUT, APP_SITE_URL, APP_STRUCTURED_DATA_DATA_KEY } from '../../app.constants';
+import { APP_DESCRIPTION_DATA_KEY, APP_STRUCTURED_DATA_DATA_KEY, AppRouteTranslator } from '@birthday/web-shared-util';
+import { APP_LAYOUT, APP_SITE_URL } from '../../app.constants';
 import { Guide } from './guides.interfaces';
 
 export function getGuidePath(guide: Guide): string {
@@ -13,14 +13,14 @@ export function buildGuideRoute(guide: Guide, loadComponent: Route['loadComponen
     title: guide.title,
     data: {
       [APP_DESCRIPTION_DATA_KEY]: guide.description,
-      [APP_STRUCTURED_DATA_DATA_KEY]: (translator: AppTranslateService) => buildGuideStructuredData(guide, translator),
+      [APP_STRUCTURED_DATA_DATA_KEY]: (translator: AppRouteTranslator) => buildGuideStructuredData(guide, translator),
     },
     loadComponent,
   };
 }
 
 // The page script holds one object, so the article and its breadcrumbs share a `@graph`.
-function buildGuideStructuredData(guide: Guide, translator: AppTranslateService): object {
+function buildGuideStructuredData(guide: Guide, translator: AppRouteTranslator): object {
   const url = `${APP_SITE_URL}${getGuidePath(guide)}`;
   const organization = { '@type': 'Organization', name: APP_LAYOUT.appName, url: `${APP_SITE_URL}/` };
   const title: string = translator.translate(guide.title);

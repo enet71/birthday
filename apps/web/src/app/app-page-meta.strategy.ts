@@ -4,22 +4,21 @@ import { ActivatedRouteSnapshot, RouterStateSnapshot, TitleStrategy } from '@ang
 import { injectState, ReadonlyState } from '@birthday/web-shared-data-access';
 import { AppTranslateService, LocaleState } from '@birthday/web-shared-i18n';
 import {
-  APP_DEFAULT_DESCRIPTION,
   APP_DESCRIPTION_DATA_KEY,
   APP_DOCUMENT_TITLE_DATA_KEY,
-  APP_LAYOUT,
   APP_NOINDEX_DATA_KEY,
-  APP_OPEN_GRAPH_LOCALES,
-  APP_SITE_URL,
   APP_STRUCTURED_DATA_DATA_KEY,
-} from './app.constants';
-import { AppStructuredDataFactory } from './app.interfaces';
+  AppRouteText,
+  AppStructuredDataFactory,
+  translateRouteText,
+} from '@birthday/web-shared-util';
+import { APP_DEFAULT_DESCRIPTION, APP_LAYOUT, APP_OPEN_GRAPH_LOCALES, APP_SITE_URL } from './app.constants';
 
 const STRUCTURED_DATA_SCRIPT_ID = 'page-structured-data';
 
 // Runs on every navigation on the server and in the browser, so it also owns the per-route SEO tags.
 // Route titles stay short for the layout top bar; the document title also carries the app name.
-// Titles and descriptions are translation keys, so a language switch applies the tags of the current page again.
+// Titles and descriptions are translation keys or factories (`AppRouteText`), so a language switch applies the tags of the current page again.
 @Injectable()
 export class AppPageMetaStrategy extends TitleStrategy {
   private readonly title: Title = inject(Title);
@@ -45,14 +44,11 @@ export class AppPageMetaStrategy extends TitleStrategy {
 
   private applyPageMeta(snapshot: RouterStateSnapshot): void {
     const pageTitle: string | undefined = this.buildTitle(snapshot);
-    const documentTitle: string | undefined = this.findRouteData(snapshot.root, APP_DOCUMENT_TITLE_DATA_KEY);
+    const documentTitle: string | undefined = this.translateRouteData(snapshot.root, APP_DOCUMENT_TITLE_DATA_KEY);
 
-    const title: string = documentTitle
-      ? this.translator.translate(documentTitle)
-      : pageTitle
-        ? `${this.translator.translate(pageTitle)} · ${APP_LAYOUT.appName}`
-        : APP_LAYOUT.appName;
-    const description: string = this.translator.translate(this.findRouteData(snapshot.root, APP_DESCRIPTION_DATA_KEY) ?? APP_DEFAULT_DESCRIPTION);
+    const title: string = documentTitle ?? (pageTitle ? `${this.translator.translate(pageTitle)} · ${APP_LAYOUT.appName}` : APP_LAYOUT.appName);
+    const description: string =
+      this.translateRouteData(snapshot.root, APP_DESCRIPTION_DATA_KEY) ?? this.translator.translate(APP_DEFAULT_DESCRIPTION);
 
     this.title.setTitle(title);
     this.updateSocialTags(title, description);
@@ -72,13 +68,25 @@ export class AppPageMetaStrategy extends TitleStrategy {
   }
 
   private findRouteData<T>(root: ActivatedRouteSnapshot, key: string): T | undefined {
+    return this.findRoute(root, key)?.data[key];
+  }
+
+  private findRoute(root: ActivatedRouteSnapshot, key: string): ActivatedRouteSnapshot | null {
     let route: ActivatedRouteSnapshot | null = root;
 
     while (route && route.data[key] === undefined) {
       route = route.firstChild;
     }
 
-    return route?.data[key];
+    return route;
+  }
+
+  // A factory gets the route that declares it, so it reads that route's params and resolved data.
+  private translateRouteData(root: ActivatedRouteSnapshot, key: string): string | undefined {
+    const route: ActivatedRouteSnapshot | null = this.findRoute(root, key);
+    const text: AppRouteText | undefined = route?.data[key];
+
+    return route && text !== undefined ? translateRouteText(text, this.translator, route) : undefined;
   }
 
   private updateCanonicalUrl(url: string): void {
@@ -105,7 +113,10 @@ export class AppPageMetaStrategy extends TitleStrategy {
 
   // The site-wide JSON-LD stays in `index.html`; this script holds only the current page's own markup.
   private updateStructuredData(root: ActivatedRouteSnapshot): void {
-    const data: object | undefined = this.findRouteData<AppStructuredDataFactory>(root, APP_STRUCTURED_DATA_DATA_KEY)?.(this.translator);
+    const route: ActivatedRouteSnapshot | null = this.findRoute(root, APP_STRUCTURED_DATA_DATA_KEY);
+    const data: object | undefined = route
+      ? (route.data[APP_STRUCTURED_DATA_DATA_KEY] as AppStructuredDataFactory)(this.translator, route)
+      : undefined;
     let script: HTMLScriptElement | null = this.document.head.querySelector(`#${STRUCTURED_DATA_SCRIPT_ID}`);
 
     if (!data) {
