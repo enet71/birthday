@@ -23,3 +23,6 @@ Spam protection on guest submissions:
 - At most `MAX_PENDING_SUBMISSIONS` wait per owner; more answer 409.
 - `SUBMISSION_THROTTLERS` limit submissions per IP address (429). They count in memory, which is enough for the single
   API instance.
+
+After a submission is saved, `InviteSubmissionsListener.submissionCreated` tells the owner; `api-notifications`
+provides it and sends a push. The guest's request does not wait for it.

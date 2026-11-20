@@ -1,12 +1,11 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { DueUser, StoredPushSubscription } from '../types';
-import { buildBirthdayNotification } from '../utils';
+import { DueUser } from '../types';
+import { buildBirthdayNotification, runInChunks } from '../utils';
 import { DueNotificationsService } from './due-notifications.service';
-import { PushSenderService } from './push-sender.service';
+import { UserPushService } from './user-push.service';
 
 // Small batches: a run that stops halfway loses at most one batch of claimed users, and the next run picks up the rest.
 const CLAIM_BATCH_SIZE = 50;
-const PARALLEL_SENDS = 5;
 
 // Notifies every user whose chosen local hour has come.
 @Injectable()
@@ -15,7 +14,7 @@ export class BirthdayNotificationsService {
 
   constructor(
     private readonly due: DueNotificationsService,
-    private readonly pushSender: PushSenderService,
+    private readonly userPush: UserPushService,
   ) {}
 
   // Returns how many devices received a notification. Stops before the next batch once `signal` is aborted; the users
@@ -50,38 +49,6 @@ export class BirthdayNotificationsService {
     const birthdays = await this.due.findBirthdaysAround(user.userId, user.localDate);
     const payload = buildBirthdayNotification(birthdays, user);
 
-    if (!payload) {
-      return 0;
-    }
-
-    const message = JSON.stringify(payload);
-    const subscriptions = await this.due.findSubscriptions(user.userId);
-    const results = await runInChunks(subscriptions, (subscription) => this.push(subscription, message));
-
-    results.forEach((result, index) => {
-      if (result.status === 'rejected') {
-        this.logger.error({ err: result.reason, subscriptionId: subscriptions[index].id }, 'Handling a push subscription failed');
-      }
-    });
-    return results.filter((result) => result.status === 'fulfilled' && result.value).length;
+    return payload ? this.userPush.pushToUser(user.userId, payload) : 0;
   }
-
-  private async push(subscription: StoredPushSubscription, message: string): Promise<boolean> {
-    const result = await this.pushSender.send(subscription, message);
-
-    if (result === 'gone') {
-      await this.due.deleteSubscription(subscription.id);
-    }
-    return result === 'sent';
-  }
-}
-
-async function runInChunks<T, R>(items: T[], task: (item: T) => Promise<R>): Promise<PromiseSettledResult<R>[]> {
-  const results: PromiseSettledResult<R>[] = [];
-
-  for (let start = 0; start < items.length; start += PARALLEL_SENDS) {
-    results.push(...(await Promise.allSettled(items.slice(start, start + PARALLEL_SENDS).map(task))));
-  }
-
-  return results;
 }

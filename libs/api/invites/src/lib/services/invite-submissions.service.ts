@@ -4,6 +4,7 @@ import { BirthdayDto, CreateInviteSubmissionRequest, InviteSubmissionDto } from 
 import { DATABASE, Database, inviteSubmissions } from '@birthday/api-database';
 import { BirthdaysService } from '@birthday/api-birthdays';
 import { MAX_PENDING_SUBMISSIONS } from '../constants';
+import { InviteSubmissionsListener } from '../listeners';
 import { InviteLinkService } from './invite-link.service';
 
 const SUBMISSION_COLUMNS = {
@@ -22,6 +23,7 @@ export class InviteSubmissionsService {
     @Inject(DATABASE) private readonly db: Database,
     private readonly inviteLinkService: InviteLinkService,
     private readonly birthdaysService: BirthdaysService,
+    private readonly submissionsListener: InviteSubmissionsListener,
   ) {}
 
   // A filled honeypot gets the same answer as a real submission, so a bot does not learn it was dropped. Two guests
@@ -39,6 +41,8 @@ export class InviteSubmissionsService {
       throw new ConflictException('The link owner has too many pending submissions');
     }
     await this.db.insert(inviteSubmissions).values({ userId, name: request.name, birthDate: request.birthDate });
+    // Not awaited: the guest does not wait for push services.
+    void this.submissionsListener.submissionCreated({ userId, name: request.name });
   }
 
   public async list(userId: string): Promise<InviteSubmissionDto[]> {

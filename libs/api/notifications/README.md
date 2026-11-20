@@ -1,6 +1,6 @@
 # api-notifications
 
-Sends the daily birthday push notifications. The settings and the devices' push subscriptions are stored by
+Sends the daily birthday push notifications and the ones about new invite submissions. The settings and the devices' push subscriptions are stored by
 `api-reminders`; this library only reads them.
 
 ## How it works
@@ -15,6 +15,13 @@ Sends the daily birthday push notifications. The settings and the devices' push 
   cut) and sends it to every device with `web-push`. Nothing is sent when no birthday matches.
 - A push service answering 400/403/404/410 means the subscription is gone for good; it is deleted. 429 and 5xx are
   retried once. One user or device failing never stops the others.
+
+## Invite submissions
+
+`NotificationsModule` is global and provides `api-invites`' `InviteSubmissionsListener`. When a guest sends a birthday
+through an invite link, the link owner's devices get "New birthday request" in the owner's language; a click opens
+`/people`. The guest's request does not wait for it, and a failure is only logged. A newer request replaces the shown
+notification instead of stacking.
 
 ## VAPID keys
 
